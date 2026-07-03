@@ -1,0 +1,1236 @@
+{
+  "type": "FeatureCollection",
+  "name": "study_grid_bandung_jatinangor_dummy",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G001",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 11.5,
+        "distance_to_river_m": 664,
+        "distance_to_road_m": 1954,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 117.7,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74,
+              -6.955
+            ],
+            [
+              107.74799999999999,
+              -6.955
+            ],
+            [
+              107.74799999999999,
+              -6.949
+            ],
+            [
+              107.74,
+              -6.949
+            ],
+            [
+              107.74,
+              -6.955
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G002",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "andesite",
+        "slope_deg": 12.2,
+        "distance_to_river_m": 594,
+        "distance_to_road_m": 1226,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 119.6,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74799999999999,
+              -6.955
+            ],
+            [
+              107.75599999999999,
+              -6.955
+            ],
+            [
+              107.75599999999999,
+              -6.949
+            ],
+            [
+              107.74799999999999,
+              -6.949
+            ],
+            [
+              107.74799999999999,
+              -6.955
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G003",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "tuff",
+        "slope_deg": 11.8,
+        "distance_to_river_m": 369,
+        "distance_to_road_m": 1312,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 115.4,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.756,
+              -6.955
+            ],
+            [
+              107.764,
+              -6.955
+            ],
+            [
+              107.764,
+              -6.949
+            ],
+            [
+              107.756,
+              -6.949
+            ],
+            [
+              107.756,
+              -6.955
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G004",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "tuff",
+        "slope_deg": 9.6,
+        "distance_to_river_m": 1363,
+        "distance_to_road_m": 1404,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 127.4,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.764,
+              -6.955
+            ],
+            [
+              107.77199999999999,
+              -6.955
+            ],
+            [
+              107.77199999999999,
+              -6.949
+            ],
+            [
+              107.764,
+              -6.949
+            ],
+            [
+              107.764,
+              -6.955
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G005",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 13.2,
+        "distance_to_river_m": 1040,
+        "distance_to_road_m": 1905,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 132.9,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.77199999999999,
+              -6.955
+            ],
+            [
+              107.77999999999999,
+              -6.955
+            ],
+            [
+              107.77999999999999,
+              -6.949
+            ],
+            [
+              107.77199999999999,
+              -6.949
+            ],
+            [
+              107.77199999999999,
+              -6.955
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G006",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 18.1,
+        "distance_to_river_m": 1528,
+        "distance_to_road_m": 1625,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 136.5,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.78,
+              -6.955
+            ],
+            [
+              107.788,
+              -6.955
+            ],
+            [
+              107.788,
+              -6.949
+            ],
+            [
+              107.78,
+              -6.949
+            ],
+            [
+              107.78,
+              -6.955
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G007",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "lahar_deposit",
+        "slope_deg": 17.9,
+        "distance_to_river_m": 519,
+        "distance_to_road_m": 1934,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 114.3,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74,
+              -6.949
+            ],
+            [
+              107.74799999999999,
+              -6.949
+            ],
+            [
+              107.74799999999999,
+              -6.943
+            ],
+            [
+              107.74,
+              -6.943
+            ],
+            [
+              107.74,
+              -6.949
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G008",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 17.7,
+        "distance_to_river_m": 548,
+        "distance_to_road_m": 1342,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 110.6,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74799999999999,
+              -6.949
+            ],
+            [
+              107.75599999999999,
+              -6.949
+            ],
+            [
+              107.75599999999999,
+              -6.943
+            ],
+            [
+              107.74799999999999,
+              -6.943
+            ],
+            [
+              107.74799999999999,
+              -6.949
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G009",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 21.1,
+        "distance_to_river_m": 320,
+        "distance_to_road_m": 1286,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 131.5,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.756,
+              -6.949
+            ],
+            [
+              107.764,
+              -6.949
+            ],
+            [
+              107.764,
+              -6.943
+            ],
+            [
+              107.756,
+              -6.943
+            ],
+            [
+              107.756,
+              -6.949
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G010",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "lahar_deposit",
+        "slope_deg": 19.2,
+        "distance_to_river_m": 433,
+        "distance_to_road_m": 1593,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 133.9,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.764,
+              -6.949
+            ],
+            [
+              107.77199999999999,
+              -6.949
+            ],
+            [
+              107.77199999999999,
+              -6.943
+            ],
+            [
+              107.764,
+              -6.943
+            ],
+            [
+              107.764,
+              -6.949
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G011",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "alluvium",
+        "slope_deg": 12.0,
+        "distance_to_river_m": 1481,
+        "distance_to_road_m": 828,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 140.2,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.77199999999999,
+              -6.949
+            ],
+            [
+              107.77999999999999,
+              -6.949
+            ],
+            [
+              107.77999999999999,
+              -6.943
+            ],
+            [
+              107.77199999999999,
+              -6.943
+            ],
+            [
+              107.77199999999999,
+              -6.949
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G012",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "andesite",
+        "slope_deg": 15.8,
+        "distance_to_river_m": 1043,
+        "distance_to_road_m": 2034,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 137.7,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.78,
+              -6.949
+            ],
+            [
+              107.788,
+              -6.949
+            ],
+            [
+              107.788,
+              -6.943
+            ],
+            [
+              107.78,
+              -6.943
+            ],
+            [
+              107.78,
+              -6.949
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G013",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 23.2,
+        "distance_to_river_m": 682,
+        "distance_to_road_m": 1579,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 128.0,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74,
+              -6.9430000000000005
+            ],
+            [
+              107.74799999999999,
+              -6.9430000000000005
+            ],
+            [
+              107.74799999999999,
+              -6.937
+            ],
+            [
+              107.74,
+              -6.937
+            ],
+            [
+              107.74,
+              -6.9430000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G014",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 13.9,
+        "distance_to_river_m": 814,
+        "distance_to_road_m": 892,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 109.6,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74799999999999,
+              -6.9430000000000005
+            ],
+            [
+              107.75599999999999,
+              -6.9430000000000005
+            ],
+            [
+              107.75599999999999,
+              -6.937
+            ],
+            [
+              107.74799999999999,
+              -6.937
+            ],
+            [
+              107.74799999999999,
+              -6.9430000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G015",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.3,
+        "distance_to_river_m": 814,
+        "distance_to_road_m": 1075,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 105.3,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.756,
+              -6.9430000000000005
+            ],
+            [
+              107.764,
+              -6.9430000000000005
+            ],
+            [
+              107.764,
+              -6.937
+            ],
+            [
+              107.756,
+              -6.937
+            ],
+            [
+              107.756,
+              -6.9430000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G016",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "alluvium",
+        "slope_deg": 16.0,
+        "distance_to_river_m": 796,
+        "distance_to_road_m": 354,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 130.4,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.764,
+              -6.9430000000000005
+            ],
+            [
+              107.77199999999999,
+              -6.9430000000000005
+            ],
+            [
+              107.77199999999999,
+              -6.937
+            ],
+            [
+              107.764,
+              -6.937
+            ],
+            [
+              107.764,
+              -6.9430000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G017",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "alluvium",
+        "slope_deg": 17.0,
+        "distance_to_river_m": 1132,
+        "distance_to_road_m": 1423,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 140.1,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.77199999999999,
+              -6.9430000000000005
+            ],
+            [
+              107.77999999999999,
+              -6.9430000000000005
+            ],
+            [
+              107.77999999999999,
+              -6.937
+            ],
+            [
+              107.77199999999999,
+              -6.937
+            ],
+            [
+              107.77199999999999,
+              -6.9430000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G018",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "lahar_deposit",
+        "slope_deg": 18.6,
+        "distance_to_river_m": 1061,
+        "distance_to_road_m": 1160,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 143.9,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.78,
+              -6.9430000000000005
+            ],
+            [
+              107.788,
+              -6.9430000000000005
+            ],
+            [
+              107.788,
+              -6.937
+            ],
+            [
+              107.78,
+              -6.937
+            ],
+            [
+              107.78,
+              -6.9430000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G019",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "lahar_deposit",
+        "slope_deg": 19.7,
+        "distance_to_river_m": 232,
+        "distance_to_road_m": 2116,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 130.9,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74,
+              -6.937
+            ],
+            [
+              107.74799999999999,
+              -6.937
+            ],
+            [
+              107.74799999999999,
+              -6.931
+            ],
+            [
+              107.74,
+              -6.931
+            ],
+            [
+              107.74,
+              -6.937
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G020",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 10.9,
+        "distance_to_river_m": 632,
+        "distance_to_road_m": 455,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 107.4,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74799999999999,
+              -6.937
+            ],
+            [
+              107.75599999999999,
+              -6.937
+            ],
+            [
+              107.75599999999999,
+              -6.931
+            ],
+            [
+              107.74799999999999,
+              -6.931
+            ],
+            [
+              107.74799999999999,
+              -6.937
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G021",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 26.2,
+        "distance_to_river_m": 865,
+        "distance_to_road_m": 455,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 132.5,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.756,
+              -6.937
+            ],
+            [
+              107.764,
+              -6.937
+            ],
+            [
+              107.764,
+              -6.931
+            ],
+            [
+              107.756,
+              -6.931
+            ],
+            [
+              107.756,
+              -6.937
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G022",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 22.7,
+        "distance_to_river_m": 696,
+        "distance_to_road_m": 1464,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 146.6,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.764,
+              -6.937
+            ],
+            [
+              107.77199999999999,
+              -6.937
+            ],
+            [
+              107.77199999999999,
+              -6.931
+            ],
+            [
+              107.764,
+              -6.931
+            ],
+            [
+              107.764,
+              -6.937
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G023",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 13.8,
+        "distance_to_river_m": 645,
+        "distance_to_road_m": 1755,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 151.3,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.77199999999999,
+              -6.937
+            ],
+            [
+              107.77999999999999,
+              -6.937
+            ],
+            [
+              107.77999999999999,
+              -6.931
+            ],
+            [
+              107.77199999999999,
+              -6.931
+            ],
+            [
+              107.77199999999999,
+              -6.937
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G024",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 20.9,
+        "distance_to_river_m": 905,
+        "distance_to_road_m": 2109,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 150.8,
+        "area_ha": 58.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.78,
+              -6.937
+            ],
+            [
+              107.788,
+              -6.937
+            ],
+            [
+              107.788,
+              -6.931
+            ],
+            [
+              107.78,
+              -6.931
+            ],
+            [
+              107.78,
+              -6.937
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G025",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 19.7,
+        "distance_to_river_m": 915,
+        "distance_to_road_m": 1897,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 133.5,
+        "area_ha": 58.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74,
+              -6.931
+            ],
+            [
+              107.74799999999999,
+              -6.931
+            ],
+            [
+              107.74799999999999,
+              -6.925
+            ],
+            [
+              107.74,
+              -6.925
+            ],
+            [
+              107.74,
+              -6.931
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G026",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "lahar_deposit",
+        "slope_deg": 21.2,
+        "distance_to_river_m": 107,
+        "distance_to_road_m": 2184,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 141.0,
+        "area_ha": 58.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.74799999999999,
+              -6.931
+            ],
+            [
+              107.75599999999999,
+              -6.931
+            ],
+            [
+              107.75599999999999,
+              -6.925
+            ],
+            [
+              107.74799999999999,
+              -6.925
+            ],
+            [
+              107.74799999999999,
+              -6.931
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G027",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "tuff",
+        "slope_deg": 12.4,
+        "distance_to_river_m": 671,
+        "distance_to_road_m": 1420,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 148.2,
+        "area_ha": 58.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.756,
+              -6.931
+            ],
+            [
+              107.764,
+              -6.931
+            ],
+            [
+              107.764,
+              -6.925
+            ],
+            [
+              107.756,
+              -6.925
+            ],
+            [
+              107.756,
+              -6.931
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G028",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "volcanic_breccia",
+        "slope_deg": 16.4,
+        "distance_to_river_m": 1195,
+        "distance_to_road_m": 1496,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 153.4,
+        "area_ha": 58.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.764,
+              -6.931
+            ],
+            [
+              107.77199999999999,
+              -6.931
+            ],
+            [
+              107.77199999999999,
+              -6.925
+            ],
+            [
+              107.764,
+              -6.925
+            ],
+            [
+              107.764,
+              -6.931
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G029",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "lahar_deposit",
+        "slope_deg": 18.1,
+        "distance_to_river_m": 1252,
+        "distance_to_road_m": 1848,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 157.1,
+        "area_ha": 58.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.77199999999999,
+              -6.931
+            ],
+            [
+              107.77999999999999,
+              -6.931
+            ],
+            [
+              107.77999999999999,
+              -6.925
+            ],
+            [
+              107.77199999999999,
+              -6.925
+            ],
+            [
+              107.77199999999999,
+              -6.931
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "G030",
+        "location_label": "Bandung Raya - Jatinangor dummy",
+        "lithology": "tuff",
+        "slope_deg": 24.2,
+        "distance_to_river_m": 1117,
+        "distance_to_road_m": 2187,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 170.3,
+        "area_ha": 58.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.78,
+              -6.931
+            ],
+            [
+              107.788,
+              -6.931
+            ],
+            [
+              107.788,
+              -6.925
+            ],
+            [
+              107.78,
+              -6.925
+            ],
+            [
+              107.78,
+              -6.931
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

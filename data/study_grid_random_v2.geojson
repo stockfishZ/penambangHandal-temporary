@@ -1,0 +1,825 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R01",
+        "area_ha": 25.9,
+        "slope_deg": 15.2,
+        "distance_to_river_m": 901,
+        "distance_to_road_m": 1478,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 83.5,
+        "lithology": "non-ultramafic",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.045,
+              -3.4785000000000004
+            ],
+            [
+              122.0555,
+              -3.4785000000000004
+            ],
+            [
+              122.0555,
+              -3.47
+            ],
+            [
+              122.045,
+              -3.47
+            ],
+            [
+              122.045,
+              -3.4785000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R02",
+        "area_ha": 25.7,
+        "slope_deg": 16.2,
+        "distance_to_river_m": 1014,
+        "distance_to_road_m": 1113,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 74.2,
+        "lithology": "non-ultramafic",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0555,
+              -3.4785000000000004
+            ],
+            [
+              122.06599999999999,
+              -3.4785000000000004
+            ],
+            [
+              122.06599999999999,
+              -3.47
+            ],
+            [
+              122.0555,
+              -3.47
+            ],
+            [
+              122.0555,
+              -3.4785000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R03",
+        "area_ha": 25.5,
+        "slope_deg": 10.5,
+        "distance_to_river_m": 283,
+        "distance_to_road_m": 708,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 90.6,
+        "lithology": "non-ultramafic",
+        "landcover": "open land"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.066,
+              -3.4785000000000004
+            ],
+            [
+              122.0765,
+              -3.4785000000000004
+            ],
+            [
+              122.0765,
+              -3.47
+            ],
+            [
+              122.066,
+              -3.47
+            ],
+            [
+              122.066,
+              -3.4785000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R04",
+        "area_ha": 25.6,
+        "slope_deg": 3,
+        "distance_to_river_m": 404,
+        "distance_to_road_m": 783,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 77.5,
+        "lithology": "non-ultramafic",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0765,
+              -3.4785000000000004
+            ],
+            [
+              122.08699999999999,
+              -3.4785000000000004
+            ],
+            [
+              122.08699999999999,
+              -3.47
+            ],
+            [
+              122.0765,
+              -3.47
+            ],
+            [
+              122.0765,
+              -3.4785000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R05",
+        "area_ha": 24.1,
+        "slope_deg": 21.8,
+        "distance_to_river_m": 938,
+        "distance_to_road_m": 1294,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 72.3,
+        "lithology": "mixed ultramafic",
+        "landcover": "plantation"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.087,
+              -3.4785000000000004
+            ],
+            [
+              122.0975,
+              -3.4785000000000004
+            ],
+            [
+              122.0975,
+              -3.47
+            ],
+            [
+              122.087,
+              -3.47
+            ],
+            [
+              122.087,
+              -3.4785000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R06",
+        "area_ha": 22.2,
+        "slope_deg": 12.2,
+        "distance_to_river_m": 781,
+        "distance_to_road_m": 2601,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 65.1,
+        "lithology": "mixed ultramafic",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.045,
+              -3.4870000000000005
+            ],
+            [
+              122.0555,
+              -3.4870000000000005
+            ],
+            [
+              122.0555,
+              -3.4785000000000004
+            ],
+            [
+              122.045,
+              -3.4785000000000004
+            ],
+            [
+              122.045,
+              -3.4870000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R07",
+        "area_ha": 27.8,
+        "slope_deg": 16.8,
+        "distance_to_river_m": 452,
+        "distance_to_road_m": 2069,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 75.6,
+        "lithology": "mixed ultramafic",
+        "landcover": "open land"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0555,
+              -3.4870000000000005
+            ],
+            [
+              122.06599999999999,
+              -3.4870000000000005
+            ],
+            [
+              122.06599999999999,
+              -3.4785000000000004
+            ],
+            [
+              122.0555,
+              -3.4785000000000004
+            ],
+            [
+              122.0555,
+              -3.4870000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R08",
+        "area_ha": 23.5,
+        "slope_deg": 10.2,
+        "distance_to_river_m": 356,
+        "distance_to_road_m": 826,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 87.3,
+        "lithology": "ultramafic",
+        "landcover": "forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.066,
+              -3.4870000000000005
+            ],
+            [
+              122.0765,
+              -3.4870000000000005
+            ],
+            [
+              122.0765,
+              -3.4785000000000004
+            ],
+            [
+              122.066,
+              -3.4785000000000004
+            ],
+            [
+              122.066,
+              -3.4870000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R09",
+        "area_ha": 23.3,
+        "slope_deg": 13.9,
+        "distance_to_river_m": 952,
+        "distance_to_road_m": 1371,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 79.2,
+        "lithology": "ultramafic",
+        "landcover": "protected forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0765,
+              -3.4870000000000005
+            ],
+            [
+              122.08699999999999,
+              -3.4870000000000005
+            ],
+            [
+              122.08699999999999,
+              -3.4785000000000004
+            ],
+            [
+              122.0765,
+              -3.4785000000000004
+            ],
+            [
+              122.0765,
+              -3.4870000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R10",
+        "area_ha": 23.5,
+        "slope_deg": 17.7,
+        "distance_to_river_m": 942,
+        "distance_to_road_m": 1157,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 87.4,
+        "lithology": "ultramafic",
+        "landcover": "forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.087,
+              -3.4870000000000005
+            ],
+            [
+              122.0975,
+              -3.4870000000000005
+            ],
+            [
+              122.0975,
+              -3.4785000000000004
+            ],
+            [
+              122.087,
+              -3.4785000000000004
+            ],
+            [
+              122.087,
+              -3.4870000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R11",
+        "area_ha": 27.8,
+        "slope_deg": 21.1,
+        "distance_to_river_m": 714,
+        "distance_to_road_m": 2567,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 76.6,
+        "lithology": "serpentinite",
+        "landcover": "forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.045,
+              -3.4955000000000003
+            ],
+            [
+              122.0555,
+              -3.4955000000000003
+            ],
+            [
+              122.0555,
+              -3.487
+            ],
+            [
+              122.045,
+              -3.487
+            ],
+            [
+              122.045,
+              -3.4955000000000003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R12",
+        "area_ha": 27.8,
+        "slope_deg": 23.9,
+        "distance_to_river_m": 212,
+        "distance_to_road_m": 2307,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 90.3,
+        "lithology": "mixed ultramafic",
+        "landcover": "protected forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0555,
+              -3.4955000000000003
+            ],
+            [
+              122.06599999999999,
+              -3.4955000000000003
+            ],
+            [
+              122.06599999999999,
+              -3.487
+            ],
+            [
+              122.0555,
+              -3.487
+            ],
+            [
+              122.0555,
+              -3.4955000000000003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R13",
+        "area_ha": 23.6,
+        "slope_deg": 13.9,
+        "distance_to_river_m": 318,
+        "distance_to_road_m": 2437,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 79.2,
+        "lithology": "ultramafic",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.066,
+              -3.4955000000000003
+            ],
+            [
+              122.0765,
+              -3.4955000000000003
+            ],
+            [
+              122.0765,
+              -3.487
+            ],
+            [
+              122.066,
+              -3.487
+            ],
+            [
+              122.066,
+              -3.4955000000000003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R14",
+        "area_ha": 28.9,
+        "slope_deg": 21.9,
+        "distance_to_river_m": 588,
+        "distance_to_road_m": 1960,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 88.7,
+        "lithology": "serpentinite",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0765,
+              -3.4955000000000003
+            ],
+            [
+              122.08699999999999,
+              -3.4955000000000003
+            ],
+            [
+              122.08699999999999,
+              -3.487
+            ],
+            [
+              122.0765,
+              -3.487
+            ],
+            [
+              122.0765,
+              -3.4955000000000003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R15",
+        "area_ha": 27.2,
+        "slope_deg": 20.1,
+        "distance_to_river_m": 817,
+        "distance_to_road_m": 2063,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 80.8,
+        "lithology": "serpentinite",
+        "landcover": "protected forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.087,
+              -3.4955000000000003
+            ],
+            [
+              122.0975,
+              -3.4955000000000003
+            ],
+            [
+              122.0975,
+              -3.487
+            ],
+            [
+              122.087,
+              -3.487
+            ],
+            [
+              122.087,
+              -3.4955000000000003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R16",
+        "area_ha": 26.3,
+        "slope_deg": 25.0,
+        "distance_to_river_m": 448,
+        "distance_to_road_m": 3072,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 65.8,
+        "lithology": "mixed ultramafic",
+        "landcover": "forest"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.045,
+              -3.5040000000000004
+            ],
+            [
+              122.0555,
+              -3.5040000000000004
+            ],
+            [
+              122.0555,
+              -3.4955000000000003
+            ],
+            [
+              122.045,
+              -3.4955000000000003
+            ],
+            [
+              122.045,
+              -3.5040000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R17",
+        "area_ha": 23.3,
+        "slope_deg": 16.8,
+        "distance_to_river_m": 455,
+        "distance_to_road_m": 2668,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 84.5,
+        "lithology": "ultramafic",
+        "landcover": "plantation"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0555,
+              -3.5040000000000004
+            ],
+            [
+              122.06599999999999,
+              -3.5040000000000004
+            ],
+            [
+              122.06599999999999,
+              -3.4955000000000003
+            ],
+            [
+              122.0555,
+              -3.4955000000000003
+            ],
+            [
+              122.0555,
+              -3.5040000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R18",
+        "area_ha": 22.3,
+        "slope_deg": 18.5,
+        "distance_to_river_m": 353,
+        "distance_to_road_m": 2189,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 82.5,
+        "lithology": "serpentinite",
+        "landcover": "open land"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.066,
+              -3.5040000000000004
+            ],
+            [
+              122.0765,
+              -3.5040000000000004
+            ],
+            [
+              122.0765,
+              -3.4955000000000003
+            ],
+            [
+              122.066,
+              -3.4955000000000003
+            ],
+            [
+              122.066,
+              -3.5040000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R19",
+        "area_ha": 26.1,
+        "slope_deg": 14.0,
+        "distance_to_river_m": 545,
+        "distance_to_road_m": 2180,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 84.1,
+        "lithology": "ultramafic",
+        "landcover": "shrub"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.0765,
+              -3.5040000000000004
+            ],
+            [
+              122.08699999999999,
+              -3.5040000000000004
+            ],
+            [
+              122.08699999999999,
+              -3.4955000000000003
+            ],
+            [
+              122.0765,
+              -3.4955000000000003
+            ],
+            [
+              122.0765,
+              -3.5040000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "R20",
+        "area_ha": 24.8,
+        "slope_deg": 22.4,
+        "distance_to_river_m": 636,
+        "distance_to_road_m": 2409,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 94.9,
+        "lithology": "ultramafic",
+        "landcover": "plantation"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              122.087,
+              -3.5040000000000004
+            ],
+            [
+              122.0975,
+              -3.5040000000000004
+            ],
+            [
+              122.0975,
+              -3.4955000000000003
+            ],
+            [
+              122.087,
+              -3.4955000000000003
+            ],
+            [
+              122.087,
+              -3.5040000000000004
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

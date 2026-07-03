@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NiTERRA | Exploration Priority Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="NiTERRA Home">
+      <span class="brand-mark">Ni</span>
+      <span>NiTERRA</span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#home">Intro</a>
+      <a href="#workspace">Input</a>
+      <a href="#output">Output</a>
+      <a href="#insights">Insights</a>
+    </nav>
+    <a class="nav-cta" href="#workspace">Start Analysis</a>
+  </header>
+
+  <main>
+    <section id="home" class="hero section-full">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="eyebrow">Magnetometer-Based Exploration</span>
+        <h1>NiTERRA</h1>
+        <p class="hero-lead">
+          Platform WebGIS untuk memprioritaskan area pra-eksplorasi nikel laterit melalui integrasi data magnetometer, geokimia, GIS, dan AI-assisted scoring.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#workspace">Mulai Analisis</a>
+          <a class="btn btn-ghost" href="#output">Lihat Output</a>
+        </div>
+        <div class="hero-cards">
+          <article>
+            <strong>01</strong>
+            <span>Upload data magnetometer, geokimia, dan grid area.</span>
+          </article>
+          <article>
+            <strong>02</strong>
+            <span>Sistem menghitung skor geofisika, geokimia, akses, legal, dan risiko.</span>
+          </article>
+          <article>
+            <strong>03</strong>
+            <span>Output berupa peta prioritas eksplorasi dan ranking target.</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="workspace" class="section workspace-section">
+      <div class="section-heading">
+        <span class="eyebrow small">Workspace</span>
+        <h2>Upload data, jalankan analisis, lalu baca prioritas target.</h2>
+        <p>
+          Masukkan data magnetometer, geokimia, dan grid area. Sistem akan menghitung skor prioritas serta menampilkan hasilnya pada peta interaktif dan tabel ranking.
+        </p>
+      </div>
+
+      <div class="workspace-grid">
+        <aside class="panel input-panel">
+          <span class="pill">Data Input</span>
+          <h3>Upload file eksplorasi</h3>
+          <p class="muted">Minimal 3 file: magnetometer, geochemistry, dan grid/batas area. Untuk demo, klik <b>Load Dummy Data</b>.</p>
+
+          <label class="file-card">
+            <input id="magFile" type="file" accept=".csv" />
+            <span class="file-icon">⇧</span>
+            <span>
+              <strong>Magnetometer CSV</strong>
+              <small id="magFileName">magnetometer_dummy.csv</small>
+            </span>
+          </label>
+
+          <label class="file-card">
+            <input id="geoFile" type="file" accept=".csv" />
+            <span class="file-icon">⇧</span>
+            <span>
+              <strong>Geochemistry CSV</strong>
+              <small id="geoFileName">geochemistry_dummy.csv</small>
+            </span>
+          </label>
+
+          <label class="file-card">
+            <input id="gridFile" type="file" accept=".geojson,.json" />
+            <span class="file-icon">⇧</span>
+            <span>
+              <strong>Study Grid GeoJSON</strong>
+              <small id="gridFileName">study_grid_dummy.geojson</small>
+            </span>
+          </label>
+
+          <div class="button-row">
+            <button id="loadDummyBtn" class="btn btn-soft" type="button">Load Dummy Data</button>
+            <button id="runBtn" class="btn btn-primary" type="button">Run Analysis</button>
+          </div>
+
+          <div id="statusBox" class="status-box">
+            <b>Status</b>
+            <span>Belum ada data yang diproses. Klik Load Dummy Data dulu.</span>
+          </div>
+        </aside>
+
+        <section class="panel map-panel">
+          <div class="map-topline">
+            <div class="map-title"><span class="live-dot"></span>Interactive Exploration Map</div>
+            <div class="map-tabs" role="tablist">
+              <button class="tab-btn active" data-layer="priority" type="button">Priority</button>
+              <button class="tab-btn" data-layer="magnet" type="button">Magnet</button>
+              <button class="tab-btn" data-layer="samples" type="button">Samples</button>
+            </div>
+          </div>
+          <div class="map-holder">
+            <div id="map" aria-label="Interactive map"></div>
+            <div id="mapHint" class="map-hint">Klik Load Dummy Data → Run Analysis. Grid prioritas akan muncul di atas basemap.</div>
+          </div>
+          <div class="legend">
+            <span><i class="c p1"></i> Prioritas 1</span>
+            <span><i class="c p2"></i> Prioritas 2</span>
+            <span><i class="c p3"></i> Prioritas 3</span>
+            <span><i class="c p4"></i> Tidak Prioritas</span>
+            <span><i class="c magnet"></i> Magnetometer</span>
+            <span><i class="c sample"></i> Geochemistry</span>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="output" class="section output-section">
+      <div class="section-heading">
+        <span class="eyebrow small">Output</span>
+        <h2>Ringkasan hasil dan ranking target.</h2>
+        <p>Setelah analisis dijalankan, sistem menampilkan skor akhir, kelas prioritas, dan alasan rekomendasi per grid.</p>
+      </div>
+
+      <div class="summary-cards">
+        <article class="metric-card"><span>Jumlah Grid</span><b id="gridCount">0</b></article>
+        <article class="metric-card"><span>Prioritas 1</span><b id="priorityOneCount">0</b></article>
+        <article class="metric-card"><span>Rata-rata Score</span><b id="avgScore">0</b></article>
+        <article class="metric-card"><span>Best Target</span><b id="bestTarget">-</b></article>
+      </div>
+
+      <div class="output-grid">
+        <section class="panel ranking-panel">
+          <div class="panel-head">
+            <h3>Ranking Target</h3>
+            <button id="downloadBtn" class="btn btn-soft small" type="button">Download CSV</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Grid</th>
+                  <th>Priority</th>
+                  <th>Score</th>
+                  <th>Ni Avg</th>
+                  <th>Mag Score</th>
+                  <th>Slope</th>
+                  <th>Legal</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id="rankingBody">
+                <tr><td colspan="9" class="empty">Belum ada hasil. Jalankan analisis dulu.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="panel detail-panel">
+          <span class="pill">Selected Target</span>
+          <div id="targetDetail" class="target-detail">
+            <p class="muted">Klik grid pada peta atau baris ranking untuk melihat detail target.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="insights" class="section insights-section">
+      <div class="section-heading">
+        <span class="eyebrow small">Insights</span>
+        <h2>Feature contribution simulasi.</h2>
+        <p>Bar ini menjelaskan bobot parameter yang dipakai dalam prototype scoring. Nanti bisa diganti feature importance dari Random Forest saat backend ML sudah dibuat.</p>
+      </div>
+      <div class="panel insight-panel">
+        <div id="featureBars" class="bars"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <b>NiTERRA</b> — Prototype frontend untuk ANTAM Hackathon 2026. Data dummy bersifat simulasi, bukan data eksplorasi asli.
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
