@@ -32,12 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
   bindEvents();
   initAutoHideTopbar();
   drawFeatureBars();
+  initScrollReveal();
   setTimeout(forceMapResize, 250);
   setTimeout(forceMapResize, 900);
 });
 
 function bindElements() {
-  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','rankingBody','targetDetail','downloadBtn','featureBars','mapHint'].forEach(id => {
+  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint'].forEach(id => {
     els[id] = document.getElementById(id);
   });
 }
@@ -93,6 +94,17 @@ function initAutoHideTopbar() {
       ticking = true;
     }
   }, { passive: true });
+}
+
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
 }
 
 function initMap() {
@@ -169,13 +181,35 @@ async function runAnalysis() {
         return;
       }
     }
-    setStatus('Processing', 'Menghitung magnetic score, geochemistry score, GIS-risk score, dan priority class...');
+    setStatus('Processing', 'Menghitung scoring lokal dan mengirim ke backend ML...');
+
+    let backendData = null;
+    try {
+      backendData = await callBackendAnalyze(rawGrid.features, rawMagnet, rawGeo);
+    } catch (err) {
+      console.warn('Backend ML unavailable, using local scoring only:', err);
+    }
+
     resultRows = buildResults(rawGrid, rawMagnet, rawGeo);
+
+    if (backendData?.results) {
+      const mlMap = {};
+      backendData.results.forEach(r => { if (r.grid_id) mlMap[r.grid_id] = r; });
+      resultRows = resultRows.map(row => {
+        const ml = mlMap[row.grid_id];
+        if (ml) {
+          return { ...row, ml_score: ml.ml_score, ml_masked: ml.ml_masked, ml_block_reason: ml.ml_block_reason, ml_top_features: ml.ml_top_features, backend_viability_score: ml.viability_score, backend_kill_zone: ml.kill_zone_exclusion, backend_grandfathered: ml.is_grandfathered };
+        }
+        return row;
+      });
+    }
+
     renderMapLayers();
     renderSummary();
     renderRanking();
     selectTarget(resultRows[0]?.grid_id);
-    setStatus('Done', `${resultRows.length} grid berhasil dianalisis. Grid prioritas tampil di peta kanan dan tabel output.`);
+    const mlNote = backendData ? ' + ML dari backend' : '';
+    setStatus('Done', `${resultRows.length} grid berhasil dianalisis${mlNote}. Grid prioritas tampil di peta kanan dan tabel output.`);
     setTimeout(forceMapResize, 150);
     setTimeout(forceMapResize, 600);
     document.getElementById('output').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -221,10 +255,66 @@ function avg(arr, key) {
   return vals.length ? vals.reduce((a,b) => a + b, 0) / vals.length : 0;
 }
 
+const BACKEND_URL = 'http://localhost:8001';
+
 function norm(value, min, max) {
   if (!Number.isFinite(value)) return 0;
   if (max === min) return 50;
   return Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+}
+
+function std(arr, key) {
+  const vals = arr.map(d => Number(d[key])).filter(v => Number.isFinite(v));
+  if (vals.length < 2) return 0;
+  const m = vals.reduce((a, b) => a + b, 0) / vals.length;
+  return Math.sqrt(vals.reduce((s, v) => s + (v - m) ** 2, 0) / (vals.length - 1));
+}
+
+async function callBackendAnalyze(features, magnet, geo) {
+  const magByGrid = groupBy(magnet, 'grid_id');
+  const geoByGrid = groupBy(geo, 'grid_id');
+
+  const grids = features.map(f => {
+    const p = f.properties || {};
+    const gid = p.grid_id;
+    const mRows = magByGrid[gid] || [];
+    const gRows = geoByGrid[gid] || [];
+    const coords = f.geometry?.coordinates?.[0]?.[0] || [];
+    return {
+      grid_id: gid,
+      latitude: coords[1] || 0,
+      longitude: coords[0] || 0,
+      magnetometer_value: avg(mRows, 'mag_raw_nT'),
+      geochemistry_value: avg(gRows, 'Ni_pct'),
+      slope_deg: Number(p.slope_deg) || 0,
+      distance_to_river_m: Number(p.distance_to_river_m) || 0,
+      distance_to_road_m: Number(p.distance_to_road_m) || 0,
+      distance_to_smelter_km: Number(p.distance_to_smelter_km) || 0,
+      area_ha: Number(p.area_ha) || 0,
+      Ni_pct_mean: avg(gRows, 'Ni_pct'),
+      Fe_pct_mean: avg(gRows, 'Fe_pct'),
+      Co_pct_mean: avg(gRows, 'Co_pct'),
+      MgO_pct_mean: avg(gRows, 'MgO_pct'),
+      SiO2_pct_mean: avg(gRows, 'SiO2_pct'),
+      mag_mean_nT: avg(mRows, 'mag_raw_nT'),
+      mag_std_nT: std(mRows, 'mag_raw_nT'),
+      lithology: p.lithology || 'unknown',
+      legal_status: p.legal_status || 'unknown',
+    };
+  });
+
+  const response = await fetch(`${BACKEND_URL}/api/analyze-batch`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ grids }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Backend analysis failed (${response.status}): ${err}`);
+  }
+
+  return await response.json();
 }
 
 function scoreSlope(slope) {
@@ -278,8 +368,70 @@ function priorityKey(cls) {
 }
 function priorityColor(cls, mode = 'fill') {
   const key = priorityKey(cls);
-  const colors = { p1: '#8ee65f', p2: '#f3cf4b', p3: '#e9a534', p4: '#e84d3c' };
+  const colors = { p1: '#10b981', p2: '#f59e0b', p3: '#f97316', p4: '#ef4444' };
   return colors[key];
+}
+
+function deriveCompliance(legalStatus, gridId) {
+  const s = (legalStatus || '').toLowerCase();
+  if (gridId === 'G006') {
+    return {
+      legal_zone: 'Hutan Produksi',
+      permit_required: 'PPKH (Persetujuan Penggunaan Kawasan Hutan)',
+      legal_reference: 'PP 23/2021',
+      mitigation_requirements: 'Requires PPKH, PNBP payment, and watershed rehabilitation (Rehabilitasi DAS) at 1:1 ratio',
+      compliance_status: 'HISTORICAL ANOMALY: Grandfathered concession (Keterlanjuran). Not viable under 2026 regulations.',
+      is_grandfathered: true,
+      kill_zone_exclusion: false,
+      viability_score: 0.0
+    };
+  }
+  if (s.includes('no')) {
+    return {
+      legal_zone: 'Hutan Lindung',
+      permit_required: 'EXCLUDED',
+      legal_reference: 'UU 41/1999',
+      mitigation_requirements: 'Strictly prohibited for open-pit mining. No permits issued.',
+      compliance_status: 'KILL ZONE: Hutan Lindung/Konservasi. Mining prohibited.',
+      is_grandfathered: false,
+      kill_zone_exclusion: true,
+      viability_score: 0.0
+    };
+  }
+  if (s.includes('conditional')) {
+    return {
+      legal_zone: 'Hutan Produksi',
+      permit_required: 'PPKH (Persetujuan Penggunaan Kawasan Hutan)',
+      legal_reference: 'PP 23/2021',
+      mitigation_requirements: 'Requires PPKH, PNBP payment, and watershed rehabilitation (Rehabilitasi DAS) at 1:1 ratio',
+      compliance_status: 'Kawasan Hutan: PPKH permit required. Watershed rehabilitation needed.',
+      is_grandfathered: false,
+      kill_zone_exclusion: false,
+      viability_score: 42.5
+    };
+  }
+  if (s.includes('allowed')) {
+    return {
+      legal_zone: 'Areal Penggunaan Lain',
+      permit_required: 'IUP (AMDAL/UKL-UPL)',
+      legal_reference: 'UU 3/2020; PP 96/2021',
+      mitigation_requirements: 'AMDAL study or UKL-UPL submission required',
+      compliance_status: 'APL: IUP permit required. Standard AMDAL process applies.',
+      is_grandfathered: false,
+      kill_zone_exclusion: false,
+      viability_score: 85.0
+    };
+  }
+  return {
+    legal_zone: 'Unknown',
+    permit_required: 'Verify permits',
+    legal_reference: 'UU 3/2020; PP 96/2021',
+    mitigation_requirements: 'Verify permits with local authorities',
+    compliance_status: 'Verify land classification with KLHK/BIG.',
+    is_grandfathered: false,
+    kill_zone_exclusion: false,
+    viability_score: 50.0
+  };
 }
 
 function buildResults(grid, magnet, geo) {
@@ -299,8 +451,10 @@ function buildResults(grid, magnet, geo) {
     const magScore = norm(magMean, magMin, magMax);
     const ni = avg(gRows, 'Ni_pct');
     const fe = avg(gRows, 'Fe_pct');
+    const co = avg(gRows, 'Co_pct');
     const mgo = avg(gRows, 'MgO_pct');
     const sio2 = avg(gRows, 'SiO2_pct');
+    const magStd = std(mRows, 'mag_raw_nT');
     const geochemScore = Math.max(0, Math.min(100, (ni / 2.1) * 58 + (mgo / 22) * 22 + ((45 - Math.min(sio2, 45)) / 45) * 10 + ((40 - Math.min(fe, 40)) / 40) * 10));
     const lithScore = scoreLithology(p.lithology);
     const slopeScore = scoreSlope(Number(p.slope_deg));
@@ -326,15 +480,19 @@ function buildResults(grid, magnet, geo) {
     const cls = priorityClass(finalScore);
     const riskScore = Math.round((100 - ((slopeScore + roadScore + riverScore + legalScore) / 4)) * 10) / 10;
 
-    const reason = buildReason({cls, magScore, ni, geochemScore, slope: p.slope_deg, road: p.distance_to_road_m, river: p.distance_to_river_m, legal: p.legal_status, lithology: p.lithology});
+    const compliance = deriveCompliance(p.legal_status, gridId);
+
+    const reason = buildReason({cls, magScore, ni, geochemScore, slope: p.slope_deg, road: p.distance_to_road_m, river: p.distance_to_river_m, legal: p.legal_status, lithology: p.lithology, final_priority_score: finalScore});
 
     feature.properties = {
       ...p,
       grid_id: gridId,
       mag_mean: Math.round(magMean * 10) / 10,
       mag_score: Math.round(magScore * 10) / 10,
+      mag_std: Math.round(magStd * 100) / 100,
       Ni_avg: Math.round(ni * 100) / 100,
       Fe_avg: Math.round(fe * 100) / 100,
+      Co_avg: Math.round(co * 100) / 100,
       MgO_avg: Math.round(mgo * 100) / 100,
       SiO2_avg: Math.round(sio2 * 100) / 100,
       geochem_score: Math.round(geochemScore * 10) / 10,
@@ -342,7 +500,8 @@ function buildResults(grid, magnet, geo) {
       final_priority_score: finalScore,
       risk_score: riskScore,
       priority_class: cls,
-      reason
+      reason,
+      ...compliance
     };
     return feature.properties;
   });
@@ -376,7 +535,6 @@ function buildReason(d) {
 
 function renderMapLayers() {
   if (!map) return;
-  if (!map) return;
   forceMapResize();
   [gridLayer, magnetLayer, sampleLayer].forEach(layer => { if (layer) map.removeLayer(layer); });
   gridLayer = null; magnetLayer = null; sampleLayer = null;
@@ -399,7 +557,7 @@ function renderMapLayers() {
       radius: activeLayerMode === 'magnet' ? 7 : 4,
       color: '#07140f',
       weight: 1,
-      fillColor: '#53c7ff',
+      fillColor: '#0ea5e9',
       fillOpacity: activeLayerMode === 'magnet' ? 0.9 : 0.55
     }).bindPopup(`<b>${r.point_id}</b><br>Grid: ${r.grid_id}<br>Mag raw: ${r.mag_raw_nT} nT`);
   }).filter(Boolean));
@@ -411,7 +569,7 @@ function renderMapLayers() {
       radius: activeLayerMode === 'samples' ? 7 : 4,
       color: '#07140f',
       weight: 1,
-      fillColor: '#f6d04c',
+      fillColor: '#fbbf24',
       fillOpacity: activeLayerMode === 'samples' ? 0.95 : 0.58
     }).bindPopup(`<b>${r.sample_id}</b><br>Grid: ${r.grid_id}<br>Ni: ${r.Ni_pct}%<br>Fe: ${r.Fe_pct}%`);
   }).filter(Boolean));
@@ -433,6 +591,9 @@ function renderMapLayers() {
 
 function gridStyle(feature) {
   const p = feature.properties || {};
+  if (p.ml_masked) {
+    return { color: '#666', weight: 1, fillColor: '#888', fillOpacity: 0.15 };
+  }
   let fill = priorityColor(p.priority_class || 'Prioritas 3');
   if (activeLayerMode === 'magnet') fill = colorRamp(p.mag_score || 0);
   if (activeLayerMode === 'samples') fill = colorRamp((p.Ni_avg || 0) / 2.2 * 100);
@@ -447,13 +608,19 @@ function gridStyle(feature) {
 
 function colorRamp(v) {
   const val = Number(v) || 0;
-  if (val >= 75) return '#8ee65f';
-  if (val >= 55) return '#f3cf4b';
-  if (val >= 35) return '#e9a534';
-  return '#e84d3c';
+  if (val >= 75) return '#10b981';
+  if (val >= 55) return '#f59e0b';
+  if (val >= 35) return '#f97316';
+  return '#ef4444';
 }
 
 function popupContent(p) {
+  const compBadge = p.kill_zone_exclusion ? '<span style="color:#ef4444;">⛔ KILL ZONE</span>'
+    : p.is_grandfathered ? '<span style="color:#f59e0b;">⚠️ GRANDFATHERED</span>'
+    : '<span style="color:#10b981;">✓ Active</span>';
+  const mlLine = p.ml_score !== undefined && p.ml_score !== null
+    ? `<span>ML Score</span><b>${p.ml_masked ? 'BLOCKED' : p.ml_score + '/10'}</b>`
+    : '';
   return `
     <div class="popup-title">${p.grid_id} · ${p.priority_class || '-'}</div>
     <div class="popup-grid">
@@ -461,42 +628,96 @@ function popupContent(p) {
       <span>Ni avg</span><b>${p.Ni_avg ?? '-'}%</b>
       <span>Mag score</span><b>${p.mag_score ?? '-'}</b>
       <span>Slope</span><b>${p.slope_deg ?? '-'}°</b>
-      <span>Legal</span><b>${p.legal_status ?? '-'}</b>
+      <span>Legal</span><b>${p.legal_zone || '-'}</b>
+      <span>Compliance</span><b>${compBadge}</b>
+      ${mlLine}
     </div>`;
 }
 
+function animateCounter(el, target, suffix = '') {
+  if (!el) return;
+  const start = performance.now();
+  const duration = 800;
+  const from = 0;
+  const animate = (now) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(from + (target - from) * eased);
+    el.textContent = suffix ? current + suffix : current;
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
+
 function renderSummary() {
-  const n = resultRows.length;
-  els.gridCount.textContent = n || '-';
-  els.priorityOneCount.textContent = resultRows.filter(r => r.priority_class === 'Prioritas 1').length || '0';
-  els.avgScore.textContent = n ? Math.round(resultRows.reduce((a,b) => a + b.final_priority_score, 0) / n) : '-';
-  els.bestTarget.textContent = resultRows[0]?.grid_id || '-';
+  const active = resultRows.filter(r => !r.ml_masked);
+  const n = active.length;
+  const total = resultRows.length;
+  const p1 = active.filter(r => r.priority_class === 'Prioritas 1').length;
+  const avg = n ? Math.round(active.reduce((a,b) => a + b.final_priority_score, 0) / n) : 0;
+  const killZones = resultRows.filter(r => r.kill_zone_exclusion).length;
+  const grandfathered = resultRows.filter(r => r.is_grandfathered).length;
+  const masked = resultRows.filter(r => r.ml_masked).length;
+  animateCounter(els.gridCount, n);
+  els.gridCount.parentElement.querySelector('span').textContent = `Grid aktif (${masked} diblokir)`;
+  animateCounter(els.priorityOneCount, p1);
+  animateCounter(els.avgScore, avg);
+  els.bestTarget.textContent = resultRows[0]?.grid_id || '—';
+  els.killZoneCount.textContent = killZones;
+  els.grandfatheredCount.textContent = grandfathered;
 }
 
 function renderRanking() {
   if (!resultRows.length) return;
-  els.rankingBody.innerHTML = resultRows.map((r, i) => `
-    <tr data-grid="${r.grid_id}">
-      <td>${i + 1}</td>
-      <td><b>${r.grid_id}</b></td>
-      <td><span class="badge ${priorityKey(r.priority_class)}">${r.priority_class}</span></td>
-      <td><b>${r.final_priority_score}</b></td>
-      <td>${r.Ni_avg}%</td>
-      <td>${r.risk_score}</td>
-      <td>${r.reason}</td>
-    </tr>
-  `).join('');
+  const maxScore = Math.max(...resultRows.map(r => r.final_priority_score));
+  els.rankingBody.innerHTML = resultRows.map((r, i) => {
+    const barW = maxScore > 0 ? (r.final_priority_score / maxScore) * 100 : 0;
+    const pKey = priorityKey(r.priority_class);
+    const barColor = { p1: '#10b981', p2: '#f59e0b', p3: '#f97316', p4: '#ef4444' }[pKey] || '#10b981';
+    const mlBadge = r.ml_masked ? '<span class="badge p4" style="font-size:10px;">BLOCKED</span>'
+      : r.ml_score !== undefined && r.ml_score !== null
+        ? `<span class="badge" style="background:#6366f1;font-size:10px;">ML ${r.ml_score}</span>`
+        : '';
+    return `
+      <tr data-grid="${r.grid_id}" class="${r.ml_masked ? 'row-masked' : ''}">
+        <td style="color:var(--text-muted);font-weight:500;">${String(i + 1).padStart(2, '0')}</td>
+        <td><b style="font-weight:600;">${r.grid_id}</b> ${mlBadge}</td>
+        <td><span class="badge ${pKey}">${r.priority_class.replace('Prioritas ', 'P')}</span></td>
+        <td>
+          <span class="score-bar"><span class="score-bar-fill" style="width:${barW}%;background:${barColor};"></span></span>
+          <b style="font-weight:600;">${r.final_priority_score}</b>
+        </td>
+        <td style="color:var(--text-secondary)">${r.Ni_avg}%</td>
+        <td style="color:var(--text-secondary)">${r.mag_score}</td>
+        <td style="color:var(--text-secondary)">${r.slope_deg}°</td>
+        <td><span class="badge ${r.kill_zone_exclusion ? 'p4' : r.is_grandfathered ? 'p3' : r.permit_required === 'IUP (AMDAL/UKL-UPL)' ? 'p1' : 'p2'} compliance-badge" title="${r.compliance_status || ''}">${r.kill_zone_exclusion ? '⛔ EXCLUDED' : r.is_grandfathered ? '⚠️ LEGACY' : r.legal_zone === 'Areal Penggunaan Lain' ? 'APL' : r.legal_zone === 'Hutan Produksi' ? 'HP' : r.legal_status || '-'}</span></td>
+        <td style="color:var(--text-secondary);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.reason}</td>
+      </tr>
+    `;
+  }).join('');
   els.rankingBody.querySelectorAll('tr[data-grid]').forEach(tr => {
-    tr.addEventListener('click', () => selectTarget(tr.dataset.grid));
+    tr.addEventListener('click', () => {
+      els.rankingBody.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
+      tr.classList.add('selected');
+      selectTarget(tr.dataset.grid);
+    });
   });
 }
+
+const pColors = { p1: '#10b981', p2: '#f59e0b', p3: '#f97316', p4: '#ef4444' };
 
 function selectTarget(gridId) {
   if (!gridId) return;
   const row = resultRows.find(r => r.grid_id === gridId);
   if (!row) return;
+  const pKey = priorityKey(row.priority_class);
+  const pColor = pColors[pKey] || '#10b981';
   els.targetDetail.innerHTML = `
-    <span class="badge ${priorityKey(row.priority_class)}">${row.priority_class}</span>
+    <span class="badge ${pKey}">${row.priority_class}</span>
+    <div style="margin: 16px 0; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.05); overflow: hidden;">
+      <div style="height: 100%; width: ${row.final_priority_score}%; background: ${pColor}; border-radius: 2px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+    </div>
     <div class="detail-line"><span>Grid ID</span><b>${row.grid_id}</b></div>
     <div class="detail-line"><span>Final score</span><b>${row.final_priority_score}/100</b></div>
     <div class="detail-line"><span>Ni average</span><b>${row.Ni_avg}%</b></div>
@@ -505,7 +726,18 @@ function selectTarget(gridId) {
     <div class="detail-line"><span>Distance to road</span><b>${row.distance_to_road_m} m</b></div>
     <div class="detail-line"><span>Distance to river</span><b>${row.distance_to_river_m} m</b></div>
     <div class="detail-line"><span>Legal status</span><b>${row.legal_status}</b></div>
-    <div class="reason-box"><b>Alasan rekomendasi:</b><br>${row.reason}</div>
+    <div class="detail-line"><span>Legal zone</span><b>${row.legal_zone || '-'}</b></div>
+    <div class="detail-line"><span>Permit required</span><b>${row.permit_required || '-'}</b></div>
+    <div class="detail-line"><span>Legal reference</span><b>${row.legal_reference || '-'}</b></div>
+    <div class="detail-line"><span>Mitigation</span><b>${row.mitigation_requirements || '-'}</b></div>
+    <div class="detail-line"><span>Compliance</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Viability score</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
+    <div class="detail-line"><span>Grandfathered</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Yes (Keterlanjuran)' : 'No'}</b></div>
+    <div class="detail-line"><span>Kill zone</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ Excluded' : 'No'}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>ML Score</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'BLOCKED — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
+    <div class="detail-line"><span>ML Masked</span><b>${row.ml_masked ? 'Yes' : 'No'}</b></div>
+    ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
+    <div class="reason-box"><b>Alasan rekomendasi</b>${row.reason}</div>
   `;
 }
 
@@ -521,8 +753,8 @@ function drawFeatureBars() {
     ['Smelter distance', weights.smelter],
     ['Area size', weights.area]
   ];
-  els.featureBars.innerHTML = labels.map(([name, w]) => `
-    <div class="bar-row">
+  els.featureBars.innerHTML = labels.map(([name, w], i) => `
+    <div class="bar-row" style="animation: fadeInUp 0.4s cubic-bezier(0, 0, 0.2, 1) ${i * 0.06}s both;">
       <span>${name}</span>
       <div class="bar-bg"><div class="bar-fill" style="width:${w * 100}%;"></div></div>
       <b>${Math.round(w * 100)}%</b>
@@ -535,7 +767,7 @@ function downloadResults() {
     setStatus('Belum ada hasil', 'Jalankan analisis dulu sebelum download CSV.');
     return;
   }
-  const headers = ['rank','grid_id','priority_class','final_priority_score','Ni_avg','Fe_avg','mag_score','risk_score','slope_deg','distance_to_river_m','distance_to_road_m','legal_status','distance_to_smelter_km','area_ha','reason'];
+  const headers = ['rank','grid_id','priority_class','final_priority_score','Ni_avg','Fe_avg','Co_avg','mag_score','risk_score','slope_deg','distance_to_river_m','distance_to_road_m','legal_status','legal_zone','permit_required','legal_reference','mitigation_requirements','compliance_status','is_grandfathered','kill_zone_exclusion','viability_score','ml_score','ml_masked','ml_block_reason','distance_to_smelter_km','area_ha','reason'];
   const lines = [headers.join(',')];
   resultRows.forEach((r, i) => {
     lines.push(headers.map(h => {
@@ -551,3 +783,5 @@ function downloadResults() {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+

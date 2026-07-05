@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NiTERRA | Exploration Priority Platform</title>
+  <title>NiTERRA — Exploration Priority Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="bg-glow"></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="ambient-glow" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <header class="topbar">
     <a class="brand" href="#home" aria-label="NiTERRA Home">
@@ -19,39 +23,50 @@
     </a>
     <nav class="nav-links" aria-label="Main navigation">
       <a href="#home">Intro</a>
-      <a href="#workspace">Input</a>
+      <a href="#workspace">Workspace</a>
       <a href="#output">Output</a>
       <a href="#insights">Insights</a>
     </nav>
-    <a class="nav-cta" href="#workspace">Start Analysis</a>
+    <a class="btn btn-primary small" href="#workspace">Mulai Analisis</a>
   </header>
 
   <main>
     <section id="home" class="hero section-full">
-      <div class="hero-overlay"></div>
       <div class="hero-content">
-        <span class="eyebrow">Magnetometer-Based Exploration</span>
-        <h1>NiTERRA</h1>
-        <p class="hero-lead">
-          Platform WebGIS untuk memprioritaskan area pra-eksplorasi nikel laterit melalui integrasi data magnetometer, geokimia, GIS, dan AI-assisted scoring.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#workspace">Mulai Analisis</a>
-          <a class="btn btn-ghost" href="#output">Lihat Output</a>
+        <div class="hero-main">
+          <span class="eyebrow">
+            <span class="live-dot"></span> PROCEDURAL TERRAIN ENGINE — LIVE RENDER
+          </span>
+          <h1>Targeted exploration.<br>From a single grid.<br><span class="text-highlight">To regional scale.</span></h1>
+          <p class="hero-lead">
+            NiTERRA turns raw data into geologically accurate, priority-ready terrain — streamed in real time to your exploration pipelines. The landscape behind this page is being generated right now.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#workspace">
+              Start analyzing 
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="#output">Contact sales</a>
+          </div>
         </div>
-        <div class="hero-cards">
-          <article>
-            <strong>01</strong>
-            <span>Upload data magnetometer, geokimia, dan grid area.</span>
-          </article>
-          <article>
-            <strong>02</strong>
-            <span>Sistem menghitung skor geofisika, geokimia, akses, legal, dan risiko.</span>
-          </article>
-          <article>
-            <strong>03</strong>
-            <span>Output berupa peta prioritas eksplorasi dan ranking target.</span>
-          </article>
+        
+        <div class="hero-stats">
+          <div class="stat-group">
+            <span class="stat-label">GRID SEED</span>
+            <span class="stat-value">NT-048476</span>
+          </div>
+          <div class="stat-group">
+            <span class="stat-label">ELEVATION MAX</span>
+            <span class="stat-value">2,364 M</span>
+          </div>
+          <div class="stat-group">
+            <span class="stat-label">COORDINATES</span>
+            <span class="stat-value">45.71°N &nbsp; 73.64°W</span>
+          </div>
+          <button class="btn btn-ghost small">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            NEW SEED [R]
+          </button>
         </div>
       </div>
     </section>
@@ -59,78 +74,92 @@
     <section id="workspace" class="section workspace-section">
       <div class="section-heading">
         <span class="eyebrow small">Workspace</span>
-        <h2>Upload data, jalankan analisis, lalu baca prioritas target.</h2>
-        <p>
-          Masukkan data magnetometer, geokimia, dan grid area. Sistem akan menghitung skor prioritas serta menampilkan hasilnya pada peta interaktif dan tabel ranking.
-        </p>
+        <h2>Upload data, lalu jalankan analisis.</h2>
+        <p>Masukkan data magnetometer, geokimia, dan grid area. Sistem akan menghitung skor prioritas serta menampilkan hasilnya pada peta interaktif dan tabel ranking.</p>
       </div>
 
       <div class="workspace-grid">
-        <aside class="panel input-panel">
-          <span class="pill">Data Input</span>
-          <h3>Upload file eksplorasi</h3>
-          <p class="muted">Minimal 3 file: magnetometer, geochemistry, dan grid/batas area. Untuk demo, klik <b>Load Dummy Data</b>.</p>
+        <div class="panel-shell">
+          <aside class="panel input-panel">
+            <span class="pill">Data Input</span>
+            <h3>Upload file eksplorasi</h3>
+            <p class="muted">Minimal 3 file: magnetometer, geochemistry, dan grid/batas area. Untuk demo, klik <b>Load Dummy Data</b>.</p>
 
-          <label class="file-card">
-            <input id="magFile" type="file" accept=".csv" />
-            <span class="file-icon">⇧</span>
-            <span>
-              <strong>Magnetometer CSV</strong>
-              <small id="magFileName">magnetometer_dummy.csv</small>
-            </span>
-          </label>
+            <label class="file-card">
+              <input id="magFile" type="file" accept=".csv" />
+              <span class="file-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </span>
+              <span>
+                <strong>Magnetometer CSV</strong>
+                <small id="magFileName">magnetometer_dummy.csv</small>
+              </span>
+            </label>
 
-          <label class="file-card">
-            <input id="geoFile" type="file" accept=".csv" />
-            <span class="file-icon">⇧</span>
-            <span>
-              <strong>Geochemistry CSV</strong>
-              <small id="geoFileName">geochemistry_dummy.csv</small>
-            </span>
-          </label>
+            <label class="file-card">
+              <input id="geoFile" type="file" accept=".csv" />
+              <span class="file-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </span>
+              <span>
+                <strong>Geochemistry CSV</strong>
+                <small id="geoFileName">geochemistry_dummy.csv</small>
+              </span>
+            </label>
 
-          <label class="file-card">
-            <input id="gridFile" type="file" accept=".geojson,.json" />
-            <span class="file-icon">⇧</span>
-            <span>
-              <strong>Study Grid GeoJSON</strong>
-              <small id="gridFileName">study_grid_dummy.geojson</small>
-            </span>
-          </label>
+            <label class="file-card">
+              <input id="gridFile" type="file" accept=".geojson,.json" />
+              <span class="file-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <span>
+                <strong>Study Grid GeoJSON</strong>
+                <small id="gridFileName">study_grid_dummy.geojson</small>
+              </span>
+            </label>
 
-          <div class="button-row">
-            <button id="loadDummyBtn" class="btn btn-soft" type="button">Load Dummy Data</button>
-            <button id="runBtn" class="btn btn-primary" type="button">Run Analysis</button>
-          </div>
-
-          <div id="statusBox" class="status-box">
-            <b>Status</b>
-            <span>Belum ada data yang diproses. Klik Load Dummy Data dulu.</span>
-          </div>
-        </aside>
-
-        <section class="panel map-panel">
-          <div class="map-topline">
-            <div class="map-title"><span class="live-dot"></span>Interactive Exploration Map</div>
-            <div class="map-tabs" role="tablist">
-              <button class="tab-btn active" data-layer="priority" type="button">Priority</button>
-              <button class="tab-btn" data-layer="magnet" type="button">Magnet</button>
-              <button class="tab-btn" data-layer="samples" type="button">Samples</button>
+            <div class="button-row">
+              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Load Dummy Data</button>
+              <button id="runBtn" class="btn btn-primary" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Run Analysis
+              </button>
             </div>
-          </div>
-          <div class="map-holder">
-            <div id="map" aria-label="Interactive map"></div>
-            <div id="mapHint" class="map-hint">Klik Load Dummy Data → Run Analysis. Grid prioritas akan muncul di atas basemap.</div>
-          </div>
-          <div class="legend">
-            <span><i class="c p1"></i> Prioritas 1</span>
-            <span><i class="c p2"></i> Prioritas 2</span>
-            <span><i class="c p3"></i> Prioritas 3</span>
-            <span><i class="c p4"></i> Tidak Prioritas</span>
-            <span><i class="c magnet"></i> Magnetometer</span>
-            <span><i class="c sample"></i> Geochemistry</span>
-          </div>
-        </section>
+
+            <div id="statusBox" class="status-box">
+              <b>Status</b>
+              <span>Belum ada data yang diproses. Klik Load Dummy Data dulu.</span>
+            </div>
+          </aside>
+        </div>
+
+        <div class="panel-shell">
+          <section class="panel map-panel">
+            <div class="map-topline">
+              <div class="map-title">
+                <span class="live-dot"></span>
+                Interactive Exploration Map
+              </div>
+              <div class="map-tabs" role="tablist">
+                <button class="tab-btn active" data-layer="priority" type="button">Priority</button>
+                <button class="tab-btn" data-layer="magnet" type="button">Magnet</button>
+                <button class="tab-btn" data-layer="samples" type="button">Samples</button>
+              </div>
+            </div>
+            <div class="map-holder">
+              <div id="map" aria-label="Interactive map"></div>
+              <div id="mapHint" class="map-hint">Klik Load Dummy Data → Run Analysis. Grid prioritas akan muncul di atas basemap.</div>
+            </div>
+            <div class="legend">
+              <span><i class="c p1"></i> Prioritas 1</span>
+              <span><i class="c p2"></i> Prioritas 2</span>
+              <span><i class="c p3"></i> Prioritas 3</span>
+              <span><i class="c p4"></i> Non Prioritas</span>
+              <span><i class="c magnet"></i> Magnetometer</span>
+              <span><i class="c sample"></i> Geochemistry</span>
+            </div>
+          </section>
+        </div>
       </div>
     </section>
 
@@ -142,57 +171,87 @@
       </div>
 
       <div class="summary-cards">
-        <article class="metric-card"><span>Jumlah Grid</span><b id="gridCount">0</b></article>
-        <article class="metric-card"><span>Prioritas 1</span><b id="priorityOneCount">0</b></article>
-        <article class="metric-card"><span>Rata-rata Score</span><b id="avgScore">0</b></article>
-        <article class="metric-card"><span>Best Target</span><b id="bestTarget">-</b></article>
+        <article class="metric-card">
+          <span>Jumlah Grid</span>
+          <b id="gridCount">0</b>
+        </article>
+        <article class="metric-card">
+          <span>Prioritas 1</span>
+          <b id="priorityOneCount">0</b>
+        </article>
+        <article class="metric-card">
+          <span>Rata-rata Score</span>
+          <b id="avgScore">—</b>
+        </article>
+        <article class="metric-card">
+          <span>Best Target</span>
+          <b id="bestTarget">—</b>
+        </article>
+        <article class="metric-card">
+          <span>⛔ Kill Zones</span>
+          <b id="killZoneCount" style="color:#ef4444;">0</b>
+        </article>
+        <article class="metric-card">
+          <span>⚠️ Grandfathered</span>
+          <b id="grandfatheredCount" style="color:#f59e0b;">0</b>
+        </article>
       </div>
 
       <div class="output-grid">
-        <section class="panel ranking-panel">
-          <div class="panel-head">
-            <h3>Ranking Target</h3>
-            <button id="downloadBtn" class="btn btn-soft small" type="button">Download CSV</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Grid</th>
-                  <th>Priority</th>
-                  <th>Score</th>
-                  <th>Ni Avg</th>
-                  <th>Mag Score</th>
-                  <th>Slope</th>
-                  <th>Legal</th>
-                  <th>Reason</th>
-                </tr>
-              </thead>
-              <tbody id="rankingBody">
-                <tr><td colspan="9" class="empty">Belum ada hasil. Jalankan analisis dulu.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <div class="panel-shell">
+          <section class="panel ranking-panel">
+            <div class="panel-head">
+              <h3>Ranking Target</h3>
+              <button id="downloadBtn" class="btn btn-secondary small" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download CSV
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Grid</th>
+                    <th>Priority</th>
+                    <th>Score</th>
+                    <th>Ni Avg</th>
+                    <th>Mag Score</th>
+                    <th>Slope</th>
+                    <th>Legal Zone</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="rankingBody">
+                  <tr><td colspan="9" class="empty">Belum ada hasil. Jalankan analisis dulu.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
 
-        <aside class="panel detail-panel">
-          <span class="pill">Selected Target</span>
-          <div id="targetDetail" class="target-detail">
-            <p class="muted">Klik grid pada peta atau baris ranking untuk melihat detail target.</p>
-          </div>
-        </aside>
+        <div class="panel-shell">
+          <aside class="panel detail-panel">
+            <span class="pill">Selected Target</span>
+            <h3>Detail Target</h3>
+            <div id="targetDetail" class="target-detail">
+              <p class="muted" style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">Klik grid pada peta atau baris ranking untuk melihat detail target.</p>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
     <section id="insights" class="section insights-section">
       <div class="section-heading">
         <span class="eyebrow small">Insights</span>
-        <h2>Feature contribution simulasi.</h2>
-        <p>Bar ini menjelaskan bobot parameter yang dipakai dalam prototype scoring. Nanti bisa diganti feature importance dari Random Forest saat backend ML sudah dibuat.</p>
+        <h2>Feature contribution scoring.</h2>
+        <p>Bobot parameter yang dipakai dalam prototype scoring. Dapat diganti dengan feature importance dari Random Forest saat backend ML terintegrasi.</p>
       </div>
-      <div class="panel insight-panel">
-        <div id="featureBars" class="bars"></div>
+      <div class="panel-shell">
+        <div class="panel insight-panel">
+          <div id="featureBars" class="bars"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -201,7 +260,9 @@
     <b>NiTERRA</b> — Prototype frontend untuk ANTAM Hackathon 2026. Data dummy bersifat simulasi, bukan data eksplorasi asli.
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="new_effect.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

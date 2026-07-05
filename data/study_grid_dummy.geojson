@@ -1,576 +1,43 @@
 {
   "type": "FeatureCollection",
-  "name": "study_grid_bandung_jatinangor_dummy",
+  "name": "study_grid_halmahera_weda_bay",
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "G001",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 11.5,
-        "distance_to_river_m": 664,
-        "distance_to_road_m": 1954,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 117.7,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74,
-              -6.955
-            ],
-            [
-              107.74799999999999,
-              -6.955
-            ],
-            [
-              107.74799999999999,
-              -6.949
-            ],
-            [
-              107.74,
-              -6.949
-            ],
-            [
-              107.74,
-              -6.955
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G002",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "andesite",
-        "slope_deg": 12.2,
-        "distance_to_river_m": 594,
-        "distance_to_road_m": 1226,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 119.6,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74799999999999,
-              -6.955
-            ],
-            [
-              107.75599999999999,
-              -6.955
-            ],
-            [
-              107.75599999999999,
-              -6.949
-            ],
-            [
-              107.74799999999999,
-              -6.949
-            ],
-            [
-              107.74799999999999,
-              -6.955
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G003",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "tuff",
-        "slope_deg": 11.8,
-        "distance_to_river_m": 369,
-        "distance_to_road_m": 1312,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 115.4,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.756,
-              -6.955
-            ],
-            [
-              107.764,
-              -6.955
-            ],
-            [
-              107.764,
-              -6.949
-            ],
-            [
-              107.756,
-              -6.949
-            ],
-            [
-              107.756,
-              -6.955
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G004",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "tuff",
-        "slope_deg": 9.6,
-        "distance_to_river_m": 1363,
-        "distance_to_road_m": 1404,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 127.4,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.764,
-              -6.955
-            ],
-            [
-              107.77199999999999,
-              -6.955
-            ],
-            [
-              107.77199999999999,
-              -6.949
-            ],
-            [
-              107.764,
-              -6.949
-            ],
-            [
-              107.764,
-              -6.955
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G005",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 13.2,
-        "distance_to_river_m": 1040,
-        "distance_to_road_m": 1905,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 132.9,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.77199999999999,
-              -6.955
-            ],
-            [
-              107.77999999999999,
-              -6.955
-            ],
-            [
-              107.77999999999999,
-              -6.949
-            ],
-            [
-              107.77199999999999,
-              -6.949
-            ],
-            [
-              107.77199999999999,
-              -6.955
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G006",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 18.1,
-        "distance_to_river_m": 1528,
-        "distance_to_road_m": 1625,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 136.5,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.78,
-              -6.955
-            ],
-            [
-              107.788,
-              -6.955
-            ],
-            [
-              107.788,
-              -6.949
-            ],
-            [
-              107.78,
-              -6.949
-            ],
-            [
-              107.78,
-              -6.955
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G007",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "lahar_deposit",
-        "slope_deg": 17.9,
-        "distance_to_river_m": 519,
-        "distance_to_road_m": 1934,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 114.3,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74,
-              -6.949
-            ],
-            [
-              107.74799999999999,
-              -6.949
-            ],
-            [
-              107.74799999999999,
-              -6.943
-            ],
-            [
-              107.74,
-              -6.943
-            ],
-            [
-              107.74,
-              -6.949
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G008",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 17.7,
-        "distance_to_river_m": 548,
-        "distance_to_road_m": 1342,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 110.6,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74799999999999,
-              -6.949
-            ],
-            [
-              107.75599999999999,
-              -6.949
-            ],
-            [
-              107.75599999999999,
-              -6.943
-            ],
-            [
-              107.74799999999999,
-              -6.943
-            ],
-            [
-              107.74799999999999,
-              -6.949
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G009",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 21.1,
-        "distance_to_river_m": 320,
-        "distance_to_road_m": 1286,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 131.5,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.756,
-              -6.949
-            ],
-            [
-              107.764,
-              -6.949
-            ],
-            [
-              107.764,
-              -6.943
-            ],
-            [
-              107.756,
-              -6.943
-            ],
-            [
-              107.756,
-              -6.949
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G010",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "lahar_deposit",
-        "slope_deg": 19.2,
-        "distance_to_river_m": 433,
-        "distance_to_road_m": 1593,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 133.9,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.764,
-              -6.949
-            ],
-            [
-              107.77199999999999,
-              -6.949
-            ],
-            [
-              107.77199999999999,
-              -6.943
-            ],
-            [
-              107.764,
-              -6.943
-            ],
-            [
-              107.764,
-              -6.949
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G011",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "alluvium",
-        "slope_deg": 12.0,
-        "distance_to_river_m": 1481,
-        "distance_to_road_m": 828,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 140.2,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.77199999999999,
-              -6.949
-            ],
-            [
-              107.77999999999999,
-              -6.949
-            ],
-            [
-              107.77999999999999,
-              -6.943
-            ],
-            [
-              107.77199999999999,
-              -6.943
-            ],
-            [
-              107.77199999999999,
-              -6.949
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G012",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "andesite",
-        "slope_deg": 15.8,
-        "distance_to_river_m": 1043,
-        "distance_to_road_m": 2034,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 137.7,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.78,
-              -6.949
-            ],
-            [
-              107.788,
-              -6.949
-            ],
-            [
-              107.788,
-              -6.943
-            ],
-            [
-              107.78,
-              -6.943
-            ],
-            [
-              107.78,
-              -6.949
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G013",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 23.2,
-        "distance_to_river_m": 682,
-        "distance_to_road_m": 1579,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 128.0,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74,
-              -6.9430000000000005
-            ],
-            [
-              107.74799999999999,
-              -6.9430000000000005
-            ],
-            [
-              107.74799999999999,
-              -6.937
-            ],
-            [
-              107.74,
-              -6.937
-            ],
-            [
-              107.74,
-              -6.9430000000000005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G014",
-        "location_label": "Bandung Raya - Jatinangor dummy",
+        "grid_id": "H001",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 13.9,
-        "distance_to_river_m": 814,
-        "distance_to_road_m": 892,
+        "slope_deg": 6.4,
+        "distance_to_river_m": 330,
+        "distance_to_road_m": 2657,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 109.6,
-        "area_ha": 58.6
+        "distance_to_smelter_km": 49.9,
+        "area_ha": 140.6
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              107.74799999999999,
-              -6.9430000000000005
+              127.65,
+              0.35
             ],
             [
-              107.75599999999999,
-              -6.9430000000000005
+              127.666,
+              0.35
             ],
             [
-              107.75599999999999,
-              -6.937
+              127.666,
+              0.366
             ],
             [
-              107.74799999999999,
-              -6.937
+              127.65,
+              0.366
             ],
             [
-              107.74799999999999,
-              -6.9430000000000005
+              127.65,
+              0.35
             ]
           ]
         ]
@@ -579,326 +46,39 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "G015",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 14.3,
-        "distance_to_river_m": 814,
-        "distance_to_road_m": 1075,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 105.3,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.756,
-              -6.9430000000000005
-            ],
-            [
-              107.764,
-              -6.9430000000000005
-            ],
-            [
-              107.764,
-              -6.937
-            ],
-            [
-              107.756,
-              -6.937
-            ],
-            [
-              107.756,
-              -6.9430000000000005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G016",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "alluvium",
-        "slope_deg": 16.0,
-        "distance_to_river_m": 796,
-        "distance_to_road_m": 354,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 130.4,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.764,
-              -6.9430000000000005
-            ],
-            [
-              107.77199999999999,
-              -6.9430000000000005
-            ],
-            [
-              107.77199999999999,
-              -6.937
-            ],
-            [
-              107.764,
-              -6.937
-            ],
-            [
-              107.764,
-              -6.9430000000000005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G017",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "alluvium",
-        "slope_deg": 17.0,
-        "distance_to_river_m": 1132,
-        "distance_to_road_m": 1423,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 140.1,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.77199999999999,
-              -6.9430000000000005
-            ],
-            [
-              107.77999999999999,
-              -6.9430000000000005
-            ],
-            [
-              107.77999999999999,
-              -6.937
-            ],
-            [
-              107.77199999999999,
-              -6.937
-            ],
-            [
-              107.77199999999999,
-              -6.9430000000000005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G018",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "lahar_deposit",
-        "slope_deg": 18.6,
-        "distance_to_river_m": 1061,
-        "distance_to_road_m": 1160,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 143.9,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.78,
-              -6.9430000000000005
-            ],
-            [
-              107.788,
-              -6.9430000000000005
-            ],
-            [
-              107.788,
-              -6.937
-            ],
-            [
-              107.78,
-              -6.937
-            ],
-            [
-              107.78,
-              -6.9430000000000005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G019",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "lahar_deposit",
-        "slope_deg": 19.7,
-        "distance_to_river_m": 232,
-        "distance_to_road_m": 2116,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 130.9,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74,
-              -6.937
-            ],
-            [
-              107.74799999999999,
-              -6.937
-            ],
-            [
-              107.74799999999999,
-              -6.931
-            ],
-            [
-              107.74,
-              -6.931
-            ],
-            [
-              107.74,
-              -6.937
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G020",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 10.9,
-        "distance_to_river_m": 632,
-        "distance_to_road_m": 455,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 107.4,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74799999999999,
-              -6.937
-            ],
-            [
-              107.75599999999999,
-              -6.937
-            ],
-            [
-              107.75599999999999,
-              -6.931
-            ],
-            [
-              107.74799999999999,
-              -6.931
-            ],
-            [
-              107.74799999999999,
-              -6.937
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G021",
-        "location_label": "Bandung Raya - Jatinangor dummy",
+        "grid_id": "H002",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 26.2,
-        "distance_to_river_m": 865,
-        "distance_to_road_m": 455,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 132.5,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.756,
-              -6.937
-            ],
-            [
-              107.764,
-              -6.937
-            ],
-            [
-              107.764,
-              -6.931
-            ],
-            [
-              107.756,
-              -6.931
-            ],
-            [
-              107.756,
-              -6.937
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G022",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 22.7,
-        "distance_to_river_m": 696,
-        "distance_to_road_m": 1464,
+        "slope_deg": 8.8,
+        "distance_to_river_m": 113,
+        "distance_to_road_m": 1000,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 146.6,
-        "area_ha": 58.6
+        "distance_to_smelter_km": 44.7,
+        "area_ha": 130.3
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              107.764,
-              -6.937
+              127.666,
+              0.35
             ],
             [
-              107.77199999999999,
-              -6.937
+              127.682,
+              0.35
             ],
             [
-              107.77199999999999,
-              -6.931
+              127.682,
+              0.366
             ],
             [
-              107.764,
-              -6.931
+              127.666,
+              0.366
             ],
             [
-              107.764,
-              -6.937
+              127.666,
+              0.35
             ]
           ]
         ]
@@ -907,203 +87,39 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "G023",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 13.8,
-        "distance_to_river_m": 645,
-        "distance_to_road_m": 1755,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 151.3,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.77199999999999,
-              -6.937
-            ],
-            [
-              107.77999999999999,
-              -6.937
-            ],
-            [
-              107.77999999999999,
-              -6.931
-            ],
-            [
-              107.77199999999999,
-              -6.931
-            ],
-            [
-              107.77199999999999,
-              -6.937
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G024",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 20.9,
-        "distance_to_river_m": 905,
-        "distance_to_road_m": 2109,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 150.8,
-        "area_ha": 58.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.78,
-              -6.937
-            ],
-            [
-              107.788,
-              -6.937
-            ],
-            [
-              107.788,
-              -6.931
-            ],
-            [
-              107.78,
-              -6.931
-            ],
-            [
-              107.78,
-              -6.937
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G025",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 19.7,
-        "distance_to_river_m": 915,
-        "distance_to_road_m": 1897,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 133.5,
-        "area_ha": 58.7
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74,
-              -6.931
-            ],
-            [
-              107.74799999999999,
-              -6.931
-            ],
-            [
-              107.74799999999999,
-              -6.925
-            ],
-            [
-              107.74,
-              -6.925
-            ],
-            [
-              107.74,
-              -6.931
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G026",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "lahar_deposit",
-        "slope_deg": 21.2,
-        "distance_to_river_m": 107,
-        "distance_to_road_m": 2184,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 141.0,
-        "area_ha": 58.7
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              107.74799999999999,
-              -6.931
-            ],
-            [
-              107.75599999999999,
-              -6.931
-            ],
-            [
-              107.75599999999999,
-              -6.925
-            ],
-            [
-              107.74799999999999,
-              -6.925
-            ],
-            [
-              107.74799999999999,
-              -6.931
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "G027",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "tuff",
+        "grid_id": "H003",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 12.4,
-        "distance_to_river_m": 671,
-        "distance_to_road_m": 1420,
+        "distance_to_river_m": 690,
+        "distance_to_road_m": 1005,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 148.2,
-        "area_ha": 58.7
+        "distance_to_smelter_km": 41.9,
+        "area_ha": 135.4
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              107.756,
-              -6.931
+              127.682,
+              0.35
             ],
             [
-              107.764,
-              -6.931
+              127.698,
+              0.35
             ],
             [
-              107.764,
-              -6.925
+              127.698,
+              0.366
             ],
             [
-              107.756,
-              -6.925
+              127.682,
+              0.366
             ],
             [
-              107.756,
-              -6.931
+              127.682,
+              0.35
             ]
           ]
         ]
@@ -1112,39 +128,39 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "G028",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "volcanic_breccia",
-        "slope_deg": 16.4,
-        "distance_to_river_m": 1195,
-        "distance_to_road_m": 1496,
+        "grid_id": "H004",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 14.9,
+        "distance_to_river_m": 862,
+        "distance_to_road_m": 1389,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 153.4,
-        "area_ha": 58.7
+        "distance_to_smelter_km": 42.6,
+        "area_ha": 109.3
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              107.764,
-              -6.931
+              127.698,
+              0.35
             ],
             [
-              107.77199999999999,
-              -6.931
+              127.714,
+              0.35
             ],
             [
-              107.77199999999999,
-              -6.925
+              127.714,
+              0.366
             ],
             [
-              107.764,
-              -6.925
+              127.698,
+              0.366
             ],
             [
-              107.764,
-              -6.931
+              127.698,
+              0.35
             ]
           ]
         ]
@@ -1153,39 +169,39 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "G029",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "lahar_deposit",
-        "slope_deg": 18.1,
-        "distance_to_river_m": 1252,
-        "distance_to_road_m": 1848,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 157.1,
-        "area_ha": 58.7
+        "grid_id": "H005",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 3.5,
+        "distance_to_river_m": 188,
+        "distance_to_road_m": 3012,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 46.4,
+        "area_ha": 136.2
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              107.77199999999999,
-              -6.931
+              127.714,
+              0.35
             ],
             [
-              107.77999999999999,
-              -6.931
+              127.73,
+              0.35
             ],
             [
-              107.77999999999999,
-              -6.925
+              127.73,
+              0.366
             ],
             [
-              107.77199999999999,
-              -6.925
+              127.714,
+              0.366
             ],
             [
-              107.77199999999999,
-              -6.931
+              127.714,
+              0.35
             ]
           ]
         ]
@@ -1194,39 +210,1023 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "G030",
-        "location_label": "Bandung Raya - Jatinangor dummy",
-        "lithology": "tuff",
-        "slope_deg": 24.2,
-        "distance_to_river_m": 1117,
-        "distance_to_road_m": 2187,
+        "grid_id": "H006",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 10.6,
+        "distance_to_river_m": 1170,
+        "distance_to_road_m": 1511,
         "legal_status": "conditional",
-        "distance_to_smelter_km": 170.3,
-        "area_ha": 58.7
+        "distance_to_smelter_km": 46.0,
+        "area_ha": 133.1
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              107.78,
-              -6.931
+              127.65,
+              0.366
             ],
             [
-              107.788,
-              -6.931
+              127.666,
+              0.366
             ],
             [
-              107.788,
-              -6.925
+              127.666,
+              0.382
             ],
             [
-              107.78,
-              -6.925
+              127.65,
+              0.382
             ],
             [
-              107.78,
-              -6.931
+              127.65,
+              0.366
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H007",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.8,
+        "distance_to_river_m": 727,
+        "distance_to_road_m": 2555,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 39.5,
+        "area_ha": 102.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.666,
+              0.366
+            ],
+            [
+              127.682,
+              0.366
+            ],
+            [
+              127.682,
+              0.382
+            ],
+            [
+              127.666,
+              0.382
+            ],
+            [
+              127.666,
+              0.366
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H008",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 3.3,
+        "distance_to_river_m": 341,
+        "distance_to_road_m": 623,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 35.3,
+        "area_ha": 116.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.682,
+              0.366
+            ],
+            [
+              127.698,
+              0.366
+            ],
+            [
+              127.698,
+              0.382
+            ],
+            [
+              127.682,
+              0.382
+            ],
+            [
+              127.682,
+              0.366
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H009",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 7.9,
+        "distance_to_river_m": 315,
+        "distance_to_road_m": 1154,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 36.4,
+        "area_ha": 156.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.698,
+              0.366
+            ],
+            [
+              127.714,
+              0.366
+            ],
+            [
+              127.714,
+              0.382
+            ],
+            [
+              127.698,
+              0.382
+            ],
+            [
+              127.698,
+              0.366
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H010",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 4.7,
+        "distance_to_river_m": 897,
+        "distance_to_road_m": 823,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 41.8,
+        "area_ha": 122.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.714,
+              0.366
+            ],
+            [
+              127.73,
+              0.366
+            ],
+            [
+              127.73,
+              0.382
+            ],
+            [
+              127.714,
+              0.382
+            ],
+            [
+              127.714,
+              0.366
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H011",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 10.9,
+        "distance_to_river_m": 847,
+        "distance_to_road_m": 2997,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 43.8,
+        "area_ha": 146.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.65,
+              0.382
+            ],
+            [
+              127.666,
+              0.382
+            ],
+            [
+              127.666,
+              0.398
+            ],
+            [
+              127.65,
+              0.398
+            ],
+            [
+              127.65,
+              0.382
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H012",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 7.0,
+        "distance_to_river_m": 380,
+        "distance_to_road_m": 975,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 36.0,
+        "area_ha": 156.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.666,
+              0.382
+            ],
+            [
+              127.682,
+              0.382
+            ],
+            [
+              127.682,
+              0.398
+            ],
+            [
+              127.666,
+              0.398
+            ],
+            [
+              127.666,
+              0.382
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H013",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 12.5,
+        "distance_to_river_m": 523,
+        "distance_to_road_m": 3227,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 29.2,
+        "area_ha": 127.5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.682,
+              0.382
+            ],
+            [
+              127.698,
+              0.382
+            ],
+            [
+              127.698,
+              0.398
+            ],
+            [
+              127.682,
+              0.398
+            ],
+            [
+              127.682,
+              0.382
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H014",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 11.0,
+        "distance_to_river_m": 374,
+        "distance_to_road_m": 2171,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 31.4,
+        "area_ha": 153.9
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.698,
+              0.382
+            ],
+            [
+              127.714,
+              0.382
+            ],
+            [
+              127.714,
+              0.398
+            ],
+            [
+              127.698,
+              0.398
+            ],
+            [
+              127.698,
+              0.382
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H015",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.0,
+        "distance_to_river_m": 651,
+        "distance_to_road_m": 591,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 38.9,
+        "area_ha": 102.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.714,
+              0.382
+            ],
+            [
+              127.73,
+              0.382
+            ],
+            [
+              127.73,
+              0.398
+            ],
+            [
+              127.714,
+              0.398
+            ],
+            [
+              127.714,
+              0.382
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H016",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.7,
+        "distance_to_river_m": 553,
+        "distance_to_road_m": 503,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 43.8,
+        "area_ha": 122.9
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.65,
+              0.398
+            ],
+            [
+              127.666,
+              0.398
+            ],
+            [
+              127.666,
+              0.414
+            ],
+            [
+              127.65,
+              0.414
+            ],
+            [
+              127.65,
+              0.398
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H017",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 17.5,
+        "distance_to_river_m": 1044,
+        "distance_to_road_m": 337,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 36.0,
+        "area_ha": 143.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.666,
+              0.398
+            ],
+            [
+              127.682,
+              0.398
+            ],
+            [
+              127.682,
+              0.414
+            ],
+            [
+              127.666,
+              0.414
+            ],
+            [
+              127.666,
+              0.398
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H018",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 6.3,
+        "distance_to_river_m": 798,
+        "distance_to_road_m": 657,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 29.2,
+        "area_ha": 126.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.682,
+              0.398
+            ],
+            [
+              127.698,
+              0.398
+            ],
+            [
+              127.698,
+              0.414
+            ],
+            [
+              127.682,
+              0.414
+            ],
+            [
+              127.682,
+              0.398
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H019",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 16.0,
+        "distance_to_river_m": 375,
+        "distance_to_road_m": 1902,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 31.4,
+        "area_ha": 110.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.698,
+              0.398
+            ],
+            [
+              127.714,
+              0.398
+            ],
+            [
+              127.714,
+              0.414
+            ],
+            [
+              127.698,
+              0.414
+            ],
+            [
+              127.698,
+              0.398
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H020",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 6.8,
+        "distance_to_river_m": 796,
+        "distance_to_road_m": 2249,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 38.9,
+        "area_ha": 109.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.714,
+              0.398
+            ],
+            [
+              127.73,
+              0.398
+            ],
+            [
+              127.73,
+              0.414
+            ],
+            [
+              127.714,
+              0.414
+            ],
+            [
+              127.714,
+              0.398
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H021",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 14.5,
+        "distance_to_river_m": 674,
+        "distance_to_road_m": 302,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 46.0,
+        "area_ha": 119.4
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.65,
+              0.414
+            ],
+            [
+              127.666,
+              0.414
+            ],
+            [
+              127.666,
+              0.43
+            ],
+            [
+              127.65,
+              0.43
+            ],
+            [
+              127.65,
+              0.414
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H022",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 16.1,
+        "distance_to_river_m": 1011,
+        "distance_to_road_m": 1284,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 39.5,
+        "area_ha": 103.5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.666,
+              0.414
+            ],
+            [
+              127.682,
+              0.414
+            ],
+            [
+              127.682,
+              0.43
+            ],
+            [
+              127.666,
+              0.43
+            ],
+            [
+              127.666,
+              0.414
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H023",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 3.4,
+        "distance_to_river_m": 624,
+        "distance_to_road_m": 521,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 35.3,
+        "area_ha": 145.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.682,
+              0.414
+            ],
+            [
+              127.698,
+              0.414
+            ],
+            [
+              127.698,
+              0.43
+            ],
+            [
+              127.682,
+              0.43
+            ],
+            [
+              127.682,
+              0.414
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H024",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 9.6,
+        "distance_to_river_m": 696,
+        "distance_to_road_m": 1148,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 36.4,
+        "area_ha": 152.3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.698,
+              0.414
+            ],
+            [
+              127.714,
+              0.414
+            ],
+            [
+              127.714,
+              0.43
+            ],
+            [
+              127.698,
+              0.43
+            ],
+            [
+              127.698,
+              0.414
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H025",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 10.6,
+        "distance_to_river_m": 898,
+        "distance_to_road_m": 944,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 41.8,
+        "area_ha": 118.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.714,
+              0.414
+            ],
+            [
+              127.73,
+              0.414
+            ],
+            [
+              127.73,
+              0.43
+            ],
+            [
+              127.714,
+              0.43
+            ],
+            [
+              127.714,
+              0.414
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H026",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 9.0,
+        "distance_to_river_m": 660,
+        "distance_to_road_m": 687,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 49.9,
+        "area_ha": 113.5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.65,
+              0.43
+            ],
+            [
+              127.666,
+              0.43
+            ],
+            [
+              127.666,
+              0.446
+            ],
+            [
+              127.65,
+              0.446
+            ],
+            [
+              127.65,
+              0.43
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H027",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 5.7,
+        "distance_to_river_m": 327,
+        "distance_to_road_m": 527,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 44.7,
+        "area_ha": 137.9
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.666,
+              0.43
+            ],
+            [
+              127.682,
+              0.43
+            ],
+            [
+              127.682,
+              0.446
+            ],
+            [
+              127.666,
+              0.446
+            ],
+            [
+              127.666,
+              0.43
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H028",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.8,
+        "distance_to_river_m": 159,
+        "distance_to_road_m": 1062,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 41.9,
+        "area_ha": 140.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.682,
+              0.43
+            ],
+            [
+              127.698,
+              0.43
+            ],
+            [
+              127.698,
+              0.446
+            ],
+            [
+              127.682,
+              0.446
+            ],
+            [
+              127.682,
+              0.43
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H029",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 17.0,
+        "distance_to_river_m": 720,
+        "distance_to_road_m": 1813,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 42.6,
+        "area_ha": 147.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.698,
+              0.43
+            ],
+            [
+              127.714,
+              0.43
+            ],
+            [
+              127.714,
+              0.446
+            ],
+            [
+              127.698,
+              0.446
+            ],
+            [
+              127.698,
+              0.43
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "H030",
+        "location_label": "Weda Bay - Halmahera nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 3.6,
+        "distance_to_river_m": 563,
+        "distance_to_road_m": 1655,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 46.4,
+        "area_ha": 128.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.714,
+              0.43
+            ],
+            [
+              127.73,
+              0.43
+            ],
+            [
+              127.73,
+              0.446
+            ],
+            [
+              127.714,
+              0.446
+            ],
+            [
+              127.714,
+              0.43
             ]
           ]
         ]
