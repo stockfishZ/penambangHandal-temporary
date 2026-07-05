@@ -7,6 +7,9 @@ let rawMagnet = [];
 let rawGeo = [];
 let rawGrid = null;
 let activeLayerMode = 'priority';
+let gridLayers = {};
+let detailZoomed = false;
+let selectedGridId = null;
 
 const weights = {
   magnetic: 0.24,
@@ -38,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function bindElements() {
-  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint'].forEach(id => {
+  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint','targetDetailTitle','zoomDetailBtn'].forEach(id => {
     els[id] = document.getElementById(id);
   });
 }
@@ -50,6 +53,13 @@ function bindEvents() {
   els.loadDummyBtn.addEventListener('click', loadDummyData);
   els.runBtn.addEventListener('click', runAnalysis);
   els.downloadBtn.addEventListener('click', downloadResults);
+  els.zoomDetailBtn.addEventListener('click', () => {
+    detailZoomed = !detailZoomed;
+    document.querySelector('.output-grid').classList.toggle('detail-expanded', detailZoomed);
+    document.querySelector('.detail-panel').classList.toggle('expanded', detailZoomed);
+    els.zoomDetailBtn.textContent = detailZoomed ? '✕' : '⛶';
+    setTimeout(forceMapResize, 350);
+  });
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -372,6 +382,26 @@ function priorityColor(cls, mode = 'fill') {
   return colors[key];
 }
 
+function formatRupiah(n) {
+  if (!Number.isFinite(n)) return 'Rp 0';
+  return 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function computeCapex(row) {
+  // ponytail: hardcoded 25m depth, Rp 1.000.000/m — swap with real params later
+  // ponytail: ml_score fallback to priority_score since ML pipeline isn't ready
+  const ml = row.ml_score;
+  const std = row.mag_std;
+  const usingMl = ml != null;
+  const highConf = usingMl ? (ml >= 7.5 && std <= 15) : (row.final_priority_score >= 62 && std <= 15);
+  const spacing = highConf ? 100 : 50;
+  const areaM2 = (row.area_ha || 0) * 10000;
+  const holes = Math.ceil(areaM2 / (spacing * spacing));
+  const meterage = holes * 25;
+  const cost = meterage * 1000000;
+  return { drill_spacing: spacing, estimated_drill_holes: holes, total_meterage: meterage, estimated_cost_rp: cost };
+}
+
 function deriveCompliance(legalStatus, gridId) {
   const s = (legalStatus || '').toLowerCase();
   if (gridId === 'G006') {
@@ -484,6 +514,17 @@ function buildResults(grid, magnet, geo) {
 
     const reason = buildReason({cls, magScore, ni, geochemScore, slope: p.slope_deg, road: p.distance_to_road_m, river: p.distance_to_river_m, legal: p.legal_status, lithology: p.lithology, final_priority_score: finalScore});
 
+    const capex = computeCapex({
+      ml_score: null,  // ponytail: plumb real ml_score when backend ML lands
+      mag_std: magStd,
+      area_ha: Number(p.area_ha),
+      final_priority_score: finalScore
+    });
+
+    const capexSentenceStr = capex.drill_spacing === 50
+      ? 'Variasi magnetik tinggi/ML score marginal, direkomendasikan spasi rapat (50m) untuk de-risking.'
+      : 'Anomali seragam dan ML score tinggi, spasi lebar (100m) memadai untuk initial discovery.';
+
     feature.properties = {
       ...p,
       grid_id: gridId,
@@ -500,8 +541,10 @@ function buildResults(grid, magnet, geo) {
       final_priority_score: finalScore,
       risk_score: riskScore,
       priority_class: cls,
-      reason,
-      ...compliance
+      reason: reason + ' ' + capexSentenceStr,
+      ...compliance,
+      ...capex,
+      capex_reason: capexSentenceStr
     };
     return feature.properties;
   });
@@ -529,6 +572,11 @@ function buildReason(d) {
   if (Number(d.road) <= 1800) parts.push('akses jalan cukup dekat');
   if (Number(d.river) < 250) parts.push('perlu mitigasi karena dekat sungai');
   if (String(d.legal || '').toLowerCase().includes('conditional')) parts.push('legalitas conditional');
+  if (String(d.legal || '').toLowerCase().includes('no-go')) parts.push('area masuk kawasan lindung — tidak feasible untuk tambang');
+  if (d.ni < 0.5) parts.push('kadar Ni rendah, perlu kajian ekonomis lanjutan');
+  if (d.cls === 'Tidak prioritas') parts.push('skor prioritas rendah, tidak direkomendasikan untuk pengeboran awal');
+  if (Number(d.slope) > 25) parts.push('kemiringan lereng curam');
+  if (Number(d.road) > 3000) parts.push('akses jalan jauh, biaya logistik tinggi');
   if (!parts.length) parts.push('perlu validasi lanjutan karena parameter utama belum dominan');
   return parts.join(', ') + '.';
 }
@@ -547,6 +595,8 @@ function renderMapLayers() {
       const p = feature.properties;
       layer.bindPopup(popupContent(p));
       layer.on('click', () => selectTarget(p.grid_id));
+      layer.on('mouseover', () => { if (layer !== gridLayers[selectedGridId]) layer.setStyle({ weight: 2.5, opacity: 1, fillOpacity: 0.75 }); });
+      layer.on('mouseout', () => { if (layer !== gridLayers[selectedGridId]) layer.setStyle(gridStyle(feature)); });
     }
   });
 
@@ -575,6 +625,14 @@ function renderMapLayers() {
   }).filter(Boolean));
 
   gridLayer.addTo(map);
+  gridLayers = {};
+  gridLayer.eachLayer(layer => {
+    const gid = layer.feature?.properties?.grid_id;
+    if (gid) { gridLayers[gid] = layer; layer.bindTooltip(gid, { permanent: true, direction: 'center', className: 'grid-label' }); }
+  });
+  if (selectedGridId && gridLayers[selectedGridId]) {
+    gridLayers[selectedGridId].setStyle({ weight: 3, color: '#fff', fillOpacity: 0.85 });
+  }
   if (activeLayerMode === 'magnet') magnetLayer.addTo(map);
   if (activeLayerMode === 'samples') sampleLayer.addTo(map);
   if (activeLayerMode === 'priority') {
@@ -711,6 +769,8 @@ function selectTarget(gridId) {
   if (!gridId) return;
   const row = resultRows.find(r => r.grid_id === gridId);
   if (!row) return;
+  selectedGridId = gridId;
+  els.targetDetailTitle.textContent = gridId;
   const pKey = priorityKey(row.priority_class);
   const pColor = pColors[pKey] || '#10b981';
   els.targetDetail.innerHTML = `
@@ -718,8 +778,10 @@ function selectTarget(gridId) {
     <div style="margin: 16px 0; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.05); overflow: hidden;">
       <div style="height: 100%; width: ${row.final_priority_score}%; background: ${pColor}; border-radius: 2px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);"></div>
     </div>
-    <div class="detail-line"><span>Grid ID</span><b>${row.grid_id}</b></div>
     <div class="detail-line"><span>Final score</span><b>${row.final_priority_score}/100</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;margin:4px 0;"><span>Recommended Spacing</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
+    <div class="detail-line"><span>Required Drill Holes</span><b>${row.estimated_drill_holes ?? '-'}</b></div>
+    <div class="detail-line"><span>Est. Drilling Cost</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
     <div class="detail-line"><span>Ni average</span><b>${row.Ni_avg}%</b></div>
     <div class="detail-line"><span>Magnetic score</span><b>${row.mag_score}</b></div>
     <div class="detail-line"><span>Slope</span><b>${row.slope_deg}°</b></div>
@@ -739,6 +801,12 @@ function selectTarget(gridId) {
     ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
     <div class="reason-box"><b>Alasan rekomendasi</b>${row.reason}</div>
   `;
+  Object.entries(gridLayers).forEach(([gid, layer]) => {
+    const feat = rawGrid.features.find(f => f.properties.grid_id === gid);
+    layer.setStyle(gridStyle(feat || { properties: {} }));
+  });
+  const hl = gridLayers[gridId];
+  if (hl) hl.setStyle({ weight: 3, color: '#fff', fillOpacity: 0.85 });
 }
 
 function drawFeatureBars() {

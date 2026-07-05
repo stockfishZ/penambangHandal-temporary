@@ -233,7 +233,10 @@
         <div class="panel-shell">
           <aside class="panel detail-panel">
             <span class="pill">Selected Target</span>
-            <h3>Detail Target</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <h3 id="targetDetailTitle" style="margin:0;">—</h3>
+              <button id="zoomDetailBtn" class="btn btn-ghost small" type="button" title="Perbesar layar">⛶</button>
+            </div>
             <div id="targetDetail" class="target-detail">
               <p class="muted" style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">Klik grid pada peta atau baris ranking untuk melihat detail target.</p>
             </div>
