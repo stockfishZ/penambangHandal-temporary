@@ -944,13 +944,13 @@ tr.selected td {
 }
 
 .detail-line span {
-  color: var(--text-secondary);
+  color: #000;
   font-size: 13px;
 }
 
 .detail-line b {
   text-align: right;
-  color: var(--text-primary);
+  color: #000;
   font-size: 13px;
   font-weight: 600;
 }
@@ -1056,7 +1056,7 @@ footer {
 }
 
 .popup-grid span:nth-child(odd) {
-  color: #555;
+  color: #111;
 }
 
 .popup-grid b {

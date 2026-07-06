@@ -677,17 +677,17 @@ function popupContent(p) {
     : p.is_grandfathered ? '<span style="color:#f59e0b;">⚠️ GRANDFATHERED</span>'
     : '<span style="color:#10b981;">✓ Active</span>';
   const mlLine = p.ml_score !== undefined && p.ml_score !== null
-    ? `<span>ML Score</span><b>${p.ml_masked ? 'BLOCKED' : p.ml_score + '/10'}</b>`
+    ? `<span>ML Score:</span><b>${p.ml_masked ? 'BLOCKED' : p.ml_score + '/10'}</b>`
     : '';
   return `
     <div class="popup-title">${p.grid_id} · ${p.priority_class || '-'}</div>
     <div class="popup-grid">
-      <span>Score</span><b>${p.final_priority_score ?? '-'}</b>
-      <span>Ni avg</span><b>${p.Ni_avg ?? '-'}%</b>
-      <span>Mag score</span><b>${p.mag_score ?? '-'}</b>
-      <span>Slope</span><b>${p.slope_deg ?? '-'}°</b>
-      <span>Legal</span><b>${p.legal_zone || '-'}</b>
-      <span>Compliance</span><b>${compBadge}</b>
+      <span>Score:</span><b>${p.final_priority_score ?? '-'}</b>
+      <span>Ni avg:</span><b>${p.Ni_avg ?? '-'}%</b>
+      <span>Mag score:</span><b>${p.mag_score ?? '-'}</b>
+      <span>Slope:</span><b>${p.slope_deg ?? '-'}°</b>
+      <span>Legal:</span><b>${p.legal_zone || '-'}</b>
+      <span>Compliance:</span><b>${compBadge}</b>
       ${mlLine}
     </div>`;
 }
@@ -778,27 +778,27 @@ function selectTarget(gridId) {
     <div style="margin: 16px 0; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.05); overflow: hidden;">
       <div style="height: 100%; width: ${row.final_priority_score}%; background: ${pColor}; border-radius: 2px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);"></div>
     </div>
-    <div class="detail-line"><span>Final score</span><b>${row.final_priority_score}/100</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;margin:4px 0;"><span>Recommended Spacing</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
-    <div class="detail-line"><span>Required Drill Holes</span><b>${row.estimated_drill_holes ?? '-'}</b></div>
-    <div class="detail-line"><span>Est. Drilling Cost</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
-    <div class="detail-line"><span>Ni average</span><b>${row.Ni_avg}%</b></div>
-    <div class="detail-line"><span>Magnetic score</span><b>${row.mag_score}</b></div>
-    <div class="detail-line"><span>Slope</span><b>${row.slope_deg}°</b></div>
-    <div class="detail-line"><span>Distance to road</span><b>${row.distance_to_road_m} m</b></div>
-    <div class="detail-line"><span>Distance to river</span><b>${row.distance_to_river_m} m</b></div>
-    <div class="detail-line"><span>Legal status</span><b>${row.legal_status}</b></div>
-    <div class="detail-line"><span>Legal zone</span><b>${row.legal_zone || '-'}</b></div>
-    <div class="detail-line"><span>Permit required</span><b>${row.permit_required || '-'}</b></div>
-    <div class="detail-line"><span>Legal reference</span><b>${row.legal_reference || '-'}</b></div>
-    <div class="detail-line"><span>Mitigation</span><b>${row.mitigation_requirements || '-'}</b></div>
-    <div class="detail-line"><span>Compliance</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Viability score</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
-    <div class="detail-line"><span>Grandfathered</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Yes (Keterlanjuran)' : 'No'}</b></div>
-    <div class="detail-line"><span>Kill zone</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ Excluded' : 'No'}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>ML Score</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'BLOCKED — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
-    <div class="detail-line"><span>ML Masked</span><b>${row.ml_masked ? 'Yes' : 'No'}</b></div>
-    ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
+    <div class="detail-line"><span>Final score:</span><b>${row.final_priority_score}/100</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;margin:4px 0;"><span>Recommended Spacing:</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
+    <div class="detail-line"><span>Required Drill Holes:</span><b>${row.estimated_drill_holes ?? '-'}</b></div>
+    <div class="detail-line"><span>Est. Drilling Cost:</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
+    <div class="detail-line"><span>Ni average:</span><b>${row.Ni_avg}%</b></div>
+    <div class="detail-line"><span>Magnetic score:</span><b>${row.mag_score}</b></div>
+    <div class="detail-line"><span>Slope:</span><b>${row.slope_deg}°</b></div>
+    <div class="detail-line"><span>Distance to road:</span><b>${row.distance_to_road_m} m</b></div>
+    <div class="detail-line"><span>Distance to river:</span><b>${row.distance_to_river_m} m</b></div>
+    <div class="detail-line"><span>Legal status:</span><b>${row.legal_status}</b></div>
+    <div class="detail-line"><span>Legal zone:</span><b>${row.legal_zone || '-'}</b></div>
+    <div class="detail-line"><span>Permit required:</span><b>${row.permit_required || '-'}</b></div>
+    <div class="detail-line"><span>Legal reference:</span><b>${row.legal_reference || '-'}</b></div>
+    <div class="detail-line"><span>Mitigation:</span><b>${row.mitigation_requirements || '-'}</b></div>
+    <div class="detail-line"><span>Compliance:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Viability score:</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
+    <div class="detail-line"><span>Grandfathered:</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Yes (Keterlanjuran)' : 'No'}</b></div>
+    <div class="detail-line"><span>Kill zone:</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ Excluded' : 'No'}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>ML Score:</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'BLOCKED — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
+    <div class="detail-line"><span>ML Masked:</span><b>${row.ml_masked ? 'Yes' : 'No'}</b></div>
+    ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features:</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
     <div class="reason-box"><b>Alasan rekomendasi</b>${row.reason}</div>
   `;
   Object.entries(gridLayers).forEach(([gid, layer]) => {
