@@ -117,7 +117,10 @@ def train_model(X, y, region_ids):
         print(f"  {name}: {imp:.4f}")
 
     model.fit(X, y)
-    joblib.dump(model, MODEL_PATH)
+    
+    tmp_model_path = MODEL_PATH + ".tmp"
+    joblib.dump(model, tmp_model_path)
+    os.replace(tmp_model_path, MODEL_PATH)
 
     metadata = {
         "features": ALL_FEATURES,
@@ -129,8 +132,10 @@ def train_model(X, y, region_ids):
         "test_metrics": test_metrics,
         "n_features": len(ALL_FEATURES),
     }
-    with open(META_PATH, "w") as f:
+    tmp_meta_path = META_PATH + ".tmp"
+    with open(tmp_meta_path, "w") as f:
         json.dump(metadata, f, indent=2)
+    os.replace(tmp_meta_path, META_PATH)
 
     print(f"\nModel saved: {MODEL_PATH}")
     print(f"Metadata saved: {META_PATH}")

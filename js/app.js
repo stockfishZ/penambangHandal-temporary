@@ -41,10 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function bindElements() {
-  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint','targetDetailTitle','zoomDetailBtn'].forEach(id => {
-    els[id] = document.getElementById(id);
+  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','retrainBtn','toggle3dBtn','close3dBtn','plotly3dContainer','plotlyDiv','roiSavings','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint','targetDetailTitle','zoomDetailBtn'].forEach(id => {
+    if (document.getElementById(id)) els[id] = document.getElementById(id);
   });
 }
+window.roiSavingsMiliar = 0;
 
 function bindEvents() {
   els.magFile.addEventListener('change', () => updateFileName(els.magFile, els.magFileName));
@@ -52,6 +53,56 @@ function bindEvents() {
   els.gridFile.addEventListener('change', () => updateFileName(els.gridFile, els.gridFileName));
   els.loadDummyBtn.addEventListener('click', loadDummyData);
   els.runBtn.addEventListener('click', runAnalysis);
+  
+  if (els.retrainBtn) {
+    els.retrainBtn.addEventListener('click', async () => {
+      els.retrainBtn.disabled = true;
+      els.retrainBtn.textContent = 'Uploading & Training...';
+      try {
+        const formData = new FormData();
+        if (els.magFile.files[0]) formData.append('file', els.magFile.files[0]);
+        const res = await fetch(`${BACKEND_URL}/api/retrain`, { method: 'POST', body: formData });
+        if (!res.ok) throw new Error('Training already in progress or failed');
+        const poll = setInterval(async () => {
+          try {
+            const statusRes = await fetch(`${BACKEND_URL}/api/retrain/status`);
+            const statusData = await statusRes.json();
+            if (!statusData.is_training) {
+              clearInterval(poll);
+              els.retrainBtn.textContent = 'Upload New Drill Data & Retrain';
+              els.retrainBtn.disabled = false;
+              setStatus('Retrain Complete', 'Model ML berhasil dilatih ulang dan di-load ke memory. Anda bisa run analysis lagi.');
+            }
+          } catch(e) {}
+        }, 1000);
+      } catch (e) {
+        els.retrainBtn.disabled = false;
+        els.retrainBtn.textContent = 'Upload New Drill Data & Retrain';
+        setStatus('Error', e.message);
+      }
+    });
+  }
+
+  if (els.toggle3dBtn && els.close3dBtn) {
+    els.toggle3dBtn.addEventListener('click', () => {
+      els.plotly3dContainer.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.documentElement.style.overflow = 'hidden';
+      // Give the browser time to render the container dimensions before Plotly calculates them
+      setTimeout(() => {
+        renderPlotly3D();
+        if (window.Plotly) {
+          try { Plotly.Plots.resize(document.getElementById('plotlyDiv')); } catch(e){}
+        }
+      }, 150);
+    });
+    els.close3dBtn.addEventListener('click', () => {
+      els.plotly3dContainer.style.display = 'none';
+      document.body.style.overflow = ''; // Restore background scrolling
+      document.documentElement.style.overflow = '';
+    });
+  }
+
   els.downloadBtn.addEventListener('click', downloadResults);
   els.zoomDetailBtn.addEventListener('click', () => {
     detailZoomed = !detailZoomed;
@@ -156,9 +207,11 @@ async function loadDummyData() {
       fetch('data/geochemistry_dummy.csv').then(r => r.text()),
       fetch('data/study_grid_dummy.geojson').then(r => r.json())
     ]);
-    rawMagnet = parseCSV(magText);
-    rawGeo = parseCSV(geoText);
     rawGrid = gridJson;
+    rawGrid.features = rawGrid.features.slice(0, 40); // Limit to 40 grids to reduce lag
+    const validIds = new Set(rawGrid.features.map(f => f.properties.grid_id));
+    rawMagnet = parseCSV(magText).filter(r => validIds.has(r.grid_id));
+    rawGeo = parseCSV(geoText).filter(r => validIds.has(r.grid_id));
     els.magFileName.textContent = 'magnetometer_dummy.csv';
     els.geoFileName.textContent = 'geochemistry_dummy.csv';
     els.gridFileName.textContent = 'study_grid_dummy.geojson';
@@ -191,32 +244,58 @@ async function runAnalysis() {
         return;
       }
     }
+    els.runBtn.classList.add('loading');
     setStatus('Processing', 'Menghitung scoring lokal dan mengirim ke backend ML...');
+
+    // Precompute aggregations EXACTLY ONCE to fix N+1 / double aggregation CPU bottleneck
+    const magByGrid = groupBy(rawMagnet, 'grid_id');
+    const geoByGrid = groupBy(rawGeo, 'grid_id');
+    const precomputed = {};
+    rawGrid.features.forEach(f => {
+      const gid = f.properties.grid_id || 'unknown';
+      const mRows = magByGrid[gid] || [];
+      const gRows = geoByGrid[gid] || [];
+      precomputed[gid] = {
+        mag_mean_nT: avg(mRows, 'mag_raw_nT'),
+        mag_std_nT: std(mRows, 'mag_raw_nT'),
+        Ni_pct_mean: avg(gRows, 'Ni_pct'),
+        Fe_pct_mean: avg(gRows, 'Fe_pct'),
+        Co_pct_mean: avg(gRows, 'Co_pct'),
+        MgO_pct_mean: avg(gRows, 'MgO_pct'),
+        SiO2_pct_mean: avg(gRows, 'SiO2_pct'),
+      };
+    });
 
     let backendData = null;
     try {
-      backendData = await callBackendAnalyze(rawGrid.features, rawMagnet, rawGeo);
+      backendData = await callBackendAnalyze(rawGrid.features, precomputed);
     } catch (err) {
       console.warn('Backend ML unavailable, using local scoring only:', err);
     }
 
-    resultRows = buildResults(rawGrid, rawMagnet, rawGeo);
-
     if (backendData?.results) {
       const mlMap = {};
       backendData.results.forEach(r => { if (r.grid_id) mlMap[r.grid_id] = r; });
-      resultRows = resultRows.map(row => {
-        const ml = mlMap[row.grid_id];
-        if (ml && ml.ml_score != null && !ml.ml_masked) {
-          const mlFinal = Math.round(ml.ml_score * 10);
-          return { ...row, ml_score: ml.ml_score, ml_masked: ml.ml_masked, ml_block_reason: ml.ml_block_reason, ml_top_features: ml.ml_top_features, ml_confidence: ml.ml_confidence, ml_cv_score: ml.ml_cv_score, backend_viability_score: ml.viability_score, backend_kill_zone: ml.kill_zone_exclusion, backend_grandfathered: ml.is_grandfathered, final_priority_score: mlFinal, priority_class: priorityClass(mlFinal), ml_primary: true };
-        }
+      rawGrid.features.forEach(f => {
+        const ml = mlMap[f.properties.grid_id];
         if (ml) {
-          return { ...row, ml_score: ml.ml_score, ml_masked: ml.ml_masked, ml_block_reason: ml.ml_block_reason, ml_top_features: ml.ml_top_features, ml_confidence: ml.ml_confidence, ml_cv_score: ml.ml_cv_score, backend_viability_score: ml.viability_score, backend_kill_zone: ml.kill_zone_exclusion, backend_grandfathered: ml.is_grandfathered };
+          f.properties.ml_score = ml.ml_score;
+          f.properties.ml_masked = ml.ml_masked;
+          f.properties.ml_block_reason = ml.ml_block_reason;
+          f.properties.ml_top_features = ml.ml_top_features;
+          f.properties.ml_confidence = ml.ml_confidence;
+          f.properties.ml_cv_score = ml.ml_cv_score;
+          f.properties.is_grandfathered = ml.is_grandfathered;
+          f.properties.kill_zone_exclusion = ml.kill_zone_exclusion;
+          f.properties.viability_score = ml.viability_score;
+          f.properties.qaqc_flags = ml.qaqc_flags || [];
         }
-        return row;
       });
-      resultRows.sort((a,b) => b.final_priority_score - a.final_priority_score);
+    }
+
+    resultRows = buildResults(rawGrid, precomputed);
+
+    if (backendData?.results) {
       const firstMl = resultRows.find(r => r.ml_top_features?.length);
       if (firstMl) {
         drawFeatureBars(firstMl.ml_top_features);
@@ -235,6 +314,8 @@ async function runAnalysis() {
   } catch (err) {
     console.error(err);
     setStatus('Error', err.message || 'Analisis gagal. Cek format kolom CSV dan GeoJSON.');
+  } finally {
+    els.runBtn.classList.remove('loading');
   }
 }
 
@@ -289,34 +370,30 @@ function std(arr, key) {
   return Math.sqrt(vals.reduce((s, v) => s + (v - m) ** 2, 0) / (vals.length - 1));
 }
 
-async function callBackendAnalyze(features, magnet, geo) {
-  const magByGrid = groupBy(magnet, 'grid_id');
-  const geoByGrid = groupBy(geo, 'grid_id');
-
+async function callBackendAnalyze(features, precomputed) {
   const grids = features.map(f => {
     const p = f.properties || {};
     const gid = p.grid_id;
-    const mRows = magByGrid[gid] || [];
-    const gRows = geoByGrid[gid] || [];
+    const stats = precomputed[gid] || {};
     const coords = f.geometry?.coordinates?.[0]?.[0] || [];
     return {
       grid_id: gid,
       latitude: coords[1] || 0,
       longitude: coords[0] || 0,
-      magnetometer_value: avg(mRows, 'mag_raw_nT'),
-      geochemistry_value: avg(gRows, 'Ni_pct'),
+      magnetometer_value: stats.mag_mean_nT || 0,
+      geochemistry_value: stats.Ni_pct_mean || 0,
       slope_deg: Number(p.slope_deg) || 0,
       distance_to_river_m: Number(p.distance_to_river_m) || 0,
       distance_to_road_m: Number(p.distance_to_road_m) || 0,
       distance_to_smelter_km: Number(p.distance_to_smelter_km) || 0,
       area_ha: Number(p.area_ha) || 0,
-      Ni_pct_mean: avg(gRows, 'Ni_pct'),
-      Fe_pct_mean: avg(gRows, 'Fe_pct'),
-      Co_pct_mean: avg(gRows, 'Co_pct'),
-      MgO_pct_mean: avg(gRows, 'MgO_pct'),
-      SiO2_pct_mean: avg(gRows, 'SiO2_pct'),
-      mag_mean_nT: avg(mRows, 'mag_raw_nT'),
-      mag_std_nT: std(mRows, 'mag_raw_nT'),
+      Ni_pct_mean: stats.Ni_pct_mean || 0,
+      Fe_pct_mean: stats.Fe_pct_mean || 0,
+      Co_pct_mean: stats.Co_pct_mean || 0,
+      MgO_pct_mean: stats.MgO_pct_mean || 0,
+      SiO2_pct_mean: stats.SiO2_pct_mean || 0,
+      mag_mean_nT: stats.mag_mean_nT || 0,
+      mag_std_nT: stats.mag_std_nT || 0,
       lithology: p.lithology || 'unknown',
       legal_status: p.legal_status || 'unknown',
     };
@@ -397,29 +474,32 @@ function formatRupiah(n) {
 }
 
 function computeCapex(row) {
-  // ponytail: hardcoded 25m depth, Rp 1.000.000/m — swap with real params later
-  // ponytail: ml_score fallback to priority_score since ML pipeline isn't ready
-  const ml = row.ml_score;
-  const std = row.mag_std;
-  const usingMl = ml != null;
-  const highConf = usingMl ? (ml >= 7.5 && std <= 15) : (row.final_priority_score >= 62 && std <= 15);
+  // Use ML cv_score, confidence, grid_score, or local final_score for spacing determination
+  const cvScore = row.ml_cv_score;
+  const conf = row.ml_confidence;
+  const gridScore = row.ml_score;
+  const finalScore = row.final_score;
+  const highConf = (cvScore != null && cvScore >= 0.5) || 
+                   (conf != null && conf >= 0.70) || 
+                   (gridScore != null && gridScore >= 7.0) || 
+                   (finalScore != null && finalScore >= 62);
   const spacing = highConf ? 100 : 50;
   const areaM2 = (row.area_ha || 0) * 10000;
   const holes = Math.ceil(areaM2 / (spacing * spacing));
-  const meterage = holes * 25;
-  const cost = meterage * 1000000;
+  const meterage = holes * 25; // standard 25m depth
+  const cost = meterage * 1000000; // Rp 1.000.000/m
   return { drill_spacing: spacing, estimated_drill_holes: holes, total_meterage: meterage, estimated_cost_rp: cost };
 }
 
-function deriveCompliance(legalStatus, gridId) {
+function deriveCompliance(legalStatus, isGrandfathered) {
   const s = (legalStatus || '').toLowerCase();
-  if (gridId === 'G006') {
+  if (isGrandfathered) {
     return {
       legal_zone: 'Hutan Produksi',
       permit_required: 'PPKH (Persetujuan Penggunaan Kawasan Hutan)',
       legal_reference: 'PP 23/2021',
-      mitigation_requirements: 'Requires PPKH, PNBP payment, and watershed rehabilitation (Rehabilitasi DAS) at 1:1 ratio',
-      compliance_status: 'HISTORICAL ANOMALY: Grandfathered concession (Keterlanjuran). Not viable under 2026 regulations.',
+      mitigation_requirements: 'Wajib PPKH, pembayaran PNBP, dan Rehabilitasi DAS rasio 1:1',
+      compliance_status: 'ANOMALI SEJARAH: Konsesi Keterlanjuran. Tidak layak di bawah regulasi 2026.',
       is_grandfathered: true,
       kill_zone_exclusion: false,
       viability_score: 0.0
@@ -428,10 +508,10 @@ function deriveCompliance(legalStatus, gridId) {
   if (s.includes('no')) {
     return {
       legal_zone: 'Hutan Lindung',
-      permit_required: 'EXCLUDED',
+      permit_required: 'DILARANG',
       legal_reference: 'UU 41/1999',
-      mitigation_requirements: 'Strictly prohibited for open-pit mining. No permits issued.',
-      compliance_status: 'KILL ZONE: Hutan Lindung/Konservasi. Mining prohibited.',
+      mitigation_requirements: 'Dilarang keras untuk tambang terbuka. Tidak ada izin.',
+      compliance_status: 'ZONA TERLARANG: Hutan Lindung. Dilarang menambang.',
       is_grandfathered: false,
       kill_zone_exclusion: true,
       viability_score: 0.0
@@ -442,8 +522,8 @@ function deriveCompliance(legalStatus, gridId) {
       legal_zone: 'Hutan Produksi',
       permit_required: 'PPKH (Persetujuan Penggunaan Kawasan Hutan)',
       legal_reference: 'PP 23/2021',
-      mitigation_requirements: 'Requires PPKH, PNBP payment, and watershed rehabilitation (Rehabilitasi DAS) at 1:1 ratio',
-      compliance_status: 'Kawasan Hutan: PPKH permit required. Watershed rehabilitation needed.',
+      mitigation_requirements: 'Wajib PPKH, pembayaran PNBP, dan Rehabilitasi DAS rasio 1:1',
+      compliance_status: 'Kawasan Hutan: Wajib izin PPKH dan Rehabilitasi DAS.',
       is_grandfathered: false,
       kill_zone_exclusion: false,
       viability_score: 42.5
@@ -454,46 +534,65 @@ function deriveCompliance(legalStatus, gridId) {
       legal_zone: 'Areal Penggunaan Lain',
       permit_required: 'IUP (AMDAL/UKL-UPL)',
       legal_reference: 'UU 3/2020; PP 96/2021',
-      mitigation_requirements: 'AMDAL study or UKL-UPL submission required',
-      compliance_status: 'APL: IUP permit required. Standard AMDAL process applies.',
+      mitigation_requirements: 'Wajib studi AMDAL atau UKL-UPL',
+      compliance_status: 'APL: Wajib izin IUP. Proses AMDAL standar berlaku.',
       is_grandfathered: false,
       kill_zone_exclusion: false,
       viability_score: 85.0
     };
   }
   return {
-    legal_zone: 'Unknown',
-    permit_required: 'Verify permits',
+    legal_zone: 'Tidak Diketahui',
+    permit_required: 'Verifikasi izin',
     legal_reference: 'UU 3/2020; PP 96/2021',
-    mitigation_requirements: 'Verify permits with local authorities',
-    compliance_status: 'Verify land classification with KLHK/BIG.',
+    mitigation_requirements: 'Verifikasi izin dengan otoritas lokal',
+    compliance_status: 'Verifikasi tata ruang dengan KLHK/BIG.',
     is_grandfathered: false,
     kill_zone_exclusion: false,
     viability_score: 50.0
   };
 }
 
-function buildResults(grid, magnet, geo) {
+function deriveProcessingRoute(ni, fe, co) {
+  if (ni >= 1.5 && fe < 30) return { route: 'RKEF (Stainless Steel)', desc: 'Saprolite ore (High Ni, Low Fe)' };
+  if (ni >= 0.8 && fe >= 30) return { route: 'HPAL (EV Battery)', desc: 'Limonite ore (High Fe/Co)' };
+  if (ni >= 0.8 && fe < 30) return { route: 'Transition', desc: 'Transition zone (Blend required)' };
+  return { route: 'Waste / Sub-economic', desc: 'Below cut-off grade' };
+}
+
+function deriveSafetyRisk(slope, distRoad) {
+  if (slope > 25 && distRoad > 2000) {
+    return { level: 'High (Red)', warning: 'Extreme landslide risk & poor medevac access. Requires winch/heli support and K3 rescue plan.' };
+  } else if (slope > 15 || distRoad > 2000) {
+    return { level: 'Moderate (Yellow)', warning: 'Standard 4x4 access restricted. Extra caution for slope stability.' };
+  } else {
+    return { level: 'Low (Green)', warning: 'Standard safety protocols apply. Good road access.' };
+  }
+}
+
+function buildResults(grid, precomputed) {
   if (!grid || !Array.isArray(grid.features)) throw new Error('GeoJSON grid tidak valid.');
-  const magByGrid = groupBy(magnet, 'grid_id');
-  const geoByGrid = groupBy(geo, 'grid_id');
-  const magMeans = grid.features.map(f => avg(magByGrid[f.properties.grid_id] || [], 'mag_raw_nT'));
+  
+  const magMeans = grid.features.map(f => {
+    const stats = precomputed[f.properties.grid_id] || {};
+    return stats.mag_mean_nT || 0;
+  });
   const magMin = Math.min(...magMeans.filter(Number.isFinite));
   const magMax = Math.max(...magMeans.filter(Number.isFinite));
 
   const results = grid.features.map((feature, idx) => {
     const p = feature.properties || {};
     const gridId = p.grid_id || `G${String(idx + 1).padStart(3, '0')}`;
-    const mRows = magByGrid[gridId] || [];
-    const gRows = geoByGrid[gridId] || [];
-    const magMean = avg(mRows, 'mag_raw_nT');
+    
+    const stats = precomputed[gridId] || {};
+    const magMean = stats.mag_mean_nT || 0;
     const magScore = norm(magMean, magMin, magMax);
-    const ni = avg(gRows, 'Ni_pct');
-    const fe = avg(gRows, 'Fe_pct');
-    const co = avg(gRows, 'Co_pct');
-    const mgo = avg(gRows, 'MgO_pct');
-    const sio2 = avg(gRows, 'SiO2_pct');
-    const magStd = std(mRows, 'mag_raw_nT');
+    const ni = stats.Ni_pct_mean || 0;
+    const fe = stats.Fe_pct_mean || 0;
+    const co = stats.Co_pct_mean || 0;
+    const mgo = stats.MgO_pct_mean || 0;
+    const sio2 = stats.SiO2_pct_mean || 0;
+    const magStd = stats.mag_std_nT || 0;
     const geochemScore = Math.max(0, Math.min(100, (ni / 2.1) * 58 + (mgo / 22) * 22 + ((45 - Math.min(sio2, 45)) / 45) * 10 + ((40 - Math.min(fe, 40)) / 40) * 10));
     const lithScore = scoreLithology(p.lithology);
     const slopeScore = scoreSlope(Number(p.slope_deg));
@@ -516,18 +615,23 @@ function buildResults(grid, magnet, geo) {
 
     if (legalScore === 0) finalScore = Math.min(finalScore, 34);
     finalScore = Math.round(finalScore * 10) / 10;
+    const mlPrimary = p.ml_score != null && !p.ml_masked;
+    if (mlPrimary) finalScore = Math.round(p.ml_score * 10);
     const cls = priorityClass(finalScore);
     const riskScore = Math.round((100 - ((slopeScore + roadScore + riverScore + legalScore) / 4)) * 10) / 10;
 
-    const compliance = deriveCompliance(p.legal_status, gridId);
+    const compliance = deriveCompliance(p.legal_status, p.is_grandfathered);
+    const processing = deriveProcessingRoute(ni, fe, co);
+    const safety = deriveSafetyRisk(Number(p.slope_deg), Number(p.distance_to_road_m));
 
     const reason = buildReason({cls, magScore, ni, geochemScore, slope: p.slope_deg, road: p.distance_to_road_m, river: p.distance_to_river_m, legal: p.legal_status, lithology: p.lithology, final_priority_score: finalScore});
 
     const capex = computeCapex({
-      ml_score: null,  // ponytail: plumb real ml_score when backend ML lands
-      mag_std: magStd,
-      area_ha: Number(p.area_ha),
-      final_priority_score: finalScore
+      ml_cv_score: p.ml_cv_score,
+      ml_confidence: p.ml_confidence,
+      ml_score: p.ml_score,
+      final_score: finalScore,
+      area_ha: Number(p.area_ha)
     });
 
     const capexSentenceStr = capex.drill_spacing === 50
@@ -551,6 +655,12 @@ function buildResults(grid, magnet, geo) {
       risk_score: riskScore,
       priority_class: cls,
       reason: reason + ' ' + capexSentenceStr,
+      ml_primary: mlPrimary,
+      processing_route: processing.route,
+      processing_desc: processing.desc,
+      safety_level: safety.level,
+      safety_warning: safety.warning,
+      qaqc_flags: p.qaqc_flags || [],
       ...compliance,
       ...capex,
       capex_reason: capexSentenceStr
@@ -656,6 +766,59 @@ function renderMapLayers() {
   setTimeout(forceMapResize, 350);
 }
 
+function renderPlotly3D() {
+  if (!resultRows.length || !window.Plotly) return;
+  const active = resultRows.filter(r => !r.ml_masked);
+  const x = active.map(r => {
+    const f = rawGrid.features.find(feat => feat.properties.grid_id === r.grid_id);
+    return f?.geometry?.coordinates?.[0]?.[0]?.[0] || 0;
+  });
+  const y = active.map(r => {
+    const f = rawGrid.features.find(feat => feat.properties.grid_id === r.grid_id);
+    return f?.geometry?.coordinates?.[0]?.[0]?.[1] || 0;
+  });
+  const z = active.map(r => r.ml_score != null ? r.ml_score : (r.final_priority_score/10));
+  const c = active.map(r => r.Ni_avg || 0);
+  const text = active.map(r => `Grid: ${r.grid_id}<br>Ni Avg: ${r.Ni_avg}%<br>Score: ${r.ml_score != null ? r.ml_score : (r.final_priority_score/10)}`);
+
+  const trace = {
+    x: x, y: y, z: z,
+    mode: 'markers',
+    marker: {
+      size: 12,
+      color: c,
+      colorscale: 'Viridis',
+      opacity: 0.9,
+      colorbar: { title: 'Ni Avg (%)' }
+    },
+    text: text,
+    hoverinfo: 'text',
+    type: 'scatter3d'
+  };
+  const layout = {
+    title: 'Model Blok 3D - Target Eksplorasi',
+    dragmode: 'turntable',
+    scene: {
+      xaxis: { title: 'Longitude' },
+      yaxis: { title: 'Latitude' },
+      zaxis: { title: 'Prioritas (Lebih tinggi = lebih baik)' },
+      bgcolor: '#0f172a',
+      camera: {
+        eye: { x: 1.5, y: 1.5, z: 1.5 }
+      }
+    },
+    paper_bgcolor: '#0f172a',
+    font: { color: '#e2e8f0' },
+    margin: { l: 0, r: 0, b: 0, t: 40 }
+  };
+  const config = {
+    responsive: true,
+    scrollZoom: true,
+    displayModeBar: true
+  };
+  Plotly.newPlot('plotlyDiv', [trace], layout, config);
+}
+
 function gridStyle(feature) {
   const p = feature.properties || {};
   if (p.ml_masked) {
@@ -663,7 +826,13 @@ function gridStyle(feature) {
   }
   let fill = priorityColor(p.priority_class || 'Prioritas 3');
   if (activeLayerMode === 'magnet') fill = colorRamp(p.mag_score || 0);
-  if (activeLayerMode === 'samples') fill = colorRamp((p.Ni_avg || 0) / 2.2 * 100);
+  else if (activeLayerMode === 'samples') fill = colorRamp((p.Ni_avg || 0) / 2.2 * 100);
+  else if (activeLayerMode === 'risk') {
+    const v = p.risk_score || 0;
+    if (v >= 65) fill = '#ef4444'; // High Risk (Red)
+    else if (v >= 35) fill = '#f59e0b'; // Med Risk (Yellow)
+    else fill = '#10b981'; // Low Risk (Green)
+  }
   return {
     color: '#fff9e8',
     weight: 1.6,
@@ -682,9 +851,9 @@ function colorRamp(v) {
 }
 
 function popupContent(p) {
-  const compBadge = p.kill_zone_exclusion ? '<span style="color:#ef4444;">⛔ KILL ZONE</span>'
-    : p.is_grandfathered ? '<span style="color:#f59e0b;">⚠️ GRANDFATHERED</span>'
-    : '<span style="color:#10b981;">✓ Active</span>';
+    const label = p.kill_zone_exclusion ? '<span style="color:#ef4444;">⛔ TERLARANG</span>'
+    : p.is_grandfathered ? '<span style="color:#f59e0b;">⚠️ KETERLANJURAN</span>'
+    : '<span style="color:#10b981;">✓ AMAN</span>';
   const mlLine = p.ml_score !== undefined && p.ml_score !== null
     ? `<span>ML Score:</span><b>${p.ml_masked ? 'BLOCKED' : p.ml_score + '/10'}</b>`
     : '';
@@ -692,11 +861,11 @@ function popupContent(p) {
     <div class="popup-title">${p.grid_id} · ${p.priority_class || '-'}</div>
     <div class="popup-grid">
       <span>Score:</span><b>${p.final_priority_score ?? '-'}</b>
+      <span>Risk (Uncertainty):</span><b>${p.risk_score ?? '-'}</b>
       <span>Ni avg:</span><b>${p.Ni_avg ?? '-'}%</b>
-      <span>Mag score:</span><b>${p.mag_score ?? '-'}</b>
       <span>Slope:</span><b>${p.slope_deg ?? '-'}°</b>
       <span>Legal:</span><b>${p.legal_zone || '-'}</b>
-      <span>Compliance:</span><b>${compBadge}</b>
+      <span>Compliance:</span>${label}
       ${mlLine}
     </div>`;
 }
@@ -733,6 +902,18 @@ function renderSummary() {
   els.bestTarget.textContent = resultRows[0]?.grid_id || '—';
   els.killZoneCount.textContent = killZones;
   els.grandfatheredCount.textContent = grandfathered;
+
+  let baselineTotal = 0;
+  let aiTotal = 0;
+  resultRows.forEach(r => {
+      const areaM2 = (r.area_ha || 10) * 10000;
+      const baselineHoles = Math.ceil(areaM2 / (50 * 50));
+      baselineTotal += baselineHoles * 25 * 1000000;
+      aiTotal += r.estimated_cost_rp || 0;
+  });
+  const savings = Math.max(0, baselineTotal - aiTotal);
+  window.roiSavingsMiliar = (savings / 1000000000).toFixed(2);
+  if (els.roiSavings) els.roiSavings.textContent = `Rp ${window.roiSavingsMiliar} M`;
 }
 
 function renderRanking() {
@@ -758,7 +939,7 @@ function renderRanking() {
         <td style="color:var(--text-secondary)">${r.Ni_avg}%</td>
         <td style="color:var(--text-secondary)">${r.mag_score}</td>
         <td style="color:var(--text-secondary)">${r.slope_deg}°</td>
-        <td><span class="badge ${r.kill_zone_exclusion ? 'p4' : r.is_grandfathered ? 'p3' : r.permit_required === 'IUP (AMDAL/UKL-UPL)' ? 'p1' : 'p2'} compliance-badge" title="${r.compliance_status || ''}">${r.kill_zone_exclusion ? '⛔ EXCLUDED' : r.is_grandfathered ? '⚠️ LEGACY' : r.legal_zone === 'Areal Penggunaan Lain' ? 'APL' : r.legal_zone === 'Hutan Produksi' ? 'HP' : r.legal_status || '-'}</span></td>
+        <td><span class="badge ${r.kill_zone_exclusion ? 'p4' : r.is_grandfathered ? 'p3' : r.permit_required === 'IUP (AMDAL/UKL-UPL)' ? 'p1' : 'p2'} compliance-badge" title="${r.compliance_status || ''}">${r.kill_zone_exclusion ? '⛔ TERLARANG' : r.is_grandfathered ? '⚠️ KETERLANJURAN' : r.legal_zone === 'Areal Penggunaan Lain' ? 'APL' : r.legal_zone === 'Hutan Produksi' ? 'HP' : r.legal_status || '-'}</span></td>
         <td style="color:var(--text-secondary);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.reason}</td>
       </tr>
     `;
@@ -791,26 +972,38 @@ function selectTarget(gridId) {
     <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;margin:4px 0;"><span>Recommended Spacing:</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
     <div class="detail-line"><span>Required Drill Holes:</span><b>${row.estimated_drill_holes ?? '-'}</b></div>
     <div class="detail-line"><span>Est. Drilling Cost:</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
-    <div class="detail-line"><span>Ni average:</span><b>${row.Ni_avg}%</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Ni average:</span><b>${row.Ni_avg}%</b></div>
+    <div class="detail-line"><span>Processing Route:</span><b style="color:#0ea5e9;">${row.processing_route || '-'}</b></div>
+    <div class="detail-line" style="border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px;margin-bottom:6px;"><span>Ore Character:</span><b>${row.processing_desc || '-'}</b></div>
+    <div class="detail-line"><span>K3 Safety Risk:</span><b style="color:${row.safety_level && row.safety_level.includes('High') ? '#ef4444' : row.safety_level && row.safety_level.includes('Moderate') ? '#f59e0b' : '#10b981'};">${row.safety_level || '-'}</b></div>
+    <div class="detail-line" style="border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px;margin-bottom:6px;"><span>Safety Warning:</span><b>${row.safety_warning || '-'}</b></div>
     <div class="detail-line"><span>Magnetic score:</span><b>${row.mag_score}</b></div>
     <div class="detail-line"><span>Slope:</span><b>${row.slope_deg}°</b></div>
-    <div class="detail-line"><span>Distance to road:</span><b>${row.distance_to_road_m} m</b></div>
-    <div class="detail-line"><span>Distance to river:</span><b>${row.distance_to_river_m} m</b></div>
-    <div class="detail-line"><span>Legal status:</span><b>${row.legal_status}</b></div>
-    <div class="detail-line"><span>Legal zone:</span><b>${row.legal_zone || '-'}</b></div>
-    <div class="detail-line"><span>Permit required:</span><b>${row.permit_required || '-'}</b></div>
-    <div class="detail-line"><span>Legal reference:</span><b>${row.legal_reference || '-'}</b></div>
-    <div class="detail-line"><span>Mitigation:</span><b>${row.mitigation_requirements || '-'}</b></div>
-    <div class="detail-line"><span>Compliance:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Viability score:</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
-    <div class="detail-line"><span>Grandfathered:</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Yes (Keterlanjuran)' : 'No'}</b></div>
-    <div class="detail-line"><span>Kill zone:</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ Excluded' : 'No'}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>ML Score:</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'BLOCKED — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
-    ${row.ml_confidence != null ? '<div class="detail-line"><span>ML Confidence:</span><b>' + (row.ml_confidence * 100).toFixed(0) + '%</b></div>' : ''}
-    ${row.ml_cv_score != null ? '<div class="detail-line"><span>Model R²:</span><b>' + row.ml_cv_score.toFixed(3) + '</b></div>' : ''}
-    <div class="detail-line"><span>ML Primary:</span><b style="color:${row.ml_primary ? '#10b981' : 'var(--text-muted)'};">${row.ml_primary ? 'Yes' : 'No'}</b></div>
+    <div class="detail-line"><span>Jarak ke jalan:</span><b>${row.distance_to_road_m} m</b></div>
+    <div class="detail-line"><span>Jarak ke sungai:</span><b>${row.distance_to_river_m} m</b></div>
+    <div class="detail-line"><span>Status legal:</span><b>${row.legal_status}</b></div>
+    <div class="detail-line"><span>Zona legal:</span><b>${row.legal_zone || '-'}</b></div>
+    <div class="detail-line"><span>Izin dibutuhkan:</span><b>${row.permit_required || '-'}</b></div>
+    <div class="detail-line"><span>Referensi hukum:</span><b>${row.legal_reference || '-'}</b></div>
+    <div class="detail-line"><span>Kepatuhan (Compliance):</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
+    <div class="detail-line"><span>Mitigasi Tambahan:</span><b>${row.mitigation_requirements || '-'}</b></div>
+    <div class="detail-line"><span>Keterlanjuran:</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Ya' : 'Tidak'}</b></div>
+    <div class="detail-line"><span>Kill zone:</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ TERLARANG' : 'Tidak'}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Skor Viabilitas:</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Skor ML:</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'DIBLOKIR — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
+    ${row.ml_confidence != null ? '<div class="detail-line"><span>Kepercayaan ML:</span><b>' + (row.ml_confidence * 100).toFixed(0) + '%</b></div>' : ''}
+    ${row.ml_cv_score != null ? '<div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Akurasi Model R²:</span><b>' + row.ml_cv_score.toFixed(3) + '</b></div>' : ''}
+    <div class="detail-line"><span>ML Primary:</span><b style="color:${row.ml_primary ? '#10b981' : 'var(--text-muted)'};">${row.ml_primary ? 'Ya' : 'Tidak'}</b></div>
     ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features:</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
     <div class="reason-box"><b>Alasan rekomendasi</b>${row.reason}</div>
+    ${(row.qaqc_flags && row.qaqc_flags.length > 0) ? '<div class="reason-box" style="border-left-color:#f59e0b; background:rgba(245,158,11,0.1); margin-top:8px;"><b>⚠️ QA/QC Interventions</b>' + row.qaqc_flags.join('<br>') + '</div>' : '<div class="reason-box" style="border-left-color:#10b981; background:rgba(16,185,129,0.1); margin-top:8px;"><b>✓ QA/QC Passed</b>Data parameters within normal geological bounds.</div>'}
+    <div style="margin-top: 15px;">
+        <button id="btn-generate-esg" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background:linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer; font-size: 13px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); transition: all 0.2s;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Auto-Generate ESG & Permit Draft
+        </button>
+    </div>
+    <div id="esg-draft-container" style="display: none; margin-top: 12px; padding: 16px; background: rgba(15,23,42,0.8); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.6; color: #e2e8f0; max-height: 350px; overflow-y: auto;"></div>
   `;
   Object.entries(gridLayers).forEach(([gid, layer]) => {
     const feat = rawGrid.features.find(f => f.properties.grid_id === gid);
@@ -818,6 +1011,78 @@ function selectTarget(gridId) {
   });
   const hl = gridLayers[gridId];
   if (hl) hl.setStyle({ weight: 3, color: '#fff', fillOpacity: 0.85 });
+
+  const btnEsg = document.getElementById('btn-generate-esg');
+  if (btnEsg) {
+    btnEsg.addEventListener('click', async () => {
+      const container = document.getElementById('esg-draft-container');
+      btnEsg.disabled = true;
+      btnEsg.style.opacity = '0.5';
+      btnEsg.innerHTML = 'Generating via NiTERRA AI...';
+      container.style.display = 'block';
+      container.innerHTML = '<span style="color:#8b5cf6;">[SYSTEM] Initializing GenAI Drafting Agent...</span><br><br>';
+      
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/generate-esg-draft`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            grid_id: gridId,
+            slope_deg: row.slope_deg || 0,
+            distance_to_river_m: row.distance_to_river_m || 500,
+            legal_status: row.legal_status || 'Aman',
+            lithology: row.lithology || 'Ultramafik',
+            ni_avg: row.Ni_avg || 0,
+            roi_savings_miliar: Number(window.roiSavingsMiliar) || 0
+          })
+        });
+        if (!res.ok) throw new Error('API Error');
+        const data = await res.json();
+        
+        let i = 0;
+        const text = data.draft;
+        container.innerHTML = '';
+        function typeWriter() {
+          if (i < text.length) {
+            let char = text.charAt(i);
+            if (char === '\\n') {
+                container.innerHTML += '<br>';
+            } else {
+                container.innerHTML += char;
+            }
+            i++;
+            container.scrollTop = container.scrollHeight;
+            setTimeout(typeWriter, 5);
+          } else {
+            btnEsg.innerHTML = 'Draft Complete - Downloading PDF...';
+            const opt = {
+              margin: 15,
+              filename: `ESG_Permit_Draft_${gridId}.pdf`,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            if (typeof html2pdf !== 'undefined') {
+              const htmlContent = `
+                <div style="padding: 20px; background: #ffffff; color: #000000; font-family: Arial, sans-serif; font-size: 12px; line-height: 1.6;">
+                  ${container.innerHTML}
+                </div>
+              `;
+              html2pdf().set(opt).from(htmlContent).save().then(() => {
+                btnEsg.innerHTML = 'Draft Complete';
+              });
+            } else {
+              btnEsg.innerHTML = 'Draft Complete';
+            }
+          }
+        }
+        typeWriter();
+      } catch (err) {
+        container.innerHTML += `<span style="color:#ef4444;">Error: Backend unavailable. Unable to generate draft.</span>`;
+        btnEsg.innerHTML = 'Generation Failed';
+      }
+    });
+  }
 }
 
 let lastFeatureBars = null;

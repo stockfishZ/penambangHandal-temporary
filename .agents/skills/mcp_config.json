@@ -1,8 +1,13 @@
 {
   "mcpServers": {
     "code-review-graph": {
-      "command": "uvx",
+      "command": "uvx.exe",
       "args": ["code-review-graph", "serve"],
+      "type": "stdio"
+    },
+    "postgres": {
+      "command": "uvx.exe",
+      "args": ["mcp-server-postgres", "postgresql://postgres:PenambangHandal@localhost:5432/geonirisk"],
       "type": "stdio"
     }
   }

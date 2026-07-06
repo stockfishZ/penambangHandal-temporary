@@ -11,11 +11,11 @@ Lithology distribution — Sukamto (1975) GRDC; Hall & Wilson (2000) J. Asian Ea
 import json, csv, random, math, os
 random.seed(42)
 
-NX, NY = 20, 20
+NX, NY = 100, 100
 N_CELLS = NX * NY
 
-LON_MIN, LON_MAX = 127.65, 127.65 + NX * 0.016
-LAT_MIN, LAT_MAX = 0.350, 0.350 + NY * 0.016
+LON_MIN, LON_MAX = 128.00, 128.00 + NX * 0.016
+LAT_MIN, LAT_MAX = 0.600, 0.600 + NY * 0.016
 CELL_W = (LON_MAX - LON_MIN) / NX
 CELL_H = (LAT_MAX - LAT_MIN) / NY
 

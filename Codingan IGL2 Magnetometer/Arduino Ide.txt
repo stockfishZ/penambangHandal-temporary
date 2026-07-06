@@ -1,0 +1,693 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <TinyGPSPlus.h>
+#include <math.h>
+
+/*
+  ==========================================================
+  ESP32 + OLED SSD1306 + GPS NEO-6M + HMC5883L / QMC5883L
+  ==========================================================
+  Fitur:
+  - Tanpa Hall Linear Sensor
+  - 10 menu OLED
+  - Rotary encoder untuk pindah menu
+  - GPS NEO-6M
+  - Magnetometer HMC5883L atau QMC5883L
+  - Serial Monitor cocok untuk GUI Tkinter dan CSV QGIS
+
+  Wiring:
+  OLED SDA / HMC SDA  -> GPIO18
+  OLED SCL / HMC SCL  -> GPIO19
+  GPS TX              -> GPIO16
+  GPS RX              -> GPIO17
+  Encoder CLK         -> GPIO32
+  Encoder DT          -> GPIO33
+  Encoder SW          -> GPIO25
+  VCC                 -> 3V3 / 5V sesuai modul
+  GND                 -> GND
+*/
+
+// ================= OLED =================
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
+#define OLED_ADDRESS 0x3C
+
+#define I2C_SDA 18
+#define I2C_SCL 19
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// ================= GPS =================
+TinyGPSPlus gps;
+HardwareSerial gpsSerial(2);
+
+#define GPS_RX 16
+#define GPS_TX 17
+
+// Jika GPS tidak terbaca, coba ganti 115200 menjadi 9600
+#define GPS_BAUD 115200
+
+// ================= ROTARY ENCODER =================
+#define ENC_CLK 32
+#define ENC_DT  33
+#define ENC_SW  25
+
+int menuIndex = 0;
+const int totalMenu = 10;
+
+int lastCLK = HIGH;
+int lastSW = HIGH;
+
+unsigned long lastRotateTime = 0;
+unsigned long lastButtonTime = 0;
+
+// ================= MAGNETOMETER =================
+#define HMC_ADDR 0x1E
+#define QMC_ADDR 0x0D
+
+int magType = 0;
+// 0 = tidak terdeteksi
+// 1 = HMC5883L
+// 2 = QMC5883L
+
+int16_t magX = 0;
+int16_t magY = 0;
+int16_t magZ = 0;
+
+float magTotal = 0.0;
+float headingDeg = 0.0;
+String arahKompas = "-";
+bool magOK = false;
+
+// ================= TIMER =================
+unsigned long lastOLED = 0;
+unsigned long lastSerial = 0;
+
+// ================= I2C HELPER =================
+bool i2cDeviceExists(byte address) {
+  Wire.beginTransmission(address);
+  return Wire.endTransmission() == 0;
+}
+
+void writeRegister(byte address, byte reg, byte value) {
+  Wire.beginTransmission(address);
+  Wire.write(reg);
+  Wire.write(value);
+  Wire.endTransmission();
+}
+
+// ================= TEXT HELPER =================
+String getMagTypeText() {
+  if (magType == 1) return "HMC5883L";
+  if (magType == 2) return "QMC5883L";
+  return "NOT FOUND";
+}
+
+String getGPSValidText() {
+  if (gps.location.isValid()) return "VALID";
+  return "NO FIX";
+}
+
+String getDirection(float deg) {
+  if (deg >= 337.5 || deg < 22.5) return "UTARA";
+  else if (deg < 67.5) return "TIMUR LAUT";
+  else if (deg < 112.5) return "TIMUR";
+  else if (deg < 157.5) return "TENGGARA";
+  else if (deg < 202.5) return "SELATAN";
+  else if (deg < 247.5) return "BARAT DAYA";
+  else if (deg < 292.5) return "BARAT";
+  else return "BARAT LAUT";
+}
+
+String getMagInterpretasi(float nilai) {
+  // Batas interpretasi sederhana.
+  // Boleh disesuaikan setelah kalibrasi lapangan.
+  if (nilai < 300) return "RENDAH";
+  else if (nilai <= 600) return "NORMAL";
+  else return "TINGGI";
+}
+
+// ================= INIT MAGNETOMETER =================
+void initMagnetometer() {
+  if (i2cDeviceExists(HMC_ADDR)) {
+    magType = 1;
+
+    // Konfigurasi HMC5883L
+    writeRegister(HMC_ADDR, 0x00, 0x70);
+    writeRegister(HMC_ADDR, 0x01, 0x20);
+    writeRegister(HMC_ADDR, 0x02, 0x00);
+
+    Serial.println("Magnetometer: HMC5883L");
+  }
+  else if (i2cDeviceExists(QMC_ADDR)) {
+    magType = 2;
+
+    // Konfigurasi QMC5883L
+    writeRegister(QMC_ADDR, 0x0B, 0x01);
+    writeRegister(QMC_ADDR, 0x09, 0x1D);
+
+    Serial.println("Magnetometer: QMC5883L");
+  }
+  else {
+    magType = 0;
+    Serial.println("Magnetometer: NOT FOUND");
+  }
+}
+
+// ================= READ MAGNETOMETER =================
+bool readMagnetometer() {
+  if (magType == 1) {
+    // HMC5883L urutan data: X, Z, Y
+    Wire.beginTransmission(HMC_ADDR);
+    Wire.write(0x03);
+
+    if (Wire.endTransmission() != 0) {
+      magOK = false;
+      return false;
+    }
+
+    Wire.requestFrom(HMC_ADDR, 6);
+
+    if (Wire.available() < 6) {
+      magOK = false;
+      return false;
+    }
+
+    magX = (int16_t)((Wire.read() << 8) | Wire.read());
+    magZ = (int16_t)((Wire.read() << 8) | Wire.read());
+    magY = (int16_t)((Wire.read() << 8) | Wire.read());
+  }
+  else if (magType == 2) {
+    // QMC5883L urutan data: X, Y, Z little endian
+    Wire.beginTransmission(QMC_ADDR);
+    Wire.write(0x00);
+
+    if (Wire.endTransmission() != 0) {
+      magOK = false;
+      return false;
+    }
+
+    Wire.requestFrom(QMC_ADDR, 6);
+
+    if (Wire.available() < 6) {
+      magOK = false;
+      return false;
+    }
+
+    byte xl = Wire.read();
+    byte xh = Wire.read();
+    byte yl = Wire.read();
+    byte yh = Wire.read();
+    byte zl = Wire.read();
+    byte zh = Wire.read();
+
+    magX = (int16_t)((xh << 8) | xl);
+    magY = (int16_t)((yh << 8) | yl);
+    magZ = (int16_t)((zh << 8) | zl);
+  }
+  else {
+    magOK = false;
+    return false;
+  }
+
+  magTotal = sqrt((float)magX * magX + (float)magY * magY + (float)magZ * magZ);
+
+  headingDeg = atan2((float)magY, (float)magX) * 180.0 / PI;
+
+  if (headingDeg < 0) {
+    headingDeg += 360.0;
+  }
+
+  arahKompas = getDirection(headingDeg);
+  magOK = true;
+
+  return true;
+}
+
+// ================= ENCODER =================
+void nextMenu() {
+  menuIndex++;
+  if (menuIndex >= totalMenu) menuIndex = 0;
+
+  Serial.print("Menu: ");
+  Serial.println(menuIndex + 1);
+
+  lastOLED = 0;
+}
+
+void previousMenu() {
+  menuIndex--;
+  if (menuIndex < 0) menuIndex = totalMenu - 1;
+
+  Serial.print("Menu: ");
+  Serial.println(menuIndex + 1);
+
+  lastOLED = 0;
+}
+
+void updateEncoder() {
+  int clkState = digitalRead(ENC_CLK);
+
+  if (clkState != lastCLK) {
+    if (millis() - lastRotateTime > 60) {
+      lastRotateTime = millis();
+
+      if (clkState == LOW) {
+        int dtState = digitalRead(ENC_DT);
+
+        if (dtState == HIGH) {
+          nextMenu();
+        } else {
+          previousMenu();
+        }
+      }
+    }
+
+    lastCLK = clkState;
+  }
+
+  int swState = digitalRead(ENC_SW);
+
+  if (swState != lastSW && millis() - lastButtonTime > 300) {
+    lastButtonTime = millis();
+
+    if (lastSW == HIGH && swState == LOW) {
+      menuIndex = 0;
+      Serial.println("Button: HOME");
+      lastOLED = 0;
+    }
+
+    lastSW = swState;
+  }
+}
+
+// ================= OLED HELPER =================
+void oledHeader(const char* title) {
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println(title);
+  display.drawLine(0, 10, 127, 10, SSD1306_WHITE);
+}
+
+// ================= MENU 1: DASHBOARD =================
+void menuDashboard() {
+  oledHeader("1 DASHBOARD");
+
+  display.setCursor(0, 14);
+  display.print("GPS : ");
+  display.println(getGPSValidText());
+
+  display.setCursor(0, 25);
+  display.print("SAT : ");
+  display.println(gps.satellites.isValid() ? gps.satellites.value() : 0);
+
+  display.setCursor(0, 36);
+  display.print("MAG : ");
+  if (magType == 1) display.println("HMC");
+  else if (magType == 2) display.println("QMC");
+  else display.println("NO");
+
+  display.setCursor(0, 47);
+  display.print("DIR : ");
+  display.println(arahKompas);
+
+  display.setCursor(0, 56);
+  display.print("B   : ");
+  display.println(magTotal, 1);
+
+  display.display();
+}
+
+// ================= MENU 2: KOORDINAT GPS =================
+void menuKoordinatGPS() {
+  oledHeader("2 KOORDINAT GPS");
+
+  if (gps.location.isValid()) {
+    display.setCursor(0, 15);
+    display.println("LAT:");
+    display.setCursor(0, 26);
+    display.println(gps.location.lat(), 7);
+
+    display.setCursor(0, 40);
+    display.println("LNG:");
+    display.setCursor(0, 51);
+    display.println(gps.location.lng(), 7);
+  }
+  else {
+    display.setCursor(0, 22);
+    display.println("GPS belum valid");
+
+    display.setCursor(0, 38);
+    display.print("Satelit: ");
+    display.println(gps.satellites.isValid() ? gps.satellites.value() : 0);
+  }
+
+  display.display();
+}
+
+// ================= MENU 3: DATA GPS =================
+void menuDataGPS() {
+  oledHeader("3 DATA GPS");
+
+  display.setCursor(0, 14);
+  display.print("Status : ");
+  display.println(getGPSValidText());
+
+  display.setCursor(0, 26);
+  display.print("Satelit: ");
+  display.println(gps.satellites.isValid() ? gps.satellites.value() : 0);
+
+  display.setCursor(0, 38);
+  display.print("Alt    : ");
+  if (gps.altitude.isValid()) {
+    display.print(gps.altitude.meters(), 1);
+    display.println(" m");
+  } else {
+    display.println("-");
+  }
+
+  display.setCursor(0, 50);
+  display.print("Speed  : ");
+  if (gps.speed.isValid()) {
+    display.print(gps.speed.kmph(), 1);
+    display.println(" km/h");
+  } else {
+    display.println("-");
+  }
+
+  display.display();
+}
+
+// ================= MENU 4: MAG XYZ =================
+void menuMagXYZ() {
+  oledHeader("4 MAG XYZ");
+
+  display.setCursor(0, 14);
+  display.print("X : ");
+  display.println(magX);
+
+  display.setCursor(0, 26);
+  display.print("Y : ");
+  display.println(magY);
+
+  display.setCursor(0, 38);
+  display.print("Z : ");
+  display.println(magZ);
+
+  display.setCursor(0, 52);
+  display.print("Type: ");
+  if (magType == 1) display.println("HMC");
+  else if (magType == 2) display.println("QMC");
+  else display.println("NO");
+
+  display.display();
+}
+
+// ================= MENU 5: MAG TOTAL =================
+void menuMagTotal() {
+  oledHeader("5 MAG TOTAL");
+
+  display.setTextSize(2);
+  display.setCursor(0, 18);
+  display.print(magTotal, 1);
+
+  display.setTextSize(1);
+  display.setCursor(0, 42);
+  display.println("Field Value");
+
+  display.setCursor(0, 55);
+  display.print("Status: ");
+  display.println(getMagInterpretasi(magTotal));
+
+  display.display();
+}
+
+// ================= MENU 6: KOMPAS =================
+void menuKompas() {
+  oledHeader("6 KOMPAS DIGITAL");
+
+  display.setTextSize(2);
+  display.setCursor(0, 18);
+  display.print(headingDeg, 0);
+  display.println(" deg");
+
+  display.setTextSize(1);
+  display.setCursor(0, 44);
+  display.print("Arah: ");
+  display.println(arahKompas);
+
+  display.setCursor(0, 56);
+  display.println("Tekan = HOME");
+
+  display.display();
+}
+
+// ================= MENU 7: INTERPRETASI =================
+void menuInterpretasi() {
+  oledHeader("7 INTERPRETASI");
+
+  display.setCursor(0, 14);
+  display.print("Mag Total: ");
+  display.println(magTotal, 1);
+
+  display.setCursor(0, 28);
+  display.print("Kategori : ");
+  display.println(getMagInterpretasi(magTotal));
+
+  display.setCursor(0, 42);
+  display.print("Heading  : ");
+  display.print(headingDeg, 1);
+  display.println(" deg");
+
+  display.setCursor(0, 54);
+  display.print("Arah     : ");
+  display.println(arahKompas);
+
+  display.display();
+}
+
+// ================= MENU 8: SURVEY GIS =================
+void menuSurveyGIS() {
+  oledHeader("8 SURVEY GIS");
+
+  display.setCursor(0, 14);
+  display.print("GPS : ");
+  display.println(getGPSValidText());
+
+  display.setCursor(0, 26);
+  display.print("SAT : ");
+  display.println(gps.satellites.isValid() ? gps.satellites.value() : 0);
+
+  display.setCursor(0, 38);
+  display.print("MAG : ");
+  display.println(magOK ? "OK" : "ERROR");
+
+  display.setCursor(0, 51);
+
+  if (gps.location.isValid() && magOK) {
+    display.println("READY TO LOG");
+  } else {
+    display.println("NOT READY");
+  }
+
+  display.display();
+}
+
+// ================= MENU 9: STATUS SENSOR =================
+void menuStatusSensor() {
+  oledHeader("9 STATUS SENSOR");
+
+  display.setCursor(0, 14);
+  display.print("GPS  : ");
+  display.println(gps.location.isValid() ? "OK" : "NO FIX");
+
+  display.setCursor(0, 26);
+  display.print("MAG  : ");
+  display.println(magOK ? "OK" : "ERROR");
+
+  display.setCursor(0, 38);
+  display.print("OLED : ");
+  display.println("OK");
+
+  display.setCursor(0, 50);
+  display.print("MENU : ");
+  display.println(menuIndex + 1);
+
+  display.display();
+}
+
+// ================= MENU 10: PANDUAN =================
+void menuPanduan() {
+  oledHeader("10 PANDUAN");
+
+  display.setCursor(0, 16);
+  display.println("Putar encoder:");
+
+  display.setCursor(0, 28);
+  display.println("Ganti menu");
+
+  display.setCursor(0, 42);
+  display.println("Tekan encoder:");
+
+  display.setCursor(0, 54);
+  display.println("Kembali HOME");
+
+  display.display();
+}
+
+// ================= UPDATE OLED =================
+void updateOLED() {
+  if (menuIndex == 0) menuDashboard();
+  else if (menuIndex == 1) menuKoordinatGPS();
+  else if (menuIndex == 2) menuDataGPS();
+  else if (menuIndex == 3) menuMagXYZ();
+  else if (menuIndex == 4) menuMagTotal();
+  else if (menuIndex == 5) menuKompas();
+  else if (menuIndex == 6) menuInterpretasi();
+  else if (menuIndex == 7) menuSurveyGIS();
+  else if (menuIndex == 8) menuStatusSensor();
+  else if (menuIndex == 9) menuPanduan();
+}
+
+// ================= SERIAL MONITOR UNTUK GUI + QGIS =================
+void printSerialData() {
+  Serial.println("===== DATA =====");
+
+  Serial.print("Menu: ");
+  Serial.println(menuIndex + 1);
+
+  Serial.print("GPS Valid: ");
+  Serial.println(gps.location.isValid() ? "True" : "False");
+
+  Serial.print("GPS sat: ");
+  Serial.println(gps.satellites.isValid() ? gps.satellites.value() : 0);
+
+  Serial.print("Lat: ");
+  if (gps.location.isValid()) {
+    Serial.println(gps.location.lat(), 7);
+  } else {
+    Serial.println("belum valid");
+  }
+
+  Serial.print("Lng: ");
+  if (gps.location.isValid()) {
+    Serial.println(gps.location.lng(), 7);
+  } else {
+    Serial.println("belum valid");
+  }
+
+  Serial.print("Altitude: ");
+  if (gps.altitude.isValid()) {
+    Serial.println(gps.altitude.meters(), 2);
+  } else {
+    Serial.println("belum valid");
+  }
+
+  Serial.print("Speed: ");
+  if (gps.speed.isValid()) {
+    Serial.println(gps.speed.kmph(), 2);
+  } else {
+    Serial.println("belum valid");
+  }
+
+  Serial.print("Magnetometer: ");
+  Serial.println(getMagTypeText());
+
+  Serial.print("Mag X: ");
+  Serial.println(magX);
+
+  Serial.print("Mag Y: ");
+  Serial.println(magY);
+
+  Serial.print("Mag Z: ");
+  Serial.println(magZ);
+
+  Serial.print("Mag_Total: ");
+  Serial.println(magTotal, 2);
+
+  // Alias ini sengaja ditambahkan agar tetap terbaca GUI lama
+  Serial.print("B total: ");
+  Serial.println(magTotal, 2);
+
+  Serial.print("Heading: ");
+  Serial.println(headingDeg, 2);
+
+  Serial.print("Direction: ");
+  Serial.println(arahKompas);
+
+  Serial.println("================");
+  Serial.println();
+}
+
+// ================= SETUP =================
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  Wire.begin(I2C_SDA, I2C_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS)) {
+    Serial.println("OLED gagal dimulai!");
+    while (true);
+  }
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("Starting system...");
+  display.setCursor(0, 16);
+  display.println("OLED OK");
+  display.setCursor(0, 32);
+  display.println("GPS + MAG");
+  display.setCursor(0, 48);
+  display.println("10 Menu Ready");
+  display.display();
+
+  gpsSerial.begin(GPS_BAUD, SERIAL_8N1, GPS_RX, GPS_TX);
+
+  pinMode(ENC_CLK, INPUT_PULLUP);
+  pinMode(ENC_DT, INPUT_PULLUP);
+  pinMode(ENC_SW, INPUT_PULLUP);
+
+  lastCLK = digitalRead(ENC_CLK);
+  lastSW = digitalRead(ENC_SW);
+
+  initMagnetometer();
+
+  delay(1500);
+  updateOLED();
+
+  Serial.println();
+  Serial.println("ESP32 GPS + Magnetometer siap");
+  Serial.println("Tanpa Hall Sensor Linear");
+  Serial.println("10 Menu OLED aktif");
+  Serial.print("GPS Baud: ");
+  Serial.println(GPS_BAUD);
+  Serial.println();
+}
+
+// ================= LOOP =================
+void loop() {
+  updateEncoder();
+
+  while (gpsSerial.available() > 0) {
+    gps.encode(gpsSerial.read());
+  }
+
+  readMagnetometer();
+
+  if (millis() - lastOLED >= 500) {
+    lastOLED = millis();
+    updateOLED();
+  }
+
+  if (millis() - lastSerial >= 1000) {
+    lastSerial = millis();
+    printSerialData();
+  }
+}

@@ -439,6 +439,44 @@ h3 {
   background: rgba(255,255,255,0.04);
 }
 
+@keyframes spin-border {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.btn.loading {
+  pointer-events: none;
+  background: transparent !important;
+}
+
+.btn.loading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-top: -200px;
+  margin-left: -200px;
+  background: conic-gradient(from 0deg, transparent 0%, transparent 80%, rgba(16, 185, 129, 0.4) 95%, var(--accent-emerald) 100%);
+  animation: spin-border 1.5s linear infinite;
+  z-index: 1;
+}
+
+.btn.loading::after {
+  content: "Analyzing Grid...";
+  position: absolute;
+  inset: 2px;
+  background: var(--text-primary);
+  color: #0A0F0C;
+  border-radius: calc(var(--radius-full) - 2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  font-weight: 500;
+}
+
 .btn.small {
   padding: 8.8px 16px;
   font-size: 13px;
@@ -882,6 +920,7 @@ tr.selected td {
 }
 
 .table-wrap .score-bar-fill {
+  display: block;
   height: 100%;
   border-radius: 2px;
   transition: width 0.6s var(--ease-out);
@@ -944,13 +983,13 @@ tr.selected td {
 }
 
 .detail-line span {
-  color: #000;
+  color: #fff;
   font-size: 13px;
 }
 
 .detail-line b {
   text-align: right;
-  color: #000;
+  color: #fff;
   font-size: 13px;
   font-weight: 600;
 }

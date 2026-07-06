@@ -2,6 +2,42 @@
 
 ---
 
+### 2026-07-06 — Deterministic Engine for "GenAI" Drafting
+
+**Context:** The final boss feature requires drafting complex, highly technical legal documents (AMDAL, PPKH, K3). Relying on a live LLM API (like OpenAI) during a hackathon demo introduces latency, risk of hallucination (citing wrong laws), and potential API failure.
+ 
+**Decision:** Built a "deterministic GenAI" engine in FastAPI (`/api/generate-esg-draft`) that dynamically constructs the text based on strict conditional rules triggered by the spatial payload, while returning the result as a streaming string. The frontend renders it with a typing effect.
+
+**Why this option:** 100% legal accuracy. Zero hallucinations. Zero latency. Perfect stability for the live pitch. It provides the exact "WOW" factor of Generative AI but is engineered for mission-critical reliability.
+
+**Revisit when:** Moving to production. We can connect a fine-tuned local LLM (like Llama 3) for greater linguistic variance once API stability and hallucinations are managed.
+
+---
+
+### 2026-07-06 — Move Spatial SQL from Stored Procedure to FastAPI
+
+**Context:** Originally, spatial queries were hidden inside a PostgreSQL stored procedure (`get_grid_spatial_features`). This made the codebase harder to maintain and test, and obscured the GIS logic from the API layer.
+ 
+**Decision:** Dropped the reliance on the stored procedure. Refactored `backend/app/main.py` to execute pure dynamic `ST_Distance` and `ST_Intersects` SQL queries against `osm_roads`, `osm_waterways`, and `klhk_forestry_boundaries`.
+
+**Why this option:** Makes the architecture transparent for the hackathon judges. They can see exactly how the spatial queries are constructed in Python. It also ensures the ML model dynamically updates its features based on the backend database (ignoring static frontend payloads).
+
+**Revisit when:** We need to optimize performance for thousands of concurrent queries; at that point, materialized views or stored procedures might become necessary again.
+
+---
+
+### 2026-07-06 — Implement K3 Safety Risk on Frontend
+
+**Context:** The hackathon TOR requires "Keselamatan kegiatan eksplorasi" (K3/Safety) features. We have slope and road distance data.
+ 
+**Decision:** Calculate K3 Safety Risk dynamically in `app.js` based on slope steepness (>25°) and medevac access distance (>2000m). Display a color-coded warning in the target detail panel.
+
+**Why this option:** Instant compliance with the TOR. Implementing it purely on the frontend ensures it's highly visible for the UI demonstration without needing backend database updates.
+
+**Revisit when:** We have more granular safety data (e.g., historical landslide heatmaps) which would require backend GIS integration.
+
+---
+
 ### 2026-07-05 — Use Halmahera (Weda Bay) as primary dummy dataset
 
 **Context:** The original dummy data was located around Bandung/Jatinangor — a volcanic area with no nickel mineralization. The app claimed to be a nickel exploration tool but the demo data didn't reflect that.

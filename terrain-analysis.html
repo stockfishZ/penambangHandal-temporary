@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NiTERRA — Analisis Terrain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .ta-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: calc(100vh - 80px);
+      margin-top: 80px;
+      padding: var(--sp-md);
+      gap: var(--sp-md);
+    }
+    .ta-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-md);
+      position: sticky;
+      top: 100px;
+      align-self: start;
+    }
+    .ta-main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-md);
+    }
+    .ta-panel {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: var(--sp-md);
+    }
+    .map-container { min-height: 450px; height: 100%; border-radius: var(--radius-sm); overflow: hidden; }
+    .stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding: 8px 0; font-size: 13px; }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-row span { color: var(--text-secondary); }
+    .stat-row b { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <div id="scene"></div>
+  <div class="ambient-glow"></div>
+  <div class="vignette"></div>
+  <div class="noise-overlay"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html#home">
+      <span class="brand-mark">Ni</span>
+      <span>NiTERRA</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#home">Intro</a>
+      <a href="remote-sensing.html">Peta Potensi</a>
+      <a href="terrain-analysis.html" class="active">Analisis Terrain</a>
+      <a href="site-assessment.html">Penilaian</a>
+      <a href="index.html#workspace">Ruang Kerja</a>
+    </nav>
+  </header>
+
+  <main class="ta-layout">
+    <aside class="ta-sidebar">
+      <div class="ta-panel">
+        <select id="siteSelect" class="btn btn-secondary" style="width: 100%; background: #0e1525; color: white;">
+          <!-- JS fills this -->
+        </select>
+      </div>
+
+      <div class="ta-panel">
+        <h4 style="margin-bottom: 10px;">Statistik Elevasi (DEM)</h4>
+        <div class="stat-row"><span>Elevasi Rata-rata</span><b id="elMean">-</b></div>
+        <div class="stat-row"><span>Elevasi Maks (Puncak)</span><b id="elMax">-</b></div>
+        <div class="stat-row"><span>Elevasi Min (Lembah)</span><b id="elMin">-</b></div>
+      </div>
+
+      <div class="ta-panel">
+        <h4 style="margin-bottom: 10px;">Analisis Lereng (Slope)</h4>
+        <div class="stat-row"><span>Kemiringan Rata-rata</span><b id="slopeMean">-</b></div>
+        <div class="stat-row"><span>Indeks Kekasaran</span><b id="roughness">-</b></div>
+        <div class="stat-row"><span>Klasifikasi Terrain</span><b id="terrainClass" style="color: #9FD8BD;">-</b></div>
+      </div>
+
+      <a id="assessBtn" href="site-assessment.html" class="btn btn-primary" style="text-align: center;">Penilaian Lapangan &rarr;</a>
+    </aside>
+
+    <div class="ta-main">
+      <div class="ta-panel" style="padding: 0; display: flex; flex-direction: column;">
+        <div style="padding: 10px 15px; border-bottom: 1px solid var(--border-default); display: flex; justify-content: space-between;">
+          <b>Peta Topografi / Hillshade</b>
+          <span style="font-size: 11px; color: #888;">Data: OpenTopoMap</span>
+        </div>
+        <div id="demMap" class="map-container"></div>
+      </div>
+      <div class="ta-panel" style="padding: 0; display: flex; flex-direction: column;">
+        <div style="padding: 10px 15px; border-bottom: 1px solid var(--border-default); display: flex; justify-content: space-between;">
+          <b>Simulasi 3D Terrain</b>
+          <span style="font-size: 11px; color: #888;">Generatif dari elevasi profil</span>
+        </div>
+        <div id="plotly3d" style="flex: 1; min-height: 450px;"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script src="js/shared-sites.js"></script>
+  <script src="js/terrain-analysis.js"></script>
+</body>
+</html>

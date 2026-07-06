@@ -63,6 +63,17 @@ class ProspectivityModel:
             with open(META_PATH) as f:
                 self.metadata = json.load(f)
 
+    def reload(self):
+        if XGB_AVAILABLE and os.path.exists(MODEL_PATH):
+            try:
+                self.model = joblib.load(MODEL_PATH)
+                self.loaded = True
+            except Exception:
+                self.loaded = False
+        if os.path.exists(META_PATH):
+            with open(META_PATH) as f:
+                self.metadata = json.load(f)
+
     def predict_masked(self, features: dict) -> dict:
         dist_road = features.get("distance_to_road_m", 9999)
         legal_status = features.get("legal_status", "unknown")

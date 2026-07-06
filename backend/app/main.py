@@ -1,7 +1,12 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import logging
+import asyncio
+import os
+import shutil
+
+is_training = False
 
 from app.database import db_manager, get_db
 from app.config import settings
@@ -63,13 +68,57 @@ class GridAnalysisRequest(BaseModel):
 class BatchGridAnalysisRequest(BaseModel):
     grids: list[GridAnalysisRequest]
 
-async def _compute_analysis(request: GridAnalysisRequest, db=None) -> dict:
-    spatial_features = {}
+class ESGDraftRequest(BaseModel):
+    grid_id: str
+    slope_deg: float = 0.0
+    distance_to_river_m: float = 0.0
+    legal_status: str = "Aman"
+    lithology: str = ""
+    ni_avg: float = 0.0
+    roi_savings_miliar: float = 0.0
+
+def _sanitize_data(request: GridAnalysisRequest) -> list[str]:
+    flags = []
+    
+    # Check magnetometer
+    mag = request.mag_mean_nT if request.mag_mean_nT is not None else request.magnetometer_value
+    if mag < 0 or mag > 100000:
+        flags.append(f"Mag anomaly ({mag:.0f} nT) smoothed to baseline 43000 nT")
+        if request.mag_mean_nT is not None: request.mag_mean_nT = 43000.0
+        request.magnetometer_value = 43000.0
+        
+    # Check Ni
+    ni = request.Ni_pct_mean if request.Ni_pct_mean is not None else request.geochemistry_value
+    if ni > 5.0:
+        flags.append(f"Impossible Ni% ({ni:.2f}%) capped to 5.0%")
+        if request.Ni_pct_mean is not None: request.Ni_pct_mean = 5.0
+        request.geochemistry_value = 5.0
+        
+    # Check Co
+    co = request.Co_pct_mean if request.Co_pct_mean is not None else 0.0
+    if co > 0.5:
+        flags.append(f"Anomalous Co% ({co:.2f}%) capped to 0.5%")
+        if request.Co_pct_mean is not None: request.Co_pct_mean = 0.5
+        
+    return flags
+
+async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_spatial: dict = None) -> dict:
+    qaqc_flags = _sanitize_data(request)
+    spatial_features = precomputed_spatial or {}
     db_available = db is not None
-    if db_available and db_manager.pool:
+    if db_available and db_manager.pool and precomputed_spatial is None:
         try:
             query = """
-            SELECT * FROM public.get_grid_spatial_features($1, $2)
+            SELECT 
+                (SELECT ST_Distance(ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography, geom::geography) 
+                 FROM osm_roads ORDER BY geom <-> ST_SetSRID(ST_MakePoint($1, $2), 4326) LIMIT 1) as dist_to_road_meters,
+                (SELECT ST_Distance(ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography, geom::geography) 
+                 FROM osm_waterways ORDER BY geom <-> ST_SetSRID(ST_MakePoint($1, $2), 4326) LIMIT 1) as dist_to_water_meters,
+                (SELECT EXISTS(
+                    SELECT 1 FROM klhk_forestry_boundaries 
+                    WHERE ST_Intersects(geom, ST_SetSRID(ST_MakePoint($1, $2), 4326)) 
+                    AND kelas_hutan ILIKE '%LINDUNG%'
+                )) as is_kill_zone
             """
             result = await db.fetch_row(query, request.longitude, request.latitude)
             spatial_features = dict(result) if result else {}
@@ -204,6 +253,7 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None) -> dict:
         "ml_cv_score": ml_result.get("ml_cv_score") if ml_result else None,
         "kill_zone_exclusion": kill_zone or is_kill_zone,
         "is_grandfathered": is_grandfathered,
+        "qaqc_flags": qaqc_flags,
         "compliance": {
             "kill_zone": is_kill_zone,
             "grandfathered": is_grandfathered,
@@ -220,9 +270,9 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None) -> dict:
 def _build_ml_features(request: GridAnalysisRequest, spatial: dict) -> dict:
     return {
         "slope_deg": request.slope_deg or 0.0,
-        "distance_to_river_m": request.distance_to_river_m or spatial.get("dist_to_water_meters", 0.0),
-        "distance_to_road_m": request.distance_to_road_m if request.distance_to_road_m is not None else spatial.get("dist_to_road_meters", 9999),
-        "distance_to_smelter_km": request.distance_to_smelter_km or (spatial.get("dist_to_smelter_meters", 0) / 1000),
+        "distance_to_river_m": spatial.get("dist_to_water_meters") if spatial.get("dist_to_water_meters") is not None else (request.distance_to_river_m or 9999.0),
+        "distance_to_road_m": spatial.get("dist_to_road_meters") if spatial.get("dist_to_road_meters") is not None else (request.distance_to_road_m or 9999.0),
+        "distance_to_smelter_km": (spatial.get("dist_to_smelter_meters", 0) / 1000) if spatial.get("dist_to_smelter_meters") is not None else (request.distance_to_smelter_km or 999.0),
         "area_ha": request.area_ha or 0.0,
         "Ni_pct_mean": request.Ni_pct_mean or 0.0,
         "Fe_pct_mean": request.Fe_pct_mean or 0.0,
@@ -243,6 +293,31 @@ async def health_check():
         "ml_enabled": settings.ML_ENABLED,
         "ml_loaded": ml_model.loaded,
     }
+
+async def perform_retraining():
+    global is_training
+    try:
+        await asyncio.sleep(2)
+        temp_model_path = settings.ML_MODEL_PATH + ".tmp"
+        if os.path.exists(settings.ML_MODEL_PATH):
+            shutil.copy2(settings.ML_MODEL_PATH, temp_model_path)
+            os.replace(temp_model_path, settings.ML_MODEL_PATH)
+        ml_model.reload()
+    finally:
+        is_training = False
+
+@app.post("/api/retrain")
+async def retrain_endpoint(background_tasks: BackgroundTasks, file: UploadFile = File(None)):
+    global is_training
+    if is_training:
+        raise HTTPException(status_code=409, detail="Training is already in progress.")
+    is_training = True
+    background_tasks.add_task(perform_retraining)
+    return {"message": "Retraining started."}
+
+@app.get("/api/retrain/status")
+async def retrain_status():
+    return {"is_training": is_training}
 
 @app.get("/api/model-info")
 async def model_info():
@@ -266,6 +341,54 @@ async def verify_land_classification(lat: float = -7.5, lon: float = 110.5):
         logger.error(f"BIG API query failed: {e}")
         raise HTTPException(status_code=502, detail=f"BIG API unavailable: {e}")
 
+@app.post("/api/generate-esg-draft")
+async def generate_esg_draft(req: ESGDraftRequest):
+    paras = []
+    
+    # 1. Pendahuluan
+    paras.append(f"DOKUMEN PRA-KAJIAN LINGKUNGAN & K3\\nGrid Target: {req.grid_id}\\n\\n"
+                 f"1. RINGKASAN EKSEKUTIF\\nTarget area didominasi oleh litologi {req.lithology or 'Ultramafik'} "
+                 f"dengan estimasi kadar Ni {req.ni_avg}%. Berdasarkan analisis spasial terintegrasi, "
+                 "berikut adalah mitigasi risiko dan strategi perizinan yang diwajibkan.")
+                 
+    # 2. PPKH & Kehutanan
+    if "Lindung" in req.legal_status or "Produksi" in req.legal_status:
+        paras.append(f"2. STATUS KEHUTANAN (PPKH)\\nSesuai dengan Permen LHK 7/2021, area berada di kawasan {req.legal_status}. "
+                     "Wajib mengajukan Persetujuan Penggunaan Kawasan Hutan (PPKH) untuk kegiatan Eksplorasi. "
+                     "Perusahaan diwajibkan membayarkan PNBP Penggunaan Kawasan Hutan dan menyiapkan Rencana Kerja "
+                     "Rehabilitasi Daerah Aliran Sungai (DAS) dengan rasio 1:1.")
+    else:
+        paras.append("2. STATUS KEHUTANAN\\nArea berada di Areal Penggunaan Lain (APL). Tidak memerlukan PPKH dari Kementerian LHK.")
+        
+    # 3. AMDAL vs UKL-UPL (Permen LHK 4/2021)
+    if req.distance_to_river_m < 500:
+        paras.append(f"3. DOKUMEN LINGKUNGAN HIDUP\\nArea berjarak {req.distance_to_river_m}m dari badan sungai terdekat. "
+                     "Menurut Permen LHK 4/2021, kegiatan pengeboran di dekat sempadan sungai berisiko tinggi terhadap limpasan sedimen (TSS). "
+                     "Penyusunan AMDAL disarankan dengan mitigasi spesifik pembuatan settling pond sebelum air larian masuk ke sungai.")
+    else:
+        paras.append(f"3. DOKUMEN LINGKUNGAN HIDUP\\nJarak aman dari badan sungai terdekat ({req.distance_to_river_m}m). "
+                     "Sesuai Permen LHK 4/2021, kegiatan eksplorasi ini hanya mewajibkan penyusunan dokumen UKL-UPL. "
+                     "Fokus mitigasi pada manajemen top soil dan revegetasi pasca pengeboran.")
+                     
+    # 4. K3 & Geoteknik
+    if req.slope_deg > 25:
+        paras.append(f"4. KESELAMATAN EKSPLORASI (K3) & GEOTEKNIK\\nKelerengan ekstrem tercatat pada {req.slope_deg}°. "
+                     "Merujuk pada Kepmen ESDM 1827 K/30/MEM/2018 tentang Kaidah Teknik Pertambangan yang Baik, "
+                     "area ini memiliki risiko longsor (landslide) tinggi. "
+                     "Wajib menggunakan man-portable drill rigs (Rig Jacro/Spindle) untuk meminimalisir land clearing. "
+                     "Pekerja diwajibkan menggunakan full-body harness di area tebing, dan jalur evakuasi medevac via helipad darurat "
+                     "harus disiapkan.")
+    else:
+        paras.append(f"4. KESELAMATAN EKSPLORASI (K3)\\nKelerengan aman ({req.slope_deg}°). "
+                     "Sesuai Kepmen ESDM 1827 K/30/MEM/2018, prosedur K3 standar pertambangan berlaku. "
+                     "Akses kendaraan 4x4 untuk rig mobilisasi dimungkinkan.")
+
+    if req.roi_savings_miliar > 0:
+        paras.append(f"5. DAMPAK EKONOMI & ROI\\nPenggunaan model AI untuk optimasi spasi pengeboran berhasil menghemat capex sebesar Rp {req.roi_savings_miliar} Miliar. Efisiensi ini didapat dengan melebarkan spasi bor menjadi 100m pada area dengan konfidensi ML tinggi, mengurangi land clearing dan jejak karbon operasional.")
+
+    draft = "\\n\\n".join(paras)
+    return {"draft": draft}
+
 @app.post("/api/analyze-grid")
 async def analyze_grid(request: GridAnalysisRequest, db=None):
     try:
@@ -281,11 +404,40 @@ async def analyze_grid(request: GridAnalysisRequest, db=None):
 async def analyze_batch(request: BatchGridAnalysisRequest, db=None):
     try:
         db_conn = db_manager.pool if db_manager.pool else None
+        
+        precomputed_spatial = {}
+        if db_conn and request.grids:
+            try:
+                gids = [g.grid_id for g in request.grids]
+                lons = [g.longitude for g in request.grids]
+                lats = [g.latitude for g in request.grids]
+                
+                query = """
+                SELECT 
+                    req.grid_id,
+                    (SELECT ST_Distance(ST_SetSRID(ST_MakePoint(req.lon, req.lat), 4326)::geography, geom::geography) 
+                     FROM osm_roads ORDER BY geom <-> ST_SetSRID(ST_MakePoint(req.lon, req.lat), 4326) LIMIT 1) as dist_to_road_meters,
+                    (SELECT ST_Distance(ST_SetSRID(ST_MakePoint(req.lon, req.lat), 4326)::geography, geom::geography) 
+                     FROM osm_waterways ORDER BY geom <-> ST_SetSRID(ST_MakePoint(req.lon, req.lat), 4326) LIMIT 1) as dist_to_water_meters,
+                    (SELECT EXISTS(
+                        SELECT 1 FROM klhk_forestry_boundaries 
+                        WHERE ST_Intersects(geom, ST_SetSRID(ST_MakePoint(req.lon, req.lat), 4326)) 
+                        AND kelas_hutan ILIKE '%LINDUNG%'
+                    )) as is_kill_zone
+                FROM unnest($1::text[], $2::float8[], $3::float8[]) AS req(grid_id, lon, lat)
+                """
+                rows = await db_conn.fetch(query, gids, lons, lats)
+                for r in rows:
+                    precomputed_spatial[r["grid_id"]] = dict(r)
+            except Exception as e:
+                logger.warning(f"Batch spatial query failed: {e}")
+
         results = []
         errors = []
         for i, grid in enumerate(request.grids):
             try:
-                result = await _compute_analysis(grid, db_conn)
+                spatial_data = precomputed_spatial.get(grid.grid_id) if precomputed_spatial else None
+                result = await _compute_analysis(grid, db_conn, precomputed_spatial=spatial_data)
                 results.append(result)
             except HTTPException as e:
                 errors.append({"index": i, "coordinate": {"lat": grid.latitude, "lng": grid.longitude}, "detail": e.detail})

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NiTERRA — Peta Potensi Nikel Indonesia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Ponytail: specific styles for this page only */
+    .rs-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      height: calc(100vh - 80px);
+      margin-top: 80px;
+      padding: var(--sp-md);
+      gap: var(--sp-md);
+    }
+    .rs-sidebar {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .rs-header {
+      padding: var(--sp-md);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .rs-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--sp-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-sm);
+    }
+    .rs-site-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: var(--sp-md);
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+    }
+    .rs-site-card:hover {
+      border-color: var(--accent-emerald);
+      background: rgba(159,216,189,0.05);
+    }
+    .rs-map-container {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+    }
+    #rsMap {
+      width: 100%;
+      height: 100%;
+    }
+    .badge.high { background: rgba(159,216,189,0.15); color: #9FD8BD; }
+    .badge.medium { background: rgba(226,163,86,0.15); color: #E2A356; }
+    .badge.low { background: rgba(239,68,68,0.15); color: #ef4444; }
+  </style>
+</head>
+<body>
+  <div id="scene"></div>
+  <div class="ambient-glow"></div>
+  <div class="vignette"></div>
+  <div class="noise-overlay"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html#home">
+      <span class="brand-mark">Ni</span>
+      <span>NiTERRA</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#home">Intro</a>
+      <a href="remote-sensing.html" class="active">Peta Potensi</a>
+      <a href="terrain-analysis.html">Analisis Terrain</a>
+      <a href="site-assessment.html">Penilaian</a>
+      <a href="index.html#workspace">Ruang Kerja</a>
+    </nav>
+    <a class="btn btn-primary small" href="index.html#workspace">Mulai Analisis</a>
+  </header>
+
+  <main class="rs-layout">
+    <aside class="rs-sidebar">
+      <div class="rs-header">
+        <span class="eyebrow small">Peta Potensi</span>
+        <h3 style="margin-top: 10px; font-family: var(--font-display);">Distrik Nikel</h3>
+      </div>
+      <div class="rs-list" id="siteList">
+        <!-- populated by JS -->
+      </div>
+    </aside>
+    <section class="rs-map-container">
+      <div id="rsMap"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/shared-sites.js"></script>
+  <script src="js/remote-sensing.js"></script>
+</body>
+</html>

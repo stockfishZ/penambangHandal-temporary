@@ -14,22 +14,24 @@ The ML pipeline is now **genuine machine learning**. XGBoost is trained on 230 c
 - **`GET /api/model-info`** endpoint returns model status, features, CV scores, training date
 - Frontend uses ML score as **primary** when backend available (×10 to 0–100 scale), heuristic fallback
 - All data generation assumptions documented with citations in `research/SOURCES.md`
-- Everything else from previous status (capex, legal compliance, etc.)
+- **Downstream Integration (RKEF vs HPAL)** and **K3 Safety Risk** scoring implemented in frontend
+- **Real Spatial SQL (PostGIS)**: The backend dynamically computes `ST_Distance` and `ST_Intersects` against OSM roads, waterways, and KLHK forestry boundaries seeded via `seed_osm.py`.
+- **Performance Optimizations**: Resolved N+1 PostgreSQL bottleneck via `unnest()` in batch queries, eliminated double frontend data aggregation, and fully integrated ML `cv_score` into Capex calculations.
+- **Generative AI ESG Drafter**: A deterministic generative engine outputs customized, legally accurate (AMDAL/PPKH) mitigation strategies based on spatial grid payloads directly to the frontend.
+- **Upstream Target Generation Pipeline (NEW)**: Fully functional client-side 3-stage platform connecting macro-level remote sensing (`remote-sensing.html`) to predictive 3D terrain modeling (`terrain-analysis.html`) and economic site assessment (`site-assessment.html`). This acts as the "GO/NO-GO" gateway before launching the drone geophysics payloads.
+- Everything else from previous status (capex, backend QA/QC data sanitization, legal compliance, etc.)
 
 ## What's broken / incomplete
 
-- **PostGIS tables not populated** with real OSM/KLHK spatial data — schema exists but tables empty
-- **Grandfathered grid check** still hardcodes `gridId === 'G006'` in frontend — needs data-driven approach
 - **No retraining hook** — model is static until retrained manually
-- Capex estimator still uses heuristic scores (runs before ML merge, ~3-line fix)
+- **Drone hardware telemetry** — `droneGeophysics.py` is currently a standalone Python script, not yet piping real-time UDP streams into the NiTERRA web backend.
 
 ## Next action
 
-*Open — waiting for user direction.*
+*Integrate hardware telemetry streams from droneGeophysics.py into the backend, or polish the presentation for pitch.*
 
 ## Blockers
 
-- PostGIS tables need real spatial data (OSM roads, waterways, KLHK boundaries)
 - No mechanism to incorporate new training data without manual retraining
 
 ## Upcoming deadlines
@@ -44,5 +46,4 @@ The ML pipeline is now **genuine machine learning**. XGBoost is trained on 230 c
 
 ## Needs review
 
-- The `deriveCompliance()` function hardcodes `gridId === 'G006'` — needs updating for H-series or data-driven
-- Capex `ml_score` null fallback — recalculate in ML merge block (~3 lines)
+- None at the moment.

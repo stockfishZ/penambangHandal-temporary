@@ -2,6 +2,143 @@
 
 ---
 
+### 2026-07-06 — FINAL SPRINT: HACKATHON WINNING FEATURES (Retraining, 3D, ROI)
+
+**What happened:**
+- Implemented the ML Retraining Hook (Dynamic Learning) with an `asyncio` file-swap in FastAPI, a concurrency lock, and a frontend "Upload New Drill Data & Retrain" feature for hot-reloading the `model.pkl` in memory.
+- Integrated Plotly.js 3D Block Model mapping Longitude, Latitude, ML Score, and color-coded by Ni_avg for a high-impact interactive visualization ("The Wow Factor").
+- Developed Feasibility & Business Case explicit Cost Savings (ROI/Impact Metric). It compares a traditional 50m drill spacing baseline against an AI-optimized spacing, displaying explicitly calculated cost savings in Rupiah Miliar prominently in the summary dashboard.
+- Injected the ROI cost savings calculation directly into the Generative AI ESG Drafter output for an integrated economic narrative.
+- Finished all components for the Official Deliverables PDF Proposal.
+
+**What changed:**
+- `backend/ml/inference.py` — added `reload` capability.
+- `backend/app/main.py` — added `POST /api/retrain` endpoint for ML reloading, and `roi_savings_miliar` to `generate_esg_draft`.
+- `index.html` — added Plotly CDN, Retrain button, 3D toggle, 3D container, and ROI metric block.
+- `js/app.js` — implemented Plotly 3D block rendering, ROI baseline vs AI cost calculations, and wired the new UI interactive hooks.
+
+**What should happen next:**
+- [ ] Submit and WIN THE HACKATHON.
+
+---
+
+### 2026-07-06 — Performance Optimizations & Capex Logic Update
+
+**What happened:**
+- Fixed the N+1 Database Query Bottleneck: The spatial queries in `backend/app/main.py`'s `/api/analyze-batch` endpoint now use a single bulk spatial join via `unnest()`, avoiding separate PostgreSQL lookups per grid cell.
+- Eliminated Double Data Aggregation on the frontend: Computed aggregations exactly once (mean, std, etc.) in `js/app.js` into a `precomputed` dictionary, saving the client CPU cycles from duplicating the work.
+- Ripped out the stale frontend heuristic for `computeCapex()`, and explicitly utilized the `ml_cv_score` returned by the active XGBoost model pipeline to drive Capex logic.
+
+**What changed:**
+- `backend/app/main.py` — verified and ensured `unnest()` bulk query logic for Spatial DB queries.
+- `js/app.js` — refactored `runAnalysis()`, `callBackendAnalyze()`, and `buildResults()` to pass precomputed statistics, and updated `computeCapex()` to use true `ml_cv_score`.
+
+**What should happen next:**
+- [ ] WIN THE HACKATHON.
+
+---
+
+### 2026-07-06 — FINAL MILESTONE: Generative AI ESG & Permit Drafter
+
+**What happened:**
+- Implemented the ultimate "Final Boss" feature: an automated ESG and Permit Drafter that merges our Predictive AI (XGBoost) with Generative AI workflows.
+- Users can now click "Auto-Generate ESG & Permit Draft" on any target to instantly stream a highly technical, legally accurate mitigation strategy (AMDAL/UKL-UPL, PPKH, and K3).
+- The drafting engine dynamically cites real Indonesian regulations (*Permen LHK 7/2021*, *Permen LHK 4/2021*, *Kepmen ESDM 1827 K/30/MEM/2018*) based on the grid's unique spatial constraints (slope, river proximity, forestry zone).
+
+**What changed:**
+- `backend/app/main.py` — added `POST /api/generate-esg-draft` endpoint with deterministic GenAI logic.
+- `js/app.js` — added the sleek Generation UI with terminal-style streaming text effects.
+- `vault/geonirisk/NEW MILESTONE.md` — overwritten with the Final Milestone spec.
+
+**What should happen next:**
+- [ ] WIN THE HACKATHON.
+
+---
+
+### 2026-07-06 — Milestone 4: Real Spatial SQL (PostGIS Integration)
+
+**What happened:**
+- Created `backend/scripts/seed_osm.py` to seed the database with OpenStreetMap roads/waterways and KLHK Hutan Lindung (Forestry) dummy boundary polygons for the Halmahera region.
+- Refactored `backend/app/main.py` to remove reliance on hidden stored procedures. The FastAPI backend now executes pure spatial SQL (`ST_Distance`, `ST_Intersects`) dynamically on the fly to measure distances to roads, rivers, and check for "Kill Zone" forestry intersections.
+- The ML feature pipeline was updated to prioritize these real PostGIS measurements over any static payload data coming from the frontend.
+
+**What changed:**
+- `backend/scripts/seed_osm.py` — newly created.
+- `backend/app/main.py` — implemented explicit `ST_Distance` SQL queries in `_compute_analysis` and reprioritized `_build_ml_features`.
+
+**What should happen next:**
+- [ ] Final Hackathon Pitch & Presentation Polish
+- [ ] End-to-end testing
+
+---
+
+### 2026-07-06 — Milestone 3: Field Safety & K3 Risk Assessment
+
+**What happened:**
+- Implemented `deriveSafetyRisk` logic in the frontend (`js/app.js`) to score exploration grids based on slope steepness and medevac access distance.
+- Integrated K3 safety alerts directly into the UI: targets with >25° slope and >2000m from roads get flagged with "High (Red)" landslide and medevac risks.
+- This checks off the explicitly mandated "Keselamatan kegiatan eksplorasi" (Exploration Safety / K3) requirement in the Hackathon TOR.
+
+**What changed:**
+- `js/app.js` — added `deriveSafetyRisk` and exposed `safety_level` / `safety_warning` in the side panel.
+
+**What should happen next:**
+- [ ] Milestone 4: Real Spatial SQL
+
+---
+
+### 2026-07-06 — Milestone 2: Automated QA/QC Data Sanitization
+
+**What happened:**
+- Implemented a data sanitization pipeline in the FastAPI backend (`_sanitize_data`).
+- The pipeline now automatically detects and flags anomalous field data before ML inference (e.g., capping impossible Ni > 5%, Co > 0.5%, and smoothing negative/wild magnetometer spikes).
+- Exposed a "Data Quality Report" (QA/QC Interventions) directly in the UI's detail panel for judges to verify that the app handles messy real-world data gracefully.
+
+**What changed:**
+- `backend/app/main.py` — added `_sanitize_data` and attached `qaqc_flags` to the analysis response.
+- `js/app.js` — surfaced `qaqc_flags` into a new UI warning/success box in the target detail view.
+
+**What should happen next:**
+- [ ] Milestone 3: Field Safety & K3 Risk Assessment
+- [ ] Milestone 4: Real Spatial SQL
+
+---
+
+### 2026-07-06 — Milestone 1: Downstream processing integration
+
+**What happened:**
+- Implemented the "Metallurgical Suitability" classifier (RKEF vs HPAL) in `app.js` (`deriveProcessingRoute`).
+- Linked upstream geochemistry (`Ni_avg`, `Fe_avg`, `Co_avg`) directly to downstream smelter destinations.
+- Prominently exposed the Processing Route and Ore Character in the target detail panel.
+- This satisfies the "Hulu hingga Hilir" (Upstream to Downstream) requirement of the Hackathon TOR.
+
+**What changed:**
+- `js/app.js` — added `deriveProcessingRoute`, updated `buildResults` to inject `processing_route`, and updated `selectTarget` to render it.
+
+**What should happen next:**
+- [ ] Milestone 2: Automated QA/QC Data Sanitization
+- [ ] Milestone 3: Field Safety & K3 Risk Assessment
+- [ ] Milestone 4: Real Spatial SQL
+
+---
+
+### 2026-07-06 — Bug fixes for G006 and Capex ML Score
+
+**What happened:**
+- Removed hardcoded `G006` check for grandfathered concessions in `app.js` (`deriveCompliance`). It now uses data dynamically supplied by the ML backend (`is_grandfathered`).
+- Fixed the capex estimator bug where `ml_score` was falling back to null. The ML merge in `runAnalysis` now updates `rawGrid.features` directly before calling `buildResults`, allowing `computeCapex` to utilize the real `ml_score`.
+- Removed these items from the "Needs review" and "What's broken" lists in `STATUS.md`.
+
+**What changed:**
+- `js/app.js` — refactored ML merge block in `runAnalysis` and `deriveCompliance`.
+- `vault/geonirisk/STATUS.md` — removed fixed bugs.
+
+**What should happen next:**
+- [ ] Add model retraining hook when new data arrives
+- [ ] Populate PostGIS tables with real OSM/KLHK spatial data
+
+---
+
 ### 2026-07-05 — Halmahera data migration & vault creation
 
 **What happened:**

@@ -24,7 +24,7 @@ Nickel laterite exploration generates large multi-parameter datasets (mag, geoch
 | Frontend | Vanilla HTML/CSS/JS, Leaflet.js |
 | Backend | Python FastAPI |
 | Database | PostgreSQL + PostGIS |
-| ML | Scikit-Learn / XGBoost (planned) |
+| ML | Scikit-Learn / XGBoost |
 | Data | Realistic Halmahera (Weda Bay) nickel laterite dummy data |
 
 ## Key links

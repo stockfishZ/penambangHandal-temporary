@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NiTERRA — Exploration Priority Platform</title>
+  <title>NiTERRA — Platform Prioritas Eksplorasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -22,10 +22,11 @@
       <span>NiTERRA</span>
     </a>
     <nav class="nav-links" aria-label="Main navigation">
-      <a href="#home">Intro</a>
-      <a href="#workspace">Workspace</a>
-      <a href="#output">Output</a>
-      <a href="#insights">Insights</a>
+      <a href="index.html#home">Intro</a>
+      <a href="remote-sensing.html">Peta Potensi</a>
+      <a href="terrain-analysis.html">Analisis Terrain</a>
+      <a href="site-assessment.html">Penilaian</a>
+      <a href="index.html#workspace">Ruang Kerja</a>
     </nav>
     <a class="btn btn-primary small" href="#workspace">Mulai Analisis</a>
   </header>
@@ -35,37 +36,37 @@
       <div class="hero-content">
         <div class="hero-main">
           <span class="eyebrow">
-            <span class="live-dot"></span> PROCEDURAL TERRAIN ENGINE — LIVE RENDER
+            <span class="live-dot"></span> MESIN TERRAIN PROSEDURAL — RENDER LANGSUNG
           </span>
-          <h1>Targeted exploration.<br>From a single grid.<br><span class="text-highlight">To regional scale.</span></h1>
+          <h1>Eksplorasi tertarget.<br>Dari satu grid.<br><span class="text-highlight">Hingga skala regional.</span></h1>
           <p class="hero-lead">
-            NiTERRA turns raw data into geologically accurate, priority-ready terrain — streamed in real time to your exploration pipelines. The landscape behind this page is being generated right now.
+            NiTERRA mengubah data mentah menjadi terrain yang akurat secara geologis dan siap diprioritaskan — dialirkan secara real time ke alur kerja eksplorasi Anda. Lanskap di belakang halaman ini sedang dibuat saat ini juga.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#workspace">
-              Start analyzing 
+              Mulai analisis 
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a class="btn btn-secondary" href="#output">Contact sales</a>
+            <a class="btn btn-secondary" href="#output">Hubungi tim sales</a>
           </div>
         </div>
         
         <div class="hero-stats">
           <div class="stat-group">
-            <span class="stat-label">GRID SEED</span>
+            <span class="stat-label">SEED GRID</span>
             <span class="stat-value">NT-048476</span>
           </div>
           <div class="stat-group">
-            <span class="stat-label">ELEVATION MAX</span>
+            <span class="stat-label">ELEVASI MAKS</span>
             <span class="stat-value">2,364 M</span>
           </div>
           <div class="stat-group">
-            <span class="stat-label">COORDINATES</span>
+            <span class="stat-label">KOORDINAT</span>
             <span class="stat-value">45.71°N &nbsp; 73.64°W</span>
           </div>
           <button class="btn btn-ghost small">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            NEW SEED [R]
+            SEED BARU [R]
           </button>
         </div>
       </div>
@@ -73,7 +74,7 @@
 
     <section id="workspace" class="section workspace-section">
       <div class="section-heading">
-        <span class="eyebrow small">Workspace</span>
+        <span class="eyebrow small">Ruang Kerja</span>
         <h2>Upload data, lalu jalankan analisis.</h2>
         <p>Masukkan data magnetometer, geokimia, dan grid area. Sistem akan menghitung skor prioritas serta menampilkan hasilnya pada peta interaktif dan tabel ranking.</p>
       </div>
@@ -119,11 +120,14 @@
             </label>
 
             <div class="button-row">
-              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Load Dummy Data</button>
+              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Muat Data Dummy</button>
               <button id="runBtn" class="btn btn-primary" type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Run Analysis
+                Jalankan Analisis
               </button>
+            </div>
+            <div class="button-row" style="margin-top: 10px;">
+              <button id="retrainBtn" class="btn btn-secondary" type="button" style="width: 100%;">Unggah Data Bor Baru & Latih Ulang</button>
             </div>
 
             <div id="statusBox" class="status-box">
@@ -138,12 +142,14 @@
             <div class="map-topline">
               <div class="map-title">
                 <span class="live-dot"></span>
-                Interactive Exploration Map
+                Peta Eksplorasi Interaktif
               </div>
               <div class="map-tabs" role="tablist">
-                <button class="tab-btn active" data-layer="priority" type="button">Priority</button>
+                <button class="tab-btn active" data-layer="priority" type="button">Prioritas</button>
                 <button class="tab-btn" data-layer="magnet" type="button">Magnet</button>
-                <button class="tab-btn" data-layer="samples" type="button">Samples</button>
+                <button class="tab-btn" data-layer="samples" type="button">Sampel</button>
+                <button class="tab-btn" data-layer="risk" type="button" style="color: #fca5a5;">Peta Risiko</button>
+                <button id="toggle3dBtn" class="tab-btn" type="button" style="border-left: 1px solid rgba(255,255,255,0.2); margin-left: 8px;">Tampilan 3D</button>
               </div>
             </div>
             <div class="map-holder">
@@ -165,7 +171,7 @@
 
     <section id="output" class="section output-section">
       <div class="section-heading">
-        <span class="eyebrow small">Output</span>
+        <span class="eyebrow small">Hasil</span>
         <h2>Ringkasan hasil dan ranking target.</h2>
         <p>Setelah analisis dijalankan, sistem menampilkan skor akhir, kelas prioritas, dan alasan rekomendasi per grid.</p>
       </div>
@@ -180,20 +186,24 @@
           <b id="priorityOneCount">0</b>
         </article>
         <article class="metric-card">
-          <span>Rata-rata Score</span>
+          <span>Rata-rata Skor</span>
           <b id="avgScore">—</b>
         </article>
         <article class="metric-card">
-          <span>Best Target</span>
+          <span>Target Terbaik</span>
           <b id="bestTarget">—</b>
         </article>
         <article class="metric-card">
-          <span>⛔ Kill Zones</span>
+          <span>⛔ Zona Terlarang</span>
           <b id="killZoneCount" style="color:#ef4444;">0</b>
         </article>
         <article class="metric-card">
-          <span>⚠️ Grandfathered</span>
+          <span>⚠️ Keterlanjuran</span>
           <b id="grandfatheredCount" style="color:#f59e0b;">0</b>
+        </article>
+        <article class="metric-card" style="background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(5,150,105,0.4) 100%); border-color: #10b981;">
+          <span style="color: #e0f2fe;">Penghematan Biaya (ROI)</span>
+          <b id="roiSavings" style="color: #34d399;">Rp 0</b>
         </article>
       </div>
 
@@ -204,22 +214,22 @@
               <h3>Ranking Target</h3>
               <button id="downloadBtn" class="btn btn-secondary small" type="button">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download CSV
+                Unduh CSV
               </button>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Rank</th>
+                    <th>Peringkat</th>
                     <th>Grid</th>
-                    <th>Priority</th>
-                    <th>Score</th>
-                    <th>Ni Avg</th>
-                    <th>Mag Score</th>
-                    <th>Slope</th>
-                    <th>Legal Zone</th>
-                    <th>Reason</th>
+                    <th>Prioritas</th>
+                    <th>Skor</th>
+                    <th>Rata-rata Ni</th>
+                    <th>Skor Mag</th>
+                    <th>Kemiringan</th>
+                    <th>Zona Legal</th>
+                    <th>Alasan</th>
                   </tr>
                 </thead>
                 <tbody id="rankingBody">
@@ -232,7 +242,7 @@
 
         <div class="panel-shell">
           <aside class="panel detail-panel">
-            <span class="pill">Selected Target</span>
+            <span class="pill">Target Dipilih</span>
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <h3 id="targetDetailTitle" style="margin:0;">—</h3>
               <button id="zoomDetailBtn" class="btn btn-ghost small" type="button" title="Perbesar layar">⛶</button>
@@ -247,8 +257,8 @@
 
     <section id="insights" class="section insights-section">
       <div class="section-heading">
-        <span class="eyebrow small">Insights</span>
-        <h2>Feature contribution scoring.</h2>
+        <span class="eyebrow small">Wawasan</span>
+        <h2>Skoring kontribusi fitur.</h2>
         <p>Bobot parameter yang dipakai dalam prototype scoring. Dapat diganti dengan feature importance dari Random Forest saat backend ML terintegrasi.</p>
       </div>
       <div class="panel-shell">
@@ -259,12 +269,21 @@
     </section>
   </main>
 
+  <div id="plotly3dContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+    <div style="position: relative; width: 90%; height: 90%; background: #0f172a; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+      <button id="close3dBtn" class="btn btn-secondary small" style="position: absolute; top: 15px; right: 15px; z-index: 99999;">Tutup</button>
+      <div id="plotlyDiv" style="flex: 1; width: 100%; min-height: 0; position: relative;"></div>
+    </div>
+  </div>
+
   <footer>
     <b>NiTERRA</b> — Prototype frontend untuk ANTAM Hackathon 2026. Data dummy bersifat simulasi, bukan data eksplorasi asli.
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
   <script src="new_effect.js"></script>
   <script src="js/app.js"></script>
 </body>
