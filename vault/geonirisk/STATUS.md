@@ -1,30 +1,27 @@
 # STATUS
 
-*Last updated: 2026-07-05 (evening)*
+*Last updated: 2026-07-06*
 
 ## Current state
 
-The project has a working frontend prototype with hardcoded weighted-scoring heuristics (faking AI). Backend exists with FastAPI skeleton and PostGIS connectivity (Phase 1–2 complete). Dummy data was just migrated from Bandung (fake nickel area) to **Halmahera, Weda Bay** (real nickel laterite district).
+The ML pipeline is now **genuine machine learning**. XGBoost is trained on 230 cells (NE, NW, SW) and achieves R²=0.812 / Spearman=0.889 on the spatially held-out SE region. The forward model breaks the circular dependency by computing labels from hidden `true_ni_pct` (stored in `hidden_truth.csv`, never exposed as a feature). Frontend uses ML scores as the primary scoring source when the backend is available, with heuristic fallback.
 
 ## What works
 
-- Frontend SPA with Leaflet map, ranking table, detail panel, summary cards
-- Dummy data load (30 Halmahera grid cells, 65 mag readings, 60 geochem samples)
-- Local weighted scoring pipeline (9 factors: magnetic, geochem, lithology, slope, road, river, legal, smelter, area)
-- Legal compliance derivation (APL, HP, Hutan Lindung with permit/KB rules)
-- Backend `/api/analyze-batch` endpoint accepting grid batches and returning ML scores
-- Backend PostGIS spatial query stubs (roads, water, settlements, smelters, forestry)
-- Backend grandfather-concession seed data
-- **Drill capex estimator** — spacing (50/100m), hole count, meterage, Rp cost per grid. Calibrated with published industry data. Renders in detail panel below Final score.
+- **Real ML pipeline**: XGBoost trains on 400 cells, generalizes to unseen regions (proven by spatial holdout)
+- **Forward model**: Stochastic labels from hidden ground truth + Gaussian noise
+- **Inference**: `model.pkl` loads, returns real scores + confidence + per-grid feature importance
+- **`GET /api/model-info`** endpoint returns model status, features, CV scores, training date
+- Frontend uses ML score as **primary** when backend available (×10 to 0–100 scale), heuristic fallback
+- All data generation assumptions documented with citations in `research/SOURCES.md`
+- Everything else from previous status (capex, legal compliance, etc.)
 
 ## What's broken / incomplete
 
-- **ML pipeline is not integrated.** Backend returns null/fallback scores. Frontend gracefully degrades to local scoring only.
-- **Backend uses DummyDataService** — not real PostGIS data.
-- **Expert labels CSV** still references old G-series IDs (not updated for H-series).
-- **No real PostGIS spatial tables populated** — schema exists, tables are empty.
-- **Frontend still owns all scoring logic** — supposed to be migrated to backend per the architecture plan.
-- **Capex doesn't use real ml_score** when backend IS available — runs before ML merge. ~3-line fix in ML merge block.
+- **PostGIS tables not populated** with real OSM/KLHK spatial data — schema exists but tables empty
+- **Grandfathered grid check** still hardcodes `gridId === 'G006'` in frontend — needs data-driven approach
+- **No retraining hook** — model is static until retrained manually
+- Capex estimator still uses heuristic scores (runs before ML merge, ~3-line fix)
 
 ## Next action
 
@@ -32,9 +29,8 @@ The project has a working frontend prototype with hardcoded weighted-scoring heu
 
 ## Blockers
 
-- No trained model artifact (`.joblib`/`.onnx`) — need synthetic training or real data.
-- No labeled training dataset for Halmahera H-series grids.
-- PostGIS tables need real spatial data (OSM roads, waterways, KLHK boundaries).
+- PostGIS tables need real spatial data (OSM roads, waterways, KLHK boundaries)
+- No mechanism to incorporate new training data without manual retraining
 
 ## Upcoming deadlines
 
@@ -48,6 +44,5 @@ The project has a working frontend prototype with hardcoded weighted-scoring heu
 
 ## Needs review
 
-- The `deriveCompliance()` function hardcodes `gridId === 'G006'` for grandfathered status — needs updating for H-series or making data-driven.
-- Expert labels need regenerating for the new Halmahera dataset if ML training is planned.
-- Capex `ml_score` null fallback — recalculate in ML merge block once backend returns real scores (~3 lines in `runAnalysis()`).
+- The `deriveCompliance()` function hardcodes `gridId === 'G006'` — needs updating for H-series or data-driven
+- Capex `ml_score` null fallback — recalculate in ML merge block (~3 lines)

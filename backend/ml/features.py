@@ -34,6 +34,7 @@ def load_grid_geojson(path: str = GRID_GEOJSON) -> pd.DataFrame:
             "area_ha": float(p["area_ha"]),
             "longitude": feat["geometry"]["coordinates"][0][0][0],
             "latitude": feat["geometry"]["coordinates"][0][0][1],
+            "region_id": p.get("region_id", ""),
         })
     return pd.DataFrame(rows)
 

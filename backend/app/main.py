@@ -200,6 +200,8 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None) -> dict:
         "ml_masked": ml_result["masked"] if ml_result else None,
         "ml_block_reason": ml_result.get("block_reason") if ml_result else None,
         "ml_top_features": ml_result.get("top_features", []) if ml_result else [],
+        "ml_confidence": ml_result.get("ml_confidence") if ml_result else None,
+        "ml_cv_score": ml_result.get("ml_cv_score") if ml_result else None,
         "kill_zone_exclusion": kill_zone or is_kill_zone,
         "is_grandfathered": is_grandfathered,
         "compliance": {
@@ -241,6 +243,10 @@ async def health_check():
         "ml_enabled": settings.ML_ENABLED,
         "ml_loaded": ml_model.loaded,
     }
+
+@app.get("/api/model-info")
+async def model_info():
+    return ml_model.get_model_info()
 
 @app.get("/api/verify-land-classification")
 async def verify_land_classification(lat: float = -7.5, lon: float = 110.5):

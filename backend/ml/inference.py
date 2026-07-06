@@ -1,10 +1,11 @@
-import os
+import os, json
 import numpy as np
 import joblib
 from xgboost import XGBRegressor
 
 MODEL_DIR = os.path.dirname(__file__)
 MODEL_PATH = os.path.join(MODEL_DIR, "model.pkl")
+META_PATH = os.path.join(MODEL_DIR, "model_metadata.json")
 
 FEATURE_COLS = [
     "slope_deg", "distance_to_river_m", "distance_to_road_m",
@@ -45,9 +46,13 @@ class ProspectivityModel:
     def __init__(self, model_path: str = MODEL_PATH):
         self.model: XGBRegressor | None = None
         self.loaded = False
+        self.metadata = {}
         if os.path.exists(model_path):
             self.model = joblib.load(model_path)
             self.loaded = True
+        if os.path.exists(META_PATH):
+            with open(META_PATH) as f:
+                self.metadata = json.load(f)
 
     def predict_masked(self, features: dict) -> dict:
         dist_road = features.get("distance_to_road_m", 9999)
@@ -66,7 +71,25 @@ class ProspectivityModel:
         score = max(0.0, min(10.0, score))
 
         importance = self._feature_importance(vector)
-        return {"ml_score": round(score, 2), "masked": False, "top_features": importance[:5]}
+
+        test_metrics = self.metadata.get("test_metrics", {})
+        return {
+            "ml_score": round(score, 2),
+            "masked": False,
+            "top_features": importance[:5],
+            "ml_confidence": round(1.0 - test_metrics.get("rmse", 0.5) / 10.0, 3),
+            "ml_cv_score": test_metrics.get("r2", 0),
+        }
+
+    def get_model_info(self) -> dict:
+        if not self.loaded:
+            return {"loaded": False, "error": "No model loaded"}
+        return {
+            "loaded": True,
+            "features": ALL_FEATURES,
+            "n_features": len(ALL_FEATURES),
+            "metadata": self.metadata,
+        }
 
     def _to_vector(self, features: dict) -> np.ndarray:
         vec = []

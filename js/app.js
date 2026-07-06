@@ -207,11 +207,20 @@ async function runAnalysis() {
       backendData.results.forEach(r => { if (r.grid_id) mlMap[r.grid_id] = r; });
       resultRows = resultRows.map(row => {
         const ml = mlMap[row.grid_id];
+        if (ml && ml.ml_score != null && !ml.ml_masked) {
+          const mlFinal = Math.round(ml.ml_score * 10);
+          return { ...row, ml_score: ml.ml_score, ml_masked: ml.ml_masked, ml_block_reason: ml.ml_block_reason, ml_top_features: ml.ml_top_features, ml_confidence: ml.ml_confidence, ml_cv_score: ml.ml_cv_score, backend_viability_score: ml.viability_score, backend_kill_zone: ml.kill_zone_exclusion, backend_grandfathered: ml.is_grandfathered, final_priority_score: mlFinal, priority_class: priorityClass(mlFinal), ml_primary: true };
+        }
         if (ml) {
-          return { ...row, ml_score: ml.ml_score, ml_masked: ml.ml_masked, ml_block_reason: ml.ml_block_reason, ml_top_features: ml.ml_top_features, backend_viability_score: ml.viability_score, backend_kill_zone: ml.kill_zone_exclusion, backend_grandfathered: ml.is_grandfathered };
+          return { ...row, ml_score: ml.ml_score, ml_masked: ml.ml_masked, ml_block_reason: ml.ml_block_reason, ml_top_features: ml.ml_top_features, ml_confidence: ml.ml_confidence, ml_cv_score: ml.ml_cv_score, backend_viability_score: ml.viability_score, backend_kill_zone: ml.kill_zone_exclusion, backend_grandfathered: ml.is_grandfathered };
         }
         return row;
       });
+      resultRows.sort((a,b) => b.final_priority_score - a.final_priority_score);
+      const firstMl = resultRows.find(r => r.ml_top_features?.length);
+      if (firstMl) {
+        drawFeatureBars(firstMl.ml_top_features);
+      }
     }
 
     renderMapLayers();
@@ -797,7 +806,9 @@ function selectTarget(gridId) {
     <div class="detail-line"><span>Grandfathered:</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Yes (Keterlanjuran)' : 'No'}</b></div>
     <div class="detail-line"><span>Kill zone:</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ Excluded' : 'No'}</b></div>
     <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>ML Score:</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'BLOCKED — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
-    <div class="detail-line"><span>ML Masked:</span><b>${row.ml_masked ? 'Yes' : 'No'}</b></div>
+    ${row.ml_confidence != null ? '<div class="detail-line"><span>ML Confidence:</span><b>' + (row.ml_confidence * 100).toFixed(0) + '%</b></div>' : ''}
+    ${row.ml_cv_score != null ? '<div class="detail-line"><span>Model R²:</span><b>' + row.ml_cv_score.toFixed(3) + '</b></div>' : ''}
+    <div class="detail-line"><span>ML Primary:</span><b style="color:${row.ml_primary ? '#10b981' : 'var(--text-muted)'};">${row.ml_primary ? 'Yes' : 'No'}</b></div>
     ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features:</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
     <div class="reason-box"><b>Alasan rekomendasi</b>${row.reason}</div>
   `;
@@ -809,7 +820,21 @@ function selectTarget(gridId) {
   if (hl) hl.setStyle({ weight: 3, color: '#fff', fillOpacity: 0.85 });
 }
 
-function drawFeatureBars() {
+let lastFeatureBars = null;
+
+function drawFeatureBars(mlImportances) {
+  if (mlImportances) {
+    lastFeatureBars = mlImportances;
+    const total = mlImportances.reduce((s, f) => s + f.importance, 0) || 1;
+    els.featureBars.innerHTML = mlImportances.slice(0, 9).map((f, i) => `
+      <div class="bar-row" style="animation: fadeInUp 0.4s cubic-bezier(0, 0, 0.2, 1) ${i * 0.06}s both;">
+        <span>${f.feature}</span>
+        <div class="bar-bg"><div class="bar-fill" style="width:${(f.importance / total) * 100}%; background:#6366f1;"></div></div>
+        <b>${(f.importance * 100).toFixed(1)}%</b>
+      </div>
+    `).join('');
+    return;
+  }
   const labels = [
     ['Magnetometer anomaly', weights.magnetic],
     ['Geochemistry', weights.geochemistry],
@@ -835,7 +860,7 @@ function downloadResults() {
     setStatus('Belum ada hasil', 'Jalankan analisis dulu sebelum download CSV.');
     return;
   }
-  const headers = ['rank','grid_id','priority_class','final_priority_score','Ni_avg','Fe_avg','Co_avg','mag_score','risk_score','slope_deg','distance_to_river_m','distance_to_road_m','legal_status','legal_zone','permit_required','legal_reference','mitigation_requirements','compliance_status','is_grandfathered','kill_zone_exclusion','viability_score','ml_score','ml_masked','ml_block_reason','distance_to_smelter_km','area_ha','reason'];
+  const headers = ['rank','grid_id','priority_class','final_priority_score','Ni_avg','Fe_avg','Co_avg','mag_score','risk_score','slope_deg','distance_to_river_m','distance_to_road_m','legal_status','legal_zone','permit_required','legal_reference','mitigation_requirements','compliance_status','is_grandfathered','kill_zone_exclusion','viability_score','ml_score','ml_primary','ml_confidence','ml_cv_score','ml_masked','ml_block_reason','distance_to_smelter_km','area_ha','reason'];
   const lines = [headers.join(',')];
   resultRows.forEach((r, i) => {
     lines.push(headers.map(h => {

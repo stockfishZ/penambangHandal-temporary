@@ -1,0 +1,51 @@
+{
+  "features": [
+    "slope_deg",
+    "distance_to_river_m",
+    "distance_to_road_m",
+    "distance_to_smelter_km",
+    "area_ha",
+    "Ni_pct_mean",
+    "Fe_pct_mean",
+    "Co_pct_mean",
+    "MgO_pct_mean",
+    "SiO2_pct_mean",
+    "mag_mean_nT",
+    "mag_std_nT",
+    "lith_alluvium",
+    "lith_andesite",
+    "lith_lahar_deposit",
+    "lith_mafic_volcanic_simulated",
+    "lith_peridotite_simulated",
+    "lith_serpentinite_simulated",
+    "lith_tuff",
+    "lith_ultramafic_simulated",
+    "lith_volcanic_breccia",
+    "legal_allowed",
+    "legal_conditional",
+    "legal_no_go"
+  ],
+  "train_samples": 230,
+  "test_samples": 75,
+  "test_regions": [
+    "SE"
+  ],
+  "train_regions": [
+    "NE",
+    "NW",
+    "SW"
+  ],
+  "train_metrics": {
+    "rmse": 0.022233624588872188,
+    "mae": 0.016509295961131244,
+    "r2": 0.9996937095279266,
+    "spearman": 0.9995943048076881
+  },
+  "test_metrics": {
+    "rmse": 0.4845638921402154,
+    "mae": 0.38126814270019527,
+    "r2": 0.8119975714268597,
+    "spearman": 0.8891927586746381
+  },
+  "n_features": 24
+}

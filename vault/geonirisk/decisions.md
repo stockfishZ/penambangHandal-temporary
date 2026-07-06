@@ -26,6 +26,30 @@
 
 ---
 
+### 2026-07-06 — ML training from forward model, not heuristics
+
+**Context:** The old `labels.py` computed prospectivity scores as a deterministic function of the same features used for training — circular. No trained model existed. The frontend heuristic was the only scoring source.
+
+**Decision:** Replace `labels.py` with `forward_model.py` that generates labels from a **hidden** `true_ni_pct` (never exposed as an ML feature) plus Gaussian noise. Train XGBoost with spatial holdout (train on 3 regions, test on the 4th). The model genuinely learns to filter noise and predict the hidden state from observed features.
+
+**Why this option:** This is how real mineral exploration works — you observe noisy surface measurements and try to predict undiscovered subsurface grade. The forward model structure mirrors the real problem. XGBoost's performance on held-out regions (R²=0.81, Spearman=0.89) proves genuine generalization.
+
+**Revisit when:** Real drilling data becomes available — plug it in by replacing `hidden_truth.csv` and retraining. Zero architecture changes needed.
+
+---
+
+### 2026-07-06 — Vault replaces ProgressNote folder
+
+**Context:** The old `ProgressNote (Update and edit for every progress for report)/` folder had duplicate content (DECISIONS.md, PROGRESS.md, STATUS.md, README.md, HACKATHON GUIDE.md) now maintained in `vault/geonirisk/`.
+
+**Decision:** Delete the `ProgressNote` folder. All project documentation lives in the Obsidian vault at `vault/geonirisk/`.
+
+**Why this option:** Single source of truth. No stale duplicates. The vault structure with `research/` subfolder is more extensible.
+
+**Revisit when:** N/A — vault is the canonical documentation location.
+
+---
+
 ### 2026-06-?? — Keep scoring logic in frontend for now
 
 **Context:** The architecture plan (GEMINI.md) calls for migrating all scoring to the backend. But the backend ML pipeline isn't ready.
