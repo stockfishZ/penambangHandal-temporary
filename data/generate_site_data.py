@@ -1,13 +1,11 @@
-"""Generate uniform 20x20 study grids + field data for all 8 NiTERRA sites.
-Replaces the old 100x100 Halmahera-only generator.
+"""Generate uniform 20x20 study grids + consolidate into training data.
+Legal_status from real BIG Satupeta polygons (not random).
 
 Data assumptions documented in vault/geonirisk/research/SOURCES.md
 """
 import json, csv, random, math, os
-# ponytail: mag/geochem generation removed — teammates handle field data via droneGeophysics.py
-random.seed(42)
 
-SITES = [
+NICKEL_BELTS = [
     {"id":"sorowako","lon":121.35,"lat":-2.53,"name":"Sorowako","province":"Sulawesi Selatan","context":"East Sulawesi Ophiolite Belt","tier":"HIGH","elevation_mean":450,"elevation_max":600,"elevation_min":380,"slope_mean":12,"terrain_class":"HILLY"},
     {"id":"morowali","lon":121.93,"lat":-2.68,"name":"Morowali (Bungku)","province":"Sulawesi Tengah","context":"East Sulawesi Ophiolite Belt","tier":"HIGH","elevation_mean":200,"elevation_max":400,"elevation_min":50,"slope_mean":8,"terrain_class":"ROLLING"},
     {"id":"weda_bay","lon":128.05,"lat":0.52,"name":"Weda Bay","province":"Maluku Utara","context":"Halmahera Ophiolite","tier":"HIGH","elevation_mean":300,"elevation_max":800,"elevation_min":20,"slope_mean":18,"terrain_class":"MOUNTAINOUS"},
@@ -18,9 +16,7 @@ SITES = [
     {"id":"tapunopaka","lon":122.18,"lat":-3.61,"name":"Tapunopaka","province":"Sulawesi Tenggara","context":"Southeast Sulawesi Ophiolite","tier":"LOW","elevation_mean":100,"elevation_max":200,"elevation_min":10,"slope_mean":5,"terrain_class":"FLAT"},
 ]
 
-# ponytail: 20x20 = 400 cells per site. was 100x100 = 10,000.
 NX, NY = 20, 20
-N_CELLS = NX * NY
 
 CELL_SIZE_BY_TERRAIN = {
     "FLAT": 0.005, "ROLLING": 0.008, "HILLY": 0.010, "MOUNTAINOUS": 0.012
@@ -32,10 +28,8 @@ LITH_BASE_NI = {
     "ultramafic_simulated": (1.5, 0.4), "mafic_volcanic_simulated": (0.5, 0.2),
     "alluvium": (0.2, 0.1),
 }
-ZONE_NI_NOISE = {"saprolite": 0.20, "limonite": 0.20, "transition": 0.25, "soil": 0.30, "bedrock": 0.15}
-LEGAL_STATUSES = ["allowed", "allowed", "allowed", "conditional", "no-go"]
 
-PREFIX_MAP = {s["id"]: s["id"][:3].upper() for s in SITES}  # sor→SOR, mor→MOR, wed→WED, pom→POM, gag→GAG, obi→OBI, kon→KON, tap→TAP
+PREFIX_MAP = {s["id"]: s["id"][:3].upper() for s in NICKEL_BELTS}
 
 # Map tier to lithology weights: HIGH→more ultramafic
 TIER_LITH_WEIGHTS = {
@@ -45,6 +39,48 @@ TIER_LITH_WEIGHTS = {
 }
 
 DATA_DIR = os.path.dirname(__file__)
+FORESTRY_PATH = os.path.join(DATA_DIR, "forestry_boundaries.geojson")
+
+def _load_forestry():
+    if not os.path.exists(FORESTRY_PATH):
+        return None
+    with open(FORESTRY_PATH) as f:
+        return json.load(f)
+
+FORESTRY_DATA = _load_forestry()
+
+def point_in_polygon(lon, lat, ring):
+    inside = False
+    j = len(ring) - 1
+    for i in range(len(ring)):
+        xi, yi = ring[i][0], ring[i][1]
+        xj, yj = ring[j][0], ring[j][1]
+        if (yi > lat) != (yj > lat) and lon < (xj - xi) * (lat - yi) / (yj - yi) + xi:
+            inside = not inside
+        j = i
+    return inside
+
+def cell_in_any_polygon(lon, lat, coord_arrays):
+    for ring in coord_arrays:
+        if point_in_polygon(lon, lat, ring):
+            return True
+    return False
+
+def cell_legal_status(lon_c, lat_c, forestry):
+    if not forestry:
+        return 'allowed'
+    for feat in forestry['features']:
+        g = feat['geometry']
+        props = feat['properties']
+        status = props.get('legal_status', 'allowed')
+        if g['type'] == 'MultiPolygon':
+            for poly in g['coordinates']:
+                if cell_in_any_polygon(lon_c, lat_c, poly):
+                    return status
+        else:
+            if cell_in_any_polygon(lon_c, lat_c, g['coordinates']):
+                return status
+    return 'allowed'
 
 def generate_site(site):
     sid = site["id"]
@@ -75,7 +111,7 @@ def generate_site(site):
             lat_c = lat0 + cell_h / 2
 
             lith = random.choices(LITHOLOGIES, weights=lith_weights, k=1)[0]
-            legal = random.choices(LEGAL_STATUSES, k=1)[0]
+            legal = cell_legal_status(lon_c, lat_c, FORESTRY_DATA)
             slope = round(random.uniform(max(1, site["slope_mean"] - 5), site["slope_mean"] + 8), 1)
             river = round(random.uniform(80, 1200))
             road = round(random.uniform(300, 3500))
@@ -140,13 +176,53 @@ def generate_site(site):
     ultra = sum(1 for c in cells if any(x in c["lith"] for x in ["serpentinite","peridotite","ultramafic"]))
     print(f"  => {len(cells)} grids ({ultra} ultramafic)")
 
+def consolidate_training_data():
+    all_features = []
+    all_hidden = []
+    for site in NICKEL_BELTS:
+        sid = site['id']
+        grid_path = os.path.join(DATA_DIR, sid, "study_grid.geojson")
+        hidden_path = os.path.join(DATA_DIR, sid, "hidden_truth.csv")
+        if not os.path.exists(grid_path):
+            continue
+        with open(grid_path) as f:
+            gj = json.load(f)
+        all_features.extend(gj['features'])
+        if os.path.exists(hidden_path):
+            with open(hidden_path, newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    all_hidden.append(row)
+
+    # Write consolidated GeoJSON
+    consolidated = {
+        "type": "FeatureCollection",
+        "features": all_features,
+        "metadata": {"source": "generate_site_data.py", "sites": len(NICKEL_BELTS), "cells": len(all_features)}
+    }
+    out_path = os.path.join(DATA_DIR, "study_grid_dummy.geojson")
+    with open(out_path, "w") as f:
+        json.dump(consolidated, f, indent=2)
+    print(f"\n[OK] Consolidated GeoJSON: {out_path} — {len(all_features)} cells")
+
+    # Write consolidated hidden truth
+    hidden_path = os.path.join(DATA_DIR, "hidden_truth.csv")
+    if all_hidden:
+        with open(hidden_path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=["grid_id","region_id","true_ni_pct","lithology"])
+            w.writeheader()
+            w.writerows(all_hidden)
+        print(f"[OK] Consolidated hidden truth: {hidden_path} — {len(all_hidden)} cells")
+
 def main():
     import sys
-    targets = sys.argv[1:] if len(sys.argv) > 1 else [s["id"] for s in SITES]
-    for site in SITES:
+    random.seed(42)
+    targets = sys.argv[1:] if len(sys.argv) > 1 else [s["id"] for s in NICKEL_BELTS]
+    for site in NICKEL_BELTS:
         if site["id"] in targets:
             print(f"\n=== {site['name']} ({site['id']}) — {site['terrain_class']} terrain, {NX}x{NY} grid ===")
             generate_site(site)
+    consolidate_training_data()
 
 if __name__ == "__main__":
     main()

@@ -2,6 +2,30 @@
 
 ---
 
+### 2026-07-09 — Replaced synthetic forestry polygons with real data from BIG Satupeta
+
+**What happened:**
+The synthetic forestry boundary workaround has been eliminated. Instead of generating fake HL/HP/APL polygons, we now fetch real `Penetapan Kawasan Hutan` (Forest Area Designation) polygons directly from Indonesia's **One Map Policy (Satupeta)** — `Badan Informasi Geospasial` ArcGIS REST API.
+
+- `backend/scripts/fetch_forestry_data.py` — new script queries `kspservices.big.go.id/satupeta/rest/services/PUBLIK/KEHUTANAN/MapServer/0` for each of the 8 nickel belt sites
+- Returns 31 real polygons across 6 sites: Sorowako (11), Obi Island (10), Weda Bay (4), Pomalaa (3), Konawe (3), Tapunopaka (3)
+- Morowali and Gag Island returned 0 features → defaults to APL (allowed)
+- `fungsitap` codes mapped: 100100/100200-260 (HL,HSA) → no-go, 100300/100400/100500 (HPT,HP,HPK) → conditional, no polygon → allowed
+- `js/grid-gen.js` — fixed `pointInPolygon` / `cellLegalStatus` for correct Polygon and MultiPolygon geometry traversal; uses `feat.properties.legal_status` instead of old synthetic `FOREST_TYPE_TO_LEGAL` map
+- Replaced `data/forestry_boundaries.geojson` — 8 hand-crafted polygons → 31 real government polygons
+
+**What changed:**
+- `backend/scripts/fetch_forestry_data.py` — new
+- `data/forestry_boundaries.geojson` — replaced with real data
+- `js/grid-gen.js` — fixed geometry handling, removed synthetic FOREST_TYPE_TO_LEGAL map
+- `js/terrain-analysis.js` — colored Satupeta polygons by legal_status (no-go=red, conditional=amber, allowed=green); updated tooltip & legend
+
+**What should happen next:**
+- [ ] Retrain XGBoost model with legal_status from real polygons (distribution shifts from old random assignment)
+- [ ] Regenerate training_features.csv after retraining
+
+---
+
 ### 2026-07-07 — Architecture Overhaul: Single-Page Exploration Flow + Data Cleanup
 
 **What happened:**

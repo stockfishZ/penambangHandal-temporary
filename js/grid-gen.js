@@ -17,14 +17,6 @@ const TIER_WEIGHTS = {
   LOW: [0.10, 0.10, 0.10, 0.30, 0.40]
 };
 
-const LEGAL_FALLBACK = ['allowed', 'allowed', 'allowed', 'conditional', 'no-go'];
-
-const FOREST_TYPE_TO_LEGAL = {
-  'Hutan Lindung': 'no-go',
-  'Hutan Produksi': 'conditional',
-  'Areal Penggunaan Lain': 'allowed',
-};
-
 // Seeded random (mulberry32) for reproducibility
 function mulberry32(a) {
   return function() {
@@ -45,8 +37,7 @@ function weightedRandom(rng, items, weights) {
   return items[items.length - 1];
 }
 
-function pointInPolygon(lon, lat, poly) {
-  const ring = poly[0];
+function pointInPolygon(lon, lat, ring) {
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const xi = ring[i][0], yi = ring[i][1];
@@ -56,17 +47,28 @@ function pointInPolygon(lon, lat, poly) {
   return inside;
 }
 
+function cellInAnyPolygon(lonC, latC, coordArrays) {
+  for (const ring of coordArrays) {
+    if (pointInPolygon(lonC, latC, ring)) return true;
+  }
+  return false;
+}
+
 function cellLegalStatus(lonC, latC, forestryData) {
-  if (!forestryData) return LEGAL_FALLBACK[Math.floor(Math.random() * LEGAL_FALLBACK.length)];
+  if (!forestryData) return 'allowed';
   for (const feat of forestryData.features) {
-    const coords = feat.geometry.coordinates;
-    for (const ring of coords) {
-      if (pointInPolygon(lonC, latC, ring)) {
-        return FOREST_TYPE_TO_LEGAL[feat.properties.type] || 'unknown';
+    const g = feat.geometry;
+    const props = feat.properties;
+    const status = props.legal_status || props.type || 'allowed';
+    if (g.type === 'MultiPolygon') {
+      for (const poly of g.coordinates) {
+        if (cellInAnyPolygon(lonC, latC, poly)) return status;
       }
+    } else {
+      if (cellInAnyPolygon(lonC, latC, g.coordinates)) return status;
     }
   }
-  return LEGAL_FALLBACK[Math.floor(Math.random() * LEGAL_FALLBACK.length)];
+  return 'allowed';
 }
 
 function generateGrid(bbox, params, forestryData) {

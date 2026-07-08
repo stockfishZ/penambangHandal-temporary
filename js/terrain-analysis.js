@@ -53,17 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(r => r.json())
       .then(data => {
         forestryData = data;
-        const typeColor = { 'Hutan Lindung': '#ef4444', 'Hutan Produksi': '#E2A356', 'Areal Penggunaan Lain': '#6366f1' };
-        const typeOpacity = { 'Hutan Lindung': 0.25, 'Hutan Produksi': 0.20, 'Areal Penggunaan Lain': 0.15 };
+        const legalColor = { 'no-go': '#ef4444', 'conditional': '#E2A356', 'allowed': '#22c55e' };
+        const legalOpacity = { 'no-go': 0.25, 'conditional': 0.20, 'allowed': 0.15 };
+        const legalLabel = { 'no-go': 'Terlarang', 'conditional': 'Bersyarat', 'allowed': 'Diizinkan' };
         forestryLayer = L.geoJSON(data, {
-          style: f => ({
-            color: typeColor[f.properties.type] || '#888',
-            fillColor: typeColor[f.properties.type] || '#888',
-            fillOpacity: typeOpacity[f.properties.type] || 0.15,
-            weight: 2
-          })
+          style: f => {
+            const s = f.properties.legal_status || 'allowed';
+            return {
+              color: legalColor[s] || '#888',
+              fillColor: legalColor[s] || '#888',
+              fillOpacity: legalOpacity[s] || 0.15,
+              weight: 2
+            };
+          }
         }).addTo(map);
-        forestryLayer.bindTooltip(f => `<b>${f.properties.name}</b><br>Type: ${f.properties.type}<br>${f.properties.permit_required}`, {sticky:true});
+        forestryLayer.bindTooltip(f => {
+          const p = f.properties;
+          return `<b>Kawasan Hutan</b><br>Status: ${legalLabel[p.legal_status] || p.legal_status}<br>Kode: ${p.fungsitap || '-'}`;
+        }, {sticky:true});
         const beltColors = { HIGH: '#9FD8BD', MEDIUM: '#E2A356', LOW: '#ef4444' };
         const beltLabels = { HIGH: 'High — Tier Tinggi', MEDIUM: 'Medium — Tier Sedang', LOW: 'Low — Tier Rendah' };
         const legend = L.control({position: 'bottomleft'});
@@ -78,10 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
               `<span style="position:absolute;inset:0;border-top:2px dashed ${beltColors[t]};"></span></span>` +
               `<span>${beltLabels[t]}</span></div>`;
           }
-          html += '<div style="font-weight:600;margin:8px 0 4px;">Kawasan Hutan</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#ef4444;"></span> Hutan Lindung (Terlarang)</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#E2A356;"></span> Hutan Produksi (Bersyarat)</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#6366f1;"></span> APL (Diizinkan)</div>';
+          html += '<div style="font-weight:600;margin:8px 0 4px;">Kawasan Hutan (Satupeta)</div>';
+          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#ef4444;"></span> No-Go (HL/HSA)</div>';
+          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#E2A356;"></span> Conditional (HP/HPT/HPK)</div>';
+          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#22c55e;"></span> Allowed (APL/default)</div>';
           div.innerHTML = html;
           return div;
         };
