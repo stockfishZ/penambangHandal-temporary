@@ -1,0 +1,125 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HL Bungku Hinterland",
+        "type": "Hutan Lindung",
+        "permitted": false,
+        "permit_required": "DILARANG",
+        "description": "Protected forest, mountainous terrain. No mining allowed.",
+        "color": "#ef4444"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[121.75, -2.50], [122.10, -2.50], [122.15, -2.65], [122.00, -2.85], [121.70, -2.80], [121.65, -2.60], [121.75, -2.50]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HL Obi Tengah",
+        "type": "Hutan Lindung",
+        "permitted": false,
+        "permit_required": "DILARANG",
+        "description": "Central Obi protected forest zone. Steep terrain.",
+        "color": "#ef4444"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[127.60, -1.38], [127.80, -1.35], [127.90, -1.50], [127.85, -1.65], [127.65, -1.70], [127.55, -1.55], [127.60, -1.38]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HL Pegunungan Tengah Halmahera",
+        "type": "Hutan Lindung",
+        "permitted": false,
+        "permit_required": "DILARANG",
+        "description": "Central Halmahera protected forest. No mining.",
+        "color": "#ef4444"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[128.00, 0.60], [128.15, 0.65], [128.25, 0.55], [128.30, 0.40], [128.20, 0.30], [128.00, 0.35], [127.95, 0.50], [128.00, 0.60]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HP Weda Bay Inland",
+        "type": "Hutan Produksi",
+        "permitted": true,
+        "permit_required": "PPKH (Persetujuan Penggunaan Kawasan Hutan)",
+        "description": "Production forest with mining permit pathway via PPKH.",
+        "color": "#E2A356"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[127.85, 0.55], [128.10, 0.55], [128.20, 0.42], [128.15, 0.30], [128.00, 0.25], [127.85, 0.30], [127.80, 0.42], [127.85, 0.55]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HP Konawe Timur",
+        "type": "Hutan Produksi",
+        "permitted": true,
+        "permit_required": "PPKH (Persetujuan Penggunaan Kawasan Hutan)",
+        "description": "Production forest area. Mining allowed with PPKH permit.",
+        "color": "#E2A356"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[122.05, -3.70], [122.25, -3.70], [122.35, -3.85], [122.30, -4.00], [122.10, -4.05], [122.00, -3.90], [122.05, -3.70]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HP Pomalaa Barat",
+        "type": "Hutan Produksi",
+        "permitted": true,
+        "permit_required": "PPKH (Persetujuan Penggunaan Kawasan Hutan)",
+        "description": "Production forest. Mining allowed with conditional permits.",
+        "color": "#E2A356"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[121.50, -4.08], [121.70, -4.08], [121.75, -4.20], [121.70, -4.35], [121.50, -4.35], [121.45, -4.22], [121.50, -4.08]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "APL Sorowako Concession",
+        "type": "Areal Penggunaan Lain",
+        "permitted": true,
+        "permit_required": "IUP (AMDAL/UKL-UPL)",
+        "description": "Existing mining concession area. Standard IUP permit process applies.",
+        "color": "#10b981"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[121.25, -2.45], [121.42, -2.45], [121.48, -2.55], [121.45, -2.63], [121.28, -2.63], [121.22, -2.55], [121.25, -2.45]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "APL Pesisir Pomalaa",
+        "type": "Areal Penggunaan Lain",
+        "permitted": true,
+        "permit_required": "IUP (AMDAL/UKL-UPL)",
+        "description": "Coastal non-forest area. Standard AMDAL process.",
+        "color": "#10b981"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[121.60, -4.12], [121.75, -4.12], [121.78, -4.22], [121.75, -4.30], [121.60, -4.30], [121.57, -4.22], [121.60, -4.12]]]
+      }
+    }
+  ]
+}

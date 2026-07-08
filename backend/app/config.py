@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = ""
     DB_NAME: str = "geonirisk"
     
-    ALLOWED_ORIGINS: str = "http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000"
+    ALLOWED_ORIGINS: str = "*"
 
     @property
     def database_url(self) -> str:
@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()]
 
-    ML_MODEL_PATH: str = "ml/model.pkl"
+    ML_MODEL_PATH: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "ml", "model.pkl")
     ML_ENABLED: bool = True
 
     model_config = SettingsConfigDict(

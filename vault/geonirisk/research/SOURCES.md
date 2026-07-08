@@ -2,11 +2,16 @@
 
 All synthetic data parameters are based on published, citeable sources as documented below.
 
-## Study Area: Weda Bay, Halmahera
+## Study Area: Morowali & Weda Bay
 
-Coordinate bounds: 127.65–127.73°E, 0.35–0.446°S
-- Grid layout references the Weda Bay nickel laterite district, Halmahera Timur, Maluku Utara
-- **Source**: SRTM 30m DEM tiles S00E127, S00E128 (USGS/NASA, 2014); RBI Bakosurtanal map sheet 2612-44
+Coordinate bounds (Morowali dummy): 121.82–121.98°E, 2.67–2.83°S
+- Grid layout references the IMIP/Morowali nickel laterite district, Sulawesi Tengah
+- **Source**: SRTM 30m DEM tiles and DEMNAS 8m (Badan Informasi Geospasial / BIG, 2018) for high-resolution slope generation.
+
+## Remote Sensing & Prospectivity (Phase 1)
+- **Sentinel-2 MSI**: Open-source multispectral imagery used for Iron-Oxide (Band 4 / Band 2) and Clay mineral proxies.
+- **Source**: Copernicus Open Access Hub (ESA).
+- **Mineral Prospectivity Mapping (MPM)**: The "Ultra Predictive" scoring algorithm mathematically weighting Ultramafic geology (1), Slope 5-15° (2), and spectral anomaly intensity (3) into a unified 0-100 target score.
 
 ## Lithology Distribution
 
@@ -63,6 +68,21 @@ Legal distribution: 60% allowed, 20% conditional, 20% no-go.
 
 Base distance ~25 km from IMIP/Weda Bay Industrial Park. Simulated range 25–140 km.
 - **Source**: PT Antam (2025). *Laporan Tahunan 2024*. Jakarta; IMIP public coordinates.
+
+## Grid Center Coordinates (Corrected per Mine Locations)
+
+Grid centers for all 8 study sites were aligned with actual nickel laterite mining areas using authoritative mining locality databases:
+
+| Site | Grid Center | Source |
+|------|-----------|--------|
+| Sorowako | 121.35°E, -2.53°S | Mindat.org (2025). *Sorowako Mine*, locality 19161, decimal coordinates -2.54583, 121.3525. Also confirmed by Wikipedia *Sorowako mine* at -2.57361, 121.37417. Grid center positioned ~2.5km north of mine pit to cover the broader Sorowako laterite plateau. |
+| Morowali | 121.93°E, -2.68°S | Mindat.org *Bahodopi-Bahumatefe deposit*, locality 42617 (Morowali Regency). Shifted ~14km north from IMIP industrial park coast to the Bungku highlands where actual laterite nickel deposits occur (IOP Sci. 2024, *Mineralogical and Chemical Characteristics of Lateritic Nickel Profiles, Morowali Regency*). |
+| Weda Bay | 128.05°E, 0.52°N | Mindat.org (2025). *Weda Bay Mine*, locality 19225, decimal coordinates 0.47139, 127.9475. Grid center shifted ~10km inland from IWIP coast to match the central Halmahera laterite provinces described in Van der Ent et al. (2013). *J. Geochem. Explor.* 128, 72-79. |
+| Pomalaa | 121.63°E, -4.20°S | Mindat.org *Pomalaa Mines*, locality 18849 (Kolaka Regency). Grid centered ~2km south of Pomalaa town to cover the Antam ferronickel mine pits. Confirmed by Global Energy Monitor *Pomalaa Nickel power station* at -4.179865, 121.592935. |
+| Gag Island | 129.88°E, -0.07°S | Mindat.org *Gag Island Project*, Gag Island at 0°27'2"S, 129°53'8"E (locality listed under Gag Island). Unchanged — already on mineralized terrain with no infrastructure offset. |
+| Obi Island | 127.72°E, -1.50°S | Mindat.org *Kawasi, Obi Island* (locality 453811) and *Anggai prospect* at 1°21'53"S, 127°43'29"E. Grid centered ~5km north of original to cover the Harita Group mining area around Kawasi village (Earthworks 2025, *Obi Island* mining impacts report). |
+| Konawe | 122.11°E, -3.83°S | Unchanged — grid already covers the SCM (Sarana Citra Mandiri) and Antam laterite mining areas in North Konawe Regency. |
+| Tapunopaka | 122.18°E, -3.61°S | Unchanged — grid covers the Antam Tapunopaka nickel mine site in Southeast Sulawesi. |
 
 ## ML Training Data: Forward Model Approach
 

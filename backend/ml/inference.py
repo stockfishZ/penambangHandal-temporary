@@ -16,8 +16,6 @@ META_PATH = os.path.join(MODEL_DIR, "model_metadata.json")
 FEATURE_COLS = [
     "slope_deg", "distance_to_river_m", "distance_to_road_m",
     "distance_to_smelter_km", "area_ha",
-    "Ni_pct_mean", "Fe_pct_mean", "Co_pct_mean", "MgO_pct_mean", "SiO2_pct_mean",
-    "mag_mean_nT", "mag_std_nT",
 ]
 
 LITH_COLS = [
@@ -84,43 +82,40 @@ class ProspectivityModel:
             return {"ml_score": 0.0, "masked": True, "block_reason": "Distance to road < 500m (Permen LH 4/2012 penalty zone)"}
 
         if not self.loaded:
-            # ponytail: simple heuristic fallback, upgrade path is loading full XGBoost model via joblib
-            import math
-            ni_val = float(features.get("Ni_pct_mean", 0.0) or features.get("geochemistry_value", 0.0))
-            ni_score = 5.0 / (1.0 + math.exp(-(ni_val - 0.8) / 0.5))
-            
+            # ponytail: bare heuristic — pre-survey features only (no geochem, no magnetics)
+            # structurally different from forward_model.py (no Michaelis-Menten, no multiplicative interactions)
+            legal = str(features.get("legal_status", ""))
+            legal_score = 5.0 if legal == "allowed" else (3.0 if legal == "conditional" else 0.0)
+
             lith = str(features.get("lithology", ""))
             is_ultra = any(x in lith for x in ["serpentinite", "peridotite", "ultramafic"])
-            lith_score = 2.0 if is_ultra else (1.0 if "mafic" in lith else 0.3)
-            
-            legal = str(features.get("legal_status", ""))
-            legal_score = 2.0 if legal == "allowed" else (1.0 if legal == "conditional" else 0.0)
-            
-            road_km = float(features.get("distance_to_road_m", 9999)) / 1000.0
-            log_score = 0.5 if 0.5 <= road_km <= 5.0 else (0.3 if road_km <= 10.0 else 0.1)
-            
-            smelter = float(features.get("distance_to_smelter_km", 999))
-            log_score += 0.5 if smelter <= 50 else (0.4 if smelter <= 90 else (0.25 if smelter <= 140 else 0.1))
-            
+            lith_score = 3.0 if is_ultra else (1.5 if "mafic" in lith else 0.0)
+
             slope = float(features.get("slope_deg", 0.0))
-            slope_penalty = 1.0 if slope > 35 else (0.5 if slope > 25 else (0.2 if slope > 15 else 0.0))
-            
-            score = ni_score + lith_score + legal_score + log_score - slope_penalty
+            slope_norm = max(0.0, (15.0 - abs(slope - 8.0)) / 15.0)
+
+            road_km = float(features.get("distance_to_road_m", 9999)) / 1000.0
+            road_score = max(0.0, 1.0 - abs(road_km - 2.5) / 7.5) if road_km <= 10 else 0.0
+
+            smelter = float(features.get("distance_to_smelter_km", 999))
+            smelter_score = max(0.0, 1.0 - smelter / 150.0)
+
+            score = legal_score + lith_score + slope_norm + road_score + smelter_score
             score = round(max(0.0, min(10.0, score)), 2)
-            
+
             importance = [
-                {"feature": "Ni_pct_mean", "importance": 0.45, "impact": round(ni_score, 3)},
-                {"feature": "lithology", "importance": 0.25, "impact": round(lith_score, 3)},
-                {"feature": "legal_status", "importance": 0.15, "impact": round(legal_score, 3)},
-                {"feature": "distance_to_road_m", "importance": 0.10, "impact": round(log_score, 3)},
-                {"feature": "slope_deg", "importance": 0.05, "impact": round(slope_penalty, 3)}
+                {"feature": "legal_status", "importance": 0.40, "impact": round(legal_score, 3)},
+                {"feature": "lithology", "importance": 0.30, "impact": round(lith_score, 3)},
+                {"feature": "slope_deg", "importance": 0.12, "impact": round(slope_norm, 3)},
+                {"feature": "distance_to_road_m", "importance": 0.10, "impact": round(road_score, 3)},
+                {"feature": "distance_to_smelter_km", "importance": 0.08, "impact": round(smelter_score, 3)},
             ]
             return {
                 "ml_score": score,
                 "masked": False,
                 "top_features": importance,
-                "ml_confidence": 0.85,
-                "ml_cv_score": 0.81,
+                "ml_confidence": 0.60,
+                "ml_cv_score": 0.55,
                 "fallback": True
             }
 

@@ -1,6 +1,6 @@
 # STATUS
 
-*Last updated: 2026-07-06*
+*Last updated: 2026-07-07T20:00*
 
 ## Current state
 
@@ -18,7 +18,7 @@ The ML pipeline is now **genuine machine learning**. XGBoost is trained on 230 c
 - **Real Spatial SQL (PostGIS)**: The backend dynamically computes `ST_Distance` and `ST_Intersects` against OSM roads, waterways, and KLHK forestry boundaries seeded via `seed_osm.py`.
 - **Performance Optimizations**: Resolved N+1 PostgreSQL bottleneck via `unnest()` in batch queries, eliminated double frontend data aggregation, and fully integrated ML `cv_score` into Capex calculations.
 - **Generative AI ESG Drafter**: A deterministic generative engine outputs customized, legally accurate (AMDAL/PPKH) mitigation strategies based on spatial grid payloads directly to the frontend.
-- **Upstream Target Generation Pipeline (NEW)**: Fully functional client-side 3-stage platform connecting macro-level remote sensing (`remote-sensing.html`) to predictive 3D terrain modeling (`terrain-analysis.html`) and economic site assessment (`site-assessment.html`). This acts as the "GO/NO-GO" gateway before launching the drone geophysics payloads.
+- **Single-Page Exploration Pipeline (REBUILT)**: Consolidated from 3 pages into 1 (`terrain-analysis.html`). Free-roaming Indonesia heat map with ophiolite belt polygons. Draw rectangle → auto-generates 20×20 study grid + assessment scoring (SAFE/PROBABLE/WORTH IT) + 3D terrain + ML prediction overlay + ranked drone export CSV. Synthetic field data (mag/geochem) removed — teammates handle via `droneGeophysics.py`.
 - Everything else from previous status (capex, backend QA/QC data sanitization, legal compliance, etc.)
 
 ## What's broken / incomplete

@@ -1,83 +1,95 @@
-# HACKATHON MILESTONE: The End-to-End NiTERRA Autonomous Exploration Pipeline
+# NiTERRA — NEW MILESTONE
 
-**Status:** IMPLEMENTED (Upstream Pipeline)
-**Theme:** Eksplorasi (Exploration)
+## Vision
 
-This document outlines the architecture for the **NiTERRA Autonomous Exploration Pipeline**, which seamlessly connects macro-level satellite remote sensing to micro-level drone geophysical acquisition.
+A single exploration page. Free-roaming heat map of Indonesia's nickel potential. Draw a rectangle to grab a chunk → that chunk becomes a candidate exploration zone → 3D terrain loads → ML results appear below. All in one place.
 
----
+## Team Split
 
-## The Master Workflow
+| Point | Who | What |
+|-------|-----|------|
+| 1 | **NiTERRA UI** | Regional nickel heat map — WHERE in Indonesia has nickel laterite potential |
+| 2 | **NiTERRA UI** | Site screening — is this area SAFE, PROBABLE, WORTH IT? → decide where to deploy drone |
+| 3-5 | **Teammates** | Drone magnetometer (`droneGeophysics.py`), geochemistry sampling, data interpretation |
 
-The project is split into two distinct phases: **Upstream (Target Generation)** and **Downstream (Field Acquisition & ML Scoring)**.
+The UI produces a ranked list of grid cells (export CSV) that the geophysicist hands to the drone team. Their real field data flows back separately — no synthetic data generated here.
 
-```mermaid
-graph TD
-    %% Upstream Phase
-    subgraph Upstream [Phase 1: Target Generation (Web Platform)]
-        A[1. Peta Potensi] -->|Regional Targeting| B[2. Analisis Terrain]
-        B -->|3D Slope Predictive Model| C[3. Penilaian Lapangan]
-    end
+## Architecture: One Page, Two Modes
 
-    %% Downstream Phase
-    subgraph Downstream [Phase 2: Field Acquisition (Hardware & ML)]
-        C -->|Handoff: GO Decision| D[4. Drone Deployment]
-        D -->|Magnetometer Payload| E[5. Geophysics Processing]
-        E -->|Magnetic Anomalies| F[6. ML Block Model]
-    end
+### `terrain-analysis.html`
 
-    classDef upstream fill:#1e293b,stroke:#9FD8BD,stroke-width:2px;
-    classDef downstream fill:#1e293b,stroke:#E2A356,stroke-width:2px;
-    
-    class Upstream,A,B,C upstream;
-    class Downstream,D,E,F downstream;
+**BROWSE mode** (initial state):
+- Full Indonesia map centered on Sulawesi/Halmahera
+- **OpenStreetMap basemap** (cleaner than OpenTopoMap — belt polygons visible without contour clutter)
+- Nickel belt polygons (ophiolite outlines) colored by tier — **fill opacity 0 (outline only), dashed border** — clearly distinguishable from forestry's solid filled polygons
+- **Forestry boundaries overlay** (Hutan Lindung / Hutan Produksi / APL) — approximate polygons visible before drawing, so users see where prohibited areas are *before* selecting an area. APL uses **indigo (#6366f1)** to avoid confusion with belt greens.
+- **Combined bottom-left legend** — two sections: Sabuk Nikel (tier-colored lines: High/Medium/Low) + Kawasan Hutan (filled rectangles: Hutan Lindung/Hutan Produksi/APL)
+- Mine/mindat locality markers
+- Toolbar: `[Select Area]` toggle, layer checkboxes (Geology, MPM, Slope)
+
+**TARGET mode** (after rectangle drawn):
+- Map zooms to selected area, study grid overlay appears
+- Grid cells **color-coded by legal_status**: green (APL/allowed), gold (Hutan Produksi/conditional), red (Hutan Lindung/no-go) — no guesswork on where forbidden zones are
+- Bottom panel slides up with 4 tabs:
+  - **Assessment**: SAFE / PROBABLE / WORTH IT scores with rubric breakdown + **compliance summary** (X cells blocked, Y conditional, Z clear). Overall: GO / CONDITIONAL / NO-GO. Banner downgrades if any no-go cells detected.
+  - **3D Terrain**: Plotly surface, procedural elevation, slope-colored by laterite suitability. Lazy-rendered on first tab click (fixes hidden-container sizing issue).
+  - **ML Prediction**: Per-cell Ni grade overlay (colored by forward-model prediction) + **summary metrics row**: total cells × high/medium/low counts + top target ID. Source note: "Forward model based on Van der Ent et al. lithology Ni ranges."
+  - **Drone Export**: Top 20 ranked cells by prospectivity × safety, CSV download in drone-compatible format
+
+### Navigation
+
+```
+Before:  Intro | Peta Potensi | Analisis Terrain | Penilaian | Ruang Kerja
+After:   Intro | Eksplorasi   | Analisis
 ```
 
----
+- `Eksplorasi` → the single exploration page (above)
+- `Analisis` → links to `index.html` (landing page)
 
-## Phase 1: Upstream Target Generation (COMPLETED)
+## Data
 
-We have successfully built a 3-page zero-latency web application using our custom "Nexus" dark-glassmorphism design system. 
+### Nickel Belt Heat Map (`data/indonesia_nickel_belts.geojson`)
+Approximate polygon outlines of Indonesia's laterite-hosting ophiolite belts, derived from published geological map boundaries. Each polygon carries `tier` and `source` properties. DRAFT — user reviews before finalizing.
 
-### 1. Peta Potensi (`remote-sensing.html`)
-**Goal:** Identify WHERE in Indonesia nickel deposits are likely to be found using regional mapping.
-- **Implementation:** An interactive Leaflet map featuring hardcoded, heavily researched GeoJSON data of 8 major Indonesian nickel districts (Sorowako, Morowali, Weda Bay, etc.).
-- **Ambition for Future:** Integrate live satellite feeds via Google Earth Engine API to automatically scan for vegetation stress anomalies (NDVI) matching laterite profiles across the entire Indonesian archipelago.
+### Client-Side Grid Generator (`js/grid-gen.js`)
+Grid generation logic ported from `generate_site_data.py` to JavaScript. Runs entirely in the browser — no backend needed. When user draws a rectangle:
+1. Find nearest known site or default to ROLLING/LOW
+2. Generate 20×20 cells with terrain-adaptive cell size, tier-weighted lithology
+3. Return GeoJSON + computed assessment scores
 
-### 2. Analisis Terrain (`terrain-analysis.html`)
-**Goal:** DetermineWHAT the ground looks like using high-resolution DEMs, and explicitly predict laterite formation zones before boots hit the ground.
-- **Implementation:** 
-  - **Procedural Remote Sensing Overlays:** Dynamic 2D map layers showing geological boundaries (Ultramafic Formations) and Remote Sensing Anomalies (Iron Oxides/Vegetation).
-  - **Predictive 3D Modeling:** The 3D Plotly surface model doesn't just show elevation—it computes the **mathematical derivative (slope)** of the terrain in real-time. It maps a prospectivity colorscale directly onto the mesh:
-    - **RED (Optimal):** 5° - 15° slopes where laterites form perfectly.
-    - **BLUE (Poor):** Flat swamps (<5°) where smectite clays ruin grades, or steep cliffs (>20°) where erosion strips the ore.
-- **Ambition for Future:** Connect directly to real-time 1m LiDAR data feeds and utilize deep learning to identify existing logging roads and canopy density for drone launch pad planning.
+### Files Kept
+- `data/all_sites/*.geojson` — Phase 1 regional layers (geology, slope, remote_sensing, mpm)
+- `data/{site}/study_grid.geojson` — targeting grid per site (for demo/overlap scenarios)
+- `data/{site}/hidden_truth.csv` — ML training reference
+- `js/shared-sites.js` — 8 known nickel districts (coordinates corrected per Mindat sources)
 
-### 3. Penilaian Lapangan (`site-assessment.html`)
-**Goal:** Answer the multi-million dollar question: SHOULD WE GO?
-- **Implementation:** A 3-axis radial scoring dashboard evaluating **Safety**, **Geological Probability**, and **Economic Viability**. It automatically synthesizes terrain roughness, proximity to smelters, and geological context into a decisive **GO / NO-GO** banner.
-- **Ambition for Future:** Wire this directly into the ANTAM ERP system to calculate real-time logistics Capex (helicopter rentals, permit delays) against the LME nickel spot price.
+### Files Deleted
+- `remote-sensing.html`, `js/remote-sensing.js` — superseded by single page
+- `site-assessment.html`, `js/site-assessment.js` — superseded by single page
+- `data/*/magnetometer.csv`, `data/*/geochemistry.csv` — synthetic field data removed (teammates' domain)
 
----
+## Assessment Rubric
 
-## Phase 2: Downstream Field Acquisition (TEAMMATES)
+| Score | Weights | Range |
+|-------|---------|-------|
+| **SAFE** | slope (40%) + road access (30%) + terrain penalty (30%) | 0–100 |
+| **PROBABLE** | ultramafic % (40%) + tier (30%) + belt proximity (30%) | 0–100 |
+| **WORTH IT** | area ha (30%) + smelter dist (30%) + tier (40%) | 0–100 |
+| **OVERALL** | SAFE×0.3 + PROB×0.4 + WORTH×0.3 | 0–100 |
 
-Once the Upstream platform generates a **GO** decision, the baton is passed to the engineering and geophysics team in the field.
+GO ≥ 75 | CONDITIONAL 50–74 | NO-GO < 50
 
-### 4. Drone Deployment
-- **Goal:** The engineering team travels to the safe, highly-probable coordinate identified in Phase 1. They launch a custom-built UAV carrying a miniaturized fluxgate magnetometer (or equivalent sensor).
-- **Tooling:** Hardware prototypes built by the engineering team.
+## Completed Refinements (2026-07-07)
 
-### 5. Geophysics Processing (`droneGeophysics.py` & `Codingan IGL2`)
-- **Goal:** The drone gathers raw total magnetic intensity (TMI) data. The `droneGeophysics.py` software processes the live telemetry stream.
-- **Geophysicist Role:** The `Advanced_Geomagnetic_GUI_Magnetometer.py` (IGL2) tool is used by the geophysicist to perform diurnal corrections, upward continuation, and filtering (RTP - Reduce to Pole) to isolate the shallow ultramafic bedrock anomalies from regional magnetic noise.
-
-### 6. ML Block Model (`index.html` / `app.js`)
-- **Goal:** The interpreted geophysical anomalies (magnetic highs corresponding to unweathered peridotite/serpentinite bedrock) are fed back into the NiTERRA ML scoring platform.
-- **Integration:** The XGBoost model fuses this high-resolution magnetic data with the slope data from Phase 1 to generate a 3D block model of expected Nickel grades, ready for drilling.
-
----
-
-## Summary of Impact
-
-By implementing this architecture, we have transformed the hackathon project from a simple map into a **comprehensive, autonomous mining lifecycle manager**. We have proven that software can radically de-risk physical exploration by applying strict geological rules (like slope physics and ultramafic boundaries) *before* a single dollar is spent on flights.
+1. **Header solid** — topbar background `var(--bg-surface)` (no map bleed-through)
+2. **Switch to OSM basemap** — cleaner tiles, belts visible immediately
+3. **Raise belt opacity** — fill 0.25, solid lines
+4. **Brighter tab fonts** — inactive tabs use `--text-primary`
+5. **Lazy 3D** — Plotly renders on first tab click (fixes zero-size container)
+6. **ML summary metrics** — 5 metric cards in ML Prediction tab (total cells × high/med/low counts × top target)
+7. **Compliance map overlay** — grid cells colored by `legal_status` (indigo/APL, gold/HP, red/HL)
+8. **Compliance in assessment** — blocked cell counts, banner adjusts if no-go cells found
+9. **Forestry boundaries GeoJSON** — `data/forestry_boundaries.geojson` with 8 approximate Hutan polygons (3 HL, 3 HP, 2 APL) loaded in BROWSE mode with combined legend
+10. **ML source note** — links to SOURCES.md
+11. **APL color → indigo (#6366f1)** — avoids confusion with belt green tones
+12. **Combined legend** — single block shows both belt tier lines + forestry filled swatches

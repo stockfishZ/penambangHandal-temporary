@@ -19,8 +19,6 @@ META_PATH = os.path.join(MODEL_DIR, "model_metadata.json")
 FEATURE_COLS = [
     "slope_deg", "distance_to_river_m", "distance_to_road_m",
     "distance_to_smelter_km", "area_ha",
-    "Ni_pct_mean", "Fe_pct_mean", "Co_pct_mean", "MgO_pct_mean", "SiO2_pct_mean",
-    "mag_mean_nT", "mag_std_nT",
 ]
 
 LITH_COLS = [

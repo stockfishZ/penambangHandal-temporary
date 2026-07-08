@@ -1,10 +1,12 @@
 from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from starlette.responses import Response
 from pydantic import BaseModel
 import logging
 import asyncio
 import os
-import shutil
+from datetime import datetime, timezone
 
 is_training = False
 
@@ -46,22 +48,14 @@ class GridAnalysisRequest(BaseModel):
     grid_id: str = ""
     latitude: float
     longitude: float
-    magnetometer_value: float
-    geochemistry_value: float
+    magnetometer_value: float | None = None
+    geochemistry_value: float | None = None
     kajian_teknis_kestabilan: bool = False
-    # ML feature inputs
     slope_deg: float | None = None
     distance_to_river_m: float | None = None
     distance_to_road_m: float | None = None
     distance_to_smelter_km: float | None = None
     area_ha: float | None = None
-    Ni_pct_mean: float | None = None
-    Fe_pct_mean: float | None = None
-    Co_pct_mean: float | None = None
-    MgO_pct_mean: float | None = None
-    SiO2_pct_mean: float | None = None
-    mag_mean_nT: float | None = None
-    mag_std_nT: float | None = None
     lithology: str | None = None
     legal_status: str | None = None
 
@@ -78,29 +72,8 @@ class ESGDraftRequest(BaseModel):
     roi_savings_miliar: float = 0.0
 
 def _sanitize_data(request: GridAnalysisRequest) -> list[str]:
-    flags = []
-    
-    # Check magnetometer
-    mag = request.mag_mean_nT if request.mag_mean_nT is not None else request.magnetometer_value
-    if mag < 0 or mag > 100000:
-        flags.append(f"Mag anomaly ({mag:.0f} nT) smoothed to baseline 43000 nT")
-        if request.mag_mean_nT is not None: request.mag_mean_nT = 43000.0
-        request.magnetometer_value = 43000.0
-        
-    # Check Ni
-    ni = request.Ni_pct_mean if request.Ni_pct_mean is not None else request.geochemistry_value
-    if ni > 5.0:
-        flags.append(f"Impossible Ni% ({ni:.2f}%) capped to 5.0%")
-        if request.Ni_pct_mean is not None: request.Ni_pct_mean = 5.0
-        request.geochemistry_value = 5.0
-        
-    # Check Co
-    co = request.Co_pct_mean if request.Co_pct_mean is not None else 0.0
-    if co > 0.5:
-        flags.append(f"Anomalous Co% ({co:.2f}%) capped to 0.5%")
-        if request.Co_pct_mean is not None: request.Co_pct_mean = 0.5
-        
-    return flags
+    # ponytail: survey-field QA/QC removed — ML uses pre-survey features only
+    return []
 
 async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_spatial: dict = None) -> dict:
     qaqc_flags = _sanitize_data(request)
@@ -241,8 +214,8 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
             "public_facility_500m_buffer": dist_to_public_facility < 500,
         },
         "raw_inputs": {
-            "magnetometer": request.magnetometer_value,
-            "geochemistry": request.geochemistry_value,
+            "magnetometer": request.magnetometer_value or 0,
+            "geochemistry": request.geochemistry_value or 0,
         },
         "viability_score": viability_score,
         "ml_score": ml_result["ml_score"] if ml_result else None,
@@ -274,13 +247,6 @@ def _build_ml_features(request: GridAnalysisRequest, spatial: dict) -> dict:
         "distance_to_road_m": spatial.get("dist_to_road_meters") if spatial.get("dist_to_road_meters") is not None else (request.distance_to_road_m or 9999.0),
         "distance_to_smelter_km": (spatial.get("dist_to_smelter_meters", 0) / 1000) if spatial.get("dist_to_smelter_meters") is not None else (request.distance_to_smelter_km or 999.0),
         "area_ha": request.area_ha or 0.0,
-        "Ni_pct_mean": request.Ni_pct_mean or 0.0,
-        "Fe_pct_mean": request.Fe_pct_mean or 0.0,
-        "Co_pct_mean": request.Co_pct_mean or 0.0,
-        "MgO_pct_mean": request.MgO_pct_mean or 0.0,
-        "SiO2_pct_mean": request.SiO2_pct_mean or 0.0,
-        "mag_mean_nT": request.mag_mean_nT or request.magnetometer_value,
-        "mag_std_nT": request.mag_std_nT or 0.0,
         "lithology": request.lithology or "unknown",
         "legal_status": request.legal_status or spatial.get("land_classification", "unknown"),
     }
@@ -294,15 +260,22 @@ async def health_check():
         "ml_loaded": ml_model.loaded,
     }
 
+@app.options("/api/analyze-batch")
+@app.options("/api/analyze-grid")
+async def analyze_preflight():
+    return Response(status_code=200)
+
 async def perform_retraining():
     global is_training
     try:
         await asyncio.sleep(2)
-        temp_model_path = settings.ML_MODEL_PATH + ".tmp"
-        if os.path.exists(settings.ML_MODEL_PATH):
-            shutil.copy2(settings.ML_MODEL_PATH, temp_model_path)
-            os.replace(temp_model_path, settings.ML_MODEL_PATH)
         ml_model.reload()
+        last = os.path.join(os.path.dirname(settings.ML_MODEL_PATH), ".last_retrain")
+        with open(last, "w") as f:
+            f.write(datetime.now(timezone.utc).isoformat())
+        logger.info("Retrain complete — model reloaded")
+    except Exception as e:
+        logger.error(f"Retrain failed: {e}")
     finally:
         is_training = False
 
@@ -448,3 +421,6 @@ async def analyze_batch(request: BatchGridAnalysisRequest, db=None):
     except Exception as e:
         logger.error(f"Error in batch analysis: {e}")
         raise HTTPException(status_code=500, detail="Internal server error during batch analysis")
+
+static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+app.mount("/", StaticFiles(directory=static_dir, html=True), name="frontend")

@@ -3,7 +3,7 @@ window.NICKEL_SITES = {
   "features": [
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [121.35, -2.55] },
+      "geometry": { "type": "Point", "coordinates": [121.35, -2.53] },
       "properties": {
         "id": "sorowako",
         "name": "Sorowako",
@@ -28,10 +28,10 @@ window.NICKEL_SITES = {
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [121.96, -2.82] },
+      "geometry": { "type": "Point", "coordinates": [121.93, -2.68] },
       "properties": {
         "id": "morowali",
-        "name": "Morowali (IMIP)",
+        "name": "Morowali (Bungku)",
         "province": "Sulawesi Tengah",
         "type": "Laterite",
         "context": "East Sulawesi Ophiolite Belt",
@@ -53,7 +53,7 @@ window.NICKEL_SITES = {
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [127.95, 0.47] },
+      "geometry": { "type": "Point", "coordinates": [128.05, 0.52] },
       "properties": {
         "id": "weda_bay",
         "name": "Weda Bay",
@@ -78,7 +78,7 @@ window.NICKEL_SITES = {
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [121.61, -4.18] },
+      "geometry": { "type": "Point", "coordinates": [121.63, -4.20] },
       "properties": {
         "id": "pomalaa",
         "name": "Pomalaa",
@@ -128,7 +128,7 @@ window.NICKEL_SITES = {
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [127.71, -1.55] },
+      "geometry": { "type": "Point", "coordinates": [127.72, -1.50] },
       "properties": {
         "id": "obi_island",
         "name": "Obi Island",

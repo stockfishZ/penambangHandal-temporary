@@ -1,19 +1,14 @@
 """Stochastic forward model: generates prospectivity labels from HIDDEN ground truth.
-Breaks the circular dependency of the old labels.py which used observed features.
-
-The label depends on true_ni_pct (a hidden variable NOT in the ML feature set),
-plus lithology, legal status, and accessibility. Gaussian noise is added so the
-ML model must learn to filter noise from multiple signals — genuine learning.
+Formula is structurally different from the inference fallback to prevent closed-loop scoring.
+The label depends on true_ni_pct (hidden from ML features) with multiplicative interactions.
 
 Data assumptions documented in vault/geonirisk/research/SOURCES.md
 """
 import os
-import random
 import math
 import pandas as pd
 import numpy as np
 
-random.seed(42)
 np.random.seed(42)
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data")
@@ -23,7 +18,6 @@ LABELS_CSV = os.path.join(DATA_DIR, "expert_labels.csv")
 
 
 def compute_prospectivity(row: pd.Series, true_ni: float) -> float:
-    # Step 1: Hard zeros (same as old labels.py — rule-based exclusions)
     legal_no_go = row.get("legal_no_go", 0)
     if legal_no_go == 1:
         return 0.0
@@ -31,65 +25,69 @@ def compute_prospectivity(row: pd.Series, true_ni: float) -> float:
     if dist_road < 500:
         return 0.0
 
-    # Step 2: Ni grade score from HIDDEN true Ni (NOT from observed Ni_pct_mean)
-    # sigmoid centered at 0.8% Ni, scaled to 0-5 points
-    ni_score = 5.0 / (1.0 + math.exp(-(true_ni - 0.8) / 0.5))
+    # Michaelis-Menten curve — fundamentally different from the sigmoid used in inference fallback
+    # K_m = 0.6, V_max = 6.0
+    ni_score = 6.0 * true_ni / (true_ni + 0.6)
 
-    # Step 3: Lithology bonus from hidden truth
+    # Lithology multiplier: ultramafic rocks amplify Ni score (multiplicative, not additive)
     lith = str(row.get("lithology", ""))
     is_ultramafic = any(x in lith for x in ["serpentinite", "peridotite", "ultramafic"])
     is_mafic = "mafic" in lith
     if is_ultramafic:
-        lith_score = 2.0
+        lith_mult = 1.5
     elif is_mafic:
-        lith_score = 1.0
+        lith_mult = 1.15
     else:
-        lith_score = 0.3
+        lith_mult = 0.7
 
-    # Step 4: Legal/regulatory score (0-2)
+    # Legal acts as a gate (multiplicative)
     legal_allowed = row.get("legal_allowed", 0)
     legal_conditional = row.get("legal_conditional", 0)
     if legal_allowed == 1:
-        legal_score = 2.0
+        legal_gate = 1.0
     elif legal_conditional == 1:
-        legal_score = 1.0
+        legal_gate = 0.65
     else:
-        legal_score = 0.0
+        legal_gate = 0.0
 
-    # Step 5: Logistics score (0-1)
-    log_score = 0.0
+    # Logistics bonus (additive, different thresholds from inference fallback)
+    log_bonus = 0.0
     road_km = row.get("distance_to_road_m", 9999) / 1000
-    if 0.5 <= road_km <= 5.0:
-        log_score += 0.5
-    elif road_km <= 10.0:
-        log_score += 0.3
-    else:
-        log_score += 0.1
+    if road_km <= 3.0:
+        log_bonus += 0.6
+    elif road_km <= 7.0:
+        log_bonus += 0.4
+    elif road_km <= 15.0:
+        log_bonus += 0.15
 
     smelter = row.get("distance_to_smelter_km", 999)
-    if smelter <= 50:
-        log_score += 0.5
-    elif smelter <= 90:
-        log_score += 0.4
-    elif smelter <= 140:
-        log_score += 0.25
-    else:
-        log_score += 0.1
+    if smelter <= 35:
+        log_bonus += 0.7
+    elif smelter <= 70:
+        log_bonus += 0.45
+    elif smelter <= 120:
+        log_bonus += 0.2
+    elif smelter <= 200:
+        log_bonus += 0.1
 
-    # Step 6: Slope penalty (0 to -1)
+    # Interaction: hidden Ni × slope penalty
     slope = row.get("slope_deg", 0)
-    if slope > 35:
-        slope_penalty = 1.0
-    elif slope > 25:
-        slope_penalty = 0.5
-    elif slope > 15:
-        slope_penalty = 0.2
+    if slope > 30:
+        slp = 1.2
+    elif slope > 20:
+        slp = 0.6
+    elif slope > 12:
+        slp = 0.2
     else:
-        slope_penalty = 0.0
+        slp = 0.0
+    slope_penalty = slp * (0.5 + 0.5 * true_ni / (true_ni + 0.5))
 
-    raw = ni_score + lith_score + legal_score + log_score - slope_penalty
-    # Add Gaussian noise — the ML model must learn to filter this
-    noise = np.random.normal(0, 0.4)
+    raw = ni_score * lith_mult * legal_gate + log_bonus - slope_penalty
+
+    # Heteroscedastic noise: scales with true_ni
+    noise_sigma = 0.3 * (1.0 + 0.6 * true_ni / (true_ni + 0.5))
+    noise = np.random.normal(0, noise_sigma)
+
     return max(0.0, min(10.0, raw + noise))
 
 

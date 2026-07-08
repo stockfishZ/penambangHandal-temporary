@@ -2,6 +2,66 @@
 
 ---
 
+### 2026-07-07 — Architecture Overhaul: Single-Page Exploration Flow + Data Cleanup
+
+**What happened:**
+The project was restructured from 3 separate pages (remote-sensing.html → terrain-analysis.html → site-assessment.html) into a single-page exploration tool.
+
+- Consolidated all 3 pages into `terrain-analysis.html` — one page with two modes:
+  - **BROWSE**: Free-roaming Indonesia map with ophiolite belt polygons as a nickel heat map
+  - **TARGET**: Draw a rectangle → 20×20 study grid auto-generates → bottom panel with 4 tabs (Assessment, 3D Terrain, ML Prediction, Drone Export)
+- Created `data/indonesia_nickel_belts.geojson` — simplified polygon outlines of 5 nickel laterite belts (East Sulawesi, Halmahera, Obi, Waigeo-Gag, SE Sulawesi) with tier ratings and source citations
+- Created `js/grid-gen.js` — client-side 20×20 grid generator ported from Python. Determines nearest known site from drawn rectangle, generates cells with terrain-adaptive sizing and tier-weighted lithology
+- Wrote assessment engine in JS — computes SAFE (slope + road + terrain) / PROBABLE (ultramafic% + tier + belt) / WORTH IT (area + smelter + tier) scores with transparent rubric
+- Kept procedural 3D terrain with slope-colored overlay (procedural DEM sufficient for hackathon)
+- ML Prediction tab shows per-cell Ni grade overlay on both main map and mini-map
+- Drone Export tab: top 20 ranked cells with CSV download matching `droneGeophysics.py`-compatible format
+
+**Data cleanup:**
+- Stripped `magnetometer.csv` and `geochemistry.csv` generation from `generate_site_data.py` — synthetic field data was teammates' domain via `droneGeophysics.py`
+- Deleted all magnetometer.csv and geochemistry.csv files from all 8 site directories
+- Deleted `remote-sensing.html`, `site-assessment.html`, `js/remote-sensing.js`, `js/site-assessment.js`
+- Updated `js/shared-sites.js` with corrected coordinates (Morowali → Bungku, Weda Bay inland, Sorowako/Pomalaa/Obi minor shifts)
+- Nav simplified: `Intro | Eksplorasi | Analisis`
+
+**What changed:**
+- `terrain-analysis.html` — rewritten (single page, two modes, tab panel)
+- `js/terrain-analysis.js` — rewritten (BROWSE/TARGET, draw tool, assessment, 3D, ML, export)
+- `js/grid-gen.js` — new (client-side grid generator)
+- `data/indonesia_nickel_belts.geojson` — new (ophiolite belt polygons)
+- `js/shared-sites.js` — updated coordinates
+- `data/generate_site_data.py` — stripped mag/geochem generation
+- `index.html` — nav updated
+- `remote-sensing.html`, `site-assessment.html`, `js/remote-sensing.js`, `js/site-assessment.js` — deleted
+- `data/*/magnetometer.csv`, `data/*/geochemistry.csv` — deleted (all 8 sites)
+- `vault/geonirisk/NEW MILESTONE.md` — rewritten with user's single-page architecture
+- `vault/geonirisk/STATUS.md` — updated
+
+**What should happen next:**
+- [ ] User reviews nickel belt polygons
+- [ ] User tests single-page flow end-to-end
+- [ ] Polish for hackathon presentation
+
+---
+
+### 2026-07-06 — Phase 1.1: WebGIS & Ultra Predictive Map
+
+**What happened:**
+- Implemented Phase 1.1 WebGIS foundation and removed hardcoded Leaflet polygons.
+- Wrote `generate_phase1_data.py` to simulate open-source proxy data for a dummy Morowali region (Ultramafic boundaries, DEMNAS 5-15 degree slope proxy, Sentinel-2 Fe-Oxide heatmap, and MPM combined heatmap).
+- Integrated the "Ultra Predictive Map" (Mineral Prospectivity Mapping) into `terrain-analysis.js` using dynamic GeoJSON fetching.
+- Retained the premium UI vibe from `index.html` within the interactive `terrain-analysis.html` Leaflet map setup.
+
+**What changed:**
+- `backend/generate_phase1_data.py` — created.
+- `js/terrain-analysis.js` — fully refactored to fetch dynamic GeoJSONs and add to `L.control.layers`.
+- `data/morowali/` — populated with generated GeoJSONs.
+
+**What should happen next:**
+- [ ] Phase 2: Interactive AOI Selection (Bounding Box Tool) & Data Clipping.
+
+---
+
 ### 2026-07-06 — FINAL SPRINT: HACKATHON WINNING FEATURES (Retraining, 3D, ROI)
 
 **What happened:**

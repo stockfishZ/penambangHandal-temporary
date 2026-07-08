@@ -3,52 +3,346 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NiTERRA — Analisis Terrain</title>
+  <title>NiTERRA — Eksplorasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .ta-layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      min-height: calc(100vh - 80px);
-      margin-top: 80px;
-      padding: var(--sp-md);
-      gap: var(--sp-md);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    #scene, .ambient-glow, .vignette, .noise-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    .topbar { z-index: 1000; }
+    .site-label { color: #fff !important; background: rgba(0,0,0,0.75) !important; border: 1px solid rgba(255,255,255,0.15) !important; padding: 2px 6px !important; border-radius: 3px !important; font-size: 11px !important; font-weight: 500 !important; }
+
+    .explore-layout {
+      position: relative;
+      height: 100vh;
+      padding-top: 60px;
+      z-index: 1;
+      overflow: hidden;
     }
-    .ta-sidebar {
+
+    /* Map section — always fills the entire area behind the panel */
+    .map-section {
+      position: absolute;
+      inset: 60px 0 0 0;
+      z-index: 1;
+    }
+    #exploreMap {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Toolbar overlaid on map */
+    .map-toolbar {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 500;
       display: flex;
-      flex-direction: column;
-      gap: var(--sp-md);
-      position: sticky;
-      top: 100px;
-      align-self: start;
+      gap: 6px;
+      background: rgba(14, 21, 37, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 6px;
     }
-    .ta-main {
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp-md);
+    .map-toolbar button {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: var(--text-primary);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
     }
-    .ta-panel {
-      background: var(--bg-glass);
+    .map-toolbar button:hover {
+      background: rgba(159, 216, 189, 0.1);
+      border-color: var(--accent-emerald);
+    }
+    .map-toolbar .btn-active {
+      background: rgba(159, 216, 189, 0.2);
+      border-color: var(--accent-emerald);
+    }
+    .map-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      background: rgba(14, 21, 37, 0.85);
+      backdrop-filter: blur(8px);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: var(--sp-md);
+      padding: 10px 20px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      text-align: center;
+      pointer-events: none;
+      transition: opacity 0.4s;
     }
-    .map-container { min-height: 450px; height: 100%; border-radius: var(--radius-sm); overflow: hidden; }
-    .stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding: 8px 0; font-size: 13px; }
-    .stat-row:last-child { border-bottom: none; }
-    .stat-row span { color: var(--text-secondary); }
-    .stat-row b { color: var(--text-primary); }
+    .map-hint.hidden { opacity: 0; }
+
+    /* Bottom sheet panel */
+    .target-panel {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      z-index: 600;
+      height: calc(100vh - 60px);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      background: var(--bg-surface, #0e1525);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-default);
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+    }
+    .target-panel.open {
+      transform: translateY(55%);
+    }
+    .target-panel.expanded {
+      transform: translateY(0%);
+    }
+
+    /* Drag handle */
+    .panel-handle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0 2px;
+      cursor: grab;
+      flex-shrink: 0;
+    }
+    .panel-handle:active { cursor: grabbing; }
+    .panel-handle-bar {
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(238, 234, 224, 0.25);
+      transition: background 0.2s;
+    }
+    .panel-handle:hover .panel-handle-bar {
+      background: rgba(238, 234, 224, 0.5);
+    }
+
+    .target-panel-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    /* Tab bar */
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border-default);
+      background: rgba(255,255,255,0.02);
+      flex-shrink: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: var(--font-ui);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: var(--text-primary); }
+    .tab-btn.active {
+      color: var(--accent-emerald);
+      border-bottom-color: var(--accent-emerald);
+    }
+    .tab-bar .expand-toggle {
+      margin-left: auto;
+      background: none;
+      border: none;
+      padding: 10px 14px;
+      color: var(--text-secondary);
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tab-bar .expand-toggle:hover { color: var(--text-primary); }
+    .tab-bar .expand-toggle .expand-label {
+      font-size: 11px;
+      font-family: var(--font-ui);
+    }
+
+    /* Tab content */
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--sp-md);
+      display: none;
+      min-height: 0;
+    }
+    .tab-content.active { display: block; }
+
+    @media (max-width: 768px) {
+      .assess-grid { grid-template-columns: 1fr; }
+      .target-panel.open { transform: translateY(40%); }
+    }
+
+    /* Assessment tab */
+    .assess-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-md);
+      margin-bottom: var(--sp-md);
+    }
+    .assess-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: var(--sp-md);
+      text-align: center;
+    }
+    .assess-card h4 { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-big {
+      font-family: var(--font-display);
+      font-size: 36px;
+      margin: 8px 0;
+    }
+    .score-big.green { color: var(--accent-emerald); }
+    .score-big.yellow { color: var(--accent-gold); }
+    .score-big.red { color: #ef4444; }
+    .assess-detail { font-size: 12px; color: var(--text-secondary); margin-top: 8px; }
+
+    .banner-go, .banner-cond, .banner-nogo {
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--sp-md);
+    }
+    .banner-go { background: rgba(159,216,189,0.15); border: 1px solid var(--accent-emerald); color: var(--accent-emerald); }
+    .banner-cond { background: rgba(226,163,86,0.15); border: 1px solid var(--accent-gold); color: var(--accent-gold); }
+    .banner-nogo { background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #ef4444; }
+
+    /* 3D tab */
+    #plotly3d { width: 100%; height: 100%; min-height: 300px; }
+
+    /* Export tab */
+    .export-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: var(--sp-md);
+    }
+    .export-table th, .export-table td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .export-table th { color: var(--text-secondary); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .export-table td { color: var(--text-primary); }
+    .star { color: var(--accent-gold); font-size: 14px; }
+
+    /* ML Explanation */
+    .ml-verdict {
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--sp-md);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ml-verdict .verdict-icon { font-size: 28px; }
+    .ml-verdict .verdict-text { flex: 1; }
+    .ml-verdict .verdict-text h3 { font-size: 15px; margin: 0 0 2px; font-family: var(--font-display); }
+    .ml-verdict .verdict-text p { font-size: 12px; margin: 0; opacity: 0.85; }
+    .ml-verdict.high { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #10b981; }
+    .ml-verdict.medium { background: rgba(226,163,86,0.12); border: 1px solid rgba(226,163,86,0.3); color: #E2A356; }
+    .ml-verdict.low { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+
+    .ml-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin: var(--sp-md) 0 8px;
+      font-weight: 600;
+    }
+
+    .ml-factor-list { display: flex; flex-direction: column; gap: 6px; }
+    .ml-factor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+    .ml-factor-name { width: 120px; flex-shrink: 0; color: var(--text-secondary); text-align: right; }
+    .ml-factor-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .ml-factor-bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .ml-factor-val { width: 50px; font-size: 11px; color: var(--text-secondary); }
+
+    .ml-cells-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-md);
+      margin-top: 8px;
+    }
+    .ml-cell-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+    .ml-cell-card h4 { font-size: 13px; margin: 0 0 4px; }
+    .ml-cell-card .cell-score { font-family: var(--font-display); font-size: 22px; }
+    .ml-cell-card .cell-reason { font-size: 11px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4; }
+    .ml-cell-card.top-card { border-color: rgba(16,185,129,0.3); }
+    .ml-cell-card.bottom-card { border-color: rgba(239,68,68,0.3); }
+
+    .ml-blocked-list { margin-top: 6px; }
+    .ml-blocked-item {
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ml-blocked-item .blocked-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ef4444; flex-shrink: 0;
+    }
+
+
   </style>
 </head>
 <body>
-  <div id="scene"></div>
-  <div class="ambient-glow"></div>
-  <div class="vignette"></div>
-  <div class="noise-overlay"></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="ambient-glow" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <header class="topbar">
     <a class="brand" href="index.html#home">
@@ -57,59 +351,129 @@
     </a>
     <nav class="nav-links">
       <a href="index.html#home">Intro</a>
-      <a href="remote-sensing.html">Peta Potensi</a>
-      <a href="terrain-analysis.html" class="active">Analisis Terrain</a>
-      <a href="site-assessment.html">Penilaian</a>
-      <a href="index.html#workspace">Ruang Kerja</a>
+      <a href="terrain-analysis.html" class="active">Eksplorasi</a>
+      <a href="index.html">Analisis</a>
     </nav>
   </header>
 
-  <main class="ta-layout">
-    <aside class="ta-sidebar">
-      <div class="ta-panel">
-        <select id="siteSelect" class="btn btn-secondary" style="width: 100%; background: #0e1525; color: white;">
-          <!-- JS fills this -->
-        </select>
+  <div class="explore-layout">
+    <!-- Map section -->
+    <div class="map-section" id="mapSection">
+      <div id="exploreMap"></div>
+      <div class="map-toolbar" id="mapToolbar">
+        <button id="btnSelect" class="btn-active">🟩 Select Area</button>
+        <button id="btnClear">🗑 Clear</button>
       </div>
-
-      <div class="ta-panel">
-        <h4 style="margin-bottom: 10px;">Statistik Elevasi (DEM)</h4>
-        <div class="stat-row"><span>Elevasi Rata-rata</span><b id="elMean">-</b></div>
-        <div class="stat-row"><span>Elevasi Maks (Puncak)</span><b id="elMax">-</b></div>
-        <div class="stat-row"><span>Elevasi Min (Lembah)</span><b id="elMin">-</b></div>
-      </div>
-
-      <div class="ta-panel">
-        <h4 style="margin-bottom: 10px;">Analisis Lereng (Slope)</h4>
-        <div class="stat-row"><span>Kemiringan Rata-rata</span><b id="slopeMean">-</b></div>
-        <div class="stat-row"><span>Indeks Kekasaran</span><b id="roughness">-</b></div>
-        <div class="stat-row"><span>Klasifikasi Terrain</span><b id="terrainClass" style="color: #9FD8BD;">-</b></div>
-      </div>
-
-      <a id="assessBtn" href="site-assessment.html" class="btn btn-primary" style="text-align: center;">Penilaian Lapangan &rarr;</a>
-    </aside>
-
-    <div class="ta-main">
-      <div class="ta-panel" style="padding: 0; display: flex; flex-direction: column;">
-        <div style="padding: 10px 15px; border-bottom: 1px solid var(--border-default); display: flex; justify-content: space-between;">
-          <b>Peta Topografi / Hillshade</b>
-          <span style="font-size: 11px; color: #888;">Data: OpenTopoMap</span>
-        </div>
-        <div id="demMap" class="map-container"></div>
-      </div>
-      <div class="ta-panel" style="padding: 0; display: flex; flex-direction: column;">
-        <div style="padding: 10px 15px; border-bottom: 1px solid var(--border-default); display: flex; justify-content: space-between;">
-          <b>Simulasi 3D Terrain</b>
-          <span style="font-size: 11px; color: #888;">Generatif dari elevasi profil</span>
-        </div>
-        <div id="plotly3d" style="flex: 1; min-height: 450px;"></div>
+      <div class="map-hint" id="mapHint">
+        Select "Select Area" then draw a rectangle on the map to begin exploration
       </div>
     </div>
-  </main>
+
+    <!-- Target panel -->
+    <div class="target-panel" id="targetPanel">
+      <div class="panel-handle" id="panelHandle">
+        <div class="panel-handle-bar"></div>
+      </div>
+      <div class="target-panel-inner">
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="assessment">Assessment</button>
+          <button class="tab-btn" data-tab="terrain3d">3D Terrain</button>
+          <button class="tab-btn" data-tab="mlpred">ML Prediction</button>
+          <button class="tab-btn" data-tab="export">Drone Export</button>
+          <button class="expand-toggle" id="btnExpand" title="Expand / Collapse">
+            <span class="expand-label">Expand</span> <span id="expandIcon">▲</span>
+          </button>
+        </div>
+
+        <!-- Assessment tab -->
+        <div class="tab-content active" id="tabAssessment">
+          <div id="overallBanner" class="banner-go">REKOMENDASI: DEPLOY DRONE TEAM (GO)</div>
+          <div class="assess-grid">
+            <div class="assess-card">
+              <h4>Keselamatan (SAFE)</h4>
+              <div class="score-big green" id="scoreSafety">-</div>
+              <div class="assess-detail" id="detailSafety">-</div>
+            </div>
+            <div class="assess-card">
+              <h4>Probabilitas Geologis</h4>
+              <div class="score-big green" id="scoreProb">-</div>
+              <div class="assess-detail" id="detailProb">-</div>
+            </div>
+            <div class="assess-card">
+              <h4>Kelayakan Ekonomi (WORTH IT)</h4>
+              <div class="score-big green" id="scoreWorth">-</div>
+              <div class="assess-detail" id="detailWorth">-</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:var(--sp-md);margin-top:var(--sp-sm);flex-wrap:wrap;justify-content:center;" id="complianceRow">
+            <span style="font-size:12px;padding:4px 12px;border-radius:var(--radius-sm);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;">
+              APL: <b id="compAllowed">-</b>
+            </span>
+            <span style="font-size:12px;padding:4px 12px;border-radius:var(--radius-sm);background:rgba(226,163,86,0.1);border:1px solid rgba(226,163,86,0.2);color:#E2A356;">
+              Hutan Produksi: <b id="compConditional">-</b>
+            </span>
+            <span style="font-size:12px;padding:4px 12px;border-radius:var(--radius-sm);background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#ef4444;">
+              Hutan Lindung: <b id="compNoGo">-</b>
+            </span>
+          </div>
+          <div style="font-size:13px;color:var(--text-secondary);text-align:center;margin-top:6px;" id="siteInfo">-</div>
+        </div>
+
+        <!-- 3D Terrain tab -->
+        <div class="tab-content" id="tabTerrain3d">
+          <div id="plotly3d"></div>
+        </div>
+
+        <!-- ML Prediction tab -->
+        <div class="tab-content" id="tabMlpred">
+          <div class="ml-stats" id="mlStats" style="display:flex;gap:var(--sp-md);margin-bottom:var(--sp-md);flex-wrap:wrap;">
+            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(255,255,255,0.03);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
+              <span style="font-size:11px;color:var(--text-secondary);display:block;">Total Cells</span>
+              <b id="mlTotalCells" style="font-size:24px;color:var(--text-primary);">-</b>
+            </div>
+            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
+              <span style="font-size:11px;color:var(--text-secondary);display:block;">High (>= 6.5)</span>
+              <b id="mlHighCount" style="font-size:24px;color:#10b981;">-</b>
+            </div>
+            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(226,163,86,0.08);border:1px solid rgba(226,163,86,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
+              <span style="font-size:11px;color:var(--text-secondary);display:block;">Medium (3.5–6.4)</span>
+              <b id="mlMedCount" style="font-size:24px;color:#E2A356;">-</b>
+            </div>
+            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
+              <span style="font-size:11px;color:var(--text-secondary);display:block;">Low (< 3.5)</span>
+              <b id="mlLowCount" style="font-size:24px;color:#ef4444;">-</b>
+            </div>
+            <div class="metric-card" style="flex:2;min-width:140px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
+              <span style="font-size:11px;color:var(--text-secondary);display:block;">Top Target</span>
+              <b id="mlTopTarget" style="font-size:18px;color:#818cf8;">-</b>
+            </div>
+          </div>
+          <div id="mlExplanation"></div>
+        </div>
+
+        <!-- Export tab -->
+        <div class="tab-content" id="tabExport">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Top 20 cells ranked by prospectivity &times; safety for drone survey targeting</span>
+            <button id="btnExportCsv" class="btn btn-primary small" style="font-size:11px;padding:6px 12px;">Download CSV for Drone Team</button>
+          </div>
+          <div>
+            <table class="export-table" id="exportTable">
+              <thead><tr><th>Rank</th><th>Grid ID</th><th>Priority</th><th>Latitude</th><th>Longitude</th><th>ML Score</th><th>Slope&deg;</th><th>Lithology</th></tr></thead>
+              <tbody id="exportBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
   <script src="js/shared-sites.js"></script>
+  <script src="js/grid-gen.js"></script>
+  <script src="js/ml-client.js"></script>
   <script src="js/terrain-analysis.js"></script>
 </body>
 </html>

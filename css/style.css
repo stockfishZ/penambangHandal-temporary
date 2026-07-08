@@ -143,9 +143,9 @@ body {
   align-items: center;
   gap: var(--sp-md);
   padding: 8px 10px 8px 20px;
-  background: var(--bg-glass-strong);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   box-shadow:

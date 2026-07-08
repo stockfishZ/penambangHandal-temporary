@@ -5,13 +5,6 @@
     "distance_to_road_m",
     "distance_to_smelter_km",
     "area_ha",
-    "Ni_pct_mean",
-    "Fe_pct_mean",
-    "Co_pct_mean",
-    "MgO_pct_mean",
-    "SiO2_pct_mean",
-    "mag_mean_nT",
-    "mag_std_nT",
     "lith_alluvium",
     "lith_andesite",
     "lith_lahar_deposit",
@@ -36,16 +29,16 @@
     "SW"
   ],
   "train_metrics": {
-    "rmse": 0.40964223386189436,
-    "mae": 0.3236619328934214,
-    "r2": 0.8687429719971428,
-    "spearman": 0.923221719637532
+    "rmse": 0.46170858124886194,
+    "mae": 0.36438595457137496,
+    "r2": 0.6808136713625805,
+    "spearman": 0.8071766781058216
   },
   "test_metrics": {
-    "rmse": 0.5030954118259182,
-    "mae": 0.40243783658270665,
-    "r2": 0.8002351006968115,
-    "spearman": 0.886540946176347
+    "rmse": 0.5244591993112468,
+    "mae": 0.4141560641231067,
+    "r2": 0.5753792797357098,
+    "spearman": 0.6963581609575779
   },
-  "n_features": 24
+  "n_features": 17
 }
