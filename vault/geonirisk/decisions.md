@@ -129,6 +129,18 @@ Sources logged in `vault/geonirisk/research/drilling-cost-benchmarks.md`.
 
 ---
 
+### 2026-07-11 — AWS Terrarium tiles over open-elevation.com for DEM
+
+**Context:** The 3D terrain view needed real elevation data for any user-drawn AOI. open-elevation.com was unreliable (rate limits, frequent downtime), and the synthetic sine-wave fallback was misleading.
+
+**Decision:** Replace open-elevation.com API with AWS Open Data Terrarium tiles hosted at `s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png`. These are pre-computed global DEM tiles at zoom 10–15 with RGB-encoded elevation in Terrarium format: `(R * 256 + G + B / 256) - 32768`.
+
+**Why this option:** Free. No API key. Globally available. S3 reliability. PNG tiles are small and cacheable. Adaptive zoom selection ensures ≤16 tile fetches per AOI.
+
+**Revisit when:** If we need higher resolution (zoom 16+), consider switching to AWS Copernicus DEM or Mapbox Terrain-RGB tiles.
+
+---
+
 ### 2026-06-?? — Stack: PostgreSQL/PostGIS + FastAPI + Leaflet.js
 
 **Context:** Needed a modern, demo-able stack that scores on AI/GIS/Data Analytics criteria.

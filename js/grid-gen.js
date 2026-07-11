@@ -7,14 +7,16 @@ const CELL_SIZE_MAP = {
 };
 
 const LITHOLOGIES = [
-  'serpentinite_simulated', 'peridotite_simulated', 'ultramafic_simulated',
-  'mafic_volcanic_simulated', 'alluvium'
+  'serpentinite_simulated', 'peridotite_simulated', 'harzburgite_simulated',
+  'dunite_simulated', 'ultramafic_simulated', 'lherzolite_simulated',
+  'pyroxenite_simulated', 'mafic_volcanic_simulated', 'gabbro_simulated',
+  'basalt_simulated', 'alluvium'
 ];
 
 const TIER_WEIGHTS = {
-  HIGH: [0.35, 0.25, 0.20, 0.12, 0.08],
-  MEDIUM: [0.20, 0.20, 0.15, 0.25, 0.20],
-  LOW: [0.10, 0.10, 0.10, 0.30, 0.40]
+  HIGH: [0.20, 0.15, 0.13, 0.11, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.02],
+  MEDIUM: [0.14, 0.12, 0.11, 0.10, 0.09, 0.08, 0.08, 0.07, 0.07, 0.07, 0.07],
+  LOW: [0.08, 0.07, 0.06, 0.06, 0.06, 0.06, 0.06, 0.10, 0.10, 0.12, 0.23]
 };
 
 // Seeded random (mulberry32) for reproducibility
@@ -48,10 +50,12 @@ function pointInPolygon(lon, lat, ring) {
 }
 
 function cellInAnyPolygon(lonC, latC, coordArrays) {
-  for (const ring of coordArrays) {
-    if (pointInPolygon(lonC, latC, ring)) return true;
+  if (!coordArrays || coordArrays.length === 0) return false;
+  if (!pointInPolygon(lonC, latC, coordArrays[0])) return false;
+  for (let i = 1; i < coordArrays.length; i++) {
+    if (pointInPolygon(lonC, latC, coordArrays[i])) return false;
   }
-  return false;
+  return true;
 }
 
 function cellLegalStatus(lonC, latC, forestryData) {

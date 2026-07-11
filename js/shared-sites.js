@@ -28,10 +28,10 @@ window.NICKEL_SITES = {
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [121.93, -2.68] },
+      "geometry": { "type": "Point", "coordinates": [122.16, -2.83] },
       "properties": {
         "id": "morowali",
-        "name": "Morowali (Bungku)",
+        "name": "Morowali (IMIP)",
         "province": "Sulawesi Tengah",
         "type": "Laterite",
         "context": "East Sulawesi Ophiolite Belt",
@@ -153,10 +153,10 @@ window.NICKEL_SITES = {
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [122.11, -3.83] },
+      "geometry": { "type": "Point", "coordinates": [122.42, -3.91] },
       "properties": {
         "id": "konawe",
-        "name": "Konawe",
+        "name": "Konawe (Morosi)",
         "province": "Sulawesi Tenggara",
         "type": "Laterite",
         "context": "Southeast Sulawesi Ophiolite",

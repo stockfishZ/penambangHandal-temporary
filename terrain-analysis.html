@@ -1,12 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NiTERRA — Eksplorasi</title>
+  <title>NiTERRA &ndash; Eksplorasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
   <link rel="stylesheet" href="css/style.css" />
@@ -59,7 +57,6 @@
       color: var(--text-primary);
       font-size: 12px;
       cursor: pointer;
-      font-family: inherit;
       transition: all 0.2s;
     }
     .map-toolbar button:hover {
@@ -160,8 +157,9 @@
     }
     .tab-btn:hover { color: var(--text-primary); }
     .tab-btn.active {
-      color: var(--accent-emerald);
-      border-bottom-color: var(--accent-emerald);
+      background: var(--text-primary);
+      color: #000000;
+      border-bottom-color: #000000;
     }
     .tab-bar .expand-toggle {
       margin-left: auto;
@@ -191,6 +189,7 @@
       min-height: 0;
     }
     .tab-content.active { display: block; }
+    #tabTerrain3d.active { display: flex; flex-direction: column; }
 
     @media (max-width: 768px) {
       .assess-grid { grid-template-columns: 1fr; }
@@ -235,8 +234,29 @@
     .banner-cond { background: rgba(226,163,86,0.15); border: 1px solid var(--accent-gold); color: var(--accent-gold); }
     .banner-nogo { background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #ef4444; }
 
+    /* Elevation loader spinner */
+    @keyframes elevation-spin {
+      to { transform: rotate(360deg); }
+    }
+    .elevation-spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(238,234,224,0.1);
+      border-top-color: #10b981;
+      border-radius: 50%;
+      animation: elevation-spin 0.8s linear infinite;
+    }
+
     /* 3D tab */
-    #plotly3d { width: 100%; height: 100%; min-height: 300px; }
+    #terrain3dContainer { width: 100%; flex: 1; min-height: 300px; position: relative; }
+
+    .terrain-metric-overlay {
+      position: absolute; top: 0; left: 0; right: 0; padding: 8px 12px;
+      pointer-events: none; z-index: 10;
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      font-size: 11px; font-variant-numeric: tabular-nums;
+      color: rgba(238,234,224,0.85);
+      background: linear-gradient(to bottom, rgba(14,21,37,0.7) 0%, transparent 100%);
+    }
 
     /* Export tab */
     .export-table {
@@ -361,8 +381,8 @@
     <div class="map-section" id="mapSection">
       <div id="exploreMap"></div>
       <div class="map-toolbar" id="mapToolbar">
-        <button id="btnSelect" class="btn-active">🟩 Select Area</button>
-        <button id="btnClear">🗑 Clear</button>
+        <button id="btnSelect" class="btn-active">Select Area</button>
+        <button id="btnClear">✕ Clear</button>
       </div>
       <div class="map-hint" id="mapHint">
         Select "Select Area" then draw a rectangle on the map to begin exploration
@@ -381,7 +401,7 @@
           <button class="tab-btn" data-tab="mlpred">ML Prediction</button>
           <button class="tab-btn" data-tab="export">Drone Export</button>
           <button class="expand-toggle" id="btnExpand" title="Expand / Collapse">
-            <span class="expand-label">Expand</span> <span id="expandIcon">▲</span>
+            <span class="expand-label">Expand</span> <span id="expandIcon">▾</span>
           </button>
         </div>
 
@@ -421,7 +441,7 @@
 
         <!-- 3D Terrain tab -->
         <div class="tab-content" id="tabTerrain3d">
-          <div id="plotly3d"></div>
+          <div id="terrain3dContainer"></div>
         </div>
 
         <!-- ML Prediction tab -->
@@ -436,7 +456,7 @@
               <b id="mlHighCount" style="font-size:24px;color:#10b981;">-</b>
             </div>
             <div class="metric-card" style="flex:1;min-width:80px;background:rgba(226,163,86,0.08);border:1px solid rgba(226,163,86,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
-              <span style="font-size:11px;color:var(--text-secondary);display:block;">Medium (3.5–6.4)</span>
+              <span style="font-size:11px;color:var(--text-secondary);display:block;">Medium (3.5&ndash;6.4)</span>
               <b id="mlMedCount" style="font-size:24px;color:#E2A356;">-</b>
             </div>
             <div class="metric-card" style="flex:1;min-width:80px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
@@ -470,7 +490,9 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
   <script src="js/shared-sites.js"></script>
   <script src="js/grid-gen.js"></script>
   <script src="js/ml-client.js"></script>

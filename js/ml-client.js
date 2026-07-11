@@ -6,8 +6,14 @@ const NiTerraML = (() => {
   const LITH_SCORE = {
     serpentinite_simulated:   3.0,
     peridotite_simulated:     3.0,
+    harzburgite_simulated:    3.0,
+    dunite_simulated:         2.8,
     ultramafic_simulated:     2.5,
+    lherzolite_simulated:     2.5,
+    pyroxenite_simulated:     2.0,
     mafic_volcanic_simulated: 1.5,
+    gabbro_simulated:         1.5,
+    basalt_simulated:         1.2,
     alluvium:                 0.0,
     andesite:                 0.5,
     lahar_deposit:            0.3,
@@ -17,10 +23,10 @@ const NiTerraML = (() => {
 
   const LEGAL_SCORE = {
     'allowed':     5.0,
-    'conditional': 3.0,
+    'conditional': 4.5,
     'no-go':       0.0,
     'no_go':       0.0,
-    'unknown':     1.0,
+    'unknown':     2.0,
   };
 
   function predictCell(f) {
@@ -40,7 +46,8 @@ const NiTerraML = (() => {
     // pre-survey component scores (max total ~10)
     const legalScore = LEGAL_SCORE[legal] ?? 1.0;
     const lithScore = LITH_SCORE[lith] ?? 0.0;
-    const slopeNorm = Math.max(0.0, Math.min(1.0, (15.0 - Math.abs(slope - 8.0)) / 15.0)) * 1.5;
+    const slopeScoreMap = s => s < 8 ? 100 : s < 15 ? 70 : s < 20 ? 40 : 10;
+    const slopeNorm = slopeScoreMap(slope) / 100 * 1.5;
     const roadScore = distRoadKm <= 10 ? Math.max(0.0, 1.0 - Math.abs(distRoadKm - 2.5) / 7.5) : 0.0;
     const smelterScore = Math.max(0.0, Math.min(1.0, 1.0 - smelter / 150.0));
 
@@ -48,9 +55,9 @@ const NiTerraML = (() => {
     score = Math.round(Math.max(0.0, Math.min(10.0, score)) * 100) / 100;
 
     const importance = [
-      { feature: 'legal_status',      importance: 0.35, impact: _r(legalScore) },
-      { feature: 'lithology',          importance: 0.28, impact: _r(lithScore) },
-      { feature: 'slope_deg',          importance: 0.15, impact: _r(slopeNorm) },
+      { feature: 'legal_status',      importance: 0.30, impact: _r(legalScore) },
+      { feature: 'lithology',          importance: 0.30, impact: _r(lithScore) },
+      { feature: 'slope_deg',          importance: 0.18, impact: _r(slopeNorm) },
       { feature: 'distance_to_road_m', importance: 0.12, impact: _r(roadScore) },
       { feature: 'distance_to_smelter_km', importance: 0.10, impact: _r(smelterScore) },
     ];

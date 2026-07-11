@@ -3,6 +3,21 @@
 ## 1. Problem Statement
 Eksplorasi nikel konvensional seringkali memakan waktu berbulan-bulan dengan biaya capex yang sangat tinggi karena kurangnya optimalisasi penentuan titik bor. Selain itu, aspek tumpang tindih lahan (hutan lindung) dan risiko teknis/K3 di lapangan sulit diidentifikasi di awal.
 
+## 1b. Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Pre-Survey ML Prospectivity** | XGBoost scoring (0–10) per grid cell sebelum survei drone — hanya pakai litologi, status hukum, kemiringan, akses jalan, jarak smelter. Backend + client-side fallback. |
+| **Interactive Exploration Map** | Leaflet.js dengan overlay sabuk nikel (HIGH/MEDIUM/LOW), batas kawasan hutan (no-go/conditional/allowed), marker tambang. Draw-to-select area eksplorasi. |
+| **Multi-Tab Assessment Panel** | Bottom sheet dengan 4 tab: Assessment (GO/CONDITIONAL/NO-GO + skor Safety, Probabilitas Geologi, Ekonomi), 3D Terrain (Plotly.js + elevasi SRTM real), ML Prediction (faktor pendorong, breakdown litologi, sel terbaik/terburuk), Drone Export (top 20 CSV). |
+| **Auto-ESG & Permit Draft** | Generative AI (backend + client fallback) yang menghasilkan draf AMDAL/UKL-UPL/PPKH per grid secara spesifik berdasarkan data spasial. Output PDF via html2pdf. |
+| **Multi-Layer Map Views** | Toggle antar layer: Prioritas, Magnetometer (nT), Geokimia (sampel), Peta Risiko — dengan legend dan popup detail. |
+| **CAPEX Optimization & ROI** | Adaptive drill spacing (50m/100m) berdasarkan confidence ML. Menghitung penghematan biaya pengeboran langsung di dashboard (dalam Rp miliar). |
+| **Retrain Pipeline** | Upload data bor baru → retrain model XGBoost via backend → auto-load ke memory tanpa restart. |
+| **Ranking Table + Detail Panel** | 30 grid diurutkan dengan bar score, badge prioritas (P1–P4), badge ML. Klik baris → detail panel menampilkan 30+ parameter termasuk ML confidence, QA/QC, compliance, safety, processing route. |
+| **3D Block Model** | Scatter3D Plotly interaktif (rotatable, zoomable) — sumbu X/Y = koordinat, Z = skor prioritas, warna = kadar Ni rata-rata. |
+| **Feature Importance Visualization** | Bar chart bobot parameter (default: geology-driven heuristic) yang bisa diganti dengan feature importance dari Random Forest/XGBoost real. |
+
 ## 2. Data & Method
 NiTERRA menggunakan pendekatan integrasi spasial (GIS) dan machine learning (XGBoost).
 - **Data Input:** Data magnetometer (nT), geokimia sampel (Ni, Fe, Co, MgO, SiO2), dan batas area eksplorasi (GeoJSON).

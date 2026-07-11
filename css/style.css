@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   /* Nexus Color Tokens adapted for Dark Volumetric */
   --bg-canvas: #070B09;
   --bg-surface: #0e1525;
@@ -28,8 +28,9 @@
   --border-strong: rgba(238, 234, 224, 0.15);
 
   /* Nexus Shapes & Spacing */
-  --font-display: "Bricolage Grotesque", sans-serif;
-  --font-body: "Instrument Sans", sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --radius-sm: 4px;
   --radius-md: 9px;
@@ -69,7 +70,7 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
 
-/* ── Background Layers ── */
+/* â”€â”€ Background Layers â”€â”€ */
 #scene {
   position: fixed; inset: 0; width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
@@ -101,7 +102,7 @@ body {
   background-size: 256px 256px;
 }
 
-/* ── Glass Surface ── */
+/* â”€â”€ Glass Surface â”€â”€ */
 .panel-shell {
   position: relative;
   border-radius: var(--radius-md);
@@ -130,7 +131,7 @@ body {
   transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
 }
 
-/* ── Topbar ── */
+/* â”€â”€ Topbar â”€â”€ */
 .topbar {
   position: fixed;
   z-index: 2000;
@@ -221,7 +222,7 @@ body {
   transform: scale(0.96);
 }
 
-/* ── Layout ── */
+/* â”€â”€ Layout â”€â”€ */
 .section, footer {
   width: min(var(--maxw), calc(100% - 40px));
   margin: 0 auto;
@@ -238,7 +239,7 @@ body {
   scroll-margin-top: 0;
 }
 
-/* ── Section Reveal Animation ── */
+/* â”€â”€ Section Reveal Animation â”€â”€ */
 .section {
   opacity: 0;
   transform: translateY(24px);
@@ -250,7 +251,7 @@ body {
   transform: translateY(0);
 }
 
-/* ── Hero Layout (Aerodome / Nexus Spec) ── */
+/* â”€â”€ Hero Layout (Aerodome / Nexus Spec) â”€â”€ */
 .hero {
   min-height: 100svh;
   display: flex;
@@ -296,13 +297,13 @@ body {
 }
 
 .stat-value {
-  font-family: "Space Grotesk", monospace;
+  font-family: var(--font-ui);
   font-size: 16px;
   color: var(--accent-emerald);
   font-weight: 500;
 }
 
-/* ── Headings & Text ── */
+/* â”€â”€ Headings & Text â”€â”€ */
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -380,7 +381,7 @@ h3 {
   gap: 12px;
 }
 
-/* ── Buttons (Nexus Tokens) ── */
+/* â”€â”€ Buttons (Nexus Tokens) â”€â”€ */
 .btn {
   border: 0;
   border-radius: var(--radius-full);
@@ -482,7 +483,7 @@ h3 {
   font-size: 13px;
 }
 
-/* ── Section Headings ── */
+/* â”€â”€ Section Headings â”€â”€ */
 .section-heading {
   margin-bottom: var(--sp-xl);
 }
@@ -499,7 +500,7 @@ h3 {
   max-width: min(680px, 100%);
 }
 
-/* ── Workspace ── */
+/* â”€â”€ Workspace â”€â”€ */
 .workspace-grid {
   display: grid;
   grid-template-columns: 380px minmax(0, 1fr);
@@ -623,7 +624,7 @@ h3 {
   font-size: 13px;
 }
 
-/* ── Map Panel ── */
+/* â”€â”€ Map Panel â”€â”€ */
 .map-panel {
   overflow: hidden;
   min-height: 660px;
@@ -763,7 +764,7 @@ h3 {
 .c.magnet { background: var(--accent-sky); border-radius: 50%; }
 .c.sample { background: var(--accent-gold); border-radius: 50%; }
 
-/* ── Summary Output ── */
+/* â”€â”€ Summary Output â”€â”€ */
 .summary-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -822,7 +823,7 @@ h3 {
   line-height: 1;
 }
 
-/* ── Output Grid ── */
+/* â”€â”€ Output Grid â”€â”€ */
 .output-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 360px;
@@ -841,7 +842,7 @@ h3 {
   background: rgba(7,11,9,0.75) !important;
   border: 1px solid rgba(255,255,255,0.15) !important;
   color: #EEEAE0 !important;
-  font-family: "Instrument Sans", sans-serif;
+  font-family: var(--font-ui);
   font-size: 10px !important;
   font-weight: 600;
   padding: 2px 6px !important;
@@ -947,7 +948,7 @@ tr.selected td {
 .badge.p3 { background: rgba(249,115,22,0.15); color: var(--p3-color); }
 .badge.p4 { background: rgba(239,68,68,0.15); color: var(--p4-color); }
 
-/* ── Detail Panel ── */
+/* â”€â”€ Detail Panel â”€â”€ */
 .detail-panel {
   position: sticky;
   top: 90px;
@@ -1011,7 +1012,7 @@ tr.selected td {
   margin-bottom: 4px;
 }
 
-/* ── Insights ── */
+/* â”€â”€ Insights â”€â”€ */
 .bars {
   display: grid;
   gap: var(--sp-md);
@@ -1054,7 +1055,7 @@ tr.selected td {
   font-family: var(--font-body);
 }
 
-/* ── Footer ── */
+/* â”€â”€ Footer â”€â”€ */
 footer {
   padding: var(--sp-xl) 0 60px;
   color: var(--text-muted);
@@ -1064,7 +1065,7 @@ footer {
   margin-top: var(--sp-2xl);
 }
 
-/* ── Leaflet Overrides ── */
+/* â”€â”€ Leaflet Overrides â”€â”€ */
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   background: var(--bg-glass-strong) !important;
@@ -1113,7 +1114,7 @@ footer {
   background: var(--bg-surface) !important;
 }
 
-/* ── Container Queries ── */
+/* â”€â”€ Container Queries â”€â”€ */
 
 /* Input panel: compact layout when narrow */
 @container (max-width: 400px) {
@@ -1188,7 +1189,7 @@ footer {
   }
 }
 
-/* ── Responsive (viewport) ── */
+/* â”€â”€ Responsive (viewport) â”€â”€ */
 @media (max-width: 1100px) {
   .workspace-grid {
     grid-template-columns: 1fr;

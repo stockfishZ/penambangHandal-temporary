@@ -1,4 +1,134 @@
-# Progress Diary
+﻿# Progress Diary
+
+---
+
+### 2026-07-09 — ML terrain analysis overhaul: scoring fix, lithology expansion, hole-ring bugfix
+
+**What happened:**
+After user reported ML predictions not matching expectations since real forestry data landed, a comprehensive audit found 4 issues and 1 UX gap. Research was done on the overlap between nickel potential and forestry permit status — see `research/nikel-potensi-vs-perizinan.md`.
+
+**Key finding from research:**
+82% of Indonesia's nickel laterite deposits overlap with natural forest. Conditional (HP/HPT) zones cover ~50-60% of deposit area — these are administratively feasible via PPKH, not technical dead zones. The original ML scoring punished conditional cells too harshly.
+
+**Changes:**
+
+1. **Fixed `cellInAnyPolygon` hole ring bug** (`js/grid-gen.js:52-59`):
+   - Old: iterated ALL rings (outer + holes), returned `true` if point in ANY ring — cells inside polygon holes (exclaves of non-forest within forest area) got wrong `legal_status`.
+   - New: checks outer ring first, then verifies point is NOT in any hole ring before returning `true`.
+
+2. **Adjusted legal scoring** (`js/ml-client.js:24-30`):
+   - `conditional`: 3.0 → **4.5** (PPHK is administrative, not geological barrier)
+   - `unknown`: 1.0 → **2.0** (conservative but not prohibitive)
+   - Legal importance weight: 0.35 → **0.30** (balanced with lithology)
+   - Lithology importance: 0.28 → **0.30** (geology matters equally to permits)
+   - Justification: research confirmed conditional zones are ~50-60% of deposit area and routinely obtain PPKH (Pinjam Pakai Kawasan Hutan).
+
+3. **Consistent slope function** (`js/ml-client.js:49-50`):
+   - ML now uses same step thresholds as assessment engine: <8°=100, 8-15°=70, 15-20°=40, >20°=10 (scaled to 0-1.5 range)
+   - Old ML used a triangular function (peak at 8°, linear decay) — different from assessment, confusing users.
+
+4. **Expanded lithology types** (`js/grid-gen.js:9-14`, `js/ml-client.js:6-22`):
+   - From 5 generic types → **11 geologically-specific types**
+   - Added: harzburgite, dunite, lherzolite, pyroxenite, gabbro, basalt
+   - Each with appropriate prospectivity score (3.0 for top ultramafics down to 1.2 for basalt)
+   - Tier weights redistributed across 11 types with verified sum=1.0
+
+5. **Score breakdown in ML Prediction tab** (`js/terrain-analysis.js:600-620`):
+   - New "Breakdown Skor — Sel Terbaik" section shows stacked horizontal bars for top cell
+   - Each feature (legal, lithology, slope, road, smelter) visualized with color-coded bar
+   - User can see exactly why a cell scored what it did
+
+6. **Updated ultramafic detection** across `terrain-analysis.js`:
+   - `isUltraDominant` and lithology highlight lists now include all 7 ultramafic types
+   - Consistent across lithology breakdown, top/bottom cell analysis
+
+**What changed:**
+- `js/grid-gen.js` — `cellInAnyPolygon` hole-ring fix; lithology array 5→11; tier weights redistributed
+- `js/ml-client.js` — legal scoring 3.0→4.5, unknown 1.0→2.0; LITH_SCORE expanded; slope function aligned; importance weights rebalanced
+- `js/terrain-analysis.js` — score breakdown UI; ultramafic detection lists updated
+- `research/nikel-potensi-vs-perizinan.md` — new research summary
+
+**What should happen next:**
+- [ ] Consider converting heuristic to a lightweight decision tree trained on real data
+- [ ] Add 13-exemption metadata flag for users with grandfathered CoW access to no-go zones
+
+---
+
+### 2026-07-09 — Belt-polygon tiled scan for full Sulawesi forestry coverage
+
+**What happened:**
+The point-based forestry fetch only covered ~0.2° around each known site, missing large areas of the Sulawesi ophiolite belts. Refactored `fetch_forestry_data.py` with a dual strategy:
+
+- **Sulawesi belts** (East Sulawesi Ophiolite Belt + Southeast Sulawesi Nickel District): Tiled scan using 0.3°×0.3° envelopes (204 tiles total across both belts), pre-filtered by belt polygon intersection to skip empty tiles. Each tile queries BIG Satupeta ArcGIS REST API.
+- **Non-Sulawesi sites** (Obi, Weda Bay, Gag): point-based queries at known coordinates (unchanged).
+- **Dedup**: by `objectid`, belt scan takes priority — site queries for Sorowako, Pomalaa, Konawe, Tapunopaka naturally dedup to belt_scan.
+- **Post-filter**: belt_scan features filtered to keep only those whose centroid falls inside a Sulawesi belt polygon (removed 29 outliers).
+- **Bugfix on first run**: post-filter was incorrectly removing non-Sulawesi site features too (filtered all centroids against Sulawesi belts). Fixed to only filter `tile_source == belt_scan` features.
+- **Print encoding**: replaced Unicode → (U+2192) with ASCII `-` for Windows cp1252 compatibility.
+
+**Results:**
+- 136 total features (58 no-go, 78 conditional)
+- Coverage: Sorowako ✓, Pomalaa ✓, Konawe ✓, Tapunopaka ✓, Obi Island ✓ (10), Weda Bay ✓ (4)
+- Zero features: Morowali, Gag Island (API returns none — defaults to APL/allowed)
+- No `allowed` status polygons (BIG Satupeta only returns designated forest areas; absence = allowed)
+
+**What changed:**
+- `backend/scripts/fetch_forestry_data.py` — refactored: Sulawesi belt tiled scan + point sites + centroid post-filter + Windows encoding fix
+- `data/forestry_boundaries.geojson` — replaced (122 → 136 features, full belt coverage)
+
+**What should happen next:**
+- [ ] Consider converting heuristic to a lightweight decision tree trained on real data
+- [ ] Add 13-exemption metadata flag for users with grandfathered CoW access to no-go zones
+
+---
+
+### 2026-07-09 — Removed centroid post-filter, tagged belt_scan features, re-run with fixes
+
+**What happened:**
+The centroid post-filter was discarding valid belt-edge polygons (polygons whose centroid fell slightly outside the simplified belt polygon but whose actual area was within the belt). Removing it increased coverage from 136 → 162 features. Belt_scan features now get tagged with the nearest known site name via `_tag_belt_features()` (centroid proximity check against 0.15° site bounding boxes), so per-site metadata is preserved through dedup instead of being lost.
+
+**Results after re-run:**
+- **162 features** (74 no-go, 88 conditional) — up from 136
+- **Dedup**: 0 duplicate objectids ✓
+- **Coverage**: pomalaa:5, sorowako:4, weda_bay:4, obi_island:10, tapunopaka:1, sulawesi_belt:138 (generic catch-all for features far from any named site)
+- **Source**: 148 belt_scan + 14 point_site
+- **Zeros** (API returned nothing → APL/allowed): Morowali, Gag Island, Konawe (no dedicated point_site features beyond belt_scan)
+- **legal_status correctness**: 0 errors ✓
+- **Unknown fungsitap codes**: `500300` (1 feature, treated as `conditional` via fallback — needs research)
+- **Missing property check**: site/legal_status/tile_source/objectid/fungsitap — ALL present on every feature ✓
+- **1 timeout error** on tile (120.70,-2.50-121.00,-2.20) — retryable, minor gap
+
+**Fixes applied:**
+- `100230` (HL variant) was missing from `FUNGSITAP_MAP` — was falling through to `conditional` instead of `no-go`. Fixed in script and patched in output.
+- `500300` remains unmapped — treated as `conditional` (conservative default); needs research on what this BIG Satupeta code designates.
+
+**What changed:**
+- `backend/scripts/fetch_forestry_data.py` — removed centroid post-filter; added `_tag_belt_features()` for site tagging on belt_scan features; added `100230` to FUNGSITAP_MAP
+- `data/forestry_boundaries.geojson` — re-run (162 features, 74/88 split)
+
+**What should happen next:**
+- [ ] Research fungsitap code `500300` — what classification does it represent?
+- [ ] Add `500300` to FUNGSITAP_MAP once classified
+
+---
+
+### 2026-07-09 — Fixed Morowali/Konawe site coordinates pointing to regency capitals, not mining areas
+
+**What happened:**
+Morowali and Konawe coordinates were placed at administrative towns (Bungku and Unaaha) 27–34 km away from actual nickel industrial sites. This caused TARGET-mode grid generation to miss forestry boundaries captured by the belt scan.
+
+**Coordinates corrected:**
+- **Morowali**: (121.93, -2.68) → **(122.16, -2.83)** — IMIP, Bahodopi (per Wikipedia)
+- **Konawe**: (122.11, -3.83) → **(122.42, -3.91)** — Morosi industrial estate, VDNI/OSS (per Global Energy Monitor)
+
+Names updated: `"Morowali (Bungku)"` → `"Morowali (IMIP)"`, `"Konawe"` → `"Konawe (Morosi)"`
+
+**What changed:**
+- `js/shared-sites.js` — coordinates + display names
+- `backend/scripts/fetch_forestry_data.py` — coordinates in SITES list
+
+**What should happen next:**
+- [ ] Research fungsitap code `500300`
 
 ---
 
@@ -330,3 +460,124 @@ The ML pipeline was fundamentally restructured. Previously the model trained on 
 - ANTAM Hackathon 2026 launched
 - Theme selected: Eksplorasi (Exploration targeting)
 - Team registered under "Young Mining Innovators"
+
+
+---
+
+### 2026-07-11 – 3D Terrain View Overhaul: Plotly → Three.js, encoding fix, UI polish
+
+**What happened:**
+The `terrain-analysis.html` page had a 3D terrain view originally rendered with Plotly.js using a 20×20 elevation grid from the Open-Elevation API. It looked blocky ("like Minecraft"), could not rotate freely (camera was stuck in Plotly's turntable mode), had widespread UTF-8 encoding corruption throughout the JS file, and had various UI/UX bugs.
+
+**Changes:**
+
+1. **Switched from Plotly.js surface to Three.js** (`js/terrain-analysis.js`):
+   - Replaced Plotly surface trace with Three.js (WebGL, MeshStandardMaterial, PBR lighting, OrbitControls)
+   - Added bilinear interpolation (scale 5, 20×20 → 100×100) to eliminate blocky appearance
+   - Added real lat/lon coordinates to surface so aspect ratio matches geography
+   - Dynamic aspect ratio with 3× vertical exaggeration for natural-looking slopes
+   - Natural lighting: AmbientLight (0.6) + DirectionalLight (0.7) at angle + custom PBR material (roughness 0.85, metalness 0.1)
+   - Reduced fog density (FogExp2 0.006 → 0.0015) to avoid darkening when zooming out
+
+2. **3D interaction & UX** (`js/terrain-analysis.js`):
+   - Moved Plotly `dragmode: 'orbit'` inside the `scene` block (was defaulting to `'turntable'`)
+   - Added `uirevision: true` to preserve camera state across redraws
+   - Added Three.js OrbitControls with damping, maxDistance cap (250), maxPolarAngle to prevent underground clipping
+   - Added XYZ cartesian axis lines (ground grid, X/Z solid ruler lines, Y dashed elevation line)
+   - Added CSS2D axis labels with real-world units (km on X/Z, meters on Y)
+   - Added metric info overlay: terrain dimensions (km × km), elevation range (min–max m), center coordinates
+
+3. **Bug fixes** (`js/terrain-analysis.js`, `terrain-analysis.html`):
+   - **Loading spinner persistence**: explicit `innerHTML = ''` on render + stale-grid race guard (`currentGrid.cells === cells`) + 10s AbortController timeout on elevation API
+   - **UTF-8 encoding corruption**: Replaced 20+ mojibake instances (em dashes, checkmarks ✅, arrows, etc.)
+   - **Placeholder `?` icons**: `?? Select Area` → `◈ Select Area`, verdict icons → `◆`/`◈`/`◇`, expand/collapse `?` → `▲`/`▾`
+   - **Undefined `--font-ui`** CSS variable added to `:root` in `css/style.css` (was causing serif fallback across all tab buttons)
+   - **Google Fonts subset** updated to `latin,latin-ext` in `terrain-analysis.html`
+
+4. **UI polish** (`terrain-analysis.html`, `css/style.css`):
+   - Active tab color changed from mint green (`--accent-emerald`) to black text on light background
+   - Lighting values tuned: ambient 0.55, specular 0.05, roughness 0.85
+   - Added `--font-ui` variable in `css/style.css` `:root`
+
+**What changed:**
+- `js/terrain-analysis.js` — primary file (~1160 lines): all 3D rendering, labels, lines, metric overlay, encoding fixes
+- `terrain-analysis.html` — CSS2DRenderer CDN, tab button CSS, Google Fonts URL, icon replacements (`??` → `◈`/`✕`)
+- `css/style.css` — added `--font-ui` CSS variable in `:root`
+
+**Dependencies added (CDN, no npm):**
+- `three.min.js` r128 (WebGL renderer)
+- `OrbitControls.js` r128 (camera orbit)
+- `CSS2DRenderer.js` r128 (CSS2D labels on 3D scene)
+
+**What should happen next:**
+- [ ] User tests OrbitControls interaction (rotate, pan, zoom) on various terrain sizes
+- [ ] Verify elevation API edge cases (ocean grids, single-cell AOIs)
+- [ ] Consider wireframe overlay toggle for terrain mesh inspection
+- [ ] Add elevation-profile cross-section tool along user-drawn line
+
+---
+
+### 2026-07-11 – 3D terrain bugfix pass: heightScale, DEM source, cleanup, flat-terrain race condition
+
+**What happened:**
+User reported the 3D terrain returned flat surfaces in multiple scenarios. An audit found 8 bugs in the 3D terrain pipeline plus a duplicate-listener race condition in `resetToBrowse()`.
+
+**Changes:**
+
+1. **`heightScale` always 3.0** (`js/terrain-analysis.js:528`):
+   - Old: `3 / elevRange * (elevMax - elevMin)` — `elevRange` cancels out, always 3
+   - New: `3.0 / elevRange` — correct vertical exaggeration proportional to actual elevation range
+   - Impact: Every area looked identical regardless of whether it had 50m relief or 1000m
+
+2. **Replaced open-elevation.com with AWS Terrarium tiles** (`js/terrain-analysis.js:635-732`):
+   - Old: `api.open-elevation.com` (unreliable, rate-limited, often fails) + sine-wave synthetic fallback (`Math.sin(t * 10 + lat * 0.1)`)
+   - New: AWS Open Data Terrarium tiles at `s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png` — free, no API key, globally available PNGs with RGB-encoded elevation
+   - Decodes elevation from RGB: `(R * 256 + G + B / 256) - 32768`
+   - Adaptive zoom selection (targeting ~256px across the AOI), auto-caps tile count to ≤16 by lowering zoom
+   - Groups cells by tile for batch fetch, handles errors gracefully
+
+3. **Fixed bilinear interpolation axis swap** (`js/terrain-analysis.js:618-633`):
+   - `elevData` stored as `[lat][lon]` but `bilinearInterpolate` indexed as `data[lon][lat]`
+   - Renamed params `(x, y)` → `(xFrac, yFrac)`, corrected to `data[iy][ix]` with `nLat`/`nLon`
+   - Produced subtly wrong elevation values; on non-square bboxes would be visibly incorrect
+
+4. **`Math.round` → `Math.floor` for vertex→cell mapping** (`js/terrain-analysis.js:540-541`):
+   - `Math.round(u * (NX - 1))` works by coincidence with 20×20 — fails with any other grid size
+   - New: `Math.min(NX - 1, Math.floor(u * NX))` — robust regardless of segment count
+
+5. **Three.js WebGL memory leak** (`js/terrain-analysis.js:429-435, 614-620`):
+   - No cleanup on tab switch — created new renderer/scene without disposing old one
+   - Added tracking of `_3dAnimFrame`, `_3dResizeObserver`, `_3dCleanups` array
+   - On each call: cancels previous animation frame, disconnects ResizeObserver, runs all cleanup funcs (renderer.dispose, etc.), then creates fresh objects
+   - Also cleans up on `beforeunload` to prevent leak on page leave
+
+6. **Ground plane & grid helper hardcoded to 20×20** (`js/terrain-analysis.js:575-587`):
+   - Ground plane `20×20`, grid helper `20×10` divisions — didn't match actual terrain size (`2*aspect*8` wide)
+   - Now sized dynamically: ground is `terrainSize * 1.2`, grid helper is `Math.max(w, d)` with matching divisions
+
+7. **NX/NY hardcoded to 20** (`js/terrain-analysis.js:478-482`):
+   - Derived from unique `latC` values in cells array instead — adapts to any grid dimensions
+
+8. **Unused CSS2DRenderer import** (`terrain-analysis.html:495`):
+   - Removed dead CDN script tag
+
+9. **`lonRad` in Mercator Y formula → flat terrain bug** (`js/terrain-analysis.js:703-705`):
+   - Tile pixel-Y formula used `lonRad` (longitude radians) instead of `latRad` — Mercator Y projection requires latitude
+   - `Math.tan(longitude)` for Indonesia (~121°E = 2.1 rad) produces negative values → `Math.log(negative)` = `NaN` → `py = NaN` → `imgData.data[NaN]` = `undefined` → elevation = `NaN` → `finish()` sets to 0 → all cells at 0m → flat terrain every time
+   - Fixed: `lonRad` → `latRad2 = cell.latC * Math.PI / 180`
+   - This also fixes the always-flat problem the same day the Terrarium tiles landed (regression from earlier edit)
+
+10. **Duplicate `CREATED` listeners from `resetToBrowse()`** (`js/terrain-analysis.js:242-250`):
+    - `resetToBrowse()` called `setupDrawControl()`, which re-registers `map.on(L.Draw.Event.CREATED, ...)` — every Clear click adds a duplicate
+    - After 1 Clear: 2 handlers fire on next draw. First handler's `currentGrid` + `fetchElevationData` gets overwritten by second handler's different grid (no elevation) → flat on every draw after Clear
+    - Fixed: replaced `setupDrawControl()` call with inline draw-control creation only (no event listeners)
+    - `setupDrawControl()` now only called once from `initMap()`
+
+**What changed:**
+- `js/terrain-analysis.js` — heightScale, Terrarium tiles, bilinear interpolation fix, Math.floor mapping, Three.js cleanup, dynamic ground/grid sizing, NX/NY derivation, lonRad→latRad fix, resetToBrowse draw-control refactor
+- `terrain-analysis.html` — removed unused CSS2DRenderer import
+
+**What should happen next:**
+- [ ] Test Clear → redraw cycle (should now work without flat terrain)
+- [ ] Verify Terrarium tiles load for various AOI sizes across Indonesia
+- [ ] Check memory usage over multiple tab switches (no leak)
