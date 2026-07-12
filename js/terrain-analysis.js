@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentBbox = null, currentGrid = null, currentParams = null;
   let gridLayer = null, gridMlLayer = null;
   let beltLayer = null, beltPolygons = null, forestryLayer = null, forestryData = null;
-  let _3dRendered = false, _3dRenderedWithMl = false, _elevationLoading = false, _drawingActive = false;
+  let _3dRendered = false, _3dRenderedWithMl = false, _elevationLoading = false, _drawingActive = false, _3dMesh = null;
   let mlResults = null, mlLoading = false, mlError = null;
 
   const tierColor = t => t === 'HIGH' ? '#9FD8BD' : t === 'MEDIUM' ? '#E2A356' : '#ef4444';
@@ -253,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     _3dRendered = false;
     _3dRenderedWithMl = false;
     _elevationLoading = false;
+    _3dMesh = null;
     ['mlTotalCells','mlHighCount','mlMedCount','mlLowCount','mlTopTarget'].forEach(id => $(id).textContent = '-');
     ['compAllowed','compConditional','compNoGo'].forEach(id => $(id).textContent = '-');
     currentBbox = null;
@@ -400,13 +401,25 @@ document.addEventListener('DOMContentLoaded', () => {
     $('compConditional').textContent = nCond;
     $('compAllowed').textContent = nAllowed;
     if (nNoGo > 0) {
-      $('complianceRow').querySelectorAll('span')[2].style.background = 'rgba(239,68,68,0.2)';
+      $('complianceRow').querySelectorAll('.assess-badge.nogo')[0].style.background = 'rgba(239,68,68,0.2)';
     }
 
     const banner = $('overallBanner');
-    const labels = {GO: 'DEPLOY DRONE TEAM (GO)', CONDITIONAL: 'BERSYARAT (CONDITIONAL)', 'NO-GO': 'BATALKAN (NO-GO)'};
-    banner.textContent = `REKOMENDASI: ${labels[a.recommendation]}`;
-    banner.className = `banner-${a.recommendation.toLowerCase()}`;
+    const verdicts = {GO: 'GO', CONDITIONAL: 'BERSYARAT', 'NO-GO': 'BATALKAN'};
+    const descs = {GO: 'DEPLOY DRONE TEAM', CONDITIONAL: 'Evaluasi lanjutan diperlukan', 'NO-GO': 'Area tidak prospektif'};
+    const v = verdicts[a.recommendation] || '—';
+    const d = descs[a.recommendation] || '—';
+    $('bannerVerdict').textContent = v;
+    $('bannerDesc').textContent = d;
+    banner.className = `assess-hero-banner banner-${a.recommendation.toLowerCase()}`;
+    // Update SVG icon based on recommendation
+    const iconSvgs = {
+      GO: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+      CONDITIONAL: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      'NO-GO': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+    };
+    const iconEl = banner.querySelector('.banner-status-icon');
+    if (iconEl) iconEl.innerHTML = iconSvgs[a.recommendation] || iconSvgs['GO'];
 
     const setScore = (id, val) => { const el = $(id); el.textContent = val; el.className = 'score-big ' + scoreColor(val); };
     setScore('scoreSafety', a.safety);
@@ -420,16 +433,21 @@ document.addEventListener('DOMContentLoaded', () => {
       `Ultramafic ${a.ultraPct.toFixed(0)}% Tier: ${params.tier} ${params.inBelt ? 'Inside nickel belt' : 'Outside known belt'}`;
     $('detailWorth').textContent =
       `Area ${a.totalArea.toFixed(0)} ha Smelter ~${a.avgSmelter.toFixed(0)}km Tier: ${params.tier}`;
-    $('siteInfo').textContent = params.inBelt
-      ? `${params.name}, ${params.province} ${params.terrain_class} terrain ${currentGrid.features.length} grid cells`
-      : `Area tidak berada di sabuk nikel tidak ada potensi laterit.`;
+    const siteInfoEl = $('siteInfo');
+    const siteText = params.inBelt
+      ? `${params.name}, ${params.province} — ${params.terrain_class} terrain — ${currentGrid.features.length} grid cells`
+      : `Area tidak berada di sabuk nikel — tidak ada potensi laterit.`;
+    // siteInfo now has a child span structure; update the text span
+    const siteTextSpan = siteInfoEl.querySelector('span:last-child');
+    if (siteTextSpan) siteTextSpan.textContent = siteText;
+    else siteInfoEl.textContent = siteText;
   }
 
   // ----- 3D Terrain -----
   var _3dAnimFrame = null, _3dResizeObserver = null, _3dCleanups = [];
 
-  function showTerrain3D(_cell) {
-    if (!_cell) return;
+  function showTerrain3D() {
+    if (!currentGrid || !currentGrid.cells) return;
     const container = document.getElementById("terrain3dContainer");
     if (!container) return;
 
@@ -438,8 +456,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (_3dResizeObserver) { _3dResizeObserver.disconnect(); _3dResizeObserver = null; }
     _3dCleanups.forEach(function(fn) { fn(); });
     _3dCleanups = [];
-    // Remove all children (includes previous renderer DOM element)
-    while (container.firstChild) container.removeChild(container.lastChild);
+    // Remove only Three.js canvas and label elements (keep overlays)
+    container.querySelectorAll('canvas, .three-label').forEach(function(el) { el.remove(); });
 
     const w = container.clientWidth || 600;
     const h = container.clientHeight || 400;
@@ -469,10 +487,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Axis labels
     var labelDiv = document.createElement("div");
+    labelDiv.className = 'three-label';
     labelDiv.style.cssText = "position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-family:var(--font-ui);font-size:11px;color:rgba(238,234,224,0.5);pointer-events:none;";
     labelDiv.textContent = "Longitude \u2192";
     container.appendChild(labelDiv);
     var labelDiv2 = document.createElement("div");
+    labelDiv2.className = 'three-label';
     labelDiv2.style.cssText = "position:absolute;top:50%;left:4px;transform:translateY(-50%) rotate(-90deg);font-family:var(--font-ui);font-size:11px;color:rgba(238,234,224,0.5);pointer-events:none;white-space:nowrap;";
     labelDiv2.textContent = "Latitude \u2192";
     container.appendChild(labelDiv2);
@@ -576,6 +596,61 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       var mesh = new THREE.Mesh(geo, mat);
       scene.add(mesh);
+      _3dMesh = mesh;
+
+      // Populate metric overlay
+      var eOverlay = document.getElementById('terrainMetricOverlay');
+      if (eOverlay) eOverlay.style.display = '';
+      if (cells && cells.length) {
+        var eMin = Math.min.apply(null, cells.map(function(c) { return c.elevation != null ? c.elevation : 0; }));
+        var eMax = Math.max.apply(null, cells.map(function(c) { return c.elevation != null ? c.elevation : 0; }));
+        document.getElementById('tmElevRange').textContent = eMin.toFixed(0) + ' - ' + eMax.toFixed(0) + ' m';
+        document.getElementById('tmGridCount').textContent = cells.length;
+        var mlScores = cells.map(function(c) { return mlResults && mlResults[c.gid] && mlResults[c.gid].ml_score != null ? mlResults[c.gid].ml_score : null; }).filter(function(s) { return s != null; });
+        document.getElementById('tmMlAvg').textContent = mlScores.length ? (mlScores.reduce(function(a, b) { return a + b; }, 0) / mlScores.length).toFixed(2) : '-';
+      }
+      // ponytail: height ruler with sprite label at the line top
+      var _hRuler = elevRange * heightScale;
+      var _hTop = _hRuler * 1.05;
+      var _rx = terrainWidth / 2, _rz = -terrainDepth / 2;
+
+      scene.add(new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(_rx, 0, _rz),
+          new THREE.Vector3(_rx, _hTop, _rz)
+        ]),
+        new THREE.LineBasicMaterial({ color: 0x00ffff })
+      ));
+
+      var _sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 12, 8),
+        new THREE.MeshBasicMaterial({ color: 0x00ffff })
+      );
+      _sphere.position.set(_rx, _hTop, _rz);
+      scene.add(_sphere);
+
+      var _labelCanvas = document.createElement('canvas');
+      _labelCanvas.width = 128;
+      _labelCanvas.height = 48;
+      var _ctx = _labelCanvas.getContext('2d');
+      _ctx.fillStyle = 'rgba(14,21,37,0.85)';
+      _ctx.fillRect(4, 4, 120, 32);
+      _ctx.strokeStyle = 'rgba(0,255,255,0.3)';
+      _ctx.lineWidth = 1;
+      _ctx.strokeRect(4, 4, 120, 32);
+      _ctx.fillStyle = '#00ffff';
+      _ctx.font = 'bold 24px monospace';
+      _ctx.textAlign = 'center';
+      _ctx.textBaseline = 'middle';
+      _ctx.fillText(elevMax.toFixed(0) + ' m', 64, 20);
+      var _labelTex = new THREE.CanvasTexture(_labelCanvas);
+      _labelTex.minFilter = THREE.LinearFilter;
+      var _labelMat = new THREE.SpriteMaterial({ map: _labelTex, transparent: true, depthWrite: false });
+      var _labelSprite = new THREE.Sprite(_labelMat);
+      _labelSprite.position.set(_rx, _hTop + 0.25, _rz);
+      scene.add(_labelSprite);
+      _labelSprite.userData.baseScale = camera.position.distanceTo(_labelSprite.position);
+      _labelSprite.scale.set(3.2, 1.2, 1);
     }
 
     // Ground plane
@@ -604,6 +679,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function animate3d() {
       _3dAnimFrame = requestAnimationFrame(animate3d);
       controls.update();
+      if (_labelSprite) {
+        var _dist = camera.position.distanceTo(_labelSprite.position);
+        var _s = _dist / _labelSprite.userData.baseScale;
+        _labelSprite.scale.set(1.6 * _s, 0.6 * _s, 1);
+      }
       renderer.render(scene, camera);
     }
     animate3d();
@@ -642,7 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function fetchElevationData(cells) {
     if (!cells || !cells.length || _elevationLoading) return;
     var spinner = document.getElementById("elevation-spinner");
-    if (spinner) { spinner.classList.remove("hidden"); spinner.textContent = "Loading elevation from terrain tiles..."; }
+    if (spinner) { spinner.style.display = "flex"; document.getElementById("elevationStatus").textContent = "Loading elevation from terrain tiles..."; }
     _elevationLoading = true;
 
     var lats = cells.map(function(c) { return c.latC; });
@@ -715,7 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
               cell.elevation = (r_ * 256 + g_ + b_ / 256) - 32768;
             });
             loaded++;
-            if (spinner) spinner.textContent = 'Elevation tiles: ' + loaded + '/' + total;
+            if (spinner) document.getElementById("elevationStatus").textContent = 'Elevation tiles: ' + loaded + '/' + total;
             if (loaded === total) finish();
           };
           img.onerror = function() { loaded++; if (loaded === total) finish(); };
@@ -731,8 +811,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (c.elevation == null || isNaN(c.elevation)) c.elevation = 0;
       });
       _elevationLoading = false;
-      if (spinner) spinner.classList.add('hidden');
-      if (_3dRendered) showTerrain3D(currentParams || currentGrid);
+      if (spinner) spinner.style.display = 'none';
+      if (_3dRendered) showTerrain3D();
     }
 
     if (total === 0) finish();
@@ -749,7 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
       $('mlLowCount').textContent = '-';
       $('mlTopTarget').textContent = '-';
       if (gridMlLayer) { map.removeLayer(gridMlLayer); gridMlLayer = null; }
-      container.innerHTML = `<div class="ml-verdict low"><span class="verdict-icon">⚠️</span><div class="verdict-text"><h3>ML Analysis Unavailable</h3><p>${mlError}</p></div></div>`;
+      container.innerHTML = `<div class="ml-verdict low"><span class="verdict-icon">⚠️</span><div class="verdict-text"><h3>Analisis Gagal</h3><p>${mlError}</p></div></div>`;
       return;
     }
     if (!mlResults) {
@@ -758,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
       $('mlMedCount').textContent = '...';
       $('mlLowCount').textContent = '...';
       $('mlTopTarget').textContent = 'Loading...';
-      container.innerHTML = '<p style="font-size:13px;color:var(--text-secondary);text-align:center;padding:20px;">Analyzing grid cells...</p>';
+      container.innerHTML = '<p style="font-size:13px;color:var(--text-secondary);text-align:center;padding:20px;">Memproses prospektivitas grid...</p>';
       return;
     }
 
@@ -781,7 +861,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const total = scored.length;
     const sorted = [...scored].sort((a, b) => b.score - a.score);
     const top = sorted[0];
-    const avgScore = total ? (scored.reduce((s, c) => s + c.score, 0) / total) : 0;
 
     // Update stat cards
     $('mlTotalCells').textContent = total;
@@ -812,143 +891,135 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
     gridMlLayer.bindTooltip(f => `<b>${f.properties.grid_id}</b><br>Score: ${f.properties.score.toFixed(2)}`, {sticky:true});
 
-    // ── Build explanation HTML ──
+    // ── Build simplified UI HTML ──
     let html = '';
 
-    // 1. Overall verdict
-    const verdictClass = avgScore >= 6.5 ? 'high' : avgScore >= 3.5 ? 'medium' : 'low';
-    const verdictIcon = avgScore >= 6.5 ? '✅' : avgScore >= 3.5 ? '⚡' : '❌';
-    const verdictTitle = avgScore >= 6.5 ? 'Area Berpotensi Tinggi' : avgScore >= 3.5 ? 'Area Berpotensi Sedang' : 'Area Berpotensi Rendah';
-    const verdictDesc = avgScore >= 6.5
-      ? `Rata-rata skor ${avgScore.toFixed(1)}/10 — area ini memiliki kombinasi litologi ultramafik, status hukum yang layak, dan indikator geokimia positif. Direkomendasikan untuk survei drone lanjutan.`
-      : avgScore >= 3.5
-      ? `Rata-rata skor ${avgScore.toFixed(1)}/10 — area ini menunjukkan potensi parsial. Beberapa sel memiliki indikator kuat namun faktor pembatas (status hukum, kemiringan, atau litologi) menurunkan skor keseluruhan.`
-      : `Rata-rata skor ${avgScore.toFixed(1)}/10 — area ini memiliki indikator prospektivitas rendah. Litologi dominan bukan ultramafik, atau sebagian besar sel berada di zona hutan lindung.`;
+    // 1. Executive Summary / Verdict
+    const verdictClass = high.length > 5 ? 'high' : high.length > 0 ? 'medium' : 'low';
+    const verdictIcon = high.length > 5 ? '🎯' : high.length > 0 ? '🔎' : '⚠️';
+    const verdictTitle = high.length > 5 ? 'Prospektivitas Sangat Baik' : high.length > 0 ? 'Terdapat Target Potensial' : 'Prospektivitas Rendah';
+    const verdictDesc = high.length > 0
+      ? `Ditemukan <b>${high.length} sel</b> dengan skor tinggi (>6.5). Area ini direkomendasikan untuk difokuskan dalam perencanaan survei drone.`
+      : `Tidak ditemukan sel dengan skor tinggi. Sebagian besar area memiliki indikator geologis atau legal yang kurang mendukung.`;
     html += `<div class="ml-verdict ${verdictClass}"><span class="verdict-icon">${verdictIcon}</span><div class="verdict-text"><h3>${verdictTitle}</h3><p>${verdictDesc}</p></div></div>`;
 
-    // 2. Key driving factors (aggregate across all cells)
-    const FEATURE_LABELS = {
-      'legal_status': 'Status Hukum',
-      'lithology': 'Litologi',
-      'slope_deg': 'Kemiringan',
-      'road_access': 'Akses Jalan',
-      'distance_to_road_m': 'Jarak ke Jalan',
-      'distance_to_river_m': 'Jarak ke Sungai',
-      'distance_to_smelter_km': 'Jarak ke Smelter',
-    };
-    const factorAgg = {};
+    // 1.5 Lithology Composition Strip
+    let ultraCount = 0, maficCount = 0, otherCount = 0;
+    const ultraTypes = ['serpentinite', 'peridotite', 'ultramafic', 'dunite', 'harzburgite', 'lherzolite', 'pyroxenite'];
+    const maficTypes = ['gabbro', 'basalt', 'mafic_volcanic', 'mafic'];
+    
     scored.forEach(c => {
-      const topFeats = c.result.ml_top_features || [];
-      topFeats.forEach(tf => {
-        if (!factorAgg[tf.feature]) factorAgg[tf.feature] = { totalImpact: 0, count: 0, importance: tf.importance };
-        factorAgg[tf.feature].totalImpact += tf.impact;
-        factorAgg[tf.feature].count += 1;
-      });
+      let l = (c.lith || 'unknown').replace('_simulated', '').toLowerCase();
+      if (ultraTypes.some(k => l.includes(k))) ultraCount++;
+      else if (maficTypes.some(k => l.includes(k))) maficCount++;
+      else otherCount++;
     });
-    const factors = Object.entries(factorAgg)
-      .map(([k, v]) => ({ feature: k, avgImpact: v.totalImpact / v.count, importance: v.importance }))
-      .sort((a, b) => b.importance - a.importance)
-      .slice(0, 6);
+    
+    const ultraPct = total ? Math.round((ultraCount / total) * 100) : 0;
+    const maficPct = total ? Math.round((maficCount / total) * 100) : 0;
+    const otherPct = total ? Math.round((otherCount / total) * 100) : 0;
 
-    if (factors.length) {
-      const maxImpact = Math.max(...factors.map(f => f.avgImpact), 0.01);
-      html += '<div class="ml-section-title">Faktor Pendorong Utama</div>';
-      html += '<div class="ml-factor-list">';
-      factors.forEach(f => {
-        const pct = Math.round((f.avgImpact / maxImpact) * 100);
-        const color = f.avgImpact >= 2.0 ? '#10b981' : f.avgImpact >= 0.5 ? '#E2A356' : '#ef4444';
-        const label = FEATURE_LABELS[f.feature] || f.feature;
-        html += `<div class="ml-factor">
-          <span class="ml-factor-name">${label}</span>
-          <div class="ml-factor-bar-bg"><div class="ml-factor-bar" style="width:${pct}%;background:${color};"></div></div>
-          <span class="ml-factor-val">${f.avgImpact.toFixed(2)}</span>
-        </div>`;
-      });
-      html += '</div>';
-    }
+    html += `
+      <div class="lith-strip-container">
+        <div class="lith-strip-header">
+          <span class="lith-strip-title">Komposisi Litologi Area</span>
+          <span class="lith-strip-total">${ultraPct}% Ultramafik</span>
+        </div>
+        <div class="lith-strip-bar">
+          <div class="lith-segment ultra" style="width: ${ultraPct}%;"></div>
+          <div class="lith-segment mafic" style="width: ${maficPct}%;"></div>
+          <div class="lith-segment other" style="width: ${otherPct}%;"></div>
+        </div>
+        <div class="lith-legend">
+          <div class="lith-legend-item">
+            <span class="lith-legend-dot ultra"></span> Serpentinite / Ultramafik <span class="lith-legend-pct">${ultraPct}%</span>
+          </div>
+          <div class="lith-legend-item">
+            <span class="lith-legend-dot mafic"></span> Mafic / Basalt <span class="lith-legend-pct">${maficPct}%</span>
+          </div>
+          <div class="lith-legend-item">
+            <span class="lith-legend-dot other"></span> Sedimen / Lainnya <span class="lith-legend-pct">${otherPct}%</span>
+          </div>
+        </div>
+      </div>
+    `;
 
-    // 3. Lithology breakdown
+    // 2. Pros & Cons (Faktor Pendukung / Pembatas)
+    // Calculate simple stats to generate text points
     const lithCounts = {};
     scored.forEach(c => { const l = (c.lith || 'unknown').replace('_simulated', ''); lithCounts[l] = (lithCounts[l] || 0) + 1; });
     const lithEntries = Object.entries(lithCounts).sort((a, b) => b[1] - a[1]);
     const dominantLith = lithEntries[0]?.[0] || 'unknown';
     const dominantPct = total ? Math.round(lithEntries[0]?.[1] / total * 100) : 0;
     const isUltraDominant = ['serpentinite', 'peridotite', 'ultramafic'].some(k => dominantLith.includes(k));
+    
+    const steepCount = scored.filter(c => c.slope > 15).length;
+    const nogoCount = scored.filter(c => c.legal === 'no-go').length;
+    const farRoadCount = scored.filter(c => c.road > 2000).length;
 
-    html += '<div class="ml-section-title">Analisis Litologi</div>';
-    html += `<p style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;">`;
-    if (isUltraDominant) {
-      html += `Litologi dominan: <b style="color:#10b981;">${dominantLith}</b> (${dominantPct}%) — batuan ultramafik adalah host utama endapan nikel laterit. Ini merupakan indikator positif kuat.`;
+    const pros = [];
+    const cons = [];
+
+    if (isUltraDominant) pros.push(`Didominasi litologi ultramafik prospektif (${dominantLith}: ${dominantPct}%)`);
+    else cons.push(`Litologi dominan bukan ultramafik (${dominantLith}: ${dominantPct}%)`);
+
+    if (nogoCount === 0) pros.push(`100% area bebas dari hutan lindung (Status Clean)`);
+    else cons.push(`${Math.round(nogoCount/total*100)}% area berada di zona Hutan Lindung (No-Go)`);
+
+    if (steepCount === 0) pros.push(`Topografi sangat ideal, kemiringan landai`);
+    else if (steepCount > total * 0.3) cons.push(`Terdapat area dengan lereng curam >15° (${Math.round(steepCount/total*100)}%)`);
+
+    if (farRoadCount === 0) pros.push(`Aksesibilitas sangat baik (<2km dari jalan raya)`);
+    else if (farRoadCount > total * 0.5) cons.push(`Aksesibilitas minim, sebagian besar grid jauh dari jalan`);
+
+    if (pros.length === 0) pros.push("Tidak ada faktor pendukung yang dominan.");
+    if (cons.length === 0) cons.push("Tidak ada faktor penghambat signifikan.");
+
+    html += `
+      <div class="pros-cons-grid">
+        <div class="pros-cons-card pros">
+          <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Faktor Pendukung</h4>
+          <ul class="pros-cons-list">
+            ${pros.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="pros-cons-card cons">
+          <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> Faktor Pembatas</h4>
+          <ul class="pros-cons-list">
+            ${cons.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+
+    // 3. Top Drone Targets (Cards)
+    html += '<div class="ml-section-title">Rekomendasi Titik Survei Utama (Top Targets)</div>';
+    html += '<div class="target-cards-list">';
+    
+    const topTargets = sorted.slice(0, 3).filter(c => c.score > 0);
+    
+    if (topTargets.length === 0) {
+      html += `<div style="text-align:center;padding:24px;border:1px dashed var(--border-subtle);border-radius:var(--radius-md);color:var(--text-secondary);font-size:12px;">Tidak ada target potensial yang valid di area ini.</div>`;
     } else {
-      html += `Litologi dominan: <b style="color:#E2A356;">${dominantLith}</b> (${dominantPct}%) — bukan batuan ultramafik, sehingga potensi nikel laterit terbatas.`;
-    }
-    html += '</p>';
-    html += '<div style="display:flex;gap:6px;flex-wrap:wrap;">';
-    lithEntries.forEach(([l, n]) => {
-      const isU = ['serpentinite', 'peridotite', 'ultramafic'].some(k => l.includes(k));
-      const bg = isU ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.04)';
-      const bc = isU ? 'rgba(16,185,129,0.25)' : 'var(--border-subtle)';
-      html += `<span style="font-size:11px;padding:3px 10px;border-radius:4px;background:${bg};border:1px solid ${bc};color:var(--text-primary);">${l}: ${n}</span>`;
-    });
-    html += '</div>';
-
-    // 4. Top & Bottom cells side by side
-    html += '<div class="ml-section-title">Sel Terbaik vs Terburuk</div>';
-    html += '<div class="ml-cells-row">';
-
-    // Top 3
-    const top3 = sorted.slice(0, 3);
-    html += '<div>';
-    top3.forEach((c, i) => {
-      const topFeats = (c.result.ml_top_features || []).slice(0, 3);
-      const reasons = topFeats.map(tf => `${FEATURE_LABELS[tf.feature] || tf.feature}: +${tf.impact.toFixed(2)}`).join(', ');
-      html += `<div class="ml-cell-card top-card" style="margin-bottom:6px;">
-        <h4 style="color:#10b981;">#${i + 1} ${c.gid}</h4>
-        <span class="cell-score" style="color:#10b981;">${c.score.toFixed(2)}</span>
-        <div class="cell-reason">${reasons || 'Skor tinggi dari kombinasi faktor positif'}</div>
-      </div>`;
-    });
-    html += '</div>';
-
-    // Bottom 3
-    const bottom3 = sorted.slice(-3).reverse();
-    html += '<div>';
-    bottom3.forEach((c, i) => {
-      const r = c.result;
-      let reason = '';
-      if (r.ml_masked && r.ml_block_reason) {
-        reason = r.ml_block_reason;
-      } else {
-        const negatives = [];
-        if (c.legal === 'no-go') negatives.push('Zona hutan lindung (terlarang)');
-        else if (c.legal === 'conditional') negatives.push('Zona bersyarat — perlu izin PPKH');
-        const l = (c.lith || '');
-        if (!['serpentinite', 'peridotite', 'ultramafic'].some(k => l.includes(k))) negatives.push('Litologi bukan ultramafik');
-        if (c.slope > 18) negatives.push(`Kemiringan curam (${c.slope}°)`);
-        reason = negatives.join('; ') || 'Kombinasi faktor negatif';
-      }
-      html += `<div class="ml-cell-card bottom-card" style="margin-bottom:6px;">
-        <h4 style="color:#ef4444;">#${total - 2 + i} ${c.gid}</h4>
-        <span class="cell-score" style="color:#ef4444;">${c.score.toFixed(2)}</span>
-        <div class="cell-reason">${reason}</div>
-      </div>`;
-    });
-    html += '</div></div>';
-
-    // 5. Blocked / masked cells
-    const blocked = cells.filter(c => c.result.ml_masked);
-    if (blocked.length) {
-      html += '<div class="ml-section-title">Sel yang Diblokir oleh ML</div>';
-      html += '<div class="ml-blocked-list">';
-      blocked.slice(0, 10).forEach(c => {
-        html += `<div class="ml-blocked-item"><span class="blocked-dot"></span>${c.gid}: ${c.result.ml_block_reason || 'Blocked'}</div>`;
+      topTargets.forEach((c, i) => {
+        const lithText = (c.lith || 'unknown').replace('_simulated', '');
+        const legalText = c.legal === 'no-go' ? 'Terlarang (No-Go)' : c.legal === 'conditional' ? 'Bersyarat' : 'Diizinkan';
+        
+        let targetDesc = `Litologi: <b>${lithText}</b> | Kemiringan: <b>${c.slope}°</b> | Legal: <b>${legalText}</b>`;
+        
+        html += `
+          <div class="target-card">
+            <div class="target-rank">#${i + 1}</div>
+            <div class="target-info">
+              <div class="target-id">${c.gid} <span class="target-score">Skor ${c.score.toFixed(1)}/10</span></div>
+              <div class="target-desc">${targetDesc}</div>
+            </div>
+          </div>
+        `;
       });
-      if (blocked.length > 10) html += `<div class="ml-blocked-item" style="opacity:0.6;">...dan ${blocked.length - 10} sel lainnya</div>`;
-      html += '</div>';
     }
-
-    // 6. Methodology note
-    html += `<p style="font-size:11px;color:var(--text-secondary);margin-top:var(--sp-md);opacity:0.7;">Skor prospektivitas (0–10) per grid cell menggunakan model XGBoost. Fitur pra-survei: litologi, status hukum, kemiringan lereng, akses jalan, jarak ke smelter. Cocok untuk perencanaan deploy tim drone — tidak memerlukan data geokimia atau magnetometer. Grid berwarna pada peta utama di atas menunjukkan distribusi spasial skor ML.</p>`;
+    
+    html += '</div>';
 
     container.innerHTML = html;
   }
@@ -1007,7 +1078,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (name === 'terrain3d') {
       var hasMlNow = mlResults && Object.keys(mlResults).length > 0;
       if (!_3dRendered || (hasMlNow && !_3dRenderedWithMl)) {
-        showTerrain3D(currentParams || currentGrid);
+        showTerrain3D();
         _3dRendered = true;
         if (hasMlNow) _3dRenderedWithMl = true;
       }
@@ -1037,6 +1108,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateExpandBtn();
     // Invalidate map size after transition
     setTimeout(() => map.invalidateSize(), 450);
+  });
+
+  // Wireframe toggle
+  $('btnWireframe').addEventListener('click', function() {
+    if (_3dMesh && _3dMesh.material) {
+      _3dMesh.material.wireframe = !_3dMesh.material.wireframe;
+      this.textContent = _3dMesh.material.wireframe ? 'Solid' : 'Wireframe';
+    }
   });
 
   // Drag handle: click toggles between open ↔ expanded
