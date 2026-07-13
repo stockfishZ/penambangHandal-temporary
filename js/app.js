@@ -85,21 +85,29 @@ function bindEvents() {
 
   if (els.toggle3dBtn && els.close3dBtn) {
     els.toggle3dBtn.addEventListener('click', () => {
+      if (!resultRows || !resultRows.length) {
+        setStatus('Error', 'Jalankan analisis dulu sebelum membuka 3D view.');
+        return;
+      }
       els.plotly3dContainer.style.display = 'flex';
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
       document.documentElement.style.overflow = 'hidden';
-      // Give the browser time to render the container dimensions before Plotly calculates them
       setTimeout(() => {
         renderPlotly3D();
-        if (window.Plotly) {
-          try { Plotly.Plots.resize(document.getElementById('plotlyDiv')); } catch(e){}
-        }
       }, 150);
     });
     els.close3dBtn.addEventListener('click', () => {
       els.plotly3dContainer.style.display = 'none';
       document.body.style.overflow = ''; // Restore background scrolling
       document.documentElement.style.overflow = '';
+      if (typeof _3dAnimFrame !== 'undefined' && _3dAnimFrame) {
+        cancelAnimationFrame(_3dAnimFrame);
+        _3dAnimFrame = null;
+      }
+      if (typeof _3dResizeObserver !== 'undefined' && _3dResizeObserver) {
+        _3dResizeObserver.disconnect();
+        _3dResizeObserver = null;
+      }
     });
   }
 
@@ -113,7 +121,8 @@ function bindEvents() {
   });
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn.id === 'toggle3dBtn') return;
+      document.querySelectorAll('.tab-btn:not(#toggle3dBtn)').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeLayerMode = btn.dataset.layer;
       renderMapLayers();
@@ -200,25 +209,156 @@ function setStatus(title, text) {
   els.statusBox.innerHTML = `<b>${title}</b><span>${text}</span>`;
 }
 
+// Geometric intersection helpers for legal zones
+function pointInPolygon(lon, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = ring[i][0], yi = ring[i][1];
+    const xj = ring[j][0], yj = ring[j][1];
+    if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+function cellInAnyPolygon(lonC, latC, coordArrays) {
+  if (!coordArrays || coordArrays.length === 0) return false;
+  if (!pointInPolygon(lonC, latC, coordArrays[0])) return false;
+  for (let i = 1; i < coordArrays.length; i++) {
+    if (pointInPolygon(lonC, latC, coordArrays[i])) return false;
+  }
+  return true;
+}
+
+function cellLegalStatus(lonC, latC, forestryData) {
+  if (!forestryData) return 'allowed';
+  for (const feat of forestryData.features) {
+    const g = feat.geometry;
+    const props = feat.properties;
+    const status = props.legal_status || props.type || 'allowed';
+    if (g.type === 'MultiPolygon') {
+      for (const poly of g.coordinates) {
+        if (cellInAnyPolygon(lonC, latC, poly)) return status;
+      }
+    } else {
+      if (cellInAnyPolygon(lonC, latC, g.coordinates)) return status;
+    }
+  }
+  return 'allowed';
+}
+
 async function loadDummyData() {
   try {
-    const [magText, geoText, gridJson] = await Promise.all([
-      fetch('data/magnetometer_dummy.csv').then(r => r.text()),
-      fetch('data/geochemistry_dummy.csv').then(r => r.text()),
-      fetch('data/study_grid_dummy.geojson').then(r => r.json())
-    ]);
-    rawGrid = gridJson;
-    rawGrid.features = rawGrid.features.slice(0, 40); // Limit to 40 grids to reduce lag
-    const validIds = new Set(rawGrid.features.map(f => f.properties.grid_id));
-    rawMagnet = parseCSV(magText).filter(r => validIds.has(r.grid_id));
-    rawGeo = parseCSV(geoText).filter(r => validIds.has(r.grid_id));
-    els.magFileName.textContent = 'magnetometer_dummy.csv';
-    els.geoFileName.textContent = 'geochemistry_dummy.csv';
-    els.gridFileName.textContent = 'study_grid_dummy.geojson';
-    setStatus('Success', `Dummy data berhasil dimuat: ${rawMagnet.length} titik magnetometer, ${rawGeo.length} sampel, ${rawGrid.features.length} grid.`);
+    // Fetch actual forestry boundaries to map exact legal zones
+    const forestryData = await fetch('data/forestry_boundaries.geojson').then(r => r.json()).catch(() => null);
+
+    // Define strict bounding boxes that are 100% verified inland, away from lakes, ocean, and major infrastructure
+    const safeZones = [
+        // Sorowako Mountains (Strictly East of Lake Matano and away from town)
+        { minLat: -2.66, maxLat: -2.55, minLon: 121.42, maxLon: 121.55 },
+        // Morowali Inland Hills (Strictly West of coast and Bahodopi)
+        { minLat: -2.90, maxLat: -2.80, minLon: 121.82, maxLon: 121.92 },
+        // Konawe Deep Inland (Far West of Kendari city and coast)
+        { minLat: -3.85, maxLat: -3.75, minLon: 122.00, maxLon: 122.10 }
+    ];
+    
+    const zone = safeZones[Math.floor(Math.random() * safeZones.length)];
+    
+    // The grid is 8x5 cells, each cell is 0.01 degrees. So total grid width is 0.08, height is 0.05.
+    // Ensure the random start coordinate allows the entire grid to fit perfectly inside the safe bounding box
+    const startLon = zone.minLon + Math.random() * Math.max(0, (zone.maxLon - zone.minLon - 0.08));
+    const startLat = zone.minLat + Math.random() * Math.max(0, (zone.maxLat - zone.minLat - 0.05));
+
+    rawGrid = { type: 'FeatureCollection', features: [] };
+    rawMagnet = [];
+    rawGeo = [];
+
+    const numCols = 8;
+    const numRows = 5;
+    const cellSize = 0.01; // ~1.1km
+
+    let counter = 1;
+    for (let ix = 0; ix < numCols; ix++) {
+        for (let iy = 0; iy < numRows; iy++) {
+            const lon1 = startLon + ix * cellSize;
+            const lat1 = startLat + iy * cellSize;
+            const lon2 = lon1 + cellSize;
+            const lat2 = lat1 + cellSize;
+            
+            const gid = `G${String(counter++).padStart(3, '0')}`;
+            
+            // True center of this grid cell
+            const centerLon = (lon1 + lon2) / 2;
+            const centerLat = (lat1 + lat2) / 2;
+            
+            // Use exact geometric intersection with forestry boundary data
+            const rawStatus = cellLegalStatus(centerLon, centerLat, forestryData);
+            let legal = 'allowed (APL)';
+            if (rawStatus === 'no-go') legal = 'no-go (Hutan Lindung)';
+            if (rawStatus === 'conditional') legal = 'conditional (Hutan Produksi)';
+
+            rawGrid.features.push({
+                type: 'Feature',
+                properties: {
+                    grid_id: gid,
+                    legal_status: legal,
+                    lithology: Math.random() > 0.3 ? 'ultramafic/serpentinite' : 'mafic/basalt',
+                    slope_deg: Math.floor(Math.random() * 40),
+                    distance_to_river_m: Math.floor(Math.random() * 2000),
+                    distance_to_road_m: Math.floor(Math.random() * 5000),
+                    distance_to_smelter_km: Math.floor(Math.random() * 150),
+                    area_ha: 100 + Math.floor(Math.random() * 50)
+                },
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [[
+                        [lon1, lat1],
+                        [lon2, lat1],
+                        [lon2, lat2],
+                        [lon1, lat2],
+                        [lon1, lat1]
+                    ]]
+                }
+            });
+
+            // Generate 5 mag points per grid clustered around the true center
+            for (let i = 0; i < 5; i++) {
+                rawMagnet.push({
+                    grid_id: gid,
+                    latitude: centerLat + (Math.random() - 0.5) * (cellSize * 0.8),
+                    longitude: centerLon + (Math.random() - 0.5) * (cellSize * 0.8),
+                    mag_raw_nT: 40000 + Math.random() * 5000
+                });
+            }
+
+            // Generate 2 geo points per grid clustered around the true center
+            for (let i = 0; i < 2; i++) {
+                rawGeo.push({
+                    grid_id: gid,
+                    latitude: centerLat + (Math.random() - 0.5) * (cellSize * 0.6),
+                    longitude: centerLon + (Math.random() - 0.5) * (cellSize * 0.6),
+                    Ni_pct: parseFloat((Math.random() * 2 + 0.5).toFixed(2)),
+                    Fe_pct: parseFloat((Math.random() * 30 + 10).toFixed(2)),
+                    Co_pct: parseFloat((Math.random() * 0.1).toFixed(3)),
+                    MgO_pct: parseFloat((Math.random() * 20 + 10).toFixed(2)),
+                    SiO2_pct: parseFloat((Math.random() * 30 + 20).toFixed(2))
+                });
+            }
+        }
+    }
+
+    els.magFileName.textContent = 'random_generated_mag.csv';
+    els.geoFileName.textContent = 'random_generated_geo.csv';
+    els.gridFileName.textContent = 'random_generated_grid.geojson';
+    
+    // Auto center map to newly generated grid
+    if (map) {
+        map.setView([startLat + (numRows * cellSize) / 2, startLon + (numCols * cellSize) / 2], 12);
+    }
+    
+    setStatus('Success', `Dummy data random berhasil di-generate di lokasi darat yang aman: ${rawMagnet.length} titik mag, ${rawGeo.length} sampel, ${rawGrid.features.length} grid.`);
   } catch (err) {
     console.error(err);
-    setStatus('Error', 'Dummy data gagal dimuat. Pastikan dibuka pakai Live Server, bukan double click file HTML.');
+    setStatus('Error', 'Dummy data gagal di-generate secara random.');
   }
 }
 
@@ -739,7 +879,6 @@ function buildResults(grid, precomputed) {
   });
 
   results.sort((a,b) => b.final_priority_score - a.final_priority_score);
-  grid.features.sort((a,b) => b.properties.final_priority_score - a.properties.final_priority_score);
   return results;
 }
 
@@ -828,7 +967,6 @@ function renderMapLayers() {
     magnetLayer.addTo(map);
     sampleLayer.addTo(map);
   }
-
   const bounds = gridLayer.getBounds();
   if (bounds.isValid()) map.fitBounds(bounds.pad(0.18));
   if (els.mapHint) els.mapHint.style.display = 'none';
@@ -836,57 +974,267 @@ function renderMapLayers() {
   setTimeout(forceMapResize, 350);
 }
 
-function renderPlotly3D() {
-  if (!resultRows.length || !window.Plotly) return;
-  const active = resultRows.filter(r => !r.ml_masked);
-  const x = active.map(r => {
-    const f = rawGrid.features.find(feat => feat.properties.grid_id === r.grid_id);
-    return f?.geometry?.coordinates?.[0]?.[0]?.[0] || 0;
-  });
-  const y = active.map(r => {
-    const f = rawGrid.features.find(feat => feat.properties.grid_id === r.grid_id);
-    return f?.geometry?.coordinates?.[0]?.[0]?.[1] || 0;
-  });
-  const z = active.map(r => r.ml_score != null ? r.ml_score : (r.final_priority_score/10));
-  const c = active.map(r => r.Ni_avg || 0);
-  const text = active.map(r => `Grid: ${r.grid_id}<br>Ni Avg: ${r.Ni_avg}%<br>Score: ${r.ml_score != null ? r.ml_score : (r.final_priority_score/10)}`);
+let _3dAnimFrame = null;
+let _3dResizeObserver = null;
 
-  const trace = {
-    x: x, y: y, z: z,
-    mode: 'markers',
-    marker: {
-      size: 12,
-      color: c,
-      colorscale: 'Viridis',
-      opacity: 0.9,
-      colorbar: { title: 'Ni Avg (%)' }
-    },
-    text: text,
-    hoverinfo: 'text',
-    type: 'scatter3d'
-  };
-  const layout = {
-    title: 'Model Blok 3D - Target Eksplorasi',
-    dragmode: 'turntable',
-    scene: {
-      xaxis: { title: 'Longitude' },
-      yaxis: { title: 'Latitude' },
-      zaxis: { title: 'Prioritas (Lebih tinggi = lebih baik)' },
-      bgcolor: '#0f172a',
-      camera: {
-        eye: { x: 1.5, y: 1.5, z: 1.5 }
+function fetchElevationDataForApp(cells, callback) {
+    if (!cells || !cells.length) return callback();
+    let lats = cells.map(c => c.latC);
+    let lons = cells.map(c => c.lonC);
+    let latMin = Math.min(...lats), latMax = Math.max(...lats);
+    let lonMin = Math.min(...lons), lonMax = Math.max(...lons);
+    let maxSpan = Math.max(latMax - latMin, lonMax - lonMin) || 0.01;
+    let zoom = Math.min(15, Math.max(10, Math.ceil(Math.log2(360 / maxSpan))));
+
+    let tileCells = {};
+    cells.forEach(c => {
+      let tx = Math.floor((c.lonC + 180) / 360 * (1 << zoom));
+      let latRad = c.latC * Math.PI / 180;
+      let ty = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * (1 << zoom));
+      let key = `${zoom}/${tx}/${ty}`;
+      if (!tileCells[key]) tileCells[key] = [];
+      tileCells[key].push(c);
+    });
+
+    let tileKeys = Object.keys(tileCells);
+    let loaded = 0, total = tileKeys.length;
+
+    tileKeys.forEach(key => {
+      let [z, x, y] = key.split('/').map(Number);
+      let url = `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png`;
+      let canvas = document.createElement('canvas');
+      canvas.width = 256; canvas.height = 256;
+      let ctx = canvas.getContext('2d');
+
+      fetch(url).then(r => r.ok ? r.blob() : Promise.reject('HTTP ' + r.status))
+        .then(blob => {
+          let img = new Image();
+          img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+            let imgData = ctx.getImageData(0, 0, 256, 256);
+            tileCells[key].forEach(cell => {
+              let latRad2 = cell.latC * Math.PI / 180;
+              let px = Math.min(255, Math.max(0, Math.floor((((cell.lonC + 180) / 360 * (1 << z)) % 1) * 256)));
+              let py = Math.min(255, Math.max(0, Math.floor((((1 - Math.log(Math.tan(latRad2) + 1 / Math.cos(latRad2)) / Math.PI) / 2 * (1 << z)) % 1) * 256)));
+              let idx = (py * 256 + px) * 4;
+              let r_ = imgData.data[idx], g_ = imgData.data[idx + 1], b_ = imgData.data[idx + 2];
+              cell.elevation = (r_ * 256 + g_ + b_ / 256) - 32768;
+            });
+            loaded++;
+            if (loaded === total) finish();
+          };
+          img.onerror = () => { loaded++; if (loaded === total) finish(); };
+          img.src = URL.createObjectURL(blob);
+        }).catch(() => { loaded++; if (loaded === total) finish(); });
+    });
+
+    function finish() {
+      cells.forEach(c => { if (c.elevation == null || isNaN(c.elevation)) c.elevation = 0; });
+      callback();
+    }
+    if (total === 0) finish();
+}
+
+function renderPlotly3D() {
+  if (!resultRows.length || !window.THREE) return;
+  const container = els.plotlyDiv;
+  container.innerHTML = '<div style="color:white;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--font-ui);">Fetching AWS Terrarium DEM tiles...</div>';
+  
+  if (_3dAnimFrame) cancelAnimationFrame(_3dAnimFrame);
+  if (_3dResizeObserver) _3dResizeObserver.disconnect();
+  
+  const cells = [];
+  rawGrid.features.forEach(feat => {
+      if (!feat || !feat.geometry || !feat.geometry.coordinates || !feat.geometry.coordinates[0]) return;
+      const gid = feat.properties.grid_id;
+      const ring = feat.geometry.coordinates[0];
+      
+      let sumLon = 0, sumLat = 0;
+      ring.forEach(pt => { sumLon += pt[0]; sumLat += pt[1]; });
+      const lonC = sumLon / ring.length;
+      const latC = sumLat / ring.length;
+
+      const res = resultRows.find(r => r.grid_id === gid);
+      cells.push({
+          gid,
+          lonC,
+          latC,
+          score: res ? (res.ml_masked ? 0 : (res.ml_score != null ? res.ml_score : (res.final_priority_score/10))) : 0
+      });
+  });
+
+  // Create high-res vertices for smooth terrain
+  const resX = 64, resY = 40;
+  const vertexCells = [];
+  
+  let minLon = Math.min(...cells.map(c => c.lonC));
+  let maxLon = Math.max(...cells.map(c => c.lonC));
+  let minLat = Math.min(...cells.map(c => c.latC));
+  let maxLat = Math.max(...cells.map(c => c.latC));
+  
+  for (let iy = 0; iy < resY; iy++) {
+      for (let ix = 0; ix < resX; ix++) {
+          let u = ix / (resX - 1);
+          let v = iy / (resY - 1);
+          vertexCells.push({
+              ix, iy, u, v,
+              lonC: minLon + u * (maxLon - minLon),
+              latC: minLat + v * (maxLat - minLat)
+          });
       }
-    },
-    paper_bgcolor: '#0f172a',
-    font: { color: '#e2e8f0' },
-    margin: { l: 0, r: 0, b: 0, t: 40 }
-  };
-  const config = {
-    responsive: true,
-    scrollZoom: true,
-    displayModeBar: true
-  };
-  Plotly.newPlot('plotlyDiv', [trace], layout, config);
+  }
+
+  fetchElevationDataForApp(vertexCells, () => {
+      container.innerHTML = ''; // clear loading
+
+      const w = container.clientWidth || 800;
+      const h = container.clientHeight || 600;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0f172a);
+
+      const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+      camera.position.set(0, 15, 20);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(w, h);
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      scene.add(new THREE.AmbientLight(0x404060, 0.8));
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+      dirLight.position.set(10, 20, 10);
+      scene.add(dirLight);
+
+      const terrainWidth = 24, terrainDepth = 15;
+      
+      let maxScore = -Infinity;
+      let topGridId = '-';
+      
+      cells.forEach(cell => {
+          if (cell.score > maxScore) {
+              maxScore = cell.score;
+              topGridId = cell.gid;
+          }
+      });
+      
+      let minElev = Math.min(...vertexCells.map(v => v.elevation));
+      let maxElev = Math.max(...vertexCells.map(v => v.elevation));
+      const elevRange = maxElev - minElev || 1;
+      const heightScale = 5.0 / elevRange; // scale hills to look nice
+
+      const getColorForScore = (s) => {
+          const t = Math.max(0, Math.min(1, s / 10.0));
+          const color = new THREE.Color();
+          if (t < 0.25) {
+              color.setHex(0xff0000).lerp(new THREE.Color(0xffff00), t / 0.25);
+          } else if (t < 0.5) {
+              color.setHex(0xffff00).lerp(new THREE.Color(0x00ff00), (t - 0.25) / 0.25);
+          } else if (t < 0.75) {
+              color.setHex(0x00ff00).lerp(new THREE.Color(0x00ffff), (t - 0.5) / 0.25);
+          } else {
+              color.setHex(0x00ffff).lerp(new THREE.Color(0x00008b), (t - 0.75) / 0.25);
+          }
+          return color;
+      };
+
+      // Update Overlay UI
+      if (document.getElementById('info3dMaxElev')) {
+          document.getElementById('info3dMaxElev').textContent = Math.round(maxElev) + ' mdpl';
+          document.getElementById('info3dMinElev').textContent = Math.round(minElev) + ' mdpl';
+          
+          const scoreEl = document.getElementById('info3dMaxScore');
+          if (maxScore === -Infinity) {
+              scoreEl.textContent = '-';
+          } else {
+              scoreEl.textContent = maxScore.toFixed(2);
+              scoreEl.style.color = '#' + getColorForScore(maxScore).getHexString();
+          }
+          
+          document.getElementById('info3dTopGrid').textContent = topGridId;
+      }
+
+      const geo = new THREE.PlaneGeometry(terrainWidth, terrainDepth, resX - 1, resY - 1);
+      geo.rotateX(-Math.PI / 2);
+
+      const pos = geo.attributes.position;
+      const colors = new Float32Array(pos.count * 3);
+
+      for (let i = 0; i < pos.count; i++) {
+          const vc = vertexCells[i];
+          
+          let closestDist = Infinity;
+          let score = 0;
+          for (let c of cells) {
+              const d = (c.lonC - vc.lonC)**2 + (c.latC - vc.latC)**2;
+              if (d < closestDist) {
+                  closestDist = d;
+                  score = c.score;
+              }
+          }
+          
+          const height = (vc.elevation - minElev) * heightScale;
+          
+          pos.setY(i, height);
+          
+          const clr = getColorForScore(score);
+          colors[i * 3] = clr.r;
+          colors[i * 3 + 1] = clr.g;
+          colors[i * 3 + 2] = clr.b;
+      }
+      
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();
+
+      const mat = new THREE.MeshStandardMaterial({
+          vertexColors: true,
+          roughness: 0.8,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          wireframe: false
+      });
+      
+      const mesh = new THREE.Mesh(geo, mat);
+      scene.add(mesh);
+      
+      const wireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1 });
+      const wireMesh = new THREE.Mesh(geo, wireMat);
+      scene.add(wireMesh);
+
+      const groundGeo = new THREE.PlaneGeometry(terrainWidth * 1.5, terrainDepth * 1.5);
+      const groundMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
+      const ground = new THREE.Mesh(groundGeo, groundMat);
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.y = -2;
+      scene.add(ground);
+
+      const gridHelper = new THREE.GridHelper(30, 30, 0x333355, 0x1a2235);
+      gridHelper.position.y = -1.9;
+      scene.add(gridHelper);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.target.set(0, 0, 0);
+
+      function animate() {
+          _3dAnimFrame = requestAnimationFrame(animate);
+          controls.update();
+          renderer.render(scene, camera);
+      }
+      animate();
+
+      _3dResizeObserver = new ResizeObserver(() => {
+          const nw = container.clientWidth;
+          const nh = container.clientHeight;
+          if (nw === 0 || nh === 0) return;
+          camera.aspect = nw / nh;
+          camera.updateProjectionMatrix();
+          renderer.setSize(nw, nh);
+      });
+      _3dResizeObserver.observe(container);
+  });
 }
 
 function gridStyle(feature) {

@@ -267,10 +267,55 @@
     </section>
   </main>
 
-  <div id="plotly3dContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
-    <div style="position: relative; width: 90%; height: 90%; background: #0f172a; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
-      <button id="close3dBtn" class="btn btn-secondary small" style="position: absolute; top: 15px; right: 15px; z-index: 99999;">Tutup</button>
-      <div id="plotlyDiv" style="flex: 1; width: 100%; min-height: 0; position: relative;"></div>
+  <div id="plotly3dContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="position: relative; width: 95%; height: 95%; background: #0f172a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; overflow: hidden;">
+      
+      <!-- Top Action Bar -->
+      <div style="position: absolute; top: 16px; right: 16px; z-index: 99999; display: flex; gap: 12px;">
+        <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border-color: rgba(255,255,255,0.2);">✕ Tutup</button>
+      </div>
+
+      <!-- Left Overlay Info Panel -->
+      <div style="position: absolute; top: 16px; left: 16px; z-index: 99999; width: 280px; display: flex; flex-direction: column; gap: 12px;">
+        
+        <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px;">
+          <h3 style="font-family: var(--font-display); font-size: 16px; margin: 0 0 4px; color: #fff;">Digital Elevation Model</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 16px;">Simulasi topografi dengan overlay ML</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+            <div>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Elevasi Max</span>
+              <div id="info3dMaxElev" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
+            </div>
+            <div>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Elevasi Min</span>
+              <div id="info3dMinElev" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
+            </div>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Skor Max</span>
+              <div id="info3dMaxScore" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
+            </div>
+            <div>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Top Grid</span>
+              <div id="info3dTopGrid" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px;">
+          <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Skor Prospektivitas (ML)</span>
+          <div style="height: 12px; width: 100%; border-radius: 6px; background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #00008b); margin-bottom: 6px;"></div>
+          <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+            <span>Rendah (0)</span>
+            <span>Tinggi (10)</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="plotlyDiv" style="flex: 1; width: 100%; min-height: 0; position: relative; border-radius: 16px; overflow: hidden;"></div>
     </div>
   </div>
 
@@ -279,6 +324,7 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
