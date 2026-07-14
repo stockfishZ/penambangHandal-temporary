@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   /* Nexus Color Tokens adapted for Dark Volumetric */
   --bg-canvas: #070B09;
   --bg-surface: #0e1525;
@@ -55,7 +55,8 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--bg-canvas);
+  background: linear-gradient(rgba(7, 11, 9, 0.8), rgba(7, 11, 9, 0.9)), url("../assets/hero-bg.jpg") no-repeat center center fixed;
+  background-size: cover;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 14.4px;

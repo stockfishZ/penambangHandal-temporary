@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NiTERRA — Platform Prioritas Eksplorasi</title>
+  <title>NiTERRA — Exploration Prioritization Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <canvas id="scene" aria-hidden="true"></canvas>
+  <!-- <canvas id="scene" aria-hidden="true"></canvas> -->
   <div class="ambient-glow" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
   <div class="noise-overlay" aria-hidden="true"></div>
@@ -22,11 +22,10 @@
       <span>NiTERRA</span>
     </a>
     <nav class="nav-links" aria-label="Main navigation">
-      <a href="index.html#home">Intro</a>
-      <a href="terrain-analysis.html">Eksplorasi</a>
-      <a href="index.html">Analisis</a>
+      <a href="terrain-analysis.html">Exploration</a>
+      <a href="index.html">Analysis</a>
     </nav>
-    <a class="btn btn-primary small" href="#workspace">Mulai Analisis</a>
+    <a class="btn btn-primary small" href="#workspace">Start Analysis</a>
   </header>
 
   <main>
@@ -34,55 +33,35 @@
       <div class="hero-content">
         <div class="hero-main">
           <span class="eyebrow">
-            <span class="live-dot"></span> MESIN TERRAIN PROSEDURAL — RENDER LANGSUNG
+            <span class="live-dot"></span> PROCEDURAL TERRAIN ENGINE — LIVE RENDER
           </span>
-          <h1>Eksplorasi tertarget.<br>Dari satu grid.<br><span class="text-highlight">Hingga skala regional.</span></h1>
+          <h1>Targeted exploration.<br>From a single grid.<br><span class="text-highlight">To regional scale.</span></h1>
           <p class="hero-lead">
-            NiTERRA mengubah data mentah menjadi terrain yang akurat secara geologis dan siap diprioritaskan — dialirkan secara real time ke alur kerja eksplorasi Anda. Lanskap di belakang halaman ini sedang dibuat saat ini juga.
+            NiTERRA transforms raw data into geologically accurate, priority-ready terrain — streamed in real time to your exploration workflow. The landscape behind this page is being generated right now.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#workspace">
-              Mulai analisis 
+              Start analysis 
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a class="btn btn-secondary" href="#output">Hubungi tim sales</a>
           </div>
-        </div>
-        
-        <div class="hero-stats">
-          <div class="stat-group">
-            <span class="stat-label">SEED GRID</span>
-            <span class="stat-value">NT-048476</span>
-          </div>
-          <div class="stat-group">
-            <span class="stat-label">ELEVASI MAKS</span>
-            <span class="stat-value">2,364 M</span>
-          </div>
-          <div class="stat-group">
-            <span class="stat-label">KOORDINAT</span>
-            <span class="stat-value">45.71°N &nbsp; 73.64°W</span>
-          </div>
-          <button class="btn btn-ghost small">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            SEED BARU [R]
-          </button>
         </div>
       </div>
     </section>
 
     <section id="workspace" class="section workspace-section">
       <div class="section-heading">
-        <span class="eyebrow small">Ruang Kerja</span>
-        <h2>Upload data, lalu jalankan analisis.</h2>
-        <p>Masukkan data magnetometer, geokimia, dan grid area. Sistem akan menghitung skor prioritas serta menampilkan hasilnya pada peta interaktif dan tabel ranking.</p>
+        <span class="eyebrow small">Workspace</span>
+        <h2>Upload data, then run analysis.</h2>
+        <p>Input magnetometer, geochemistry data, and area grid. The system will calculate priority scores and display the results on an interactive map and ranking table.</p>
       </div>
 
       <div class="workspace-grid">
         <div class="panel-shell">
           <aside class="panel input-panel">
-            <span class="pill">Data Input</span>
-            <h3>Upload file eksplorasi</h3>
-            <p class="muted">Minimal 3 file: magnetometer, geochemistry, dan grid/batas area. Untuk demo, klik <b>Load Dummy Data</b>.</p>
+            <span class="pill">Input Data</span>
+            <h3>Upload exploration files</h3>
+            <p class="muted">Minimum 3 files: magnetometer, geochemistry, and grid/area boundaries. For a demo, click <b>Load Dummy Data</b>.</p>
 
             <label class="file-card">
               <input id="magFile" type="file" accept=".csv" />
@@ -118,19 +97,19 @@
             </label>
 
             <div class="button-row">
-              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Muat Data Dummy</button>
+              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Load Dummy Data</button>
               <button id="runBtn" class="btn btn-primary" type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Jalankan Analisis
+                Run Analysis
               </button>
             </div>
             <div class="button-row" style="margin-top: 10px;">
-              <button id="retrainBtn" class="btn btn-secondary" type="button" style="width: 100%;">Unggah Data Bor Baru & Latih Ulang</button>
+              <button id="retrainBtn" class="btn btn-secondary" type="button" style="width: 100%;">Upload New Drill Data & Retrain</button>
             </div>
 
             <div id="statusBox" class="status-box">
               <b>Status</b>
-              <span>Belum ada data yang diproses. Klik Load Dummy Data dulu.</span>
+              <span>No data processed yet. Click Load Dummy Data first.</span>
             </div>
           </aside>
         </div>
@@ -140,25 +119,25 @@
             <div class="map-topline">
               <div class="map-title">
                 <span class="live-dot"></span>
-                Peta Eksplorasi Interaktif
+                Interactive Exploration Map
               </div>
               <div class="map-tabs" role="tablist">
-                <button class="tab-btn active" data-layer="priority" type="button">Prioritas</button>
+                <button class="tab-btn active" data-layer="priority" type="button">Priority</button>
                 <button class="tab-btn" data-layer="magnet" type="button">Magnet</button>
-                <button class="tab-btn" data-layer="samples" type="button">Sampel</button>
-                <button class="tab-btn" data-layer="risk" type="button" style="color: #fca5a5;">Peta Risiko</button>
-                <button id="toggle3dBtn" class="tab-btn" type="button" style="border-left: 1px solid rgba(255,255,255,0.2); margin-left: 8px;">Tampilan 3D</button>
+                <button class="tab-btn" data-layer="samples" type="button">Samples</button>
+                <button class="tab-btn" data-layer="risk" type="button" style="color: #fca5a5;">Risk Map</button>
+                <button id="toggle3dBtn" class="tab-btn" type="button" style="border-left: 1px solid rgba(255,255,255,0.2); margin-left: 8px;">3D View</button>
               </div>
             </div>
             <div class="map-holder">
               <div id="map" aria-label="Interactive map"></div>
-              <div id="mapHint" class="map-hint">Klik Load Dummy Data → Run Analysis. Grid prioritas akan muncul di atas basemap.</div>
+              <div id="mapHint" class="map-hint">Click Load Dummy Data → Run Analysis. Priority grid will appear on top of the basemap.</div>
             </div>
             <div class="legend">
-              <span><i class="c p1"></i> Prioritas 1</span>
-              <span><i class="c p2"></i> Prioritas 2</span>
-              <span><i class="c p3"></i> Prioritas 3</span>
-              <span><i class="c p4"></i> Non Prioritas</span>
+              <span><i class="c p1"></i> Priority 1</span>
+              <span><i class="c p2"></i> Priority 2</span>
+              <span><i class="c p3"></i> Priority 3</span>
+              <span><i class="c p4"></i> Non Priority</span>
               <span><i class="c magnet"></i> Magnetometer</span>
               <span><i class="c sample"></i> Geochemistry</span>
             </div>
@@ -169,38 +148,38 @@
 
     <section id="output" class="section output-section">
       <div class="section-heading">
-        <span class="eyebrow small">Hasil</span>
-        <h2>Ringkasan hasil dan ranking target.</h2>
-        <p>Setelah analisis dijalankan, sistem menampilkan skor akhir, kelas prioritas, dan alasan rekomendasi per grid.</p>
+        <span class="eyebrow small">Results</span>
+        <h2>Results summary and target ranking.</h2>
+        <p>After the analysis is run, the system displays final scores, priority classes, and recommendation reasons per grid.</p>
       </div>
 
       <div class="summary-cards">
         <article class="metric-card">
-          <span>Jumlah Grid</span>
+          <span>Grid Count</span>
           <b id="gridCount">0</b>
         </article>
         <article class="metric-card">
-          <span>Prioritas 1</span>
+          <span>Priority 1</span>
           <b id="priorityOneCount">0</b>
         </article>
         <article class="metric-card">
-          <span>Rata-rata Skor</span>
+          <span>Average Score</span>
           <b id="avgScore">—</b>
         </article>
         <article class="metric-card">
-          <span>Target Terbaik</span>
+          <span>Best Target</span>
           <b id="bestTarget">—</b>
         </article>
         <article class="metric-card">
-          <span>⛔ Zona Terlarang</span>
+          <span>⛔ Restricted Zone</span>
           <b id="killZoneCount" style="color:#ef4444;">0</b>
         </article>
         <article class="metric-card">
-          <span>⚠️ Keterlanjuran</span>
+          <span>⚠️ Grandfathered</span>
           <b id="grandfatheredCount" style="color:#f59e0b;">0</b>
         </article>
         <article class="metric-card" style="background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(5,150,105,0.4) 100%); border-color: #10b981;">
-          <span style="color: #e0f2fe;">Penghematan Biaya (ROI)</span>
+          <span style="color: #e0f2fe;">Cost Savings (ROI)</span>
           <b id="roiSavings" style="color: #34d399;">Rp 0</b>
         </article>
       </div>
@@ -209,29 +188,29 @@
         <div class="panel-shell">
           <section class="panel ranking-panel">
             <div class="panel-head">
-              <h3>Ranking Target</h3>
+              <h3>Target Ranking</h3>
               <button id="downloadBtn" class="btn btn-secondary small" type="button">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Unduh CSV
+                Download CSV
               </button>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Peringkat</th>
+                    <th>Rank</th>
                     <th>Grid</th>
-                    <th>Prioritas</th>
-                    <th>Skor</th>
-                    <th>Rata-rata Ni</th>
+                    <th>Priority</th>
+                    <th>Score</th>
+                    <th>Avg Ni</th>
                     <th>Skor Mag</th>
-                    <th>Kemiringan</th>
-                    <th>Zona Legal</th>
-                    <th>Alasan</th>
+                    <th>Slope</th>
+                    <th>Legal Zone</th>
+                    <th>Reason</th>
                   </tr>
                 </thead>
                 <tbody id="rankingBody">
-                  <tr><td colspan="9" class="empty">Belum ada hasil. Jalankan analisis dulu.</td></tr>
+                  <tr><td colspan="9" class="empty">No results yet. Run analysis first.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -240,13 +219,13 @@
 
         <div class="panel-shell">
           <aside class="panel detail-panel">
-            <span class="pill">Target Dipilih</span>
+            <span class="pill">Selected Target</span>
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <h3 id="targetDetailTitle" style="margin:0;">—</h3>
-              <button id="zoomDetailBtn" class="btn btn-ghost small" type="button" title="Perbesar layar">⛶</button>
+              <button id="zoomDetailBtn" class="btn btn-ghost small" type="button" title="Expand screen">⛶</button>
             </div>
             <div id="targetDetail" class="target-detail">
-              <p class="muted" style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">Klik grid pada peta atau baris ranking untuk melihat detail target.</p>
+              <p class="muted" style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">Click a grid on the map or a ranking row to view target details.</p>
             </div>
           </aside>
         </div>
@@ -255,9 +234,9 @@
 
     <section id="insights" class="section insights-section">
       <div class="section-heading">
-        <span class="eyebrow small">Wawasan</span>
-        <h2>Skoring kontribusi fitur.</h2>
-        <p>Bobot parameter yang dipakai dalam prototype scoring. Dapat diganti dengan feature importance dari Random Forest saat backend ML terintegrasi.</p>
+        <span class="eyebrow small">Insights</span>
+        <h2>Feature contribution scoring.</h2>
+        <p>Parameter weights used in the scoring prototype. Can be replaced with Random Forest feature importance when the ML backend is integrated.</p>
       </div>
       <div class="panel-shell">
         <div class="panel insight-panel">
@@ -272,7 +251,7 @@
       
       <!-- Top Action Bar -->
       <div style="position: absolute; top: 16px; right: 16px; z-index: 99999; display: flex; gap: 12px;">
-        <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border-color: rgba(255,255,255,0.2);">✕ Tutup</button>
+        <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border-color: rgba(255,255,255,0.2);">✕ Close</button>
       </div>
 
       <!-- Left Overlay Info Panel -->
@@ -280,22 +259,22 @@
         
         <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px;">
           <h3 style="font-family: var(--font-display); font-size: 16px; margin: 0 0 4px; color: #fff;">Digital Elevation Model</h3>
-          <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 16px;">Simulasi topografi dengan overlay ML</p>
+          <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 16px;">Topographic simulation with ML overlay</p>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
             <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Elevasi Max</span>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Max Elev</span>
               <div id="info3dMaxElev" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
             </div>
             <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Elevasi Min</span>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Min Elev</span>
               <div id="info3dMinElev" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
             </div>
           </div>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Skor Max</span>
+              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Max Score</span>
               <div id="info3dMaxScore" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
             </div>
             <div>
@@ -306,11 +285,11 @@
         </div>
 
         <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px;">
-          <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Skor Prospektivitas (ML)</span>
+          <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Prospectivity Score (ML)</span>
           <div style="height: 12px; width: 100%; border-radius: 6px; background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #00008b); margin-bottom: 6px;"></div>
           <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary); font-variant-numeric: tabular-nums;">
-            <span>Rendah (0)</span>
-            <span>Tinggi (10)</span>
+            <span>Low (0)</span>
+            <span>High (10)</span>
           </div>
         </div>
       </div>
@@ -320,7 +299,7 @@
   </div>
 
   <footer>
-    <b>NiTERRA</b> — Prototype frontend untuk ANTAM Hackathon 2026. Data dummy bersifat simulasi, bukan data eksplorasi asli.
+    <b>NiTERRA</b> — Frontend prototype for ANTAM Hackathon 2026. Dummy data is simulated, not real exploration data.
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -328,7 +307,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
-  <script src="new_effect.js"></script>
+  <!-- <script src="new_effect.js"></script> -->
   <script src="js/app.js"></script>
 </body>
 </html>
