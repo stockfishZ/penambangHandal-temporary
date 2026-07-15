@@ -539,31 +539,88 @@ function generateEsgDraftClient(row) {
   const slopeStatus = slope > 25 ? 'TINGGI' : slope > 15 ? 'SEDANG' : 'RENDAH';
   const niGrade = ni >= 1.5 ? 'TINGGI' : ni >= 0.8 ? 'SEDANG' : 'RENDAH';
 
-  let s = '=================================================================\n          NI TERRA - ESG & PERMIT DRAFT GENERATOR\n=================================================================\nDibuat oleh: NiTERRA GenAI Drafting Agent (Client-Side)\nTarget Grid : ' + row.grid_id + '\nLokasi      : ' + locLabel + '\nRegion      : ' + region + '\n=================================================================\n\n1. IDENTITAS WILAYAH\n-----------------------------------------------------------------\nGrid ID          : ' + row.grid_id + '\nLitologi         : ' + lith + '\nKemiringan       : ' + slope + ' deg (Risiko ' + slopeStatus + ')\nJarak ke Sungai  : ' + riverDist + ' m (Status: ' + riverStatus + ')\nJarak ke Jalan   : ' + roadDist + ' m\nJarak ke Smelter : ' + smelterDist + ' km\nLuas Area        : ' + areaHa + ' ha\nKelas Prioritas  : ' + (row.priority_class || '-') + ' (Skor: ' + score + '/100)\n\n=================================================================\n\n2. STATUS LEGAL & PERIZINAN\n-----------------------------------------------------------------\nStatus Hukum      : ' + legal + '\nZona Legal        : ' + (row.legal_zone || '-') + '\nIzin Dibutuhkan   : ' + permit + '\nReferensi Hukum   : ' + legalRef + '\nKepatuhan         : ' + compliance + '\nMitigasi          : ' + mitigation + '\nKill Zone         : ' + killZone + '\nKeterlanjuran     : ' + grandfathered + '\nSkor Viabilitas   : ' + viability + '\n\n=================================================================\n\n3. KAJIAN LINGKUNGAN\n-----------------------------------------------------------------\nAnalisis Kemiringan Lereng:\n  - ' + slope + ' deg - Risiko ' + slopeStatus + '\n  - ' + (slope > 25 ? 'REKOMENDASI: Desain lereng bertingkat dengan geometri <25 derajat. Drainase terpadu wajib.' : slope > 15 ? 'REKOMENDASI: Pertimbangkan cut-off bench dan terasering. Saluran pengendali erosi.' : 'REKOMENDASI: Standar penambangan konvensional dapat diterapkan.') + '\n\nAnalisis Buffer Sungai:\n  - ' + riverDist + ' m dari badan sungai terdekat\n  - ' + (riverDist < 200 ? 'STATUS: KRITIS - Tidak memenuhi baku minimal 200m dari sempadan sungai. Diperlukan kajian hidrologi detail dan permohonan pengecualian khusus.' : riverDist < 500 ? 'STATUS: WASPADA - Berada dalam zona 500m. Diperlukan kajian dampak hidrologi.' : 'STATUS: AMAN - Melebihi buffer 200m. Kajian hidrologi standar mencukupi.') + '\n\nStatus Hutan:\n  - ' + (row.legal_zone === 'Hutan Lindung' ? 'ZONA TERLARANG - Tidak ada aktivitas tambang terbuka yang diizinkan berdasarkan UU 41/1999.' : row.legal_zone === 'Hutan Produksi' ? 'Hutan Produksi - Diperizinkan dengan PPKH. Wajib Rehabilitasi DAS rasio 1:1 dan pembayaran PNBP.' : 'Areal Penggunaan Lain (APL) - Diperizinkan dengan IUP. Wajib AMDAL/UKL-UPL.') + '\n\n=================================================================\n\n4. ANALISIS GEOKIMIA & PROSPEKTIVITAS\n-----------------------------------------------------------------\nGeokimia Rata-rata:\n  - Ni  : ' + ni + '% (Kadar ' + niGrade + ')\n  - Fe  : ' + fe + '%\n  - Co  : ' + co + '%\n  - MgO : ' + mgo + '%\n  - SiO2: ' + sio2 + '%\n\nSkor:\n  - Magnetik      : ' + magScore + '/100\n  - Geokimia      : ' + geochemScore + '/100\n  - Litologi      : ' + lithScore + '/100\n  - Risiko        : ' + risk + '/100\n\nRute Pengolahan :\n  - ' + processing + ' - ' + procDesc + '\n\nML Prospectivity:\n  - Skor ML       : ' + mlScore + '\n' + (row.ml_confidence != null ? '  - Confidence    : ' + (row.ml_confidence * 100).toFixed(0) + '%\n' : '') + (row.ml_primary ? '  - Status        : ML digunakan sebagai skor utama\n' : '') + (row.ml_masked ? '  - BLOKIR        : ' + (row.ml_block_reason || 'Alasan tidak diketahui') + '\n' : '') + '\n=================================================================\n\n5. KESELAMATAN (K3)\n-----------------------------------------------------------------\nLevel Risiko     : ' + safety + '\nPeringatan       : ' + safetyWarn + '\n\n=================================================================\n\n6. RENCANA ANGGARAN (CAPEX)\n-----------------------------------------------------------------\nSpasi Bor          : ' + spacing + ' m x ' + spacing + ' m\nJumlah Lubang Bor  : ' + holes + '\nTotal Meter Bor    : ' + meters + ' m\nEstimasi Biaya     : Rp ' + capexMiliar + ' Miliar\nROI Savings (AI)   : Rp ' + (window.roiSavingsMiliar || '0') + ' Miliar\n\n=================================================================\n\n7. KESIMPULAN & REKOMENDASI\n-----------------------------------------------------------------\n';
-  if (killZone.includes('TERLARANG')) {
-    s += 'WILAYAH INI BERADA DI ZONA TERLARANG (HUTAN LINDUNG). Tidak direkomendasikan untuk eksplorasi lanjutan.\n';
+  let s = '=================================================================\n' +
+          '      DOKUMEN USULAN RKAB & IUP EKSPLORASI (DRAFT NiTERRA)\n' +
+          '=================================================================\n' +
+          'Referensi: Kepmen ESDM No. 1806 K/30/MEM/2018 & No. 341.K/MB.01/MEM.B/2025\n' +
+          'Target Grid : ' + row.grid_id + '\n' +
+          'Lokasi      : ' + locLabel + '\n' +
+          'Region      : ' + region + '\n' +
+          '=================================================================\n\n' +
+          'BAB I: PENDAHULUAN\n' +
+          '-----------------------------------------------------------------\n' +
+          '1.1 Latar Belakang & Identitas Wilayah\n' +
+          '    Grid ID          : ' + row.grid_id + '\n' +
+          '    Luas Area        : ' + areaHa + ' ha\n' +
+          '    Kelas Prioritas  : ' + (row.priority_class || '-') + ' (Skor: ' + score + '/100)\n\n' +
+          '1.2 Kondisi Geografis & Infrastruktur\n' +
+          '    Kemiringan Lereng: ' + slope + ' deg (Kategori ' + slopeStatus + ')\n' +
+          '    Jarak ke Sungai  : ' + riverDist + ' m (' + riverStatus + ')\n' +
+          '    Jarak ke Jalan   : ' + roadDist + ' m\n' +
+          '    Jarak ke Smelter : ' + smelterDist + ' km\n\n' +
+          '1.3 Status Legalitas & Tata Guna Lahan\n' +
+          '    Status Hukum     : ' + legal + '\n' +
+          '    Zona Legal       : ' + (row.legal_zone || '-') + '\n' +
+          '    Keterlanjuran    : ' + grandfathered + '\n' +
+          '    Izin Dibutuhkan  : ' + permit + '\n\n' +
+          'BAB II: HASIL EVALUASI PROSPEKTIVITAS (Standar Pelaporan Eksplorasi)\n' +
+          '-----------------------------------------------------------------\n' +
+          '2.1 Geokimia & Geofisika Dasar\n' +
+          '    Litologi Dominan : ' + lith + '\n' +
+          '    Rata-rata Kadar  : Ni ' + ni + '% (' + niGrade + '), Fe ' + fe + '%, Co ' + co + '%\n' +
+          '    Asosiasi Mineral : MgO ' + mgo + '%, SiO2 ' + sio2 + '%\n' +
+          '    Rute Pengolahan  : ' + processing + ' (' + procDesc + ')\n\n' +
+          '2.2 Penilaian Algoritma (Machine Learning)\n' +
+          '    Skor ML (Prospektif)    : ' + mlScore + '\n' +
+          (row.ml_confidence != null ? '    Tingkat Kepercayaan     : ' + (row.ml_confidence * 100).toFixed(0) + '%\n' : '') +
+          (row.ml_block_reason ? '    Status / Blokir         : ' + row.ml_block_reason + '\n' : '') + '\n' +
+          'BAB III: RENCANA KERJA DAN ESG (ENVIRONMENTAL, SOCIAL, GOVERNANCE)\n' +
+          '-----------------------------------------------------------------\n' +
+          '3.1 Rencana Eksplorasi Lanjutan (Pengeboran)\n' +
+          '    Spasi Bor Rencana  : ' + spacing + ' m x ' + spacing + ' m\n' +
+          '    Estimasi Titik Bor : ' + holes + ' lubang\n' +
+          '    Total Kedalaman    : ' + meters + ' m\n' +
+          '    Estimasi Anggaran  : Rp ' + capexMiliar + ' Miliar\n' +
+          '    Estimasi ROI/Hemat : Rp ' + (window.roiSavingsMiliar || '0') + ' Miliar\n\n' +
+          '3.2 Manajemen Keselamatan Pertambangan (K3)\n' +
+          '    Level Risiko : ' + safety + '\n' +
+          '    Mitigasi     : ' + safetyWarn + '\n\n' +
+          '3.3 Aspek Lingkungan & Kehutanan\n' +
+          '    - Kemiringan (' + slopeStatus + '): ' + (slope > 25 ? 'REKOMENDASI: Desain lereng bertingkat dengan geometri <25 derajat.' : slope > 15 ? 'REKOMENDASI: Pertimbangkan cut-off bench dan terasering.' : 'REKOMENDASI: Standar penambangan konvensional dapat diterapkan.') + '\n' +
+          '    - Semapadan Sungai (' + riverStatus + '): ' + (riverDist < 200 ? 'STATUS KRITIS: Tidak memenuhi baku minimal 200m. Diperlukan kajian hidrologi.' : riverDist < 500 ? 'STATUS WASPADA: Berada dalam zona 500m.' : 'STATUS AMAN: Melebihi buffer 200m.') + '\n' +
+          '    - Kawasan Hutan: ' + (row.legal_zone === 'Hutan Lindung' ? 'TERLARANG. Sesuai UU 41/1999 dilarang tambang terbuka.' : row.legal_zone === 'Hutan Produksi' ? 'Hutan Produksi. Diizinkan dengan syarat Persetujuan Penggunaan Kawasan Hutan (PPKH).' : 'Areal Penggunaan Lain (APL). Bebas dari PPKH, wajib UKL-UPL/AMDAL.') + '\n\n' +
+          'BAB IV: KESIMPULAN DAN REKOMENDASI\n' +
+          '-----------------------------------------------------------------\n';
+
+  if (killZone.includes('TERLARANG') || row.legal_zone === 'Hutan Lindung') {
+    s += 'KESIMPULAN: WILAYAH BERADA DI ZONA TERLARANG (HUTAN LINDUNG).\nREKOMENDASI: Tidak direkomendasikan untuk eksplorasi lanjutan maupun pengajuan perizinan.\n';
   } else if (grandfathered.includes('Ya')) {
-    s += 'WILAYAH INI MERUPAKAN KONSESI KETERLANJURAN. Diperlukan verifikasi hukum mendalam dengan Kantor Wilayah KLHK setempat sebelum melanjutkan.\n';
+    s += 'KESIMPULAN: WILAYAH MERUPAKAN KONSESI KETERLANJURAN.\nREKOMENDASI: Diperlukan penyelesaian sengketa hukum dan verifikasi dengan KLHK sebelum RKAB disetujui.\n';
   } else if (score >= 80) {
-    s += 'PRIORITAS TINGGI. Wilayah ini memiliki prospek sangat baik. Disarankan untuk segera mengajukan perizinan yang diperlukan dan melanjutkan ke tahap eksplorasi detail (Drilling).\n';
+    s += 'KESIMPULAN: PRIORITAS TINGGI (' + score + '/100).\nREKOMENDASI: Wilayah ini memiliki prospek deposit nikel yang sangat baik (Grade ' + niGrade + '). Segera ajukan perizinan ' + permit + ' dan jadwalkan anggaran Drilling Fase 1.\n';
   } else if (score >= 62) {
-    s += 'PRIORITAS MENENGAH. Prospek cukup baik namun memerlukan verifikasi lapangan tambahan sebelum komitmen penuh.\n';
+    s += 'KESIMPULAN: PRIORITAS MENENGAH (' + score + '/100).\nREKOMENDASI: Prospek cukup baik. Lakukan pemetaan geologi detail tambahan sebelum pengajuan RKAB Eksplorasi Lanjutan.\n';
   } else if (score >= 45) {
-    s += 'PRIORITAS RENDAH. Data belum cukup meyakinkan. Pertimbangkan untuk digabung dengan area prioritas lebih tinggi.\n';
+    s += 'KESIMPULAN: PRIORITAS RENDAH (' + score + '/100).\nREKOMENDASI: Data kurang meyakinkan untuk anggaran mandiri. Pertimbangkan joint-area dengan grid prospek tinggi di sekitarnya.\n';
   } else {
-    s += 'BUKAN PRIORITAS. Skor terlalu rendah untuk direkomendasikan.\n';
+    s += 'KESIMPULAN: BUKAN PRIORITAS.\nREKOMENDASI: Drop target ini dari rencana anggaran (RKAB) tahun berjalan untuk efisiensi biaya.\n';
   }
-  s += '\nRekomendasi Tambahan:\n';
+
+  s += '\nTINDAK LANJUT PERIZINAN:\n';
   if (permit.includes('DILARANG')) {
-    s += '- Wilayah ini tidak dapat dipertimbangkan untuk tambang terbuka.\n- Alihkan upaya ke area dengan status legal yang memungkinkan.\n';
+    s += '- Hentikan seluruh aktivitas eksplorasi di grid ini.\n';
   } else if (permit.includes('PPKH')) {
-    s += '- Segera ajukan PPKH ke KLHK (Kementerian Lingkungan Hidup dan Kehutanan).\n- Siapkan dokumen AMDAL atau UKL-UPL.\n- Hitung PNBP dan biaya Rehabilitasi DAS.\n';
+    s += '- Siapkan dokumen permohonan Persetujuan Penggunaan Kawasan Hutan (PPKH) Eksplorasi ke KLHK.\n- Lampirkan rancangan reklamasi hutan (RRH) dan PNBP.\n';
   } else if (permit.includes('IUP')) {
-    s += '- Proses IUP melalui BKPM/Dinas ESDM setempat.\n- Siapkan studi AMDAL/UKL-UPL.\n- Konsultasi awal dengan Dinas Lingkungan Hidup.\n';
+    s += '- Proses perizinan IUP Eksplorasi ke Kementerian ESDM.\n- Lakukan penyusunan dokumen lingkungan (UKL-UPL atau AMDAL).\n';
   } else {
-    s += '- Verifikasi perizinan dengan otoritas setempat.\n';
+    s += '- Lakukan verifikasi kepatuhan terhadap perda tata ruang setempat.\n';
   }
-  s += '\n=================================================================\nDokumen ini digenerate secara otomatis oleh NiTERRA System.\nStatus: CLIENT-SIDE DRAFT (tanpa backend GenAI).\nTidak mengikat secara hukum. Verifikasi dengan ahlinya.\n=================================================================';
+
+  s += '\n=================================================================\n' +
+       'Dokumen ini disusun otomatis berdasarkan Algoritma NiTERRA\n' +
+       'Format disesuaikan dengan Kepmen ESDM untuk kemudahan drafting RKAB.\n' +
+       '=================================================================';
   return s;
 }
 
@@ -834,7 +891,7 @@ function buildResults(grid, precomputed) {
     const processing = deriveProcessingRoute(ni, fe, co);
     const safety = deriveSafetyRisk(Number(p.slope_deg), Number(p.distance_to_road_m));
 
-    const reason = buildReason({cls, magScore, ni, geochemScore, slope: p.slope_deg, road: p.distance_to_road_m, river: p.distance_to_river_m, legal: p.legal_status, lithology: p.lithology, final_priority_score: finalScore});
+    const reason = buildReason({cls, magScore, ni, geochemScore, slope: p.slope_deg, road: p.distance_to_road_m, river: p.distance_to_river_m, legal: p.legal_status, lithology: p.lithology, final_priority_score: finalScore, fe: p.Fe_avg, mgo: p.MgO_avg, sio2: p.SiO2_avg});
 
     const capex = computeCapex({
       ml_cv_score: p.ml_cv_score,
@@ -893,20 +950,52 @@ function groupBy(arr, key) {
 
 function buildReason(d) {
   const parts = [];
-  if (d.magScore >= 70) parts.push('anomali magnetik relatif tinggi');
-  if (d.ni >= 1.5) parts.push('Ni rata-rata cukup baik');
-  if (String(d.lithology || '').toLowerCase().includes('serpent') || String(d.lithology || '').toLowerCase().includes('ultra')) parts.push('litologi mendukung nikel laterit');
-  if (Number(d.slope) <= 25) parts.push('slope masih feasible');
-  if (Number(d.road) <= 1800) parts.push('akses jalan cukup dekat');
-  if (Number(d.river) < 250) parts.push('perlu mitigasi karena dekat sungai');
-  if (String(d.legal || '').toLowerCase().includes('conditional')) parts.push('legalitas conditional');
-  if (String(d.legal || '').toLowerCase().includes('no-go')) parts.push('area masuk kawasan lindung — tidak feasible untuk tambang');
-  if (d.ni < 0.5) parts.push('kadar Ni rendah, perlu kajian ekonomis lanjutan');
-  if (d.cls === 'Tidak prioritas') parts.push('skor prioritas rendah, tidak direkomendasikan untuk pengeboran awal');
-  if (Number(d.slope) > 25) parts.push('kemiringan lereng curam');
-  if (Number(d.road) > 3000) parts.push('akses jalan jauh, biaya logistik tinggi');
-  if (!parts.length) parts.push('perlu validasi lanjutan karena parameter utama belum dominan');
-  return parts.join(', ') + '.';
+  
+  // Geochemical & Rheological Analysis
+  const fe = Number(d.fe) || 0;
+  const mgo = Number(d.mgo) || 1; // prevent division by zero
+  const sio2 = Number(d.sio2) || 0;
+  const smRatio = (sio2 / mgo).toFixed(2);
+  
+  if (d.ni >= 1.5) {
+    if (fe < 20 && mgo > 15) {
+      parts.push(`Indikasi profil saprolit premium (Ni > 1.5%, Fe < 20%)`);
+      if (sio2 > 0 && mgo > 0) parts.push(`Rasio SiO2/MgO (${smRatio}) optimal untuk viskositas terak (slag rheology) pada umpan RKEF`);
+    } else {
+      parts.push(`Pengayaan Ni signifikan (${parseFloat(d.ni).toFixed(2)}%) dengan anomali rasio Fe/MgO. Berpotensi merupakan zona transisi`);
+    }
+  } else if (d.ni >= 0.8 && fe > 35) {
+    parts.push(`Domain limonit teridentifikasi (Fe > 35%, indikasi deplesi MgO). Memenuhi parameter geometri target untuk sirkuit leaching HPAL`);
+  } else if (d.ni < 0.8) {
+    parts.push(`Kadar Ni sub-marginal (< 0.8% COG). Mengindikasikan lateritisasi tidak berkembang sempurna atau didominasi zona siliceous cap/bedrock`);
+  } else {
+    parts.push(`Grade Ni moderat (${parseFloat(d.ni).toFixed(2)}%) dengan varian rasio Fe/MgO transisional`);
+  }
+
+  // Geophysical Analysis
+  if (d.magScore >= 75) {
+    parts.push(`Respon suseptibilitas magnetik tinggi (>75nT) berkorelasi linear dengan protolit batuan dasar ultramafik (peridotit/dunit terserpentinisasi)`);
+  } else if (d.magScore < 40) {
+    parts.push(`Respon magnetik anomali rendah. Probabilitas intrusi felsik pasca-mineralisasi atau laterit tergerus secara struktural`);
+  }
+
+  // Geotechnical & Hydrological (Mining Engineering constraints)
+  const slope = Number(d.slope);
+  if (slope > 25) {
+    parts.push(`Kendala Geoteknik: Kemiringan curam (${slope.toFixed(1)}°). Menuntut pemodelan stabilitas lereng (kinematik) komprehensif dan desain cut-off bench terasering untuk memitigasi longsoran baji/busur`);
+  } else if (slope < 10) {
+    parts.push(`Elevasi landai (${slope.toFixed(1)}°). Mengoptimalkan strip-ratio mekanis dan meminimalisir risiko operasional alat berat (fleet) saat pre-stripping`);
+  }
+
+  if (Number(d.river) < 200) {
+    parts.push(`Risiko Hidrologi: <200m dari badan air. Mewajibkan rekayasa drainase tambang (mine dewatering) dan settling pond kompartemen ganda untuk mereduksi TSS (Total Suspended Solids)`);
+  }
+
+  if (d.cls === 'Tidak prioritas' || String(d.legal || '').toLowerCase().includes('no-go')) {
+    parts.push(`Status klasifikasi area diturunkan (downgraded) akibat hambatan legal absolut atau parameter target yang tidak ekonomis`);
+  }
+
+  return parts.join('. ') + '.';
 }
 
 function renderMapLayers() {
@@ -1397,23 +1486,23 @@ function selectTarget(gridId) {
     <div class="detail-line" style="border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px;margin-bottom:6px;"><span>Safety Warning:</span><b>${row.safety_warning || '-'}</b></div>
     <div class="detail-line"><span>Magnetic score:</span><b>${row.mag_score}</b></div>
     <div class="detail-line"><span>Slope:</span><b>${row.slope_deg}°</b></div>
-    <div class="detail-line"><span>Jarak ke jalan:</span><b>${row.distance_to_road_m} m</b></div>
-    <div class="detail-line"><span>Jarak ke sungai:</span><b>${row.distance_to_river_m} m</b></div>
-    <div class="detail-line"><span>Status legal:</span><b>${row.legal_status}</b></div>
-    <div class="detail-line"><span>Zona legal:</span><b>${row.legal_zone || '-'}</b></div>
-    <div class="detail-line"><span>Izin dibutuhkan:</span><b>${row.permit_required || '-'}</b></div>
-    <div class="detail-line"><span>Referensi hukum:</span><b>${row.legal_reference || '-'}</b></div>
-    <div class="detail-line"><span>Kepatuhan (Compliance):</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
-    <div class="detail-line"><span>Mitigasi Tambahan:</span><b>${row.mitigation_requirements || '-'}</b></div>
-    <div class="detail-line"><span>Keterlanjuran:</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Ya' : 'Tidak'}</b></div>
-    <div class="detail-line"><span>Kill zone:</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ TERLARANG' : 'Tidak'}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Skor Viabilitas:</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Skor ML:</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'DIBLOKIR — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
-    ${row.ml_confidence != null ? '<div class="detail-line"><span>Kepercayaan ML:</span><b>' + (row.ml_confidence * 100).toFixed(0) + '%</b></div>' : ''}
-    ${row.ml_cv_score != null ? '<div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Akurasi Model R²:</span><b>' + row.ml_cv_score.toFixed(3) + '</b></div>' : ''}
-    <div class="detail-line"><span>ML Primary:</span><b style="color:${row.ml_primary ? '#10b981' : 'var(--text-muted)'};">${row.ml_primary ? 'Ya' : 'Tidak'}</b></div>
+    <div class="detail-line"><span>Distance to road:</span><b>${row.distance_to_road_m} m</b></div>
+    <div class="detail-line"><span>Distance to river:</span><b>${row.distance_to_river_m} m</b></div>
+    <div class="detail-line"><span>Legal status:</span><b>${row.legal_status}</b></div>
+    <div class="detail-line"><span>Legal zone:</span><b>${row.legal_zone || '-'}</b></div>
+    <div class="detail-line"><span>Permit required:</span><b>${row.permit_required || '-'}</b></div>
+    <div class="detail-line"><span>Legal reference:</span><b>${row.legal_reference || '-'}</b></div>
+    <div class="detail-line"><span>Compliance status:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
+    <div class="detail-line"><span>Additional mitigation:</span><b>${row.mitigation_requirements || '-'}</b></div>
+    <div class="detail-line"><span>Grandfathered:</span><b style="color:${row.is_grandfathered ? '#f59e0b' : 'var(--text-muted)'};">${row.is_grandfathered ? '⚠️ Yes' : 'No'}</b></div>
+    <div class="detail-line"><span>Kill zone:</span><b style="color:${row.kill_zone_exclusion ? '#ef4444' : 'var(--text-muted)'};">${row.kill_zone_exclusion ? '⛔ FORBIDDEN' : 'No'}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Viability score:</span><b style="${row.viability_score === 0 ? 'color:#ef4444;' : 'color:#10b981;'}">${row.viability_score}</b></div>
+    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>ML Score:</span><b style="${row.ml_masked ? 'color:#ef4444;' : 'color:#6366f1;'}">${row.ml_masked ? 'BLOCKED — ' + (row.ml_block_reason || '') : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
+    ${row.ml_confidence != null ? '<div class="detail-line"><span>ML Confidence:</span><b>' + (row.ml_confidence * 100).toFixed(0) + '%</b></div>' : ''}
+    ${row.ml_cv_score != null ? '<div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Model R² Accuracy:</span><b>' + row.ml_cv_score.toFixed(3) + '</b></div>' : ''}
+    <div class="detail-line"><span>ML Primary:</span><b style="color:${row.ml_primary ? '#10b981' : 'var(--text-muted)'};">${row.ml_primary ? 'Yes' : 'No'}</b></div>
     ${row.ml_top_features?.length ? '<div class="detail-line" style="flex-direction:column;align-items:flex-start;"><span>ML Top Features:</span><b style="font-size:11px;line-height:1.5;">' + row.ml_top_features.map(f => f.feature + ': ' + (f.importance * 100).toFixed(1) + '%').join('<br>') + '</b></div>' : ''}
-    <div class="reason-box"><b>Alasan rekomendasi</b>${row.reason}</div>
+    <div class="reason-box"><b>Recommendation reason</b><br>${row.reason}</div>
     ${(row.qaqc_flags && row.qaqc_flags.length > 0) ? '<div class="reason-box" style="border-left-color:#f59e0b; background:rgba(245,158,11,0.1); margin-top:8px;"><b>⚠️ QA/QC Interventions</b>' + row.qaqc_flags.join('<br>') + '</div>' : '<div class="reason-box" style="border-left-color:#10b981; background:rgba(16,185,129,0.1); margin-top:8px;"><b>✓ QA/QC Passed</b>Data parameters within normal geological bounds.</div>'}
     <div style="margin-top: 15px;">
         <button id="btn-generate-esg" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background:linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer; font-size: 13px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); transition: all 0.2s;">
