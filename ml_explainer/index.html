@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NiTERRA — Visualisasi & Simulator Machine Learning</title>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #0A0F1D;
+      --bg-card: #131B2E;
+      --bg-card-hover: #1C2740;
+      --border-color: #23314E;
+      --accent-green: #00E676;
+      --accent-cyan: #00E5FF;
+      --accent-gold: #FFC107;
+      --accent-red: #FF5252;
+      --accent-purple: #B388FF;
+      --text-main: #F1F5F9;
+      --text-muted: #94A3B8;
+      --font-family: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding-bottom: 60px;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glow Background */
+    .ambient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 230, 118, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(179, 136, 255, 0.05) 0%, transparent 50%);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF 0%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 12px;
+      background: rgba(19, 27, 46, 0.8);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-pill {
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-pill.active, .nav-pill:hover {
+      background: var(--accent-cyan);
+      color: var(--bg-dark);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 992px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      margin-bottom: 24px;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+    }
+
+    .card-title i {
+      color: var(--accent-cyan);
+    }
+
+    /* Interactive Simulator Sliders */
+    .control-group {
+      margin-bottom: 18px;
+    }
+
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .control-label .val {
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border-color);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-cyan);
+      transition: transform 0.1s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-size: 0.95rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Output Gauge / Results */
+    .gauge-box {
+      text-align: center;
+      padding: 24px;
+      background: rgba(10, 15, 29, 0.6);
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      line-height: 1;
+      margin: 12px 0 6px;
+      transition: color 0.3s ease;
+    }
+
+    .score-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* SHAP Waterfall Chart */
+    .shap-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+    }
+
+    .shap-name {
+      width: 180px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .shap-track {
+      flex: 1;
+      height: 14px;
+      background: rgba(35, 49, 78, 0.4);
+      border-radius: 7px;
+      position: relative;
+      margin: 0 12px;
+      overflow: hidden;
+    }
+
+    .shap-fill {
+      height: 100%;
+      border-radius: 7px;
+      transition: width 0.3s ease;
+    }
+
+    .shap-fill.positive {
+      background: linear-gradient(90deg, #00E676, #00E5FF);
+    }
+
+    .shap-fill.negative {
+      background: linear-gradient(90deg, #FF5252, #FF7043);
+    }
+
+    .shap-val {
+      width: 60px;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    /* Tree Diagram Visualizer */
+    .tree-wrapper {
+      background: var(--bg-dark);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .tree-node {
+      background: var(--bg-card);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 8px;
+      padding: 10px 16px;
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      margin: 8px;
+      box-shadow: 0 4px 12px rgba(0, 229, 255, 0.1);
+    }
+
+    .tree-node.active {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .tree-leaf {
+      background: rgba(0, 230, 118, 0.1);
+      border: 1px solid var(--accent-green);
+      color: var(--accent-green);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    /* Geeky Cards Grid */
+    .geek-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .geek-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .geek-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .geek-card.c-cyan::before { background: var(--accent-cyan); }
+    .geek-card.c-green::before { background: var(--accent-green); }
+    .geek-card.c-gold::before { background: var(--accent-gold); }
+    .geek-card.c-purple::before { background: var(--accent-purple); }
+
+    .geek-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .analogy-box {
+      background: rgba(255, 193, 7, 0.08);
+      border-left: 3px solid var(--accent-gold);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      margin: 12px 0;
+      color: #FFE082;
+    }
+
+    .formula-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      margin: 8px 0;
+    }
+
+    /* Spatial Split Map Diagram */
+    .map-diagram {
+      width: 100%;
+      height: 240px;
+      background: var(--bg-dark);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px dashed var(--border-color);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .map-block.train {
+      background: rgba(0, 229, 255, 0.05);
+      color: var(--accent-cyan);
+    }
+
+    .map-block.test {
+      background: rgba(255, 82, 82, 0.1);
+      color: var(--accent-red);
+      border-right: none;
+    }
+
+    .metric-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-bg"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div>
+        <div class="logo-badge"><i class="fa-solid fa-brain"></i> Machine Learning Explainer</div>
+        <h1>NiTERRA v2.0 AI Engine</h1>
+        <p class="subtitle">Visualisasi Interaktif: Cara Kerja XGBoost, Bobot SHAP, Spatial Hold-Out, & Prediksi Realtime</p>
+      </div>
+      <div class="nav-pills">
+        <a class="nav-pill active" onclick="scrollToSection('simulator')">Simulator</a>
+        <a class="nav-pill" onclick="scrollToSection('trees')">Tree Traversal</a>
+        <a class="nav-pill" onclick="scrollToSection('geeky')">Penjelasan Geeky</a>
+      </div>
+    </header>
+
+    <!-- SECTION 1: INTERACTIVE SIMULATOR -->
+    <div id="simulator" class="grid-2">
+      <!-- Left: Inputs Playground -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-sliders"></i> Interactive Parameter Playground</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Ubah nilai untuk simulasi</span>
+        </div>
+
+        <!-- Lithology -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Litologi Batuan Induk</span>
+            <span class="val" id="val-lith">Peridotite (Ultramafic)</span>
+          </div>
+          <select id="input-lith" onchange="updateSimulation()">
+            <option value="lith_peridotite_simulated" selected>Peridotite (Batuan Induk Ultramafic — Potensi Tinggi)</option>
+            <option value="lith_serpentinite_simulated">Serpentinite (Batuan Terubah Ultramafic)</option>
+            <option value="lith_ultramafic_simulated">Ultramafic General (Batuan Induk Nikel)</option>
+            <option value="lith_andesite">Andesite (Batuan Vulkanik — Non-Nikel)</option>
+            <option value="lith_alluvium">Alluvium (Sedimen Sungai)</option>
+            <option value="lith_tuff">Tuff / Vulkanik Breksi</option>
+          </select>
+        </div>
+
+        <!-- Slope -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Kemiringan Lereng (Slope)</span>
+            <span class="val" id="val-slope">12.5°</span>
+          </div>
+          <input type="range" id="input-slope" min="0" max="45" step="0.5" value="12.5" oninput="updateSimulation()">
+        </div>
+
+        <!-- Remote Sensing Fe Oxide -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Indeks Karat Besi Satelit (Fe-Oxide B4/B2)</span>
+            <span class="val" id="val-fe">2.15</span>
+          </div>
+          <input type="range" id="input-fe" min="0.5" max="3.0" step="0.05" value="2.15" oninput="updateSimulation()">
+        </div>
+
+        <!-- Remote Sensing Clay -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Indeks Lempung/Pelapukan (Clay Index B11/B12)</span>
+            <span class="val" id="val-clay">1.85</span>
+          </div>
+          <input type="range" id="input-clay" min="0.5" max="3.0" step="0.05" value="1.85" oninput="updateSimulation()">
+        </div>
+
+        <!-- TMI Anomaly -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Anomali Magnetik Drone (TMI Anomaly Signal)</span>
+            <span class="val" id="val-tmi">+240 nT (Retakan Terdeteksi)</span>
+          </div>
+          <input type="range" id="input-tmi" min="-400" max="400" step="10" value="240" oninput="updateSimulation()">
+        </div>
+
+        <!-- Distance to River -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Jarak ke Sungai (Drainage Distance)</span>
+            <span class="val" id="val-river">320 m</span>
+          </div>
+          <input type="range" id="input-river" min="0" max="1000" step="10" value="320" oninput="updateSimulation()">
+        </div>
+
+        <!-- Legal Status -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Status Kawasan Hukum (Legal Status)</span>
+            <span class="val" id="val-legal">Allowed (APL / IUP)</span>
+          </div>
+          <select id="input-legal" onchange="updateSimulation()">
+            <option value="legal_allowed" selected>Allowed (Areal Penggunaan Lain / IUP Legal)</option>
+            <option value="legal_conditional">Conditional (Hutan Produksi — Butuh Izin PPKH)</option>
+            <option value="legal_no_go">No-Go Zone (Hutan Lindung / Sempadan Sungai — Terlarang)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Right: Real-time Output & SHAP Waterfall -->
+      <div>
+        <!-- Gauge Card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-chart-line"></i> Real-time AI Output</div>
+            <div id="badge-target" class="badge-status" style="background: rgba(0, 230, 118, 0.2); color: var(--accent-green);">TARGET HIGH PROSPECT</div>
+          </div>
+
+          <div class="gauge-box">
+            <div class="score-label">Skor Prospektivitas Nikel Laterit</div>
+            <div class="score-number" id="score-val" style="color: var(--accent-green);">84.5%</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);" id="score-desc">
+              Kombinasi litologi ultramafik, lereng ideal, & indeks satelit tinggi.
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <div style="flex: 1; background: var(--bg-dark); padding: 12px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color);">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">RISIKO EKSPLORASI</div>
+              <div id="risk-val" style="font-size: 1.3rem; font-weight: 700; font-family: var(--font-mono); color: var(--accent-green);">18.2% (LOW)</div>
+            </div>
+            <div style="flex: 1; background: var(--bg-dark); padding: 12px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color);">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">KEPASAHAN KCMI</div>
+              <div style="font-size: 1.3rem; font-weight: 700; font-family: var(--font-mono); color: var(--accent-cyan);">SCOUT DRILL</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHAP Breakdown Card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-scale-balanced"></i> Kontribusi Fitur (SHAP Values)</div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Kenapa AI membuat skor ini?</span>
+          </div>
+
+          <div id="shap-container">
+            <!-- Dynamic SHAP bars filled by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: TREE TRAVERSAL VISUALIZER -->
+    <div id="trees" class="card" style="margin-top: 20px;">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-sitemap"></i> Simulasi Alur Decision Tree (XGBoost Traversal)</div>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Bagaimana data bergerak dari akar ke daun pohon keputusan</span>
+      </div>
+
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+        Model XGBoost NiTERRA terdiri dari <strong>200 Pohon Keputusan (Decision Trees)</strong> yang bekerja secara berurutan. Di bawah ini adalah visualisasi sederhana dari <strong>Pohon 1 (Base Tree)</strong> untuk data input yang Anda pilih di simulator di atas:
+      </p>
+
+      <div class="tree-wrapper">
+        <div style="text-align: center;">
+          <!-- Level 1 -->
+          <div class="tree-node active" id="node-root">
+            <i class="fa-solid fa-mountain"></i> Batuan Induk Ultramafik?
+          </div>
+          <div style="font-size: 0.8rem; color: var(--accent-cyan); margin: 4px 0;"><i class="fa-solid fa-arrow-down"></i> YA (Peridotite / Serpentinite)</div>
+
+          <!-- Level 2 -->
+          <div style="display: flex; justify-content: center; gap: 40px; margin-top: 8px;">
+            <div>
+              <div class="tree-node active" id="node-slope">
+                <i class="fa-solid fa-ruler-combined"></i> Kemiringan Lereng ≤ 15°?
+              </div>
+              <div style="font-size: 0.8rem; color: var(--accent-green); margin: 4px 0;"><i class="fa-solid fa-arrow-down"></i> YA (Zona Retensi Pelapukan Ideal)</div>
+              
+              <!-- Level 3 Leaf -->
+              <div style="margin-top: 8px;">
+                <div class="tree-node active" id="node-sat">
+                  <i class="fa-solid fa-satellite"></i> Fe-Oxide B4/B2 ≥ 1.8?
+                </div>
+                <div style="margin-top: 8px;">
+                  <span class="tree-leaf" id="leaf-val">+48.5% (Base Score Tree 1)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 12px; font-size: 0.85rem; color: var(--text-muted); text-align: center;">
+        *Catatan: Skor akhir (e.g. 84.5%) adalah penjumlahan dari Prediksi Awal + Koreksi Residual dari Tree 2, Tree 3, ... hingga Tree 200.
+      </div>
+    </div>
+
+    <!-- SECTION 3: SPATIAL BLOCK HOLD-OUT -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-map-location-dot"></i> Validasi Spasial: Kenapa Model Kita Tidak "Mencontek"?</div>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Spatial Block Hold-Out Cross-Validation</span>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <p style="font-size: 0.92rem; margin-bottom: 12px;">
+            Dalam geologi tambang, data yang berdekatan secara geografis pasti sangat mirip (<strong>Hukum Utama Geografi Tobler</strong>). Jika kita menggunakan pembagian data acak (<em>random split</em>) biasa, AI akan "mencontek" titik bor tetangganya dan memberikan hasil akurasi palsu.
+          </p>
+          <p style="font-size: 0.92rem; margin-bottom: 12px;">
+            <strong>Solusi NiTERRA:</strong> Kita membagi pulau menjadi blok geografis kaku. Model dilatih di blok NW, NE, SW (799,899 grid cell) dan diuji di blok **SE (200,101 grid cell)** yang belum pernah dilihat sama sekali oleh AI.
+          </p>
+          <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <div class="metric-badge"><i class="fa-solid fa-check-double" style="color: var(--accent-green);"></i> Test R² = 0.990</div>
+            <div class="metric-badge"><i class="fa-solid fa-arrow-trend-up" style="color: var(--accent-cyan);"></i> Spearman ρ = 0.989</div>
+            <div class="metric-badge"><i class="fa-solid fa-bullseye" style="color: var(--accent-gold);"></i> RMSE = 2.03</div>
+          </div>
+        </div>
+
+        <div class="map-diagram">
+          <div class="map-block train">
+            <i class="fa-solid fa-database" style="font-size: 1.8rem; margin-bottom: 8px;"></i>
+            <span>TRAIN BLOCKS (NW, NE, SW)</span>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 400;">799,899 Cells (80%)</span>
+          </div>
+          <div class="map-block test">
+            <i class="fa-solid fa-vial-circle-check" style="font-size: 1.8rem; margin-bottom: 8px;"></i>
+            <span>HOLDOUT TEST (SE BLOCK)</span>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 400;">200,101 Cells (20%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: GEEKY NERDY BREAKDOWN -->
+    <div id="geeky" style="margin-top: 40px;">
+      <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; text-align: center;">
+        🤓 Penjelasan Nerdy & Geeky (dengan Perumpamaan Sederhana)
+      </h2>
+
+      <div class="geek-grid">
+        <!-- Card 1 -->
+        <div class="geek-card c-cyan">
+          <div class="geek-title" style="color: var(--accent-cyan);">
+            <i class="fa-solid fa-cubes-stacked"></i> 1. Gradient Tree Boosting (XGBoost)
+          </div>
+          <p style="font-size: 0.9rem;">
+            XGBoost tidak membuat 1 tebakan besar, melainkan membangun ratusan pohon keputusan kecil (*decision trees*) secara bertahap. Pohon kedua memperhitungkan kesalahan (*error*) dari pohon pertama, pohon ketiga memperbaiki kesalahan pohon kedua, dan seterusnya.
+          </p>
+          <div class="analogy-box">
+            <strong>💡 Perumpamaan:</strong> Seperti <strong>Tim Koki Pembuat Resep</strong>. Koki 1 membuat adonan dasar. Koki 2 mencicipi lalu menambah sedikit garam. Koki 3 mencicipi lagi dan menambah gula hingga rasanya sempurna.
+          </div>
+          <div class="formula-box">
+            y_hat = ∑ f_k(x_i) | Objective = L(y, y_hat) + Ω(f)
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="geek-card c-green">
+          <div class="geek-title" style="color: var(--accent-green);">
+            <i class="fa-solid fa-layer-group"></i> 2. Multi-Modal Feature Fusion
+          </div>
+          <p style="font-size: 0.9rem;">
+            NiTERRA menggabungkan data dari 3 dunia berbeda: 
+            (1) Satelit Optik (Kimia Permukaan B4/B2 & B11/B12), 
+            (2) UAV Magnetometer (Struktur Patahan TMI & Bedrock), 
+            (3) DEM Topografi (Lereng & Drenase).
+          </p>
+          <div class="analogy-box">
+            <strong>💡 Perumpamaan:</strong> Seperti <strong>Diagnosa Dokter Spesialis</strong>. Dokter tidak hanya melihat kulit luar pasien (Satelit), tapi juga foto X-Ray tulang/retakan (Magnetometer Drone) dan tes laboratorium (Geokimia).
+          </div>
+          <div class="formula-box">
+            Feature_Vector = [Fe_Oxide, Clay, TMI_Line, Slope, Dist_River]
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="geek-card c-gold">
+          <div class="geek-title" style="color: var(--accent-gold);">
+            <i class="fa-solid fa-shield-halved"></i> 3. Hard Legal Masking vs Soft Risk
+          </div>
+          <p style="font-size: 0.9rem;">
+            Aspek hukum (Hutan Lindung / No-Go Zone) diolah menggunakan **Hard Constraint Masking** (Skor langsung dikunci ke 0.0), sedangkan risiko lereng & akses diolah menggunakan **Soft Linear Weighting**.
+          </p>
+          <div class="analogy-box">
+            <strong>💡 Perumpamaan:</strong> Seperti <strong>Rem Darurat Mobil</strong>. Risiko kemiringan lereng seperti pedal gas (bisa diatur pelan/kencang), tetapi Hutan Lindung adalah dinding tembok (langsung menabrak & berhenti total).
+          </div>
+          <div class="formula-box">
+            Final_Score = Prospectivity_Score × Mask(Legal_Status)
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="geek-card c-purple">
+          <div class="geek-title" style="color: var(--accent-purple);">
+            <i class="fa-solid fa-diagram-project"></i> 4. Explainable AI (SHAP Analysis)
+          </div>
+          <p style="font-size: 0.9rem;">
+            Kita tidak ingin AI menjadi <em>Black Box</em> (kotak hitam misterius). Menggunakan SHAP (Shapley Additive exPlanations) berbasis Game Theory, setiap prediksi bisa diurai persentasenya secara transparan.
+          </p>
+          <div class="analogy-box">
+            <strong>💡 Perumpamaan:</strong> Seperti <strong>Laporan Penilaian Siswa</strong>. Guru tidak cuma memberi nilai "A", tapi menjelaskan: "+20 poin karena rajin, +15 poin karena nilai ujian tinggi, -5 poin karena terlambat".
+          </div>
+          <div class="formula-box">
+            φ_i = ∑ [ |S|!(|F|-|S|-1)! / |F|! ] × [f(S ∪ {i}) - f(S)]
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function updateSimulation() {
+      const lith = document.getElementById('input-lith').value;
+      const slope = parseFloat(document.getElementById('input-slope').value);
+      const fe = parseFloat(document.getElementById('input-fe').value);
+      const clay = parseFloat(document.getElementById('input-clay').value);
+      const tmi = parseFloat(document.getElementById('input-tmi').value);
+      const river = parseFloat(document.getElementById('input-river').value);
+      const legal = document.getElementById('input-legal').value;
+
+      // Update Labels
+      const lithNames = {
+        'lith_peridotite_simulated': 'Peridotite (Ultramafic — High)',
+        'lith_serpentinite_simulated': 'Serpentinite (Ultramafic — High)',
+        'lith_ultramafic_simulated': 'Ultramafic General (High)',
+        'lith_andesite': 'Andesite (Non-Nikel)',
+        'lith_alluvium': 'Alluvium (Sedimen)',
+        'lith_tuff': 'Tuff / Vulkanik'
+      };
+      document.getElementById('val-lith').innerText = lithNames[lith];
+      document.getElementById('val-slope').innerText = slope + '°';
+      document.getElementById('val-fe').innerText = fe.toFixed(2);
+      document.getElementById('val-clay').innerText = clay.toFixed(2);
+      document.getElementById('val-tmi').innerText = (tmi >= 0 ? '+' : '') + tmi + ' nT';
+      document.getElementById('val-river').innerText = river + ' m';
+      
+      const legalNames = {
+        'legal_allowed': 'Allowed (APL / IUP Legal)',
+        'legal_conditional': 'Conditional (Hutan Produksi)',
+        'legal_no_go': 'No-Go Zone (Hutan Lindung / Terlarang)'
+      };
+      document.getElementById('val-legal').innerText = legalNames[legal];
+
+      // ML Formula Simulation (Approximating trained XGBoost model)
+      let baseScore = 20.0;
+      let shapLith = 0, shapSlope = 0, shapFe = 0, shapClay = 0, shapTmi = 0, shapRiver = 0;
+
+      // Lithology Contribution
+      if (lith.includes('peridotite') || lith.includes('ultramafic')) {
+        shapLith = +35.0;
+      } else if (lith.includes('serpentinite')) {
+        shapLith = +30.0;
+      } else {
+        shapLith = -15.0;
+      }
+
+      // Slope Contribution (Ideal retention zone: 5° - 18°)
+      if (slope >= 5 && slope <= 18) {
+        shapSlope = +20.0 - Math.abs(slope - 12) * 0.8;
+      } else if (slope < 5) {
+        shapSlope = +8.0; // flat terrain, high leaching risk
+      } else {
+        shapSlope = - (slope - 18) * 1.8; // steep slope, erosion removes laterite
+      }
+
+      // Remote Sensing Fe-Oxide (B4/B2)
+      shapFe = (fe - 1.0) * 14.0;
+
+      // Remote Sensing Clay (B11/B12)
+      shapClay = (clay - 1.0) * 10.0;
+
+      // TMI Structural Anomaly
+      shapTmi = (Math.abs(tmi) / 400.0) * 12.0;
+
+      // Drainage
+      if (river < 150) {
+        shapRiver = -8.0; // too close to active river, erosion
+      } else {
+        shapRiver = +6.0;
+      }
+
+      let totalScore = baseScore + shapLith + shapSlope + shapFe + shapClay + shapTmi + shapRiver;
+      totalScore = Math.max(0, Math.min(100, totalScore));
+
+      // Hard Legal Masking
+      let isNoGo = (legal === 'legal_no_go');
+      if (isNoGo) {
+        totalScore = 0.0;
+      }
+
+      // Risk Score Computation
+      let riskScore = 10.0 + (slope / 45.0) * 40.0 + (river < 100 ? 25.0 : 0);
+      if (legal === 'legal_conditional') riskScore += 30.0;
+      if (isNoGo) riskScore = 100.0;
+
+      // Update UI Score & Badges
+      const scoreEl = document.getElementById('score-val');
+      const targetBadge = document.getElementById('badge-target');
+      const descEl = document.getElementById('score-desc');
+      const riskEl = document.getElementById('risk-val');
+
+      scoreEl.innerText = totalScore.toFixed(1) + '%';
+      riskEl.innerText = riskScore.toFixed(1) + '% (' + (riskScore > 60 ? 'HIGH' : (riskScore > 30 ? 'MEDIUM' : 'LOW')) + ')';
+
+      if (isNoGo) {
+        scoreEl.style.color = 'var(--accent-red)';
+        targetBadge.style.background = 'rgba(255, 82, 82, 0.2)';
+        targetBadge.style.color = 'var(--accent-red)';
+        targetBadge.innerText = 'ZONA TERLARANG (NO-GO)';
+        descEl.innerText = 'DIBLOKIR: Terdeteksi kawasan Hutan Lindung / Sempadan Terlarang (UU 41/1999).';
+      } else if (totalScore >= 70) {
+        scoreEl.style.color = 'var(--accent-green)';
+        targetBadge.style.background = 'rgba(0, 230, 118, 0.2)';
+        targetBadge.style.color = 'var(--accent-green)';
+        targetBadge.innerText = 'TARGET PRIORITAS UTAMA';
+        descEl.innerText = 'Prospektivitas sangat tinggi dengan proteksi legal & lereng ideal.';
+      } else if (totalScore >= 45) {
+        scoreEl.style.color = 'var(--accent-gold)';
+        targetBadge.style.background = 'rgba(255, 193, 7, 0.2)';
+        targetBadge.style.color = 'var(--accent-gold)';
+        targetBadge.innerText = 'TARGET PROSPEK MODERAT';
+        descEl.innerText = 'Potensi moderat; disarankan survei geofisika darat tambahan.';
+      } else {
+        scoreEl.style.color = 'var(--text-muted)';
+        targetBadge.style.background = 'rgba(148, 163, 184, 0.2)';
+        targetBadge.style.color = 'var(--text-muted)';
+        targetBadge.innerText = 'PROSPEK RENDAH (STERIL)';
+        descEl.innerText = 'Bukan zona akumulasi nikel laterit ekonomis.';
+      }
+
+      // Render SHAP Waterfall Bars
+      const shapContainer = document.getElementById('shap-container');
+      const shapItems = [
+        { name: 'Litologi Batuan Induk', val: shapLith },
+        { name: 'Kemiringan Lereng (Slope)', val: shapSlope },
+        { name: 'Indeks Fe-Oxide Satelit', val: shapFe },
+        { name: 'Indeks Clay/Pelapukan', val: shapClay },
+        { name: 'Retakan TMI Drone', val: shapTmi },
+        { name: 'Jarak ke Sungai', val: shapRiver }
+      ];
+
+      shapContainer.innerHTML = '';
+      shapItems.forEach(item => {
+        const isPos = item.val >= 0;
+        const absVal = Math.abs(item.val);
+        const widthPct = Math.min(100, (absVal / 40.0) * 100);
+
+        const html = `
+          <div class="shap-bar">
+            <span class="shap-name">${item.name}</span>
+            <div class="shap-track">
+              <div class="shap-fill ${isPos ? 'positive' : 'negative'}" style="width: ${widthPct}%;"></div>
+            </div>
+            <span class="shap-val" style="color: ${isPos ? 'var(--accent-green)' : 'var(--accent-red)'}">
+              ${isPos ? '+' : ''}${item.val.toFixed(1)}%
+            </span>
+          </div>
+        `;
+        shapContainer.innerHTML += html;
+      });
+
+      // Update Tree Leaf Node Text
+      document.getElementById('leaf-val').innerText = isNoGo ? '0.0% (Masked)' : `+${(totalScore * 0.55).toFixed(1)}% (Base Tree 1)`;
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize
+    updateSimulation();
+  </script>
+</body>
+</html>
