@@ -6,7 +6,7 @@ Folder ini berisi visualisasi interaktif dan panduan lengkap tentang bagaimana s
 
 ## 📁 Isi Folder
 
-1. **`index.html`** — Web App Visualizer Interaktif:
+1. **`ml_visualizer.html`** — Web App Visualizer Interaktif:
    * **Playground Parameters Sliders:** Geser slider litologi, lereng, indeks satelit (Fe-Oxide B4/B2, Clay B11/B12), anomali magnetik TMI, dan jarak ke sungai untuk melihat perubahan prediksi secara *real-time*.
    * **SHAP Waterfall Contribution Chart:** Penjelasan transparan kenapa AI menaikkan/menurunkan skor prospektivitas.
    * **Decision Tree Traversal Simulator:** Visualisasi bagaimana data berjalan menembus simpul-simpul *decision tree*.
@@ -28,7 +28,7 @@ python ml_explainer/explain_ml.py
 Script akan mencetak laporan metrik di terminal dan langsung membuka tampilan visualizer interaktif di browser.
 
 ### Cara 2: Membuka Langsung File HTML
-Buka file [ml_explainer/index.html](file:///D:/ProjectPython/Penambang%20Handal/penambangHandal-temporary/ml_explainer/index.html) langsung di browser favorit Anda (Chrome, Edge, Firefox).
+Buka file [ml_explainer/ml_visualizer.html](file:///D:/ProjectPython/Penambang%20Handal/penambangHandal-temporary/ml_explainer/ml_visualizer.html) langsung di browser favorit Anda (Chrome, Edge, Firefox).
 
 ---
 

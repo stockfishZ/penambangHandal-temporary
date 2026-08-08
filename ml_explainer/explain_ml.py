@@ -14,7 +14,7 @@ import time
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_META_PATH = os.path.join(BASE_DIR, "backend", "ml", "model_metadata.json")
-EXPLAINER_HTML_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+EXPLAINER_HTML_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ml_visualizer.html")
 
 def print_banner():
     print("=" * 65)
@@ -67,7 +67,7 @@ def launch_visualizer():
     t.start()
 
     time.sleep(0.5)
-    url = f"http://localhost:{port}/index.html"
+    url = f"http://localhost:{port}/ml_visualizer.html"
     print(f"✨ Visualizer running at: {url}")
     webbrowser.open(url)
     print("\nPress Ctrl+C in terminal to stop server.\n")
