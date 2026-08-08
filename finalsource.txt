@@ -1,0 +1,191 @@
+DAFTAR PUSTAKA — NiTERRA PROJECT
+==================================
+Semua sumber yang dirujuk dalam proyek ini, diformat dalam gaya APA edisi ke-7.
+
+Academic Journal Articles
+-------------------------
+
+Anne, M., Richards, T., & Davies, P. (2020). Nickel laterite processing technologies and the rise of HPAL in Indonesia. Journal of Sustainable Metallurgy.
+
+Atika, A., Syukur, M., & Hidayat, R. (2025). Dynamics of land transformation in Indonesian nickel mining. Environmental Research Letters. https://doi.org/10.1088/1748-9326/ae318f
+
+Brand, N. W., Butt, C. R. M., & Elias, M. (1998). Nickel laterites: Classification and features. AGSO Journal of Australian Geology & Geophysics, 17(4), 81–88.
+
+Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 785–794. https://doi.org/10.1145/2939672.2939785
+
+Clark, D. A. (1997). Magnetic petrophysics and rock magnetism. AGSO Journal of Australian Geology & Geophysics, 17(2), 83–106.
+
+Dalvi, A. D., Bacon, W. G., & Osborne, R. C. (2004). The past and the future of nickel laterites. Proceedings of the PDAC International Convention, Trade Show & Investors Exchange, Toronto, Canada.
+
+Freyssinet, P., Butt, C. R. M., Morris, R. C., & Piantone, P. (2005). Ore-forming processes related to lateritic weathering. In J. W. Hedenquist, J. F. H. Thompson, R. J. Goldfarb, & J. P. Richards (Eds.), Economic Geology 100th Anniversary Volume (pp. 681–722). Society of Economic Geologists.
+
+Golightly, J. P. (1981). Nickeliferous laterite deposits. Economic Geology, 75, 710–735.
+
+Hall, R., & Wilson, M. E. J. (2000). Neogene sutures in eastern Indonesia. Journal of Asian Earth Sciences, 18(6), 781–808.
+
+IOP Science. (2024). Mineralogical and chemical characteristics of lateritic nickel profiles, Morowali Regency. IOP Conference Series: Earth and Environmental Science.
+
+Jurnal Ilmiah Sains dan Teknologi (JIST). (2025). Analisis implementasi PPKH pada sektor pertambangan nikel. Jurnal Ilmiah Sains dan Teknologi. https://jist.publikasiindonesia.id/index.php/jist/article/view/1271
+
+MMExp Journal. (2026). Central Halmahera laterite drilling study: 953 drill holes at 50 m spacing. MMExp Journal.
+
+Van der Ent, A., Baker, A. J. M., Reeves, R. D., Pollard, A. J., & Schat, H. (2013). Hyperaccumulators of metal and metalloid trace elements: Facts and fiction. Journal of Geochemical Exploration, 128, 72–79.
+
+Textbooks
+---------
+
+Telford, W. M., Geldart, L. P., & Sheriff, R. E. (1990). Applied geophysics (2nd ed.). Cambridge University Press.
+
+NGO Reports & Advocacy
+-----------------------
+
+Auriga Nusantara. (2025). Buat zona haram eksploitasi di kawasan Wallacea (No go zone Wallacea). Betahita. https://betahita.id/news/lipsus/10889/buat-zona-haram-eksploitasi-di-kawasan-wallacea-saran-auriga
+
+Earth Insight. (2023). COP28 forest threat report: Hutan Indonesia terancam tambang nikel dan transisi energi. Betahita. https://betahita.id/news/detail/9609/cop28-hutan-indonesia-terancam-tambang-nikel-dan-transisi-energi
+
+Earthworks. (2025). Obi Island mining impacts report. Earthworks.
+
+Forest Watch Indonesia. (2024). Nickel mining: Destroyer of Halmahera's forest. Forest Watch Indonesia. https://fwi.or.id/en/nickel-mining-destroyer-of-halmaheras-forest/
+
+IUCN NL. (2025). Morowali report: Environmental and social impacts of nickel mining. IUCN National Committee of the Netherlands. https://www.iucn.nl/app/uploads/2025/07/Morowali-report-IUCN-NL-finale-versie-high-res.pdf
+
+Mighty Earth. (2024). Avoiding forests, protecting people, and electrifying vehicles: The nickel threat. Mighty Earth. https://mightyearth.org/article/avoiding-forests-protecting-people-and-electrifying-vehicles/
+
+Industry Reports & Corporate Disclosures
+-----------------------------------------
+
+Earth AI. (2024). Greenfield mineral discovery hit rate: 75% success rate with AI-guided targeting [Company disclosure]. Earth AI Pty Ltd.
+
+Garud Survey. (2023). UAV vs ground survey speed and efficiency: Comparative analysis for mineral exploration [White paper]. Garud Survey Indonesia.
+
+Global Energy Monitor. (2025). Pomalaa nickel power station. Global Energy Monitor.
+
+KoBold Metals. (2024). Machine prospector and TerraShed: Digital prospecting for the clean energy transition [Corporate technology overview]. KoBold Metals Company.
+
+KoBold Metals. (2024). Operational update: AI-driven exploration efficiency [Press release]. KoBold Metals Company.
+
+KCMI (Komite Cadangan Mineral Indonesia). (2017). KCMI code 2017: Guidelines for reporting exploration results, mineral resources and ore reserves. KCMI.
+
+MBMA (Minerba Bumi Mandiri & Associates). (2021). Indonesian nickel laterite benchmarking study. MBMA.
+
+MBMA. (2024). Q4 2024 drilling report — Tambang SCM Konawe. MBMA.
+
+PT Antam (Persero) Tbk. (2025). Laporan tahunan 2024. PT Antam.
+
+PT Arrahman Drilling. (2025). Rate card 2025: Full coring drilling services [Company rate sheet]. PT Arrahman.
+
+S&P Global Market Intelligence. (2024). Global greenfield exploration success rates: Nickel laterite study. S&P Global Commodity Insights.
+
+S&P Global Market Intelligence. (2024). World exploration trends 2024. S&P Global.
+
+SafeSight Exploration. (2023). Drone vs ground magnetic survey ROI: Cost and time reduction in tropical terrain [Technical report]. SafeSight Exploration Inc.
+
+Schodde, R. (2019). Recent trends in gold and base metal discoveries [Presentation]. MineEx Consulting.
+
+SensOre Ltd. (2023). Discriminant Predictive Targeting (DPT) and the multidimensional Data Cube [ASX Investor Presentation]. (ASX: S3N). SensOre Ltd.
+
+Startbrain.ai & MarketIntelo. (2024). AI-assisted mineral exploration: Cost reduction analysis [Industry report].
+
+Industry Efficiency Benchmarks & Technical Notes
+--------------------------------------------------
+
+AZO Mining. (2024). Mineral exploration efficiency cycle report. AZO Mining.
+
+Coring Magazine. (2024). AI prospectivity maps increasing drill target accuracy. Coring Magazine.
+
+Enmintech. (2024). Logistics and mobilization cost efficiency of UAVs in remote terrains [Technical report]. Enmintech.
+
+Geointelx & Storm Procurement. (2023/2024). Blank drilling cost reduction through AI-assisted site selection [Industry analysis].
+
+MarketIntelo & CleanTech Group. (2023/2024). AI in mineral exploration: Market reports and efficiency benchmarks.
+
+MDPI (Preprints). (2024). Enhanced predictive accuracy in deep learning for mineral targeting to reduce drilling costs. MDPI Preprints.
+
+Micromine. (2024). AI and machine learning in mineral exploration [Technical note]. Micromine.
+
+Mining Recruitment Jobs. (2024). Automation of routine geological interpretation freeing up geologist time [Industry analysis].
+
+Miningdoc. (2024). UAV magnetic surveys over ground magnetic surveys: Accessibility and cost reduction [Technical report]. Miningdoc.
+
+NRCan (Natural Resources Canada). (2024). Exploration trends and benchmarking report. Natural Resources Canada.
+
+SPH Engineering. (2024). Cost reduction through automated UAV planning and reduced crew size [Case study]. SPH Engineering.
+
+Storm Procurement. (2024). Cost reduction through better site selection using ML prospectivity mapping [Industry report].
+
+News & Media
+-------------
+
+Hume, N. (2023, December 5). How AI is accelerating the hunt for critical minerals. Financial Times. https://www.ft.com
+
+Mining.com.au. (2024, February 12). SensOre leverages AI to fast-track target development in battery metals. Mining.com.au.
+
+Mining.com.au. (2026). AI-driven exploration targeting efficiency gains. Mining.com.au.
+
+Online Databases
+-----------------
+
+Mindat.org. (2025). Sorowako Mine (Locality 19161). https://www.mindat.org
+
+Mindat.org. (2025). Bahodopi-Bahumatefe deposit, Morowali Regency (Locality 42617). https://www.mindat.org
+
+Mindat.org. (2025). Weda Bay Mine (Locality 19225). https://www.mindat.org
+
+Mindat.org. (2025). Pomalaa Mines, Kolaka Regency (Locality 18849). https://www.mindat.org
+
+Mindat.org. (2025). Gag Island Project. https://www.mindat.org
+
+Mindat.org. (2025). Kawasi, Obi Island (Locality 453811). https://www.mindat.org
+
+Wikipedia. (2025). Sorowako mine. https://en.wikipedia.org
+
+Geological Maps
+----------------
+
+Sukamto, R. (1975). Geological map of the Ternate Quadrangle, North Maluku [Map]. GRDC Bandung.
+
+Sukamto, R. (1975). Geological map of Indonesia, Ujung Pandang Sheet [Map]. GRDC Bandung.
+
+Government Regulations & Decrees
+---------------------------------
+
+Kepmen ESDM No. 1806 K/30/MEM/2018 tentang pedoman pelaksanaan kaidah teknik pertambangan yang baik. (Guidelines for the implementation of good mining engineering principles).
+
+Kepmen ESDM 1827 K/30/MEM/2018 tentang pedoman pelaksanaan kaidah teknik pertambangan yang baik. (Guidelines for the implementation of good mining engineering principles).
+
+Kepmen ESDM No. 341.K/MB.01/MEM.B/2025.
+
+KLHK. (2019). Peta kawasan hutan Provinsi Maluku Utara. SK.8657/MENLHK-PKTL/IPSD.2/11/2019. Kementerian Lingkungan Hidup dan Kehutanan.
+
+Peraturan Menteri LHK No. 4 Tahun 2021 tentang daftar usaha dan/atau kegiatan yang wajib memiliki analisis mengenai dampak lingkungan hidup, upaya pengelolaan lingkungan hidup dan upaya pemantauan lingkungan hidup (AMDAL/UKL-UPL). (Minister of Environment and Forestry Regulation No. 4/2021 on environmental impact assessment).
+
+Peraturan Menteri LHK No. 7 Tahun 2021 tentang perencanaan kehutanan, perubahan peruntukan kawasan hutan dan perubahan fungsi kawasan hutan, serta penggunaan kawasan hutan (PPKH). (Minister of Environment and Forestry Regulation No. 7/2021 on forestry spatial planning and forest area borrow-to-use permits).
+
+Peraturan Menteri LH No. 4 Tahun 2012 tentang indeks pencemaran. (Minister of Environment Regulation No. 4/2012 on pollution index).
+
+Peraturan Menteri PUPR No. 28/PRT/M/2015 tentang penetapan garis sempadan sungai. (Minister of Public Works and Housing Regulation No. 28/2015 on river borderlines).
+
+Peraturan Pemerintah No. 22 Tahun 2021 tentang penyelenggaraan perlindungan dan pengelolaan lingkungan hidup. (Government Regulation No. 22/2021 on environmental protection and management).
+
+Peraturan Pemerintah No. 23 Tahun 2021 tentang penyelenggaraan kehutanan. (Government Regulation No. 23/2021 on forestry implementation).
+
+Peraturan Pemerintah No. 96 Tahun 2021 tentang pelaksanaan kegiatan usaha pertambangan mineral dan batubara. (Government Regulation No. 96/2021 on mineral and coal mining business activities).
+
+Peraturan Presiden No. 41 Tahun 2004 tentang perizinan bagi perusahaan kontrak karya pertambangan. (Presidential Regulation No. 41/2004 on mining contract of work permits).
+
+Peraturan Presiden No. 3 Tahun 2023 tentang perubahan atas Peraturan Presiden No. 41 Tahun 2004. (Presidential Regulation No. 3/2023 amending Presidential Regulation No. 41/2004).
+
+Undang-Undang No. 3 Tahun 2020 tentang perubahan atas Undang-Undang No. 4 Tahun 2009 tentang pertambangan mineral dan batubara (Minerba). (Law No. 3/2020 on mineral and coal mining).
+
+Undang-Undang No. 5 Tahun 1990 tentang konservasi sumber daya alam hayati dan ekosistemnya. (Law No. 5/1990 on conservation of biological natural resources and their ecosystems).
+
+Undang-Undang No. 41 Tahun 1999 tentang kehutanan. (Law No. 41/1999 on forestry).
+
+Satellite Data & Spatial Datasets
+----------------------------------
+
+Badan Informasi Geospasial (BIG). (2018). DEMNAS 8 m digital elevation model [Data set]. Badan Informasi Geospasial.
+
+Copernicus Open Access Hub. (n.d.). Sentinel-2 MSI imagery [Satellite data]. European Space Agency. https://scihub.copernicus.eu
+
+USGS EarthExplorer. (n.d.). SRTM 30 m digital elevation model [Data set]. U.S. Geological Survey. https://earthexplorer.usgs.gov
