@@ -9,9 +9,9 @@
 
 > **ANTAM Hackathon 2026 — Young Mining Innovators (Top 10 Finalist)**  
 > Developed by **Tim Penambang Handal (Institut Teknologi Bandung)**:
-> - **Lian Ridzuan** *(Teknik Pertambangan)* — Mining Economics & Domain Expert
-> - **Rafa Satria Pratama** *(Teknik Elektro)* — Embedded IoT Firmware & Backend ML Engineering
-> - **Kevin Yuhan Wahyu Pratama** *(Teknik Geofisika)* — Geophysical Data Processing & 2D/3D WebGIS
+> - **Lian Ridzuan** *(Teknik Pertambangan)* 
+> - **Rafa Satria Pratama** *(Teknik Elektro)* 
+> - **Kevin Yuhan Wahyu Pratama** *(Teknik Geofisika)* 
 
 ---
 
