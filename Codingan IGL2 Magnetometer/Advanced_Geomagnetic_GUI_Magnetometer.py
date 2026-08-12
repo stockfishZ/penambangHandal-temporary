@@ -23,7 +23,9 @@ except Exception:
     requests = None
 
 
-APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-WfH1JbHS8664B2T5yk1GvcNMv38UBmNfvwbdOIW0a0hKpGUEUrl-4OOitS6HUTjKlw/exec"
+import os
+
+APPS_SCRIPT_URL = os.getenv("APPS_SCRIPT_URL", "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_DEPLOYMENT_ID/exec")
 
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
