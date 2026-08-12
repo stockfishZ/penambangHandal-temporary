@@ -327,19 +327,3 @@ The **IGL2 Magnetometer Payload** consists of an ESP32 microcontroller paired wi
 - 📄 **[Final Proposal Document](file:///D:/ProjectPython/Penambang%20Handal/penambangHandal-temporary/Final%20Proposal/Proposal%20Penambang%20Handal%20%285%29.md)** — Official ANTAM Hackathon 2026 Submission Proposal.
 - 📚 **[finalsource.txt](file:///D:/ProjectPython/Penambang%20Handal/penambangHandal-temporary/finalsource.txt)** — Academic & geological references (APA 7th edition).
 
----
-
-## 👥 Tim Penambang Handal (ITB)
-
-| Member | Major | Primary Focus |
-| :--- | :--- | :--- |
-| **Lian Ridzuan** | Teknik Pertambangan | Domain Expert Geologi, KCMI Code, Mining Economics & Pitching |
-| **Rafa Satria Pratama** | Teknik Elektro | Embedded Hardware (ESP32 Drone Payload) & Backend ML |
-| **Kevin Yuhan Wahyu Pratama** | Teknik Geofisika | Geophysics (Magnetometer TMI), Remote Sensing & WebGIS |
-
----
-
-<p align="center">
-  <b>NiTERRA v2.0 — Target Fast, Drill Smart, Zero Waste.</b><br>
-  <i>ANTAM Hackathon 2026 — Young Mining Innovators</i>
-</p>
