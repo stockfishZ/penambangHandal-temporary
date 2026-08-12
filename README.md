@@ -1,4 +1,4 @@
-# 🚀 NiTERRA v2.0 — Next-Gen Nickel Exploration Target & Risk Analytics
+# NiTERRA — AI Based Nickel Exploration Target & Risk Analytics
 
 [![Hackathon](https://img.shields.io/badge/ANTAM%20Hackathon-2026%20Finalist-gold?style=for-the-badge&logo=trophy)](file:///D:/ProjectPython/Penambang%20Handal/penambangHandal-temporary/FINALIST_ACTION_PLAN.md)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](file:///D:/ProjectPython/Penambang%20Handal/penambangHandal-temporary/backend)
