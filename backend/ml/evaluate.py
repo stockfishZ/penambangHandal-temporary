@@ -1,6 +1,4 @@
-"""Reproduce training and evaluate on the spatially held-out test set.
-Prints metrics that prove the model genuinely generalizes.
-"""
+"""Model evaluation script: tests XGBoost model generalization on hold-out region data."""
 import os, sys, json
 import numpy as np
 import pandas as pd

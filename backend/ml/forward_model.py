@@ -1,9 +1,4 @@
-"""Stochastic forward model: generates prospectivity labels from HIDDEN ground truth.
-Formula is structurally different from the inference fallback to prevent closed-loop scoring.
-The label depends on true_ni_pct (hidden from ML features) with multiplicative interactions.
-
-Data assumptions documented in vault/geonirisk/research/SOURCES.md
-"""
+"""Synthetic data generation: calculates prospectivity labels from hidden nickel ground truth."""
 import os
 import math
 import pandas as pd
@@ -25,11 +20,10 @@ def compute_prospectivity(row: pd.Series, true_ni: float) -> float:
     if dist_road < 500:
         return 0.0
 
-    # Michaelis-Menten curve — fundamentally different from the sigmoid used in inference fallback
-    # K_m = 0.6, V_max = 6.0
+    # Saturation curve for nickel concentration score
     ni_score = 6.0 * true_ni / (true_ni + 0.6)
 
-    # Lithology multiplier: ultramafic rocks amplify Ni score (multiplicative, not additive)
+    # Lithology multiplier: ultramafic rocks boost nickel score
     lith = str(row.get("lithology", ""))
     is_ultramafic = any(x in lith for x in ["serpentinite", "peridotite", "ultramafic"])
     is_mafic = "mafic" in lith

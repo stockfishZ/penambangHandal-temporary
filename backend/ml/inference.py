@@ -76,14 +76,14 @@ class ProspectivityModel:
         dist_road = features.get("distance_to_road_m", 9999)
         legal_status = features.get("legal_status", "unknown")
 
+        # Block target if area is a legal no-go zone or inside road buffer
         if legal_status in ("no-go", "no_go"):
             return {"ml_score": 0.0, "masked": True, "block_reason": "Legal status: no-go zone"}
         if dist_road < 500:
             return {"ml_score": 0.0, "masked": True, "block_reason": "Distance to road < 500m (Permen LH 4/2012 penalty zone)"}
 
+        # Fallback scoring if ML model file is missing
         if not self.loaded:
-            # ponytail: bare heuristic — pre-survey features only (no geochem, no magnetics)
-            # structurally different from forward_model.py (no Michaelis-Menten, no multiplicative interactions)
             legal = str(features.get("legal_status", ""))
             legal_score = 5.0 if legal == "allowed" else (3.0 if legal == "conditional" else 0.0)
 
@@ -119,6 +119,7 @@ class ProspectivityModel:
                 "fallback": True
             }
 
+        # Predict target prospectivity using trained XGBoost model
         vector = self._to_vector(features)
         score = float(self.model.predict(vector.reshape(1, -1))[0])
         score = max(0.0, min(10.0, score))
@@ -144,6 +145,7 @@ class ProspectivityModel:
             "metadata": self.metadata,
         }
 
+    # Convert input dict to feature vector for ML model
     def _to_vector(self, features: dict) -> np.ndarray:
         vec = []
         for col in ALL_FEATURES:
@@ -159,6 +161,7 @@ class ProspectivityModel:
                 vec.append(0.0)
         return np.array(vec, dtype=np.float32)
 
+    # Calculate feature importance for explainable AI (XAI)
     def _feature_importance(self, vector: np.ndarray) -> list[dict]:
         if not hasattr(self.model, "feature_importances_"):
             return []

@@ -72,13 +72,15 @@ class ESGDraftRequest(BaseModel):
     roi_savings_miliar: float = 0.0
 
 def _sanitize_data(request: GridAnalysisRequest) -> list[str]:
-    # ponytail: survey-field QA/QC removed — ML uses pre-survey features only
+    # QA/QC check placeholder for survey data
     return []
 
 async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_spatial: dict = None) -> dict:
     qaqc_flags = _sanitize_data(request)
     spatial_features = precomputed_spatial or {}
     db_available = db is not None
+
+    # Fetch nearest distances and forestry status from PostGIS
     if db_available and db_manager.pool and precomputed_spatial is None:
         try:
             query = """
@@ -100,6 +102,7 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
     if not spatial_features:
         logger.info(f"No spatial data in DB for ({request.latitude}, {request.longitude}), using request features only")
 
+    # Fallback query to BIG Satu Peta API if local forestry data is missing
     if spatial_features.get("kelas_hutan", "none") == "none" or spatial_features.get("kawasan_hutan", "none") == "none":
         try:
             big_result = await big_query_point(request.latitude, request.longitude)
@@ -122,6 +125,7 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
 
     viability_score = 1.0
 
+    # Calculate legal and ESG viability score
     if kill_zone or is_kill_zone:
         viability_score = 0.0
     elif is_grandfathered:
