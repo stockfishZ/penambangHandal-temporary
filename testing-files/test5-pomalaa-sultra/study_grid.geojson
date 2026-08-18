@@ -7,22 +7,22 @@
       "properties": {
         "grid_id": "POM001",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 4.3,
-        "distance_to_river_m": 1472,
-        "distance_to_road_m": 3423,
-        "distance_to_settlement_m": 8752,
+        "slope_deg": 6.3,
+        "distance_to_river_m": 1680,
+        "distance_to_road_m": 4085,
+        "distance_to_settlement_m": 10796,
         "legal_status": "allowed",
         "distance_to_smelter_km": 76.8,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 2.374,
         "clay_index": 1.661,
         "ndvi_stress_index": 0.276,
         "tmi_structural_nT": 45208.4,
         "tmi_anomaly_nT": 208.4,
-        "elevation_mdpl": 160.3,
+        "elevation_mdpl": 260.3,
         "geochem_assay_ratio": 1.82
       },
       "geometry": {
@@ -30,24 +30,24 @@
         "coordinates": [
           [
             [
-              121.61,
-              -4.23
+              121.625,
+              -4.205
             ],
             [
-              121.615,
-              -4.23
+              121.633,
+              -4.205
             ],
             [
-              121.615,
-              -4.225
+              121.633,
+              -4.197
             ],
             [
-              121.61,
-              -4.225
+              121.625,
+              -4.197
             ],
             [
-              121.61,
-              -4.23
+              121.625,
+              -4.205
             ]
           ]
         ]
@@ -58,22 +58,22 @@
       "properties": {
         "grid_id": "POM002",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "alluvium",
-        "slope_deg": 9.8,
-        "distance_to_river_m": 1764,
-        "distance_to_road_m": 5147,
-        "distance_to_settlement_m": 3526,
+        "slope_deg": 11.8,
+        "distance_to_river_m": 2013,
+        "distance_to_road_m": 6090,
+        "distance_to_settlement_m": 4034,
         "legal_status": "allowed",
         "distance_to_smelter_km": 73.8,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 1.401,
         "clay_index": 1.312,
         "ndvi_stress_index": 0.558,
         "tmi_structural_nT": 44480.1,
         "tmi_anomaly_nT": -519.9,
-        "elevation_mdpl": 172.8,
+        "elevation_mdpl": 272.8,
         "geochem_assay_ratio": 4.26
       },
       "geometry": {
@@ -81,24 +81,24 @@
         "coordinates": [
           [
             [
-              121.615,
-              -4.23
+              121.633,
+              -4.205
             ],
             [
-              121.62,
-              -4.23
+              121.641,
+              -4.205
             ],
             [
-              121.62,
-              -4.225
+              121.641,
+              -4.197
             ],
             [
-              121.615,
-              -4.225
+              121.633,
+              -4.197
             ],
             [
-              121.615,
-              -4.23
+              121.633,
+              -4.205
             ]
           ]
         ]
@@ -109,22 +109,22 @@
       "properties": {
         "grid_id": "POM003",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 3.0,
-        "distance_to_river_m": 1119,
-        "distance_to_road_m": 1455,
-        "distance_to_settlement_m": 11058,
+        "slope_deg": 5.0,
+        "distance_to_river_m": 1275,
+        "distance_to_road_m": 1797,
+        "distance_to_settlement_m": 13781,
         "legal_status": "allowed",
         "distance_to_smelter_km": 71.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 1.674,
         "clay_index": 1.142,
         "ndvi_stress_index": 0.514,
         "tmi_structural_nT": 44804.7,
         "tmi_anomaly_nT": -195.3,
-        "elevation_mdpl": 237.9,
+        "elevation_mdpl": 337.9,
         "geochem_assay_ratio": 5.37
       },
       "geometry": {
@@ -132,24 +132,24 @@
         "coordinates": [
           [
             [
-              121.62,
-              -4.23
+              121.641,
+              -4.205
             ],
             [
-              121.625,
-              -4.23
+              121.649,
+              -4.205
             ],
             [
-              121.625,
-              -4.225
+              121.649,
+              -4.197
             ],
             [
-              121.62,
-              -4.225
+              121.641,
+              -4.197
             ],
             [
-              121.62,
-              -4.23
+              121.641,
+              -4.205
             ]
           ]
         ]
@@ -160,22 +160,22 @@
       "properties": {
         "grid_id": "POM004",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 11.4,
-        "distance_to_river_m": 2535,
-        "distance_to_road_m": 4713,
-        "distance_to_settlement_m": 10868,
-        "legal_status": "conditional",
+        "slope_deg": 13.4,
+        "distance_to_river_m": 2897,
+        "distance_to_road_m": 5584,
+        "distance_to_settlement_m": 13535,
+        "legal_status": "allowed",
         "distance_to_smelter_km": 68.4,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 2.149,
         "clay_index": 2.273,
         "ndvi_stress_index": 0.243,
         "tmi_structural_nT": 45885.3,
         "tmi_anomaly_nT": 885.3,
-        "elevation_mdpl": 198.5,
+        "elevation_mdpl": 298.5,
         "geochem_assay_ratio": 1.74
       },
       "geometry": {
@@ -183,24 +183,24 @@
         "coordinates": [
           [
             [
-              121.625,
-              -4.23
+              121.649,
+              -4.205
             ],
             [
-              121.63,
-              -4.23
+              121.657,
+              -4.205
             ],
             [
-              121.63,
-              -4.225
+              121.657,
+              -4.197
             ],
             [
-              121.625,
-              -4.225
+              121.649,
+              -4.197
             ],
             [
-              121.625,
-              -4.23
+              121.649,
+              -4.205
             ]
           ]
         ]
@@ -211,22 +211,22 @@
       "properties": {
         "grid_id": "POM005",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 10.0,
-        "distance_to_river_m": 742,
-        "distance_to_road_m": 5419,
-        "distance_to_settlement_m": 11470,
-        "legal_status": "conditional",
+        "slope_deg": 12.0,
+        "distance_to_river_m": 843,
+        "distance_to_road_m": 6406,
+        "distance_to_settlement_m": 14314,
+        "legal_status": "allowed",
         "distance_to_smelter_km": 66.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 1.911,
         "clay_index": 2.282,
         "ndvi_stress_index": 0.274,
         "tmi_structural_nT": 46007.8,
         "tmi_anomaly_nT": 1007.8,
-        "elevation_mdpl": 248.0,
+        "elevation_mdpl": 348.0,
         "geochem_assay_ratio": 2.96
       },
       "geometry": {
@@ -234,24 +234,24 @@
         "coordinates": [
           [
             [
-              121.63,
-              -4.23
+              121.657,
+              -4.205
             ],
             [
-              121.635,
-              -4.23
+              121.665,
+              -4.205
             ],
             [
-              121.635,
-              -4.225
+              121.665,
+              -4.197
             ],
             [
-              121.63,
-              -4.225
+              121.657,
+              -4.197
             ],
             [
-              121.63,
-              -4.23
+              121.657,
+              -4.205
             ]
           ]
         ]
@@ -262,22 +262,22 @@
       "properties": {
         "grid_id": "POM006",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 7.3,
-        "distance_to_river_m": 2422,
-        "distance_to_road_m": 4450,
-        "distance_to_settlement_m": 7623,
-        "legal_status": "conditional",
+        "slope_deg": 9.3,
+        "distance_to_river_m": 2768,
+        "distance_to_road_m": 5279,
+        "distance_to_settlement_m": 9336,
+        "legal_status": "allowed",
         "distance_to_smelter_km": 64.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 2.824,
         "clay_index": 1.976,
         "ndvi_stress_index": 0.198,
         "tmi_structural_nT": 45781.0,
         "tmi_anomaly_nT": 781.0,
-        "elevation_mdpl": 170.9,
+        "elevation_mdpl": 270.9,
         "geochem_assay_ratio": 2.82
       },
       "geometry": {
@@ -285,24 +285,24 @@
         "coordinates": [
           [
             [
-              121.635,
-              -4.23
+              121.665,
+              -4.205
             ],
             [
-              121.64,
-              -4.23
+              121.673,
+              -4.205
             ],
             [
-              121.64,
-              -4.225
+              121.673,
+              -4.197
             ],
             [
-              121.635,
-              -4.225
+              121.665,
+              -4.197
             ],
             [
-              121.635,
-              -4.23
+              121.665,
+              -4.205
             ]
           ]
         ]
@@ -313,22 +313,22 @@
       "properties": {
         "grid_id": "POM007",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 3.3,
-        "distance_to_river_m": 1792,
-        "distance_to_road_m": 2638,
-        "distance_to_settlement_m": 9195,
-        "legal_status": "conditional",
+        "slope_deg": 5.3,
+        "distance_to_river_m": 2046,
+        "distance_to_road_m": 3172,
+        "distance_to_settlement_m": 11370,
+        "legal_status": "allowed",
         "distance_to_smelter_km": 62.3,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 1.475,
         "clay_index": 1.344,
         "ndvi_stress_index": 0.753,
         "tmi_structural_nT": 44603.4,
         "tmi_anomaly_nT": -396.6,
-        "elevation_mdpl": 252.6,
+        "elevation_mdpl": 352.6,
         "geochem_assay_ratio": 4.82
       },
       "geometry": {
@@ -336,24 +336,24 @@
         "coordinates": [
           [
             [
-              121.64,
-              -4.23
+              121.673,
+              -4.205
             ],
             [
-              121.645,
-              -4.23
+              121.681,
+              -4.205
             ],
             [
-              121.645,
-              -4.225
+              121.681,
+              -4.197
             ],
             [
-              121.64,
-              -4.225
+              121.673,
+              -4.197
             ],
             [
-              121.64,
-              -4.23
+              121.673,
+              -4.205
             ]
           ]
         ]
@@ -364,22 +364,22 @@
       "properties": {
         "grid_id": "POM008",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 13.5,
-        "distance_to_river_m": 562,
-        "distance_to_road_m": 4179,
-        "distance_to_settlement_m": 6250,
-        "legal_status": "conditional",
+        "slope_deg": 15.5,
+        "distance_to_river_m": 637,
+        "distance_to_road_m": 4964,
+        "distance_to_settlement_m": 7559,
+        "legal_status": "no-go",
         "distance_to_smelter_km": 61.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 2.521,
         "clay_index": 2.271,
         "ndvi_stress_index": 0.242,
         "tmi_structural_nT": 45378.8,
         "tmi_anomaly_nT": 378.8,
-        "elevation_mdpl": 205.8,
+        "elevation_mdpl": 305.8,
         "geochem_assay_ratio": 2.21
       },
       "geometry": {
@@ -387,24 +387,24 @@
         "coordinates": [
           [
             [
-              121.645,
-              -4.23
+              121.681,
+              -4.205
             ],
             [
-              121.65,
-              -4.23
+              121.689,
+              -4.205
             ],
             [
-              121.65,
-              -4.225
+              121.689,
+              -4.197
             ],
             [
-              121.645,
-              -4.225
+              121.681,
+              -4.197
             ],
             [
-              121.645,
-              -4.23
+              121.681,
+              -4.205
             ]
           ]
         ]
@@ -415,22 +415,22 @@
       "properties": {
         "grid_id": "POM009",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 12.7,
-        "distance_to_river_m": 832,
-        "distance_to_road_m": 2980,
-        "distance_to_settlement_m": 11572,
-        "legal_status": "conditional",
+        "slope_deg": 14.7,
+        "distance_to_river_m": 947,
+        "distance_to_road_m": 3570,
+        "distance_to_settlement_m": 14446,
+        "legal_status": "no-go",
         "distance_to_smelter_km": 60.1,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 2.749,
         "clay_index": 2.076,
         "ndvi_stress_index": 0.335,
         "tmi_structural_nT": 45634.9,
         "tmi_anomaly_nT": 634.9,
-        "elevation_mdpl": 208.0,
+        "elevation_mdpl": 308.0,
         "geochem_assay_ratio": 1.4
       },
       "geometry": {
@@ -438,24 +438,24 @@
         "coordinates": [
           [
             [
-              121.65,
-              -4.23
+              121.689,
+              -4.205
             ],
             [
-              121.655,
-              -4.23
+              121.697,
+              -4.205
             ],
             [
-              121.655,
-              -4.225
+              121.697,
+              -4.197
             ],
             [
-              121.65,
-              -4.225
+              121.689,
+              -4.197
             ],
             [
-              121.65,
-              -4.23
+              121.689,
+              -4.205
             ]
           ]
         ]
@@ -466,22 +466,22 @@
       "properties": {
         "grid_id": "POM010",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 3.7,
-        "distance_to_river_m": 1278,
-        "distance_to_road_m": 2947,
-        "distance_to_settlement_m": 9715,
+        "slope_deg": 5.7,
+        "distance_to_river_m": 1458,
+        "distance_to_road_m": 3532,
+        "distance_to_settlement_m": 12042,
         "legal_status": "no-go",
         "distance_to_smelter_km": 59.6,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SW",
         "fe_oxide_index": 1.347,
         "clay_index": 1.202,
         "ndvi_stress_index": 0.565,
         "tmi_structural_nT": 44626.5,
         "tmi_anomaly_nT": -373.5,
-        "elevation_mdpl": 216.2,
+        "elevation_mdpl": 316.2,
         "geochem_assay_ratio": 4.02
       },
       "geometry": {
@@ -489,24 +489,24 @@
         "coordinates": [
           [
             [
-              121.655,
-              -4.23
+              121.697,
+              -4.205
             ],
             [
-              121.66,
-              -4.23
+              121.705,
+              -4.205
             ],
             [
-              121.66,
-              -4.225
+              121.705,
+              -4.197
             ],
             [
-              121.655,
-              -4.225
+              121.697,
+              -4.197
             ],
             [
-              121.655,
-              -4.23
+              121.697,
+              -4.205
             ]
           ]
         ]
@@ -517,22 +517,22 @@
       "properties": {
         "grid_id": "POM011",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 13.5,
-        "distance_to_river_m": 884,
-        "distance_to_road_m": 2304,
-        "distance_to_settlement_m": 8287,
+        "slope_deg": 15.5,
+        "distance_to_river_m": 1005,
+        "distance_to_road_m": 2784,
+        "distance_to_settlement_m": 10195,
         "legal_status": "no-go",
         "distance_to_smelter_km": 59.6,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SE",
         "fe_oxide_index": 1.914,
         "clay_index": 1.995,
         "ndvi_stress_index": 0.221,
         "tmi_structural_nT": 46005.1,
         "tmi_anomaly_nT": 1005.1,
-        "elevation_mdpl": 225.2,
+        "elevation_mdpl": 325.2,
         "geochem_assay_ratio": 2.93
       },
       "geometry": {
@@ -540,24 +540,24 @@
         "coordinates": [
           [
             [
-              121.66,
-              -4.23
+              121.705,
+              -4.205
             ],
             [
-              121.665,
-              -4.23
+              121.713,
+              -4.205
             ],
             [
-              121.665,
-              -4.225
+              121.713,
+              -4.197
             ],
             [
-              121.66,
-              -4.225
+              121.705,
+              -4.197
             ],
             [
-              121.66,
-              -4.23
+              121.705,
+              -4.205
             ]
           ]
         ]
@@ -568,22 +568,22 @@
       "properties": {
         "grid_id": "POM012",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "alluvium",
-        "slope_deg": 5.1,
-        "distance_to_river_m": 2253,
-        "distance_to_road_m": 2559,
-        "distance_to_settlement_m": 10352,
+        "slope_deg": 7.1,
+        "distance_to_river_m": 2574,
+        "distance_to_road_m": 3081,
+        "distance_to_settlement_m": 12868,
         "legal_status": "no-go",
         "distance_to_smelter_km": 60.1,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SE",
         "fe_oxide_index": 1.514,
         "clay_index": 1.348,
         "ndvi_stress_index": 0.541,
         "tmi_structural_nT": 44823.2,
         "tmi_anomaly_nT": -176.8,
-        "elevation_mdpl": 201.7,
+        "elevation_mdpl": 301.7,
         "geochem_assay_ratio": 5.61
       },
       "geometry": {
@@ -591,24 +591,24 @@
         "coordinates": [
           [
             [
-              121.665,
-              -4.23
+              121.713,
+              -4.205
             ],
             [
-              121.67,
-              -4.23
+              121.721,
+              -4.205
             ],
             [
-              121.67,
-              -4.225
+              121.721,
+              -4.197
             ],
             [
-              121.665,
-              -4.225
+              121.713,
+              -4.197
             ],
             [
-              121.665,
-              -4.23
+              121.713,
+              -4.205
             ]
           ]
         ]
@@ -619,22 +619,22 @@
       "properties": {
         "grid_id": "POM013",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "alluvium",
-        "slope_deg": 3.9,
-        "distance_to_river_m": 2465,
-        "distance_to_road_m": 4284,
-        "distance_to_settlement_m": 11529,
+        "slope_deg": 5.9,
+        "distance_to_river_m": 2817,
+        "distance_to_road_m": 5086,
+        "distance_to_settlement_m": 14391,
         "legal_status": "no-go",
         "distance_to_smelter_km": 61.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SE",
         "fe_oxide_index": 1.139,
         "clay_index": 1.107,
         "ndvi_stress_index": 0.65,
         "tmi_structural_nT": 44463.0,
         "tmi_anomaly_nT": -537.0,
-        "elevation_mdpl": 225.1,
+        "elevation_mdpl": 325.1,
         "geochem_assay_ratio": 5.7
       },
       "geometry": {
@@ -642,24 +642,24 @@
         "coordinates": [
           [
             [
-              121.67,
-              -4.23
+              121.721,
+              -4.205
             ],
             [
-              121.675,
-              -4.23
+              121.729,
+              -4.205
             ],
             [
-              121.675,
-              -4.225
+              121.729,
+              -4.197
             ],
             [
-              121.67,
-              -4.225
+              121.721,
+              -4.197
             ],
             [
-              121.67,
-              -4.23
+              121.721,
+              -4.205
             ]
           ]
         ]
@@ -670,22 +670,22 @@
       "properties": {
         "grid_id": "POM014",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 10.4,
-        "distance_to_river_m": 1361,
-        "distance_to_road_m": 2502,
-        "distance_to_settlement_m": 3940,
+        "slope_deg": 12.4,
+        "distance_to_river_m": 1552,
+        "distance_to_road_m": 3014,
+        "distance_to_settlement_m": 4570,
         "legal_status": "no-go",
         "distance_to_smelter_km": 62.3,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SE",
         "fe_oxide_index": 2.541,
         "clay_index": 2.034,
         "ndvi_stress_index": 0.324,
         "tmi_structural_nT": 45992.6,
         "tmi_anomaly_nT": 992.6,
-        "elevation_mdpl": 228.0,
+        "elevation_mdpl": 328.0,
         "geochem_assay_ratio": 2.89
       },
       "geometry": {
@@ -693,24 +693,24 @@
         "coordinates": [
           [
             [
-              121.675,
-              -4.23
+              121.729,
+              -4.205
             ],
             [
-              121.68,
-              -4.23
+              121.737,
+              -4.205
             ],
             [
-              121.68,
-              -4.225
+              121.737,
+              -4.197
             ],
             [
-              121.675,
-              -4.225
+              121.729,
+              -4.197
             ],
             [
-              121.675,
-              -4.23
+              121.729,
+              -4.205
             ]
           ]
         ]
@@ -721,22 +721,22 @@
       "properties": {
         "grid_id": "POM015",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 12.3,
-        "distance_to_river_m": 874,
-        "distance_to_road_m": 4488,
-        "distance_to_settlement_m": 10084,
+        "slope_deg": 14.3,
+        "distance_to_river_m": 995,
+        "distance_to_road_m": 5323,
+        "distance_to_settlement_m": 12521,
         "legal_status": "no-go",
         "distance_to_smelter_km": 64.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SE",
         "fe_oxide_index": 1.153,
         "clay_index": 1.435,
         "ndvi_stress_index": 0.589,
         "tmi_structural_nT": 44774.3,
         "tmi_anomaly_nT": -225.7,
-        "elevation_mdpl": 247.7,
+        "elevation_mdpl": 347.7,
         "geochem_assay_ratio": 5.71
       },
       "geometry": {
@@ -744,24 +744,24 @@
         "coordinates": [
           [
             [
-              121.68,
-              -4.23
+              121.737,
+              -4.205
             ],
             [
-              121.685,
-              -4.23
+              121.745,
+              -4.205
             ],
             [
-              121.685,
-              -4.225
+              121.745,
+              -4.197
             ],
             [
-              121.68,
-              -4.225
+              121.737,
+              -4.197
             ],
             [
-              121.68,
-              -4.23
+              121.737,
+              -4.205
             ]
           ]
         ]
@@ -772,22 +772,22 @@
       "properties": {
         "grid_id": "POM016",
         "site": "pomalaa",
-        "location_label": "Pomalaa Greenfield Interior Block (ANTAM Prospect) - Sulawesi Tenggara greenfield nickel laterite",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 6.6,
-        "distance_to_river_m": 2266,
-        "distance_to_road_m": 2198,
-        "distance_to_settlement_m": 6183,
+        "slope_deg": 8.6,
+        "distance_to_river_m": 2589,
+        "distance_to_road_m": 2660,
+        "distance_to_settlement_m": 7472,
         "legal_status": "no-go",
         "distance_to_smelter_km": 66.0,
-        "area_ha": 0.31,
+        "area_ha": 0.79,
         "region_id": "SE",
         "fe_oxide_index": 2.814,
         "clay_index": 2.107,
         "ndvi_stress_index": 0.24,
         "tmi_structural_nT": 45992.0,
         "tmi_anomaly_nT": 992.0,
-        "elevation_mdpl": 235.8,
+        "elevation_mdpl": 335.8,
         "geochem_assay_ratio": 2.38
       },
       "geometry": {
@@ -795,24 +795,24 @@
         "coordinates": [
           [
             [
-              121.685,
-              -4.23
+              121.745,
+              -4.205
             ],
             [
-              121.69,
-              -4.23
+              121.753,
+              -4.205
             ],
             [
-              121.69,
-              -4.225
+              121.753,
+              -4.197
             ],
             [
-              121.685,
-              -4.225
+              121.745,
+              -4.197
             ],
             [
-              121.685,
-              -4.23
+              121.745,
+              -4.205
             ]
           ]
         ]

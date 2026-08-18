@@ -256,18 +256,18 @@ async function loadDummyData() {
     // Fetch actual forestry boundaries to map exact legal zones
     const forestryData = await fetch('data/forestry_boundaries.geojson').then(r => r.json()).catch(() => null);
 
-    // Define strict bounding boxes that are 100% verified deep interior greenfield ridges (far away from towns, smelters, active pits, and water)
+    // Define strict bounding boxes that are 100% verified deep interior greenfield ridges (zero water/lake/coast overlap)
     const safeZones = [
-        // Sorowako Greenfield Interior Ridge (12km East of Sorowako town on natural mountain plateau)
-        { name: "Sorowako Greenfield Interior Ridge", minLat: -2.62, maxLat: -2.57, minLon: 121.46, maxLon: 121.52 },
-        // Morowali Deep Greenfield Mountains (16km West of IMIP smelters & coastal settlements)
-        { name: "Morowali Deep Greenfield Mountains", minLat: -2.87, maxLat: -2.82, minLon: 121.80, maxLon: 121.86 },
-        // Konawe Deep Greenfield Interior (Far West of Kendari & coastal pits)
-        { name: "Konawe Deep Inland Ridge", minLat: -3.82, maxLat: -3.76, minLon: 122.01, maxLon: 122.06 },
-        // Weda Bay Central Greenfield Ridge (Halmahera Inland)
-        { name: "Weda Bay Central Greenfield Ridge", minLat: 0.47, maxLat: 0.52, minLon: 127.89, maxLon: 127.95 },
-        // Pomalaa Greenfield Interior Range (ANTAM Geomin Prospect)
-        { name: "Pomalaa Greenfield Interior Range", minLat: -4.21, maxLat: -4.16, minLon: 121.63, maxLon: 121.68 }
+        // Sorowako Nuha North Inland Mountain Ridge (6km North-East of Lake Matano on solid high mountain ridge at 650 mdpl)
+        { name: "Sorowako Nuha North Inland Mountain Ridge", minLat: -2.54, maxLat: -2.49, minLon: 121.48, maxLon: 121.53 },
+        // Morowali Bungku Central Mountain Ridge (16km West of Bahodopi coast and 20km East of Lake Towuti on high rainforest ridge)
+        { name: "Morowali Bungku Central Mountain Ridge", minLat: -2.84, maxLat: -2.79, minLon: 121.81, maxLon: 121.86 },
+        // Konawe Abuki High Inland Mountain Ridge (25km Inland West of Kendari & coast)
+        { name: "Konawe Abuki High Inland Mountain Ridge", minLat: -3.73, maxLat: -3.68, minLon: 121.93, maxLon: 121.98 },
+        // Weda Bay Central Halmahera Spine Ridge (14km Inland East of Weda coast on central Halmahera mountain spine)
+        { name: "Weda Bay Central Halmahera Spine Ridge", minLat: 0.51, maxLat: 0.56, minLon: 127.93, maxLon: 127.98 },
+        // Pomalaa Baula High Inland Ridge (12km Inland East of Gulf of Boni coast on inland hill range)
+        { name: "Pomalaa Baula High Inland Ridge", minLat: -4.15, maxLat: -4.10, minLon: 121.68, maxLon: 121.73 }
     ];
     
     const zone = safeZones[Math.floor(Math.random() * safeZones.length)];

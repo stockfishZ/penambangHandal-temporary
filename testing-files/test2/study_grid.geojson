@@ -7,22 +7,22 @@
       "properties": {
         "grid_id": "MOR001",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 8.1,
-        "distance_to_river_m": 2601,
-        "distance_to_road_m": 1914,
-        "distance_to_settlement_m": 11933,
+        "slope_deg": 12.1,
+        "distance_to_river_m": 2972,
+        "distance_to_road_m": 2330,
+        "distance_to_settlement_m": 14913,
         "legal_status": "allowed",
         "distance_to_smelter_km": 76.8,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.083,
         "clay_index": 1.621,
         "ndvi_stress_index": 0.232,
         "tmi_structural_nT": 45621.1,
         "tmi_anomaly_nT": 621.1,
-        "elevation_mdpl": 252.4,
+        "elevation_mdpl": 452.4,
         "geochem_assay_ratio": 2.13
       },
       "geometry": {
@@ -30,23 +30,23 @@
         "coordinates": [
           [
             [
+              121.74,
+              -2.92
+            ],
+            [
               121.75,
               -2.92
             ],
             [
-              121.758,
-              -2.92
-            ],
-            [
-              121.758,
-              -2.912
-            ],
-            [
               121.75,
-              -2.912
+              -2.91
             ],
             [
-              121.75,
+              121.74,
+              -2.91
+            ],
+            [
+              121.74,
               -2.92
             ]
           ]
@@ -58,22 +58,22 @@
       "properties": {
         "grid_id": "MOR002",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 7.6,
-        "distance_to_river_m": 2583,
-        "distance_to_road_m": 1601,
-        "distance_to_settlement_m": 6763,
+        "slope_deg": 11.6,
+        "distance_to_river_m": 2952,
+        "distance_to_road_m": 1966,
+        "distance_to_settlement_m": 8223,
         "legal_status": "allowed",
         "distance_to_smelter_km": 73.8,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.118,
         "clay_index": 2.411,
         "ndvi_stress_index": 0.227,
         "tmi_structural_nT": 45669.3,
         "tmi_anomaly_nT": 669.3,
-        "elevation_mdpl": 291.8,
+        "elevation_mdpl": 491.8,
         "geochem_assay_ratio": 2.89
       },
       "geometry": {
@@ -81,23 +81,23 @@
         "coordinates": [
           [
             [
-              121.758,
+              121.75,
               -2.92
             ],
             [
-              121.766,
+              121.76,
               -2.92
             ],
             [
-              121.766,
-              -2.912
+              121.76,
+              -2.91
             ],
             [
-              121.758,
-              -2.912
+              121.75,
+              -2.91
             ],
             [
-              121.758,
+              121.75,
               -2.92
             ]
           ]
@@ -109,22 +109,22 @@
       "properties": {
         "grid_id": "MOR003",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 12.1,
-        "distance_to_river_m": 2517,
-        "distance_to_road_m": 4702,
-        "distance_to_settlement_m": 6310,
+        "slope_deg": 16.1,
+        "distance_to_river_m": 2876,
+        "distance_to_road_m": 5572,
+        "distance_to_settlement_m": 7637,
         "legal_status": "allowed",
         "distance_to_smelter_km": 71.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.501,
         "clay_index": 2.31,
         "ndvi_stress_index": 0.322,
         "tmi_structural_nT": 45782.6,
         "tmi_anomaly_nT": 782.6,
-        "elevation_mdpl": 330.6,
+        "elevation_mdpl": 530.6,
         "geochem_assay_ratio": 2.8
       },
       "geometry": {
@@ -132,23 +132,23 @@
         "coordinates": [
           [
             [
-              121.766,
+              121.76,
               -2.92
             ],
             [
-              121.774,
+              121.77,
               -2.92
             ],
             [
-              121.774,
-              -2.912
+              121.77,
+              -2.91
             ],
             [
-              121.766,
-              -2.912
+              121.76,
+              -2.91
             ],
             [
-              121.766,
+              121.76,
               -2.92
             ]
           ]
@@ -160,22 +160,22 @@
       "properties": {
         "grid_id": "MOR004",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 14.2,
-        "distance_to_river_m": 1319,
-        "distance_to_road_m": 2624,
-        "distance_to_settlement_m": 4190,
+        "slope_deg": 18.2,
+        "distance_to_river_m": 1504,
+        "distance_to_road_m": 3156,
+        "distance_to_settlement_m": 4892,
         "legal_status": "allowed",
         "distance_to_smelter_km": 68.4,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.775,
         "clay_index": 1.656,
         "ndvi_stress_index": 0.255,
         "tmi_structural_nT": 45989.3,
         "tmi_anomaly_nT": 989.3,
-        "elevation_mdpl": 293.6,
+        "elevation_mdpl": 493.6,
         "geochem_assay_ratio": 2.87
       },
       "geometry": {
@@ -183,23 +183,23 @@
         "coordinates": [
           [
             [
-              121.774,
+              121.77,
               -2.92
             ],
             [
-              121.782,
+              121.78,
               -2.92
             ],
             [
-              121.782,
-              -2.912
+              121.78,
+              -2.91
             ],
             [
-              121.774,
-              -2.912
+              121.77,
+              -2.91
             ],
             [
-              121.774,
+              121.77,
               -2.92
             ]
           ]
@@ -211,22 +211,22 @@
       "properties": {
         "grid_id": "MOR005",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 11.9,
-        "distance_to_river_m": 1506,
-        "distance_to_road_m": 1597,
-        "distance_to_settlement_m": 11746,
+        "slope_deg": 15.9,
+        "distance_to_river_m": 1719,
+        "distance_to_road_m": 1962,
+        "distance_to_settlement_m": 14671,
         "legal_status": "allowed",
         "distance_to_smelter_km": 66.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.841,
         "clay_index": 1.602,
         "ndvi_stress_index": 0.223,
         "tmi_structural_nT": 45233.5,
         "tmi_anomaly_nT": 233.5,
-        "elevation_mdpl": 348.4,
+        "elevation_mdpl": 548.4,
         "geochem_assay_ratio": 2.06
       },
       "geometry": {
@@ -234,7 +234,7 @@
         "coordinates": [
           [
             [
-              121.782,
+              121.78,
               -2.92
             ],
             [
@@ -243,14 +243,14 @@
             ],
             [
               121.79,
-              -2.912
+              -2.91
             ],
             [
-              121.782,
-              -2.912
+              121.78,
+              -2.91
             ],
             [
-              121.782,
+              121.78,
               -2.92
             ]
           ]
@@ -262,22 +262,22 @@
       "properties": {
         "grid_id": "MOR006",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 6.7,
-        "distance_to_river_m": 1796,
-        "distance_to_road_m": 2318,
-        "distance_to_settlement_m": 8969,
+        "slope_deg": 10.7,
+        "distance_to_river_m": 2050,
+        "distance_to_road_m": 2800,
+        "distance_to_settlement_m": 11078,
         "legal_status": "allowed",
         "distance_to_smelter_km": 64.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.437,
         "clay_index": 2.186,
         "ndvi_stress_index": 0.188,
         "tmi_structural_nT": 45952.2,
         "tmi_anomaly_nT": 952.2,
-        "elevation_mdpl": 316.5,
+        "elevation_mdpl": 516.5,
         "geochem_assay_ratio": 2.65
       },
       "geometry": {
@@ -289,16 +289,16 @@
               -2.92
             ],
             [
-              121.798,
+              121.8,
               -2.92
             ],
             [
-              121.798,
-              -2.912
+              121.8,
+              -2.91
             ],
             [
               121.79,
-              -2.912
+              -2.91
             ],
             [
               121.79,
@@ -313,22 +313,22 @@
       "properties": {
         "grid_id": "MOR007",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 13.6,
-        "distance_to_river_m": 1727,
-        "distance_to_road_m": 4290,
-        "distance_to_settlement_m": 7200,
+        "slope_deg": 17.6,
+        "distance_to_river_m": 1971,
+        "distance_to_road_m": 5093,
+        "distance_to_settlement_m": 8789,
         "legal_status": "allowed",
         "distance_to_smelter_km": 62.3,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.79,
         "clay_index": 2.069,
         "ndvi_stress_index": 0.321,
         "tmi_structural_nT": 46037.4,
         "tmi_anomaly_nT": 1037.4,
-        "elevation_mdpl": 271.0,
+        "elevation_mdpl": 471.0,
         "geochem_assay_ratio": 2.25
       },
       "geometry": {
@@ -336,23 +336,23 @@
         "coordinates": [
           [
             [
-              121.798,
+              121.8,
               -2.92
             ],
             [
-              121.806,
+              121.81,
               -2.92
             ],
             [
-              121.806,
-              -2.912
+              121.81,
+              -2.91
             ],
             [
-              121.798,
-              -2.912
+              121.8,
+              -2.91
             ],
             [
-              121.798,
+              121.8,
               -2.92
             ]
           ]
@@ -364,22 +364,22 @@
       "properties": {
         "grid_id": "MOR008",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 14.6,
-        "distance_to_river_m": 2683,
-        "distance_to_road_m": 2988,
-        "distance_to_settlement_m": 7639,
+        "slope_deg": 18.6,
+        "distance_to_river_m": 3067,
+        "distance_to_road_m": 3579,
+        "distance_to_settlement_m": 9356,
         "legal_status": "allowed",
         "distance_to_smelter_km": 61.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.434,
         "clay_index": 2.414,
         "ndvi_stress_index": 0.398,
         "tmi_structural_nT": 45820.8,
         "tmi_anomaly_nT": 820.8,
-        "elevation_mdpl": 291.8,
+        "elevation_mdpl": 491.8,
         "geochem_assay_ratio": 2.79
       },
       "geometry": {
@@ -387,23 +387,23 @@
         "coordinates": [
           [
             [
-              121.806,
+              121.81,
               -2.92
             ],
             [
-              121.814,
+              121.82,
               -2.92
             ],
             [
-              121.814,
-              -2.912
+              121.82,
+              -2.91
             ],
             [
-              121.806,
-              -2.912
+              121.81,
+              -2.91
             ],
             [
-              121.806,
+              121.81,
               -2.92
             ]
           ]
@@ -415,22 +415,22 @@
       "properties": {
         "grid_id": "MOR009",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 13.9,
-        "distance_to_river_m": 1645,
-        "distance_to_road_m": 3517,
-        "distance_to_settlement_m": 9924,
+        "slope_deg": 17.9,
+        "distance_to_river_m": 1878,
+        "distance_to_road_m": 4194,
+        "distance_to_settlement_m": 12314,
         "legal_status": "allowed",
         "distance_to_smelter_km": 60.1,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.228,
         "clay_index": 2.133,
         "ndvi_stress_index": 0.37,
         "tmi_structural_nT": 45574.5,
         "tmi_anomaly_nT": 574.5,
-        "elevation_mdpl": 337.8,
+        "elevation_mdpl": 537.8,
         "geochem_assay_ratio": 3.07
       },
       "geometry": {
@@ -438,23 +438,23 @@
         "coordinates": [
           [
             [
-              121.814,
+              121.82,
               -2.92
             ],
             [
-              121.822,
+              121.83,
               -2.92
             ],
             [
-              121.822,
-              -2.912
+              121.83,
+              -2.91
             ],
             [
-              121.814,
-              -2.912
+              121.82,
+              -2.91
             ],
             [
-              121.814,
+              121.82,
               -2.92
             ]
           ]
@@ -466,22 +466,22 @@
       "properties": {
         "grid_id": "MOR010",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 15.0,
-        "distance_to_river_m": 1644,
-        "distance_to_road_m": 2992,
-        "distance_to_settlement_m": 7765,
+        "slope_deg": 19.0,
+        "distance_to_river_m": 1876,
+        "distance_to_road_m": 3584,
+        "distance_to_settlement_m": 9519,
         "legal_status": "allowed",
         "distance_to_smelter_km": 59.6,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.43,
         "clay_index": 1.644,
         "ndvi_stress_index": 0.417,
         "tmi_structural_nT": 45313.4,
         "tmi_anomaly_nT": 313.4,
-        "elevation_mdpl": 316.1,
+        "elevation_mdpl": 516.1,
         "geochem_assay_ratio": 1.92
       },
       "geometry": {
@@ -489,23 +489,23 @@
         "coordinates": [
           [
             [
-              121.822,
-              -2.92
-            ],
-            [
               121.83,
               -2.92
             ],
             [
+              121.84,
+              -2.92
+            ],
+            [
+              121.84,
+              -2.91
+            ],
+            [
               121.83,
-              -2.912
+              -2.91
             ],
             [
-              121.822,
-              -2.912
-            ],
-            [
-              121.822,
+              121.83,
               -2.92
             ]
           ]
@@ -517,22 +517,22 @@
       "properties": {
         "grid_id": "MOR011",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 16.2,
-        "distance_to_river_m": 1039,
-        "distance_to_road_m": 3532,
-        "distance_to_settlement_m": 8164,
+        "slope_deg": 20.2,
+        "distance_to_river_m": 1184,
+        "distance_to_road_m": 4212,
+        "distance_to_settlement_m": 10035,
         "legal_status": "allowed",
         "distance_to_smelter_km": 59.6,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SE",
         "fe_oxide_index": 2.792,
         "clay_index": 2.42,
         "ndvi_stress_index": 0.207,
         "tmi_structural_nT": 45551.3,
         "tmi_anomaly_nT": 551.3,
-        "elevation_mdpl": 262.1,
+        "elevation_mdpl": 462.1,
         "geochem_assay_ratio": 2.78
       },
       "geometry": {
@@ -540,23 +540,23 @@
         "coordinates": [
           [
             [
-              121.83,
+              121.84,
               -2.92
             ],
             [
-              121.838,
+              121.85,
               -2.92
             ],
             [
-              121.838,
-              -2.912
+              121.85,
+              -2.91
             ],
             [
-              121.83,
-              -2.912
+              121.84,
+              -2.91
             ],
             [
-              121.83,
+              121.84,
               -2.92
             ]
           ]
@@ -568,22 +568,22 @@
       "properties": {
         "grid_id": "MOR012",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 16.9,
-        "distance_to_river_m": 2181,
-        "distance_to_road_m": 2711,
-        "distance_to_settlement_m": 6392,
+        "slope_deg": 20.9,
+        "distance_to_river_m": 2491,
+        "distance_to_road_m": 3257,
+        "distance_to_settlement_m": 7742,
         "legal_status": "allowed",
         "distance_to_smelter_km": 60.1,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SE",
         "fe_oxide_index": 1.909,
         "clay_index": 2.036,
         "ndvi_stress_index": 0.375,
         "tmi_structural_nT": 45312.4,
         "tmi_anomaly_nT": 312.4,
-        "elevation_mdpl": 269.0,
+        "elevation_mdpl": 469.0,
         "geochem_assay_ratio": 2.55
       },
       "geometry": {
@@ -591,23 +591,23 @@
         "coordinates": [
           [
             [
-              121.838,
+              121.85,
               -2.92
             ],
             [
-              121.846,
+              121.86,
               -2.92
             ],
             [
-              121.846,
-              -2.912
+              121.86,
+              -2.91
             ],
             [
-              121.838,
-              -2.912
+              121.85,
+              -2.91
             ],
             [
-              121.838,
+              121.85,
               -2.92
             ]
           ]
@@ -619,22 +619,22 @@
       "properties": {
         "grid_id": "MOR013",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "alluvium",
-        "slope_deg": 15.5,
-        "distance_to_river_m": 467,
-        "distance_to_road_m": 4825,
-        "distance_to_settlement_m": 8555,
+        "slope_deg": 19.5,
+        "distance_to_river_m": 529,
+        "distance_to_road_m": 5715,
+        "distance_to_settlement_m": 10541,
         "legal_status": "allowed",
         "distance_to_smelter_km": 61.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SE",
         "fe_oxide_index": 1.181,
         "clay_index": 1.247,
         "ndvi_stress_index": 0.779,
         "tmi_structural_nT": 45125.9,
         "tmi_anomaly_nT": 125.9,
-        "elevation_mdpl": 284.1,
+        "elevation_mdpl": 484.1,
         "geochem_assay_ratio": 5.06
       },
       "geometry": {
@@ -642,23 +642,23 @@
         "coordinates": [
           [
             [
-              121.846,
+              121.86,
               -2.92
             ],
             [
-              121.854,
+              121.87,
               -2.92
             ],
             [
-              121.854,
-              -2.912
+              121.87,
+              -2.91
             ],
             [
-              121.846,
-              -2.912
+              121.86,
+              -2.91
             ],
             [
-              121.846,
+              121.86,
               -2.92
             ]
           ]
@@ -670,22 +670,22 @@
       "properties": {
         "grid_id": "MOR014",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 9.4,
-        "distance_to_river_m": 1015,
-        "distance_to_road_m": 1298,
-        "distance_to_settlement_m": 11841,
+        "slope_deg": 13.4,
+        "distance_to_river_m": 1155,
+        "distance_to_road_m": 1614,
+        "distance_to_settlement_m": 14794,
         "legal_status": "allowed",
         "distance_to_smelter_km": 62.3,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SE",
         "fe_oxide_index": 2.713,
         "clay_index": 2.392,
         "ndvi_stress_index": 0.325,
         "tmi_structural_nT": 45951.6,
         "tmi_anomaly_nT": 951.6,
-        "elevation_mdpl": 286.3,
+        "elevation_mdpl": 486.3,
         "geochem_assay_ratio": 1.57
       },
       "geometry": {
@@ -693,23 +693,23 @@
         "coordinates": [
           [
             [
-              121.854,
+              121.87,
               -2.92
             ],
             [
-              121.862,
+              121.88,
               -2.92
             ],
             [
-              121.862,
-              -2.912
+              121.88,
+              -2.91
             ],
             [
-              121.854,
-              -2.912
+              121.87,
+              -2.91
             ],
             [
-              121.854,
+              121.87,
               -2.92
             ]
           ]
@@ -721,22 +721,22 @@
       "properties": {
         "grid_id": "MOR015",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 16.1,
-        "distance_to_river_m": 1321,
-        "distance_to_road_m": 4029,
-        "distance_to_settlement_m": 5787,
+        "slope_deg": 20.1,
+        "distance_to_river_m": 1507,
+        "distance_to_road_m": 4789,
+        "distance_to_settlement_m": 6960,
         "legal_status": "allowed",
         "distance_to_smelter_km": 64.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SE",
         "fe_oxide_index": 1.912,
         "clay_index": 2.005,
         "ndvi_stress_index": 0.293,
         "tmi_structural_nT": 45461.1,
         "tmi_anomaly_nT": 461.1,
-        "elevation_mdpl": 304.2,
+        "elevation_mdpl": 504.2,
         "geochem_assay_ratio": 1.88
       },
       "geometry": {
@@ -744,23 +744,23 @@
         "coordinates": [
           [
             [
-              121.862,
+              121.88,
               -2.92
             ],
             [
-              121.87,
+              121.89,
               -2.92
             ],
             [
-              121.87,
-              -2.912
+              121.89,
+              -2.91
             ],
             [
-              121.862,
-              -2.912
+              121.88,
+              -2.91
             ],
             [
-              121.862,
+              121.88,
               -2.92
             ]
           ]
@@ -772,22 +772,22 @@
       "properties": {
         "grid_id": "MOR016",
         "site": "morowali",
-        "location_label": "Morowali Deep Greenfield Mountains (West Interior) - Sulawesi Tengah greenfield nickel laterite",
+        "location_label": "Morowali Bungku Central Mountain Ridge - Sulawesi Tengah greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 8.1,
-        "distance_to_river_m": 1646,
-        "distance_to_road_m": 1455,
-        "distance_to_settlement_m": 5294,
+        "slope_deg": 12.1,
+        "distance_to_river_m": 1879,
+        "distance_to_road_m": 1797,
+        "distance_to_settlement_m": 6321,
         "legal_status": "allowed",
         "distance_to_smelter_km": 66.0,
-        "area_ha": 0.79,
+        "area_ha": 1.23,
         "region_id": "SE",
         "fe_oxide_index": 2.354,
         "clay_index": 1.893,
         "ndvi_stress_index": 0.277,
         "tmi_structural_nT": 45690.8,
         "tmi_anomaly_nT": 690.8,
-        "elevation_mdpl": 341.1,
+        "elevation_mdpl": 541.1,
         "geochem_assay_ratio": 1.92
       },
       "geometry": {
@@ -795,23 +795,23 @@
         "coordinates": [
           [
             [
-              121.87,
+              121.89,
               -2.92
             ],
             [
-              121.878,
+              121.9,
               -2.92
             ],
             [
-              121.878,
-              -2.912
+              121.9,
+              -2.91
             ],
             [
-              121.87,
-              -2.912
+              121.89,
+              -2.91
             ],
             [
-              121.87,
+              121.89,
               -2.92
             ]
           ]
