@@ -1516,7 +1516,25 @@ function selectTarget(gridId) {
     <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;margin:4px 0;"><span>Recommended Spacing:</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
     <div class="detail-line"><span>Required Drill Holes:</span><b>${row.estimated_drill_holes ?? '-'}</b></div>
     <div class="detail-line"><span>Est. Drilling Cost:</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
-    <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;margin-top:6px;"><span>Ni average:</span><b>${row.Ni_avg}%</b></div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 12px;margin:8px 0;background:rgba(255,255,255,0.02);border-radius:6px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#10b981;margin-bottom:8px;">
+        🧪 Geochemistry & Assay Statistics
+      </div>
+      <div class="detail-line"><span>Ni (Nickel):</span><b style="color:#10b981;">${row.Ni_avg != null ? row.Ni_avg + '%' : '-'}</b></div>
+      <div class="detail-line"><span>Fe (Iron):</span><b>${row.Fe_avg != null ? row.Fe_avg + '%' : '-'}</b></div>
+      <div class="detail-line"><span>Co (Cobalt):</span><b>${row.Co_avg != null ? row.Co_avg + '%' : '-'}</b></div>
+      <div class="detail-line"><span>MgO (Magnesia):</span><b>${row.MgO_avg != null ? row.MgO_avg + '%' : '-'}</b></div>
+      <div class="detail-line"><span>SiO₂ (Silica):</span><b>${row.SiO2_avg != null ? row.SiO2_avg + '%' : '-'}</b></div>
+      <div class="detail-line"><span>SiO₂/MgO Ratio:</span><b>${row.MgO_avg > 0 ? (row.SiO2_avg / row.MgO_avg).toFixed(2) : (row.geochem_assay_ratio || '-')}</b></div>
+      <div class="detail-line"><span>Geochem Score:</span><b style="color:#f59e0b;">${row.geochem_score != null ? row.geochem_score + ' / 100' : '-'}</b></div>
+      ${row.fe_oxide_index != null ? `
+      <div style="border-top:1px dashed rgba(255,255,255,0.1);margin-top:6px;padding-top:6px;">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Satellite Remote Sensing (Sentinel-2)</div>
+        <div class="detail-line" style="font-size:11px;"><span>Fe-Oxide (B4/B2):</span><b>${row.fe_oxide_index}</b></div>
+        <div class="detail-line" style="font-size:11px;"><span>Clay Index (B11/B12):</span><b>${row.clay_index || '-'}</b></div>
+        <div class="detail-line" style="font-size:11px;"><span>NDVI Stress Index:</span><b>${row.ndvi_stress_index || '-'}</b></div>
+      </div>` : ''}
+    </div>
     <div class="detail-line"><span>Processing Route:</span><b style="color:#0ea5e9;">${row.processing_route || '-'}</b></div>
     <div class="detail-line" style="border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px;margin-bottom:6px;"><span>Ore Character:</span><b>${row.processing_desc || '-'}</b></div>
     <div class="detail-line"><span>K3 Safety Risk:</span><b style="color:${row.safety_level && row.safety_level.includes('High') ? '#ef4444' : row.safety_level && row.safety_level.includes('Moderate') ? '#f59e0b' : '#10b981'};">${row.safety_level || '-'}</b></div>
