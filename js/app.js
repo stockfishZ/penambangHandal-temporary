@@ -1178,19 +1178,28 @@ function fetchElevationDataForApp(cells, callback) {
     if (total === 0) finish();
 }
 
-function createGridTextSprite(text, opacity = 0.70) {
+let _active3DSelectedGid = null;
+let _3dSpriteMap = {};
+
+function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
     const canvas = document.createElement('canvas');
-    canvas.width = 128;
-    canvas.height = 64;
+    canvas.width = 160;
+    canvas.height = 80;
     const ctx = canvas.getContext('2d');
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    ctx.fillStyle = `rgba(15, 23, 42, 0.85)`;
-    ctx.strokeStyle = `rgba(255, 255, 255, 0.65)`;
-    ctx.lineWidth = 2;
+    if (isSelected) {
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.95)';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 4;
+    } else {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.lineWidth = 2;
+    }
     
-    const r = 10, x = 12, y = 8, w = 104, h = 48;
+    const r = 12, x = 12, y = 10, w = 136, h = 60;
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.arcTo(x + w, y, x + w, y + h, r);
@@ -1201,8 +1210,8 @@ function createGridTextSprite(text, opacity = 0.70) {
     ctx.fill();
     ctx.stroke();
 
-    ctx.font = 'Bold 24px "Space Grotesk", sans-serif';
-    ctx.fillStyle = `rgba(255, 255, 255, 0.95)`;
+    ctx.font = isSelected ? 'Bold 28px "Space Grotesk", sans-serif' : 'Bold 24px "Space Grotesk", sans-serif';
+    ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 1);
@@ -1213,16 +1222,32 @@ function createGridTextSprite(text, opacity = 0.70) {
     const spriteMaterial = new THREE.SpriteMaterial({
         map: texture,
         transparent: true,
-        opacity: opacity,
+        opacity: isSelected ? 1.0 : opacity,
         depthTest: false
     });
     
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(1.8, 0.9, 1);
+    sprite.scale.set(isSelected ? 2.5 : 1.8, isSelected ? 1.25 : 0.9, 1);
     return sprite;
 }
 
+function highlight3DGridLabel(gridId) {
+    _active3DSelectedGid = gridId;
+    Object.keys(_3dSpriteMap).forEach(gid => {
+        const sprite = _3dSpriteMap[gid];
+        if (!sprite) return;
+        const isSel = (gid === gridId);
+        
+        const tempSprite = createGridTextSprite(gid, 0.70, isSel);
+        if (sprite.material.map) sprite.material.map.dispose();
+        sprite.material.map = tempSprite.material.map;
+        sprite.material.opacity = isSel ? 1.0 : 0.70;
+        sprite.scale.set(isSel ? 2.5 : 1.8, isSel ? 1.25 : 0.9, 1);
+    });
+}
+
 function show3DGridDetail(gridId) {
+  highlight3DGridLabel(gridId);
   const card = document.getElementById('info3dSelectedCard');
   const cardId = document.getElementById('card3dGridId');
   const cardPri = document.getElementById('card3dPriority');
@@ -1444,7 +1469,9 @@ function renderPlotly3D() {
       scene.add(wireMesh);
 
       // Add low-opacity grid ID text labels floating over each 3D grid cell
+      _3dSpriteMap = {};
       const spriteList = [];
+      const initSelected = selectedGridId || (resultRows[0] && resultRows[0].grid_id);
       cells.forEach(cell => {
           const u = (cell.lonC - minLon) / (maxLon - minLon || 1);
           const v = (cell.latC - minLat) / (maxLat - minLat || 1);
@@ -1459,12 +1486,18 @@ function renderPlotly3D() {
           });
           
           const h = (closestVert.elevation - minElev) * heightScale;
-          const sprite = createGridTextSprite(cell.gid, 0.70);
-          sprite.position.set(px, h + 0.8, pz);
+          const isSel = (cell.gid === initSelected);
+          const sprite = createGridTextSprite(cell.gid, 0.70, isSel);
+          sprite.position.set(px, h + (isSel ? 1.0 : 0.8), pz);
           sprite.userData = { gid: cell.gid };
           scene.add(sprite);
           spriteList.push(sprite);
+          _3dSpriteMap[cell.gid] = sprite;
       });
+
+      if (initSelected) {
+          show3DGridDetail(initSelected);
+      }
 
       // 3D Raycasting Tap/Click Listener for Grid Selection
       let pointerDownPos = { x: 0, y: 0 };
