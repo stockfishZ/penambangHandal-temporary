@@ -1176,7 +1176,7 @@ function fetchElevationDataForApp(cells, callback) {
     if (total === 0) finish();
 }
 
-function createGridTextSprite(text, opacity = 0.50) {
+function createGridTextSprite(text, opacity = 0.70) {
     const canvas = document.createElement('canvas');
     canvas.width = 128;
     canvas.height = 64;
@@ -1184,8 +1184,8 @@ function createGridTextSprite(text, opacity = 0.50) {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    ctx.fillStyle = `rgba(15, 23, 42, ${opacity * 0.7})`;
-    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.4})`;
+    ctx.fillStyle = `rgba(15, 23, 42, 0.85)`;
+    ctx.strokeStyle = `rgba(255, 255, 255, 0.65)`;
     ctx.lineWidth = 2;
     
     const r = 10, x = 12, y = 8, w = 104, h = 48;
@@ -1199,8 +1199,8 @@ function createGridTextSprite(text, opacity = 0.50) {
     ctx.fill();
     ctx.stroke();
 
-    ctx.font = 'Bold 22px "Space Grotesk", sans-serif';
-    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    ctx.font = 'Bold 24px "Space Grotesk", sans-serif';
+    ctx.fillStyle = `rgba(255, 255, 255, 0.95)`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 1);
@@ -1398,7 +1398,7 @@ function renderPlotly3D() {
           });
           
           const h = (closestVert.elevation - minElev) * heightScale;
-          const sprite = createGridTextSprite(cell.gid, 0.50);
+          const sprite = createGridTextSprite(cell.gid, 0.70);
           sprite.position.set(px, h + 0.8, pz);
           scene.add(sprite);
       });

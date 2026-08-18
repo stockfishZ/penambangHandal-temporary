@@ -613,21 +613,21 @@ document.addEventListener('DOMContentLoaded', () => {
           var lCanvas = document.createElement('canvas');
           lCanvas.width = 128; lCanvas.height = 64;
           var lCtx = lCanvas.getContext('2d');
-          lCtx.fillStyle = 'rgba(15, 23, 42, 0.45)';
-          lCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+          lCtx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+          lCtx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
           lCtx.lineWidth = 2;
           lCtx.beginPath();
           lCtx.rect(12, 8, 104, 48);
           lCtx.fill(); lCtx.stroke();
           
-          lCtx.font = 'Bold 22px "Space Grotesk", sans-serif';
-          lCtx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+          lCtx.font = 'Bold 24px "Space Grotesk", sans-serif';
+          lCtx.fillStyle = 'rgba(255, 255, 255, 0.95)';
           lCtx.textAlign = 'center';
           lCtx.textBaseline = 'middle';
           lCtx.fillText(c.gid, 64, 33);
           
           var lTex = new THREE.CanvasTexture(lCanvas);
-          var lMat = new THREE.SpriteMaterial({ map: lTex, transparent: true, opacity: 0.55, depthTest: false });
+          var lMat = new THREE.SpriteMaterial({ map: lTex, transparent: true, opacity: 0.70, depthTest: false });
           var lSprite = new THREE.Sprite(lMat);
           lSprite.scale.set(1.6, 0.8, 1);
           lSprite.position.set(px, h + 0.7, pz);
