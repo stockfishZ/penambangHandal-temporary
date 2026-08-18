@@ -90,6 +90,8 @@ function bindEvents() {
         return;
       }
       els.plotly3dContainer.style.display = 'flex';
+      const cCard = document.getElementById('info3dSelectedCard');
+      if (cCard) cCard.style.display = 'flex';
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
       document.documentElement.style.overflow = 'hidden';
       setTimeout(() => {
@@ -98,8 +100,6 @@ function bindEvents() {
     });
     els.close3dBtn.addEventListener('click', () => {
       els.plotly3dContainer.style.display = 'none';
-      const cCard = document.getElementById('info3dSelectedCard');
-      if (cCard) cCard.style.display = 'none';
       document.body.style.overflow = ''; // Restore background scrolling
       document.documentElement.style.overflow = '';
       if (typeof _3dAnimFrame !== 'undefined' && _3dAnimFrame) {
@@ -1255,6 +1255,7 @@ function show3DGridDetail(gridId) {
   const closeBtn = document.getElementById('close3dCardBtn');
 
   if (!card || !cardContent) return;
+  card.style.display = 'flex';
 
   const row = resultRows.find(r => r.grid_id === gridId);
   if (!row) return;
