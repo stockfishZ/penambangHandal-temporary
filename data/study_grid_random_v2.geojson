@@ -4,39 +4,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R01",
-        "area_ha": 25.9,
-        "slope_deg": 15.2,
-        "distance_to_river_m": 901,
-        "distance_to_road_m": 1478,
+        "grid_id": "SOR001",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 8.3,
+        "distance_to_river_m": 818,
+        "distance_to_road_m": 1276,
         "legal_status": "conditional",
-        "distance_to_smelter_km": 83.5,
-        "lithology": "non-ultramafic",
-        "landcover": "shrub"
+        "distance_to_smelter_km": 70.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.737,
+        "clay_index": 1.674,
+        "ndvi_stress_index": 0.281,
+        "tmi_structural_nT": 45129.8,
+        "tmi_anomaly_nT": 129.8,
+        "elevation_mdpl": 461.9,
+        "geochem_assay_ratio": 2.31
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.045,
-              -3.4785000000000004
+              121.36,
+              -2.7
             ],
             [
-              122.0555,
-              -3.4785000000000004
+              121.37,
+              -2.7
             ],
             [
-              122.0555,
-              -3.47
+              121.37,
+              -2.69
             ],
             [
-              122.045,
-              -3.47
+              121.36,
+              -2.69
             ],
             [
-              122.045,
-              -3.4785000000000004
+              121.36,
+              -2.7
             ]
           ]
         ]
@@ -45,203 +54,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R02",
-        "area_ha": 25.7,
-        "slope_deg": 16.2,
-        "distance_to_river_m": 1014,
-        "distance_to_road_m": 1113,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 74.2,
-        "lithology": "non-ultramafic",
-        "landcover": "shrub"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.0555,
-              -3.4785000000000004
-            ],
-            [
-              122.06599999999999,
-              -3.4785000000000004
-            ],
-            [
-              122.06599999999999,
-              -3.47
-            ],
-            [
-              122.0555,
-              -3.47
-            ],
-            [
-              122.0555,
-              -3.4785000000000004
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R03",
-        "area_ha": 25.5,
-        "slope_deg": 10.5,
-        "distance_to_river_m": 283,
-        "distance_to_road_m": 708,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 90.6,
-        "lithology": "non-ultramafic",
-        "landcover": "open land"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.066,
-              -3.4785000000000004
-            ],
-            [
-              122.0765,
-              -3.4785000000000004
-            ],
-            [
-              122.0765,
-              -3.47
-            ],
-            [
-              122.066,
-              -3.47
-            ],
-            [
-              122.066,
-              -3.4785000000000004
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R04",
-        "area_ha": 25.6,
-        "slope_deg": 3,
-        "distance_to_river_m": 404,
-        "distance_to_road_m": 783,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 77.5,
-        "lithology": "non-ultramafic",
-        "landcover": "shrub"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.0765,
-              -3.4785000000000004
-            ],
-            [
-              122.08699999999999,
-              -3.4785000000000004
-            ],
-            [
-              122.08699999999999,
-              -3.47
-            ],
-            [
-              122.0765,
-              -3.47
-            ],
-            [
-              122.0765,
-              -3.4785000000000004
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R05",
-        "area_ha": 24.1,
-        "slope_deg": 21.8,
-        "distance_to_river_m": 938,
-        "distance_to_road_m": 1294,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 72.3,
-        "lithology": "mixed ultramafic",
-        "landcover": "plantation"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.087,
-              -3.4785000000000004
-            ],
-            [
-              122.0975,
-              -3.4785000000000004
-            ],
-            [
-              122.0975,
-              -3.47
-            ],
-            [
-              122.087,
-              -3.47
-            ],
-            [
-              122.087,
-              -3.4785000000000004
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R06",
-        "area_ha": 22.2,
+        "grid_id": "SOR002",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
         "slope_deg": 12.2,
-        "distance_to_river_m": 781,
-        "distance_to_road_m": 2601,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 65.1,
-        "lithology": "mixed ultramafic",
-        "landcover": "shrub"
+        "distance_to_river_m": 1461,
+        "distance_to_road_m": 3792,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 67.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.446,
+        "clay_index": 1.352,
+        "ndvi_stress_index": 0.513,
+        "tmi_structural_nT": 44627.9,
+        "tmi_anomaly_nT": -372.1,
+        "elevation_mdpl": 468.9,
+        "geochem_assay_ratio": 3.7
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.045,
-              -3.4870000000000005
+              121.37,
+              -2.7
             ],
             [
-              122.0555,
-              -3.4870000000000005
+              121.38,
+              -2.7
             ],
             [
-              122.0555,
-              -3.4785000000000004
+              121.38,
+              -2.69
             ],
             [
-              122.045,
-              -3.4785000000000004
+              121.37,
+              -2.69
             ],
             [
-              122.045,
-              -3.4870000000000005
+              121.37,
+              -2.7
             ]
           ]
         ]
@@ -250,39 +104,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R07",
-        "area_ha": 27.8,
-        "slope_deg": 16.8,
-        "distance_to_river_m": 452,
-        "distance_to_road_m": 2069,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 75.6,
-        "lithology": "mixed ultramafic",
-        "landcover": "open land"
+        "grid_id": "SOR003",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.3,
+        "distance_to_river_m": 1980,
+        "distance_to_road_m": 1301,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 65.0,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.081,
+        "clay_index": 1.779,
+        "ndvi_stress_index": 0.406,
+        "tmi_structural_nT": 45976.4,
+        "tmi_anomaly_nT": 976.4,
+        "elevation_mdpl": 471.5,
+        "geochem_assay_ratio": 2.58
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.0555,
-              -3.4870000000000005
+              121.38,
+              -2.7
             ],
             [
-              122.06599999999999,
-              -3.4870000000000005
+              121.39,
+              -2.7
             ],
             [
-              122.06599999999999,
-              -3.4785000000000004
+              121.39,
+              -2.69
             ],
             [
-              122.0555,
-              -3.4785000000000004
+              121.38,
+              -2.69
             ],
             [
-              122.0555,
-              -3.4870000000000005
+              121.38,
+              -2.7
             ]
           ]
         ]
@@ -291,39 +154,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R08",
-        "area_ha": 23.5,
-        "slope_deg": 10.2,
-        "distance_to_river_m": 356,
-        "distance_to_road_m": 826,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 87.3,
-        "lithology": "ultramafic",
-        "landcover": "forest"
+        "grid_id": "SOR004",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 13.8,
+        "distance_to_river_m": 2433,
+        "distance_to_road_m": 3922,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 62.4,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.26,
+        "clay_index": 1.32,
+        "ndvi_stress_index": 0.531,
+        "tmi_structural_nT": 44834.8,
+        "tmi_anomaly_nT": -165.2,
+        "elevation_mdpl": 485.4,
+        "geochem_assay_ratio": 5.88
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.066,
-              -3.4870000000000005
+              121.39,
+              -2.7
             ],
             [
-              122.0765,
-              -3.4870000000000005
+              121.4,
+              -2.7
             ],
             [
-              122.0765,
-              -3.4785000000000004
+              121.4,
+              -2.69
             ],
             [
-              122.066,
-              -3.4785000000000004
+              121.39,
+              -2.69
             ],
             [
-              122.066,
-              -3.4870000000000005
+              121.39,
+              -2.7
             ]
           ]
         ]
@@ -332,39 +204,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R09",
-        "area_ha": 23.3,
-        "slope_deg": 13.9,
-        "distance_to_river_m": 952,
-        "distance_to_road_m": 1371,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 79.2,
-        "lithology": "ultramafic",
-        "landcover": "protected forest"
+        "grid_id": "SOR005",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 17.1,
+        "distance_to_river_m": 893,
+        "distance_to_road_m": 590,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 60.0,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.142,
+        "clay_index": 1.38,
+        "ndvi_stress_index": 0.714,
+        "tmi_structural_nT": 44528.4,
+        "tmi_anomaly_nT": -471.6,
+        "elevation_mdpl": 487.5,
+        "geochem_assay_ratio": 4.87
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.0765,
-              -3.4870000000000005
+              121.4,
+              -2.7
             ],
             [
-              122.08699999999999,
-              -3.4870000000000005
+              121.41,
+              -2.7
             ],
             [
-              122.08699999999999,
-              -3.4785000000000004
+              121.41,
+              -2.69
             ],
             [
-              122.0765,
-              -3.4785000000000004
+              121.4,
+              -2.69
             ],
             [
-              122.0765,
-              -3.4870000000000005
+              121.4,
+              -2.7
             ]
           ]
         ]
@@ -373,244 +254,198 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R10",
-        "area_ha": 23.5,
+        "grid_id": "SOR006",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.9,
+        "distance_to_river_m": 711,
+        "distance_to_road_m": 4107,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.0,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.025,
+        "clay_index": 1.712,
+        "ndvi_stress_index": 0.405,
+        "tmi_structural_nT": 45671.0,
+        "tmi_anomaly_nT": 671.0,
+        "elevation_mdpl": 487.3,
+        "geochem_assay_ratio": 2.81
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.41,
+              -2.7
+            ],
+            [
+              121.42,
+              -2.7
+            ],
+            [
+              121.42,
+              -2.69
+            ],
+            [
+              121.41,
+              -2.69
+            ],
+            [
+              121.41,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR007",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 14.1,
+        "distance_to_river_m": 297,
+        "distance_to_road_m": 4497,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 56.3,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.228,
+        "clay_index": 1.201,
+        "ndvi_stress_index": 0.516,
+        "tmi_structural_nT": 44779.0,
+        "tmi_anomaly_nT": -221.0,
+        "elevation_mdpl": 538.5,
+        "geochem_assay_ratio": 4.16
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.42,
+              -2.7
+            ],
+            [
+              121.43,
+              -2.7
+            ],
+            [
+              121.43,
+              -2.69
+            ],
+            [
+              121.42,
+              -2.69
+            ],
+            [
+              121.42,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR008",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 8.9,
+        "distance_to_river_m": 611,
+        "distance_to_road_m": 2819,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 55.0,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.172,
+        "clay_index": 1.445,
+        "ndvi_stress_index": 0.569,
+        "tmi_structural_nT": 44994.5,
+        "tmi_anomaly_nT": -5.5,
+        "elevation_mdpl": 501.9,
+        "geochem_assay_ratio": 4.55
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.43,
+              -2.7
+            ],
+            [
+              121.44,
+              -2.7
+            ],
+            [
+              121.44,
+              -2.69
+            ],
+            [
+              121.43,
+              -2.69
+            ],
+            [
+              121.43,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR009",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
         "slope_deg": 17.7,
-        "distance_to_river_m": 942,
-        "distance_to_road_m": 1157,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 87.4,
-        "lithology": "ultramafic",
-        "landcover": "forest"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.087,
-              -3.4870000000000005
-            ],
-            [
-              122.0975,
-              -3.4870000000000005
-            ],
-            [
-              122.0975,
-              -3.4785000000000004
-            ],
-            [
-              122.087,
-              -3.4785000000000004
-            ],
-            [
-              122.087,
-              -3.4870000000000005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R11",
-        "area_ha": 27.8,
-        "slope_deg": 21.1,
-        "distance_to_river_m": 714,
-        "distance_to_road_m": 2567,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 76.6,
-        "lithology": "serpentinite",
-        "landcover": "forest"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.045,
-              -3.4955000000000003
-            ],
-            [
-              122.0555,
-              -3.4955000000000003
-            ],
-            [
-              122.0555,
-              -3.487
-            ],
-            [
-              122.045,
-              -3.487
-            ],
-            [
-              122.045,
-              -3.4955000000000003
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R12",
-        "area_ha": 27.8,
-        "slope_deg": 23.9,
-        "distance_to_river_m": 212,
-        "distance_to_road_m": 2307,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 90.3,
-        "lithology": "mixed ultramafic",
-        "landcover": "protected forest"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.0555,
-              -3.4955000000000003
-            ],
-            [
-              122.06599999999999,
-              -3.4955000000000003
-            ],
-            [
-              122.06599999999999,
-              -3.487
-            ],
-            [
-              122.0555,
-              -3.487
-            ],
-            [
-              122.0555,
-              -3.4955000000000003
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R13",
-        "area_ha": 23.6,
-        "slope_deg": 13.9,
-        "distance_to_river_m": 318,
-        "distance_to_road_m": 2437,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 79.2,
-        "lithology": "ultramafic",
-        "landcover": "shrub"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.066,
-              -3.4955000000000003
-            ],
-            [
-              122.0765,
-              -3.4955000000000003
-            ],
-            [
-              122.0765,
-              -3.487
-            ],
-            [
-              122.066,
-              -3.487
-            ],
-            [
-              122.066,
-              -3.4955000000000003
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R14",
-        "area_ha": 28.9,
-        "slope_deg": 21.9,
-        "distance_to_river_m": 588,
-        "distance_to_road_m": 1960,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 88.7,
-        "lithology": "serpentinite",
-        "landcover": "shrub"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.0765,
-              -3.4955000000000003
-            ],
-            [
-              122.08699999999999,
-              -3.4955000000000003
-            ],
-            [
-              122.08699999999999,
-              -3.487
-            ],
-            [
-              122.0765,
-              -3.487
-            ],
-            [
-              122.0765,
-              -3.4955000000000003
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "R15",
-        "area_ha": 27.2,
-        "slope_deg": 20.1,
-        "distance_to_river_m": 817,
-        "distance_to_road_m": 2063,
+        "distance_to_river_m": 2220,
+        "distance_to_road_m": 1884,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 80.8,
-        "lithology": "serpentinite",
-        "landcover": "protected forest"
+        "distance_to_smelter_km": 54.1,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.692,
+        "clay_index": 1.327,
+        "ndvi_stress_index": 0.502,
+        "tmi_structural_nT": 45217.1,
+        "tmi_anomaly_nT": 217.1,
+        "elevation_mdpl": 469.9,
+        "geochem_assay_ratio": 5.16
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.087,
-              -3.4955000000000003
+              121.44,
+              -2.7
             ],
             [
-              122.0975,
-              -3.4955000000000003
+              121.45,
+              -2.7
             ],
             [
-              122.0975,
-              -3.487
+              121.45,
+              -2.69
             ],
             [
-              122.087,
-              -3.487
+              121.44,
+              -2.69
             ],
             [
-              122.087,
-              -3.4955000000000003
+              121.44,
+              -2.7
             ]
           ]
         ]
@@ -619,39 +454,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R16",
-        "area_ha": 26.3,
-        "slope_deg": 25.0,
-        "distance_to_river_m": 448,
-        "distance_to_road_m": 3072,
+        "grid_id": "SOR010",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.0,
+        "distance_to_river_m": 788,
+        "distance_to_road_m": 3426,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 65.8,
-        "lithology": "mixed ultramafic",
-        "landcover": "forest"
+        "distance_to_smelter_km": 53.6,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.81,
+        "clay_index": 1.664,
+        "ndvi_stress_index": 0.392,
+        "tmi_structural_nT": 46003.9,
+        "tmi_anomaly_nT": 1003.9,
+        "elevation_mdpl": 494.6,
+        "geochem_assay_ratio": 2.9
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.045,
-              -3.5040000000000004
+              121.45,
+              -2.7
             ],
             [
-              122.0555,
-              -3.5040000000000004
+              121.46,
+              -2.7
             ],
             [
-              122.0555,
-              -3.4955000000000003
+              121.46,
+              -2.69
             ],
             [
-              122.045,
-              -3.4955000000000003
+              121.45,
+              -2.69
             ],
             [
-              122.045,
-              -3.5040000000000004
+              121.45,
+              -2.7
             ]
           ]
         ]
@@ -660,39 +504,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R17",
-        "area_ha": 23.3,
-        "slope_deg": 16.8,
-        "distance_to_river_m": 455,
-        "distance_to_road_m": 2668,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 84.5,
-        "lithology": "ultramafic",
-        "landcover": "plantation"
+        "grid_id": "SOR011",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 16.1,
+        "distance_to_river_m": 951,
+        "distance_to_road_m": 4213,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 53.6,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.627,
+        "clay_index": 1.692,
+        "ndvi_stress_index": 0.389,
+        "tmi_structural_nT": 45958.6,
+        "tmi_anomaly_nT": 958.6,
+        "elevation_mdpl": 462.2,
+        "geochem_assay_ratio": 2.87
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.0555,
-              -3.5040000000000004
+              121.46,
+              -2.7
             ],
             [
-              122.06599999999999,
-              -3.5040000000000004
+              121.47,
+              -2.7
             ],
             [
-              122.06599999999999,
-              -3.4955000000000003
+              121.47,
+              -2.69
             ],
             [
-              122.0555,
-              -3.4955000000000003
+              121.46,
+              -2.69
             ],
             [
-              122.0555,
-              -3.5040000000000004
+              121.46,
+              -2.7
             ]
           ]
         ]
@@ -701,39 +554,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R18",
-        "area_ha": 22.3,
-        "slope_deg": 18.5,
-        "distance_to_river_m": 353,
-        "distance_to_road_m": 2189,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 82.5,
-        "lithology": "serpentinite",
-        "landcover": "open land"
+        "grid_id": "SOR012",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 16.0,
+        "distance_to_river_m": 908,
+        "distance_to_road_m": 2866,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 54.1,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.405,
+        "clay_index": 1.817,
+        "ndvi_stress_index": 0.35,
+        "tmi_structural_nT": 45101.7,
+        "tmi_anomaly_nT": 101.7,
+        "elevation_mdpl": 532.6,
+        "geochem_assay_ratio": 2.37
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.066,
-              -3.5040000000000004
+              121.47,
+              -2.7
             ],
             [
-              122.0765,
-              -3.5040000000000004
+              121.48,
+              -2.7
             ],
             [
-              122.0765,
-              -3.4955000000000003
+              121.48,
+              -2.69
             ],
             [
-              122.066,
-              -3.4955000000000003
+              121.47,
+              -2.69
             ],
             [
-              122.066,
-              -3.5040000000000004
+              121.47,
+              -2.7
             ]
           ]
         ]
@@ -742,39 +604,48 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R19",
-        "area_ha": 26.1,
+        "grid_id": "SOR013",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 14.0,
-        "distance_to_river_m": 545,
-        "distance_to_road_m": 2180,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 84.1,
-        "lithology": "ultramafic",
-        "landcover": "shrub"
+        "distance_to_river_m": 181,
+        "distance_to_road_m": 1541,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 55.0,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.487,
+        "clay_index": 1.995,
+        "ndvi_stress_index": 0.286,
+        "tmi_structural_nT": 45313.7,
+        "tmi_anomaly_nT": 313.7,
+        "elevation_mdpl": 487.3,
+        "geochem_assay_ratio": 3.02
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.0765,
-              -3.5040000000000004
+              121.48,
+              -2.7
             ],
             [
-              122.08699999999999,
-              -3.5040000000000004
+              121.49,
+              -2.7
             ],
             [
-              122.08699999999999,
-              -3.4955000000000003
+              121.49,
+              -2.69
             ],
             [
-              122.0765,
-              -3.4955000000000003
+              121.48,
+              -2.69
             ],
             [
-              122.0765,
-              -3.5040000000000004
+              121.48,
+              -2.7
             ]
           ]
         ]
@@ -783,39 +654,3348 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "R20",
-        "area_ha": 24.8,
-        "slope_deg": 22.4,
-        "distance_to_river_m": 636,
-        "distance_to_road_m": 2409,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 94.9,
-        "lithology": "ultramafic",
-        "landcover": "plantation"
+        "grid_id": "SOR014",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.2,
+        "distance_to_river_m": 193,
+        "distance_to_road_m": 3467,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 56.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.246,
+        "clay_index": 1.75,
+        "ndvi_stress_index": 0.41,
+        "tmi_structural_nT": 45618.0,
+        "tmi_anomaly_nT": 618.0,
+        "elevation_mdpl": 445.0,
+        "geochem_assay_ratio": 1.85
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              122.087,
-              -3.5040000000000004
+              121.49,
+              -2.7
             ],
             [
-              122.0975,
-              -3.5040000000000004
+              121.5,
+              -2.7
             ],
             [
-              122.0975,
-              -3.4955000000000003
+              121.5,
+              -2.69
             ],
             [
-              122.087,
-              -3.4955000000000003
+              121.49,
+              -2.69
             ],
             [
-              122.087,
-              -3.5040000000000004
+              121.49,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR015",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.0,
+        "distance_to_river_m": 360,
+        "distance_to_road_m": 1536,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.0,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.367,
+        "clay_index": 1.718,
+        "ndvi_stress_index": 0.236,
+        "tmi_structural_nT": 45793.9,
+        "tmi_anomaly_nT": 793.9,
+        "elevation_mdpl": 510.6,
+        "geochem_assay_ratio": 1.52
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.5,
+              -2.7
+            ],
+            [
+              121.51,
+              -2.7
+            ],
+            [
+              121.51,
+              -2.69
+            ],
+            [
+              121.5,
+              -2.69
+            ],
+            [
+              121.5,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR016",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.8,
+        "distance_to_river_m": 247,
+        "distance_to_road_m": 1745,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 60.0,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.973,
+        "clay_index": 1.997,
+        "ndvi_stress_index": 0.211,
+        "tmi_structural_nT": 45722.3,
+        "tmi_anomaly_nT": 722.3,
+        "elevation_mdpl": 442.7,
+        "geochem_assay_ratio": 2.11
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.51,
+              -2.7
+            ],
+            [
+              121.52,
+              -2.7
+            ],
+            [
+              121.52,
+              -2.69
+            ],
+            [
+              121.51,
+              -2.69
+            ],
+            [
+              121.51,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR017",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 16.3,
+        "distance_to_river_m": 2383,
+        "distance_to_road_m": 1177,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 62.4,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.392,
+        "clay_index": 1.785,
+        "ndvi_stress_index": 0.348,
+        "tmi_structural_nT": 45866.9,
+        "tmi_anomaly_nT": 866.9,
+        "elevation_mdpl": 456.8,
+        "geochem_assay_ratio": 2.49
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.52,
+              -2.7
+            ],
+            [
+              121.53,
+              -2.7
+            ],
+            [
+              121.53,
+              -2.69
+            ],
+            [
+              121.52,
+              -2.69
+            ],
+            [
+              121.52,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR018",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.7,
+        "distance_to_river_m": 1040,
+        "distance_to_road_m": 2450,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 65.0,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.663,
+        "clay_index": 1.69,
+        "ndvi_stress_index": 0.411,
+        "tmi_structural_nT": 45735.6,
+        "tmi_anomaly_nT": 735.6,
+        "elevation_mdpl": 522.9,
+        "geochem_assay_ratio": 2.67
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.53,
+              -2.7
+            ],
+            [
+              121.54,
+              -2.7
+            ],
+            [
+              121.54,
+              -2.69
+            ],
+            [
+              121.53,
+              -2.69
+            ],
+            [
+              121.53,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR019",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 16.8,
+        "distance_to_river_m": 970,
+        "distance_to_road_m": 4003,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 67.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.811,
+        "clay_index": 2.406,
+        "ndvi_stress_index": 0.201,
+        "tmi_structural_nT": 45820.1,
+        "tmi_anomaly_nT": 820.1,
+        "elevation_mdpl": 488.9,
+        "geochem_assay_ratio": 2.76
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.54,
+              -2.7
+            ],
+            [
+              121.55,
+              -2.7
+            ],
+            [
+              121.55,
+              -2.69
+            ],
+            [
+              121.54,
+              -2.69
+            ],
+            [
+              121.54,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR020",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 10.0,
+        "distance_to_river_m": 682,
+        "distance_to_road_m": 2359,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 70.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.906,
+        "clay_index": 1.765,
+        "ndvi_stress_index": 0.235,
+        "tmi_structural_nT": 45279.4,
+        "tmi_anomaly_nT": 279.4,
+        "elevation_mdpl": 441.4,
+        "geochem_assay_ratio": 2.36
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.55,
+              -2.7
+            ],
+            [
+              121.56,
+              -2.7
+            ],
+            [
+              121.56,
+              -2.69
+            ],
+            [
+              121.55,
+              -2.69
+            ],
+            [
+              121.55,
+              -2.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR021",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.3,
+        "distance_to_river_m": 2486,
+        "distance_to_road_m": 842,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 67.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.63,
+        "clay_index": 1.792,
+        "ndvi_stress_index": 0.305,
+        "tmi_structural_nT": 45550.5,
+        "tmi_anomaly_nT": 550.5,
+        "elevation_mdpl": 484.3,
+        "geochem_assay_ratio": 2.95
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.36,
+              -2.69
+            ],
+            [
+              121.37,
+              -2.69
+            ],
+            [
+              121.37,
+              -2.68
+            ],
+            [
+              121.36,
+              -2.68
+            ],
+            [
+              121.36,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR022",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 16.7,
+        "distance_to_river_m": 1630,
+        "distance_to_road_m": 3094,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 64.6,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.427,
+        "clay_index": 1.324,
+        "ndvi_stress_index": 0.754,
+        "tmi_structural_nT": 45226.6,
+        "tmi_anomaly_nT": 226.6,
+        "elevation_mdpl": 447.1,
+        "geochem_assay_ratio": 3.91
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.37,
+              -2.69
+            ],
+            [
+              121.38,
+              -2.69
+            ],
+            [
+              121.38,
+              -2.68
+            ],
+            [
+              121.37,
+              -2.68
+            ],
+            [
+              121.37,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR023",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 18.5,
+        "distance_to_river_m": 2499,
+        "distance_to_road_m": 3140,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 61.6,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.484,
+        "clay_index": 2.379,
+        "ndvi_stress_index": 0.224,
+        "tmi_structural_nT": 45685.3,
+        "tmi_anomaly_nT": 685.3,
+        "elevation_mdpl": 503.5,
+        "geochem_assay_ratio": 2.29
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.38,
+              -2.69
+            ],
+            [
+              121.39,
+              -2.69
+            ],
+            [
+              121.39,
+              -2.68
+            ],
+            [
+              121.38,
+              -2.68
+            ],
+            [
+              121.38,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR024",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.0,
+        "distance_to_river_m": 1935,
+        "distance_to_road_m": 2945,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.377,
+        "clay_index": 2.389,
+        "ndvi_stress_index": 0.285,
+        "tmi_structural_nT": 45798.3,
+        "tmi_anomaly_nT": 798.3,
+        "elevation_mdpl": 452.1,
+        "geochem_assay_ratio": 3.15
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.39,
+              -2.69
+            ],
+            [
+              121.4,
+              -2.69
+            ],
+            [
+              121.4,
+              -2.68
+            ],
+            [
+              121.39,
+              -2.68
+            ],
+            [
+              121.39,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR025",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 17.7,
+        "distance_to_river_m": 2185,
+        "distance_to_road_m": 1496,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 56.3,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.781,
+        "clay_index": 2.032,
+        "ndvi_stress_index": 0.377,
+        "tmi_structural_nT": 45382.8,
+        "tmi_anomaly_nT": 382.8,
+        "elevation_mdpl": 469.9,
+        "geochem_assay_ratio": 2.46
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.4,
+              -2.69
+            ],
+            [
+              121.41,
+              -2.69
+            ],
+            [
+              121.41,
+              -2.68
+            ],
+            [
+              121.4,
+              -2.68
+            ],
+            [
+              121.4,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR026",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 13.4,
+        "distance_to_river_m": 266,
+        "distance_to_road_m": 2435,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 54.1,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.625,
+        "clay_index": 1.22,
+        "ndvi_stress_index": 0.647,
+        "tmi_structural_nT": 44856.9,
+        "tmi_anomaly_nT": -143.1,
+        "elevation_mdpl": 512.2,
+        "geochem_assay_ratio": 4.52
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.41,
+              -2.69
+            ],
+            [
+              121.42,
+              -2.69
+            ],
+            [
+              121.42,
+              -2.68
+            ],
+            [
+              121.41,
+              -2.68
+            ],
+            [
+              121.41,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR027",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 19.0,
+        "distance_to_river_m": 1912,
+        "distance_to_road_m": 2151,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 52.2,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.624,
+        "clay_index": 1.222,
+        "ndvi_stress_index": 0.694,
+        "tmi_structural_nT": 45303.4,
+        "tmi_anomaly_nT": 303.4,
+        "elevation_mdpl": 444.6,
+        "geochem_assay_ratio": 5.49
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.42,
+              -2.69
+            ],
+            [
+              121.43,
+              -2.69
+            ],
+            [
+              121.43,
+              -2.68
+            ],
+            [
+              121.42,
+              -2.68
+            ],
+            [
+              121.42,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR028",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 15.5,
+        "distance_to_river_m": 547,
+        "distance_to_road_m": 2183,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 50.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.483,
+        "clay_index": 1.212,
+        "ndvi_stress_index": 0.57,
+        "tmi_structural_nT": 45245.3,
+        "tmi_anomaly_nT": 245.3,
+        "elevation_mdpl": 459.9,
+        "geochem_assay_ratio": 4.46
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.43,
+              -2.69
+            ],
+            [
+              121.44,
+              -2.69
+            ],
+            [
+              121.44,
+              -2.68
+            ],
+            [
+              121.43,
+              -2.68
+            ],
+            [
+              121.43,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR029",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.9,
+        "distance_to_river_m": 1657,
+        "distance_to_road_m": 2927,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 49.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.492,
+        "clay_index": 2.313,
+        "ndvi_stress_index": 0.331,
+        "tmi_structural_nT": 46003.4,
+        "tmi_anomaly_nT": 1003.4,
+        "elevation_mdpl": 504.6,
+        "geochem_assay_ratio": 1.96
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.44,
+              -2.69
+            ],
+            [
+              121.45,
+              -2.69
+            ],
+            [
+              121.45,
+              -2.68
+            ],
+            [
+              121.44,
+              -2.68
+            ],
+            [
+              121.44,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR030",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.6,
+        "distance_to_river_m": 2176,
+        "distance_to_road_m": 3355,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 49.3,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.63,
+        "clay_index": 1.612,
+        "ndvi_stress_index": 0.309,
+        "tmi_structural_nT": 45554.8,
+        "tmi_anomaly_nT": 554.8,
+        "elevation_mdpl": 507.3,
+        "geochem_assay_ratio": 2.61
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.45,
+              -2.69
+            ],
+            [
+              121.46,
+              -2.69
+            ],
+            [
+              121.46,
+              -2.68
+            ],
+            [
+              121.45,
+              -2.68
+            ],
+            [
+              121.45,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR031",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.0,
+        "distance_to_river_m": 1736,
+        "distance_to_road_m": 3434,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 49.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.579,
+        "clay_index": 1.731,
+        "ndvi_stress_index": 0.28,
+        "tmi_structural_nT": 45199.0,
+        "tmi_anomaly_nT": 199.0,
+        "elevation_mdpl": 488.9,
+        "geochem_assay_ratio": 2.13
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.46,
+              -2.69
+            ],
+            [
+              121.47,
+              -2.69
+            ],
+            [
+              121.47,
+              -2.68
+            ],
+            [
+              121.46,
+              -2.68
+            ],
+            [
+              121.46,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR032",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 9.4,
+        "distance_to_river_m": 1490,
+        "distance_to_road_m": 635,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 49.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.027,
+        "clay_index": 2.339,
+        "ndvi_stress_index": 0.259,
+        "tmi_structural_nT": 45247.6,
+        "tmi_anomaly_nT": 247.6,
+        "elevation_mdpl": 530.1,
+        "geochem_assay_ratio": 1.41
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.47,
+              -2.69
+            ],
+            [
+              121.48,
+              -2.69
+            ],
+            [
+              121.48,
+              -2.68
+            ],
+            [
+              121.47,
+              -2.68
+            ],
+            [
+              121.47,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR033",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 8.5,
+        "distance_to_river_m": 1997,
+        "distance_to_road_m": 3948,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 50.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.678,
+        "clay_index": 1.03,
+        "ndvi_stress_index": 0.634,
+        "tmi_structural_nT": 44801.6,
+        "tmi_anomaly_nT": -198.4,
+        "elevation_mdpl": 508.6,
+        "geochem_assay_ratio": 4.73
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.48,
+              -2.69
+            ],
+            [
+              121.49,
+              -2.69
+            ],
+            [
+              121.49,
+              -2.68
+            ],
+            [
+              121.48,
+              -2.68
+            ],
+            [
+              121.48,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR034",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 10.4,
+        "distance_to_river_m": 1228,
+        "distance_to_road_m": 1298,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 52.2,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.237,
+        "clay_index": 1.681,
+        "ndvi_stress_index": 0.282,
+        "tmi_structural_nT": 45765.1,
+        "tmi_anomaly_nT": 765.1,
+        "elevation_mdpl": 477.4,
+        "geochem_assay_ratio": 1.67
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.49,
+              -2.69
+            ],
+            [
+              121.5,
+              -2.69
+            ],
+            [
+              121.5,
+              -2.68
+            ],
+            [
+              121.49,
+              -2.68
+            ],
+            [
+              121.49,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR035",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.2,
+        "distance_to_river_m": 700,
+        "distance_to_road_m": 799,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 54.1,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.601,
+        "clay_index": 2.088,
+        "ndvi_stress_index": 0.374,
+        "tmi_structural_nT": 45945.2,
+        "tmi_anomaly_nT": 945.2,
+        "elevation_mdpl": 537.5,
+        "geochem_assay_ratio": 2.87
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.5,
+              -2.69
+            ],
+            [
+              121.51,
+              -2.69
+            ],
+            [
+              121.51,
+              -2.68
+            ],
+            [
+              121.5,
+              -2.68
+            ],
+            [
+              121.5,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR036",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.9,
+        "distance_to_river_m": 1982,
+        "distance_to_road_m": 2706,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 56.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.508,
+        "clay_index": 1.831,
+        "ndvi_stress_index": 0.339,
+        "tmi_structural_nT": 45585.7,
+        "tmi_anomaly_nT": 585.7,
+        "elevation_mdpl": 484.2,
+        "geochem_assay_ratio": 1.89
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.51,
+              -2.69
+            ],
+            [
+              121.52,
+              -2.69
+            ],
+            [
+              121.52,
+              -2.68
+            ],
+            [
+              121.51,
+              -2.68
+            ],
+            [
+              121.51,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR037",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 17.2,
+        "distance_to_river_m": 2050,
+        "distance_to_road_m": 649,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.402,
+        "clay_index": 2.203,
+        "ndvi_stress_index": 0.28,
+        "tmi_structural_nT": 45215.2,
+        "tmi_anomaly_nT": 215.2,
+        "elevation_mdpl": 442.1,
+        "geochem_assay_ratio": 1.98
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.52,
+              -2.69
+            ],
+            [
+              121.53,
+              -2.69
+            ],
+            [
+              121.53,
+              -2.68
+            ],
+            [
+              121.52,
+              -2.68
+            ],
+            [
+              121.52,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR038",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 10.6,
+        "distance_to_river_m": 520,
+        "distance_to_road_m": 1169,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 61.6,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.488,
+        "clay_index": 1.751,
+        "ndvi_stress_index": 0.365,
+        "tmi_structural_nT": 45594.1,
+        "tmi_anomaly_nT": 594.1,
+        "elevation_mdpl": 515.4,
+        "geochem_assay_ratio": 2.77
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.53,
+              -2.69
+            ],
+            [
+              121.54,
+              -2.69
+            ],
+            [
+              121.54,
+              -2.68
+            ],
+            [
+              121.53,
+              -2.68
+            ],
+            [
+              121.53,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR039",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 13.6,
+        "distance_to_river_m": 1253,
+        "distance_to_road_m": 2650,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 64.6,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.484,
+        "clay_index": 1.873,
+        "ndvi_stress_index": 0.294,
+        "tmi_structural_nT": 45250.9,
+        "tmi_anomaly_nT": 250.9,
+        "elevation_mdpl": 446.2,
+        "geochem_assay_ratio": 1.59
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.54,
+              -2.69
+            ],
+            [
+              121.55,
+              -2.69
+            ],
+            [
+              121.55,
+              -2.68
+            ],
+            [
+              121.54,
+              -2.68
+            ],
+            [
+              121.54,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR040",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.2,
+        "distance_to_river_m": 2283,
+        "distance_to_road_m": 3974,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 67.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.948,
+        "clay_index": 1.897,
+        "ndvi_stress_index": 0.412,
+        "tmi_structural_nT": 45798.5,
+        "tmi_anomaly_nT": 798.5,
+        "elevation_mdpl": 479.2,
+        "geochem_assay_ratio": 2.47
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.55,
+              -2.69
+            ],
+            [
+              121.56,
+              -2.69
+            ],
+            [
+              121.56,
+              -2.68
+            ],
+            [
+              121.55,
+              -2.68
+            ],
+            [
+              121.55,
+              -2.69
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR041",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 9.1,
+        "distance_to_river_m": 1968,
+        "distance_to_road_m": 3816,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 65.0,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.938,
+        "clay_index": 1.92,
+        "ndvi_stress_index": 0.219,
+        "tmi_structural_nT": 45931.3,
+        "tmi_anomaly_nT": 931.3,
+        "elevation_mdpl": 517.1,
+        "geochem_assay_ratio": 2.86
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.36,
+              -2.68
+            ],
+            [
+              121.37,
+              -2.68
+            ],
+            [
+              121.37,
+              -2.67
+            ],
+            [
+              121.36,
+              -2.67
+            ],
+            [
+              121.36,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR042",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 17.0,
+        "distance_to_river_m": 2039,
+        "distance_to_road_m": 924,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 61.6,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.624,
+        "clay_index": 1.277,
+        "ndvi_stress_index": 0.529,
+        "tmi_structural_nT": 45245.9,
+        "tmi_anomaly_nT": 245.9,
+        "elevation_mdpl": 525.1,
+        "geochem_assay_ratio": 4.21
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.37,
+              -2.68
+            ],
+            [
+              121.38,
+              -2.68
+            ],
+            [
+              121.38,
+              -2.67
+            ],
+            [
+              121.37,
+              -2.67
+            ],
+            [
+              121.37,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR043",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 16.7,
+        "distance_to_river_m": 499,
+        "distance_to_road_m": 1541,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.4,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.946,
+        "clay_index": 2.2,
+        "ndvi_stress_index": 0.288,
+        "tmi_structural_nT": 45105.3,
+        "tmi_anomaly_nT": 105.3,
+        "elevation_mdpl": 447.9,
+        "geochem_assay_ratio": 1.86
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.38,
+              -2.68
+            ],
+            [
+              121.39,
+              -2.68
+            ],
+            [
+              121.39,
+              -2.67
+            ],
+            [
+              121.38,
+              -2.67
+            ],
+            [
+              121.38,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR044",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 15.3,
+        "distance_to_river_m": 379,
+        "distance_to_road_m": 4395,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 55.4,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.333,
+        "clay_index": 2.44,
+        "ndvi_stress_index": 0.313,
+        "tmi_structural_nT": 45490.5,
+        "tmi_anomaly_nT": 490.5,
+        "elevation_mdpl": 487.0,
+        "geochem_assay_ratio": 2.54
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.39,
+              -2.68
+            ],
+            [
+              121.4,
+              -2.68
+            ],
+            [
+              121.4,
+              -2.67
+            ],
+            [
+              121.39,
+              -2.67
+            ],
+            [
+              121.39,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR045",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.2,
+        "distance_to_river_m": 282,
+        "distance_to_road_m": 1178,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 52.7,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.37,
+        "clay_index": 1.815,
+        "ndvi_stress_index": 0.361,
+        "tmi_structural_nT": 45291.1,
+        "tmi_anomaly_nT": 291.1,
+        "elevation_mdpl": 475.7,
+        "geochem_assay_ratio": 2.81
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.4,
+              -2.68
+            ],
+            [
+              121.41,
+              -2.68
+            ],
+            [
+              121.41,
+              -2.67
+            ],
+            [
+              121.4,
+              -2.67
+            ],
+            [
+              121.4,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR046",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 11.4,
+        "distance_to_river_m": 1578,
+        "distance_to_road_m": 2118,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 50.3,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.844,
+        "clay_index": 2.34,
+        "ndvi_stress_index": 0.265,
+        "tmi_structural_nT": 46098.2,
+        "tmi_anomaly_nT": 1098.2,
+        "elevation_mdpl": 467.5,
+        "geochem_assay_ratio": 3.16
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.41,
+              -2.68
+            ],
+            [
+              121.42,
+              -2.68
+            ],
+            [
+              121.42,
+              -2.67
+            ],
+            [
+              121.41,
+              -2.67
+            ],
+            [
+              121.41,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR047",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 13.8,
+        "distance_to_river_m": 1103,
+        "distance_to_road_m": 3046,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 48.2,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.572,
+        "clay_index": 2.024,
+        "ndvi_stress_index": 0.273,
+        "tmi_structural_nT": 45661.7,
+        "tmi_anomaly_nT": 661.7,
+        "elevation_mdpl": 466.2,
+        "geochem_assay_ratio": 1.87
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.42,
+              -2.68
+            ],
+            [
+              121.43,
+              -2.68
+            ],
+            [
+              121.43,
+              -2.67
+            ],
+            [
+              121.42,
+              -2.67
+            ],
+            [
+              121.42,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR048",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 16.7,
+        "distance_to_river_m": 1360,
+        "distance_to_road_m": 854,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 46.6,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.63,
+        "clay_index": 1.622,
+        "ndvi_stress_index": 0.313,
+        "tmi_structural_nT": 45468.9,
+        "tmi_anomaly_nT": 468.9,
+        "elevation_mdpl": 520.4,
+        "geochem_assay_ratio": 2.39
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.43,
+              -2.68
+            ],
+            [
+              121.44,
+              -2.68
+            ],
+            [
+              121.44,
+              -2.67
+            ],
+            [
+              121.43,
+              -2.67
+            ],
+            [
+              121.43,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR049",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 9.4,
+        "distance_to_river_m": 535,
+        "distance_to_road_m": 1033,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 45.5,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.163,
+        "clay_index": 2.4,
+        "ndvi_stress_index": 0.395,
+        "tmi_structural_nT": 45945.9,
+        "tmi_anomaly_nT": 945.9,
+        "elevation_mdpl": 465.1,
+        "geochem_assay_ratio": 2.54
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.44,
+              -2.68
+            ],
+            [
+              121.45,
+              -2.68
+            ],
+            [
+              121.45,
+              -2.67
+            ],
+            [
+              121.44,
+              -2.67
+            ],
+            [
+              121.44,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR050",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 13.5,
+        "distance_to_river_m": 1635,
+        "distance_to_road_m": 1552,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 44.9,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.645,
+        "clay_index": 2.182,
+        "ndvi_stress_index": 0.251,
+        "tmi_structural_nT": 45173.0,
+        "tmi_anomaly_nT": 173.0,
+        "elevation_mdpl": 446.0,
+        "geochem_assay_ratio": 2.19
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.45,
+              -2.68
+            ],
+            [
+              121.46,
+              -2.68
+            ],
+            [
+              121.46,
+              -2.67
+            ],
+            [
+              121.45,
+              -2.67
+            ],
+            [
+              121.45,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR051",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 11.6,
+        "distance_to_river_m": 1520,
+        "distance_to_road_m": 1648,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 44.9,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.34,
+        "clay_index": 2.024,
+        "ndvi_stress_index": 0.254,
+        "tmi_structural_nT": 45123.2,
+        "tmi_anomaly_nT": 123.2,
+        "elevation_mdpl": 534.5,
+        "geochem_assay_ratio": 2.31
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.46,
+              -2.68
+            ],
+            [
+              121.47,
+              -2.68
+            ],
+            [
+              121.47,
+              -2.67
+            ],
+            [
+              121.46,
+              -2.67
+            ],
+            [
+              121.46,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR052",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 11.1,
+        "distance_to_river_m": 2475,
+        "distance_to_road_m": 3174,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 45.5,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.156,
+        "clay_index": 2.398,
+        "ndvi_stress_index": 0.361,
+        "tmi_structural_nT": 45299.1,
+        "tmi_anomaly_nT": 299.1,
+        "elevation_mdpl": 490.9,
+        "geochem_assay_ratio": 2.3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.47,
+              -2.68
+            ],
+            [
+              121.48,
+              -2.68
+            ],
+            [
+              121.48,
+              -2.67
+            ],
+            [
+              121.47,
+              -2.67
+            ],
+            [
+              121.47,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR053",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 14.4,
+        "distance_to_river_m": 2028,
+        "distance_to_road_m": 3360,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 46.6,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.57,
+        "clay_index": 1.388,
+        "ndvi_stress_index": 0.662,
+        "tmi_structural_nT": 45121.4,
+        "tmi_anomaly_nT": 121.4,
+        "elevation_mdpl": 498.4,
+        "geochem_assay_ratio": 3.93
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.48,
+              -2.68
+            ],
+            [
+              121.49,
+              -2.68
+            ],
+            [
+              121.49,
+              -2.67
+            ],
+            [
+              121.48,
+              -2.67
+            ],
+            [
+              121.48,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR054",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 10.3,
+        "distance_to_river_m": 934,
+        "distance_to_road_m": 3098,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 48.2,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.982,
+        "clay_index": 2.375,
+        "ndvi_stress_index": 0.262,
+        "tmi_structural_nT": 45454.3,
+        "tmi_anomaly_nT": 454.3,
+        "elevation_mdpl": 517.2,
+        "geochem_assay_ratio": 2.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.49,
+              -2.68
+            ],
+            [
+              121.5,
+              -2.68
+            ],
+            [
+              121.5,
+              -2.67
+            ],
+            [
+              121.49,
+              -2.67
+            ],
+            [
+              121.49,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR055",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 18.5,
+        "distance_to_river_m": 2047,
+        "distance_to_road_m": 1555,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 50.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.164,
+        "clay_index": 1.976,
+        "ndvi_stress_index": 0.242,
+        "tmi_structural_nT": 45579.1,
+        "tmi_anomaly_nT": 579.1,
+        "elevation_mdpl": 460.2,
+        "geochem_assay_ratio": 2.37
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.5,
+              -2.68
+            ],
+            [
+              121.51,
+              -2.68
+            ],
+            [
+              121.51,
+              -2.67
+            ],
+            [
+              121.5,
+              -2.67
+            ],
+            [
+              121.5,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR056",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.6,
+        "distance_to_river_m": 925,
+        "distance_to_road_m": 3030,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 52.7,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.559,
+        "clay_index": 2.396,
+        "ndvi_stress_index": 0.399,
+        "tmi_structural_nT": 45275.1,
+        "tmi_anomaly_nT": 275.1,
+        "elevation_mdpl": 528.2,
+        "geochem_assay_ratio": 1.72
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.51,
+              -2.68
+            ],
+            [
+              121.52,
+              -2.68
+            ],
+            [
+              121.52,
+              -2.67
+            ],
+            [
+              121.51,
+              -2.67
+            ],
+            [
+              121.51,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR057",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.0,
+        "distance_to_river_m": 777,
+        "distance_to_road_m": 1123,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 55.4,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.396,
+        "clay_index": 2.244,
+        "ndvi_stress_index": 0.222,
+        "tmi_structural_nT": 45956.1,
+        "tmi_anomaly_nT": 956.1,
+        "elevation_mdpl": 529.7,
+        "geochem_assay_ratio": 2.89
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.52,
+              -2.68
+            ],
+            [
+              121.53,
+              -2.68
+            ],
+            [
+              121.53,
+              -2.67
+            ],
+            [
+              121.52,
+              -2.67
+            ],
+            [
+              121.52,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR058",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 15.7,
+        "distance_to_river_m": 901,
+        "distance_to_road_m": 837,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.4,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.469,
+        "clay_index": 1.11,
+        "ndvi_stress_index": 0.537,
+        "tmi_structural_nT": 44553.2,
+        "tmi_anomaly_nT": -446.8,
+        "elevation_mdpl": 514.8,
+        "geochem_assay_ratio": 5.01
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.53,
+              -2.68
+            ],
+            [
+              121.54,
+              -2.68
+            ],
+            [
+              121.54,
+              -2.67
+            ],
+            [
+              121.53,
+              -2.67
+            ],
+            [
+              121.53,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR059",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 11.6,
+        "distance_to_river_m": 1387,
+        "distance_to_road_m": 832,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 61.6,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.895,
+        "clay_index": 2.034,
+        "ndvi_stress_index": 0.374,
+        "tmi_structural_nT": 45553.4,
+        "tmi_anomaly_nT": 553.4,
+        "elevation_mdpl": 491.3,
+        "geochem_assay_ratio": 2.22
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.54,
+              -2.68
+            ],
+            [
+              121.55,
+              -2.68
+            ],
+            [
+              121.55,
+              -2.67
+            ],
+            [
+              121.54,
+              -2.67
+            ],
+            [
+              121.54,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR060",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 18.9,
+        "distance_to_river_m": 1067,
+        "distance_to_road_m": 3959,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 65.0,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.517,
+        "clay_index": 2.163,
+        "ndvi_stress_index": 0.309,
+        "tmi_structural_nT": 45753.5,
+        "tmi_anomaly_nT": 753.5,
+        "elevation_mdpl": 474.8,
+        "geochem_assay_ratio": 1.72
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.55,
+              -2.68
+            ],
+            [
+              121.56,
+              -2.68
+            ],
+            [
+              121.56,
+              -2.67
+            ],
+            [
+              121.55,
+              -2.67
+            ],
+            [
+              121.55,
+              -2.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR061",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 10.3,
+        "distance_to_river_m": 414,
+        "distance_to_road_m": 489,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 62.4,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.851,
+        "clay_index": 2.229,
+        "ndvi_stress_index": 0.277,
+        "tmi_structural_nT": 45334.3,
+        "tmi_anomaly_nT": 334.3,
+        "elevation_mdpl": 461.7,
+        "geochem_assay_ratio": 2.95
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.36,
+              -2.67
+            ],
+            [
+              121.37,
+              -2.67
+            ],
+            [
+              121.37,
+              -2.66
+            ],
+            [
+              121.36,
+              -2.66
+            ],
+            [
+              121.36,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR062",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 18.4,
+        "distance_to_river_m": 1738,
+        "distance_to_road_m": 3611,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.8,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.19,
+        "clay_index": 1.188,
+        "ndvi_stress_index": 0.711,
+        "tmi_structural_nT": 44873.5,
+        "tmi_anomaly_nT": -126.5,
+        "elevation_mdpl": 524.9,
+        "geochem_assay_ratio": 4.25
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.37,
+              -2.67
+            ],
+            [
+              121.38,
+              -2.67
+            ],
+            [
+              121.38,
+              -2.66
+            ],
+            [
+              121.37,
+              -2.66
+            ],
+            [
+              121.37,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR063",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 10.1,
+        "distance_to_river_m": 1947,
+        "distance_to_road_m": 3356,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 55.4,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.622,
+        "clay_index": 1.166,
+        "ndvi_stress_index": 0.768,
+        "tmi_structural_nT": 44415.3,
+        "tmi_anomaly_nT": -584.7,
+        "elevation_mdpl": 533.7,
+        "geochem_assay_ratio": 5.91
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.38,
+              -2.67
+            ],
+            [
+              121.39,
+              -2.67
+            ],
+            [
+              121.39,
+              -2.66
+            ],
+            [
+              121.38,
+              -2.66
+            ],
+            [
+              121.38,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR064",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 18.1,
+        "distance_to_river_m": 1040,
+        "distance_to_road_m": 2068,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 52.2,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.953,
+        "clay_index": 1.822,
+        "ndvi_stress_index": 0.404,
+        "tmi_structural_nT": 45679.1,
+        "tmi_anomaly_nT": 679.1,
+        "elevation_mdpl": 481.8,
+        "geochem_assay_ratio": 1.67
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.39,
+              -2.67
+            ],
+            [
+              121.4,
+              -2.67
+            ],
+            [
+              121.4,
+              -2.66
+            ],
+            [
+              121.39,
+              -2.66
+            ],
+            [
+              121.39,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR065",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 18.4,
+        "distance_to_river_m": 1730,
+        "distance_to_road_m": 3522,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 49.3,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.043,
+        "clay_index": 2.201,
+        "ndvi_stress_index": 0.182,
+        "tmi_structural_nT": 45605.7,
+        "tmi_anomaly_nT": 605.7,
+        "elevation_mdpl": 477.3,
+        "geochem_assay_ratio": 2.51
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.4,
+              -2.67
+            ],
+            [
+              121.41,
+              -2.67
+            ],
+            [
+              121.41,
+              -2.66
+            ],
+            [
+              121.4,
+              -2.66
+            ],
+            [
+              121.4,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR066",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.4,
+        "distance_to_river_m": 1045,
+        "distance_to_road_m": 2035,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 46.6,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.69,
+        "clay_index": 2.156,
+        "ndvi_stress_index": 0.386,
+        "tmi_structural_nT": 45859.6,
+        "tmi_anomaly_nT": 859.6,
+        "elevation_mdpl": 449.4,
+        "geochem_assay_ratio": 2.08
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.41,
+              -2.67
+            ],
+            [
+              121.42,
+              -2.67
+            ],
+            [
+              121.42,
+              -2.66
+            ],
+            [
+              121.41,
+              -2.66
+            ],
+            [
+              121.41,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR067",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.2,
+        "distance_to_river_m": 910,
+        "distance_to_road_m": 4340,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 44.3,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.548,
+        "clay_index": 1.939,
+        "ndvi_stress_index": 0.198,
+        "tmi_structural_nT": 45262.5,
+        "tmi_anomaly_nT": 262.5,
+        "elevation_mdpl": 464.0,
+        "geochem_assay_ratio": 2.9
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.42,
+              -2.67
+            ],
+            [
+              121.43,
+              -2.67
+            ],
+            [
+              121.43,
+              -2.66
+            ],
+            [
+              121.42,
+              -2.66
+            ],
+            [
+              121.42,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR068",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.4,
+        "distance_to_river_m": 1182,
+        "distance_to_road_m": 3171,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 42.5,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.45,
+        "clay_index": 2.278,
+        "ndvi_stress_index": 0.351,
+        "tmi_structural_nT": 45182.0,
+        "tmi_anomaly_nT": 182.0,
+        "elevation_mdpl": 455.4,
+        "geochem_assay_ratio": 2.68
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.43,
+              -2.67
+            ],
+            [
+              121.44,
+              -2.67
+            ],
+            [
+              121.44,
+              -2.66
+            ],
+            [
+              121.43,
+              -2.66
+            ],
+            [
+              121.43,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR069",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 17.9,
+        "distance_to_river_m": 2280,
+        "distance_to_road_m": 4409,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 41.2,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.2,
+        "clay_index": 1.718,
+        "ndvi_stress_index": 0.252,
+        "tmi_structural_nT": 45593.1,
+        "tmi_anomaly_nT": 593.1,
+        "elevation_mdpl": 446.3,
+        "geochem_assay_ratio": 2.18
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.44,
+              -2.67
+            ],
+            [
+              121.45,
+              -2.67
+            ],
+            [
+              121.45,
+              -2.66
+            ],
+            [
+              121.44,
+              -2.66
+            ],
+            [
+              121.44,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR070",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 10.2,
+        "distance_to_river_m": 909,
+        "distance_to_road_m": 4353,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 40.5,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.517,
+        "clay_index": 1.246,
+        "ndvi_stress_index": 0.661,
+        "tmi_structural_nT": 44642.4,
+        "tmi_anomaly_nT": -357.6,
+        "elevation_mdpl": 477.6,
+        "geochem_assay_ratio": 5.54
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.45,
+              -2.67
+            ],
+            [
+              121.46,
+              -2.67
+            ],
+            [
+              121.46,
+              -2.66
+            ],
+            [
+              121.45,
+              -2.66
+            ],
+            [
+              121.45,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR071",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.2,
+        "distance_to_river_m": 1839,
+        "distance_to_road_m": 3625,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 40.5,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.332,
+        "clay_index": 2.382,
+        "ndvi_stress_index": 0.346,
+        "tmi_structural_nT": 45643.6,
+        "tmi_anomaly_nT": 643.6,
+        "elevation_mdpl": 519.1,
+        "geochem_assay_ratio": 2.05
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.46,
+              -2.67
+            ],
+            [
+              121.47,
+              -2.67
+            ],
+            [
+              121.47,
+              -2.66
+            ],
+            [
+              121.46,
+              -2.66
+            ],
+            [
+              121.46,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR072",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 12.3,
+        "distance_to_river_m": 1972,
+        "distance_to_road_m": 2793,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 41.2,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.826,
+        "clay_index": 1.689,
+        "ndvi_stress_index": 0.28,
+        "tmi_structural_nT": 46061.7,
+        "tmi_anomaly_nT": 1061.7,
+        "elevation_mdpl": 451.6,
+        "geochem_assay_ratio": 3.09
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.47,
+              -2.67
+            ],
+            [
+              121.48,
+              -2.67
+            ],
+            [
+              121.48,
+              -2.66
+            ],
+            [
+              121.47,
+              -2.66
+            ],
+            [
+              121.47,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR073",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 10.6,
+        "distance_to_river_m": 1120,
+        "distance_to_road_m": 1115,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 42.5,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.118,
+        "clay_index": 1.307,
+        "ndvi_stress_index": 0.555,
+        "tmi_structural_nT": 44992.2,
+        "tmi_anomaly_nT": -7.8,
+        "elevation_mdpl": 478.9,
+        "geochem_assay_ratio": 5.26
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.48,
+              -2.67
+            ],
+            [
+              121.49,
+              -2.67
+            ],
+            [
+              121.49,
+              -2.66
+            ],
+            [
+              121.48,
+              -2.66
+            ],
+            [
+              121.48,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR074",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 17.0,
+        "distance_to_river_m": 1818,
+        "distance_to_road_m": 1584,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 44.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.941,
+        "clay_index": 1.7,
+        "ndvi_stress_index": 0.253,
+        "tmi_structural_nT": 45283.0,
+        "tmi_anomaly_nT": 283.0,
+        "elevation_mdpl": 509.3,
+        "geochem_assay_ratio": 2.32
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.49,
+              -2.67
+            ],
+            [
+              121.5,
+              -2.67
+            ],
+            [
+              121.5,
+              -2.66
+            ],
+            [
+              121.49,
+              -2.66
+            ],
+            [
+              121.49,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR075",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 12.6,
+        "distance_to_river_m": 2129,
+        "distance_to_road_m": 2378,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 46.6,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.089,
+        "clay_index": 2.057,
+        "ndvi_stress_index": 0.22,
+        "tmi_structural_nT": 45557.3,
+        "tmi_anomaly_nT": 557.3,
+        "elevation_mdpl": 514.3,
+        "geochem_assay_ratio": 2.78
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.5,
+              -2.67
+            ],
+            [
+              121.51,
+              -2.67
+            ],
+            [
+              121.51,
+              -2.66
+            ],
+            [
+              121.5,
+              -2.66
+            ],
+            [
+              121.5,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR076",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 10.6,
+        "distance_to_river_m": 2061,
+        "distance_to_road_m": 2790,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 49.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.464,
+        "clay_index": 1.741,
+        "ndvi_stress_index": 0.213,
+        "tmi_structural_nT": 45306.6,
+        "tmi_anomaly_nT": 306.6,
+        "elevation_mdpl": 460.7,
+        "geochem_assay_ratio": 1.51
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.51,
+              -2.67
+            ],
+            [
+              121.52,
+              -2.67
+            ],
+            [
+              121.52,
+              -2.66
+            ],
+            [
+              121.51,
+              -2.66
+            ],
+            [
+              121.51,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR077",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.4,
+        "distance_to_river_m": 1316,
+        "distance_to_road_m": 2746,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 52.2,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.275,
+        "clay_index": 2.139,
+        "ndvi_stress_index": 0.391,
+        "tmi_structural_nT": 45193.1,
+        "tmi_anomaly_nT": 193.1,
+        "elevation_mdpl": 491.6,
+        "geochem_assay_ratio": 1.9
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.52,
+              -2.67
+            ],
+            [
+              121.53,
+              -2.67
+            ],
+            [
+              121.53,
+              -2.66
+            ],
+            [
+              121.52,
+              -2.66
+            ],
+            [
+              121.52,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR078",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.8,
+        "distance_to_river_m": 1764,
+        "distance_to_road_m": 551,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 55.4,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.701,
+        "clay_index": 1.975,
+        "ndvi_stress_index": 0.18,
+        "tmi_structural_nT": 46058.0,
+        "tmi_anomaly_nT": 1058.0,
+        "elevation_mdpl": 460.2,
+        "geochem_assay_ratio": 2.64
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.53,
+              -2.67
+            ],
+            [
+              121.54,
+              -2.67
+            ],
+            [
+              121.54,
+              -2.66
+            ],
+            [
+              121.53,
+              -2.66
+            ],
+            [
+              121.53,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR079",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.7,
+        "distance_to_river_m": 2076,
+        "distance_to_road_m": 4451,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.8,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.874,
+        "clay_index": 1.926,
+        "ndvi_stress_index": 0.355,
+        "tmi_structural_nT": 45202.4,
+        "tmi_anomaly_nT": 202.4,
+        "elevation_mdpl": 471.3,
+        "geochem_assay_ratio": 2.99
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.54,
+              -2.67
+            ],
+            [
+              121.55,
+              -2.67
+            ],
+            [
+              121.55,
+              -2.66
+            ],
+            [
+              121.54,
+              -2.66
+            ],
+            [
+              121.54,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR080",
+        "site": "sorowako",
+        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 11.5,
+        "distance_to_river_m": 504,
+        "distance_to_road_m": 1499,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 62.4,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.46,
+        "clay_index": 1.304,
+        "ndvi_stress_index": 0.718,
+        "tmi_structural_nT": 45090.5,
+        "tmi_anomaly_nT": 90.5,
+        "elevation_mdpl": 524.8,
+        "geochem_assay_ratio": 5.15
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.55,
+              -2.67
+            ],
+            [
+              121.56,
+              -2.67
+            ],
+            [
+              121.56,
+              -2.66
+            ],
+            [
+              121.55,
+              -2.66
+            ],
+            [
+              121.55,
+              -2.67
             ]
           ]
         ]

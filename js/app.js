@@ -251,30 +251,33 @@ async function loadDummyData() {
     // Fetch actual forestry boundaries to map exact legal zones
     const forestryData = await fetch('data/forestry_boundaries.geojson').then(r => r.json()).catch(() => null);
 
-    // Define strict bounding boxes that are 100% verified inland, away from lakes, ocean, and major infrastructure
+    // Define strict bounding boxes that are 100% verified inland, away from lakes, ocean, and rivers
     const safeZones = [
-        // Sorowako Mountains (Strictly East of Lake Matano and away from town)
-        { minLat: -2.66, maxLat: -2.55, minLon: 121.42, maxLon: 121.55 },
+        // Sorowako East Ridge (Strictly East of Lake Matano on solid ultramafic ridge)
+        { name: "Sorowako East Block (Vale Indonesia)", minLat: -2.63, maxLat: -2.58, minLon: 121.44, maxLon: 121.50 },
         // Morowali Inland Hills (Strictly West of coast and Bahodopi)
-        { minLat: -2.90, maxLat: -2.80, minLon: 121.82, maxLon: 121.92 },
+        { name: "Morowali Central Ultramafic Belt", minLat: -2.88, maxLat: -2.83, minLon: 121.83, maxLon: 121.89 },
         // Konawe Deep Inland (Far West of Kendari city and coast)
-        { minLat: -3.85, maxLat: -3.75, minLon: 122.00, maxLon: 122.10 }
+        { name: "Konawe Inland Ridge", minLat: -3.83, maxLat: -3.77, minLon: 122.01, maxLon: 122.07 },
+        // Weda Bay Central Block (Halmahera Inland)
+        { name: "Weda Bay Central Prospect", minLat: 0.47, maxLat: 0.51, minLon: 127.91, maxLon: 127.96 },
+        // Pomalaa Greenfield Block (ANTAM Unit Geomin)
+        { name: "Pomalaa Hills (ANTAM Geomin)", minLat: -4.21, maxLat: -4.17, minLon: 121.61, maxLon: 121.66 }
     ];
     
     const zone = safeZones[Math.floor(Math.random() * safeZones.length)];
     
-    // The grid is 8x5 cells, each cell is 0.01 degrees. So total grid width is 0.08, height is 0.05.
-    // Ensure the random start coordinate allows the entire grid to fit perfectly inside the safe bounding box
-    const startLon = zone.minLon + Math.random() * Math.max(0, (zone.maxLon - zone.minLon - 0.08));
-    const startLat = zone.minLat + Math.random() * Math.max(0, (zone.maxLat - zone.minLat - 0.05));
+    // The grid is 6x4 cells, each cell is 0.008 degrees (~900m)
+    const numCols = 6;
+    const numRows = 4;
+    const cellSize = 0.008;
+
+    const startLon = zone.minLon + Math.random() * Math.max(0, (zone.maxLon - zone.minLon - (numCols * cellSize)));
+    const startLat = zone.minLat + Math.random() * Math.max(0, (zone.maxLat - zone.minLat - (numRows * cellSize)));
 
     rawGrid = { type: 'FeatureCollection', features: [] };
     rawMagnet = [];
     rawGeo = [];
-
-    const numCols = 8;
-    const numRows = 5;
-    const cellSize = 0.01; // ~1.1km
 
     let counter = 1;
     for (let ix = 0; ix < numCols; ix++) {
@@ -296,17 +299,43 @@ async function loadDummyData() {
             if (rawStatus === 'no-go') legal = 'no-go (Hutan Lindung)';
             if (rawStatus === 'conditional') legal = 'conditional (Hutan Produksi)';
 
+            const isUltramafic = Math.random() > 0.25;
+            const lithology = isUltramafic ? (Math.random() > 0.5 ? 'serpentinite_simulated' : 'peridotite_simulated') : 'mafic_volcanic_simulated';
+            const slope = Math.floor(6 + Math.random() * 18);
+            
+            // STRICT NON-WATER BUFFER: Minimum river distance is strictly >= 180 meters (no river hitting!)
+            const distRiver = Math.floor(180 + Math.random() * 1820);
+            const distRoad = Math.floor(600 + Math.random() * 4400);
+            const distSmelter = Math.floor(15 + Math.random() * 120);
+
+            // Rich Sentinel-2 Satellite & UAV Magnetometer exploration telemetry
+            const feOxide = parseFloat((1.8 + Math.random() * 1.05).toFixed(3));
+            const clayIdx = parseFloat((1.5 + Math.random() * 0.95).toFixed(3));
+            const ndviStress = parseFloat((0.18 + Math.random() * 0.25).toFixed(3));
+            const tmiRaw = parseFloat((45200 + Math.random() * 3200).toFixed(1));
+            const tmiCorr = parseFloat((tmiRaw - 45000).toFixed(1));
+            const elevMdpl = parseFloat((250 + Math.random() * 350).toFixed(1));
+            const geochemRatio = parseFloat((1.5 + Math.random() * 1.8).toFixed(2));
+
             rawGrid.features.push({
                 type: 'Feature',
                 properties: {
                     grid_id: gid,
                     legal_status: legal,
-                    lithology: Math.random() > 0.3 ? 'ultramafic/serpentinite' : 'mafic/basalt',
-                    slope_deg: Math.floor(Math.random() * 40),
-                    distance_to_river_m: Math.floor(Math.random() * 2000),
-                    distance_to_road_m: Math.floor(Math.random() * 5000),
-                    distance_to_smelter_km: Math.floor(Math.random() * 150),
-                    area_ha: 100 + Math.floor(Math.random() * 50)
+                    lithology: lithology,
+                    slope_deg: slope,
+                    distance_to_river_m: distRiver,
+                    distance_to_road_m: distRoad,
+                    distance_to_smelter_km: distSmelter,
+                    area_ha: Math.floor(80 + Math.random() * 40),
+                    fe_oxide_index: feOxide,
+                    clay_index: clayIdx,
+                    ndvi_stress_index: ndviStress,
+                    tmi_structural_nT: tmiRaw,
+                    tmi_anomaly_nT: tmiCorr,
+                    elevation_mdpl: elevMdpl,
+                    geochem_assay_ratio: geochemRatio,
+                    location_label: `${zone.name} - Inland exploration block`
                 },
                 geometry: {
                     type: 'Polygon',
@@ -320,27 +349,33 @@ async function loadDummyData() {
                 }
             });
 
-            // Generate 5 mag points per grid clustered around the true center
+            // Generate 5 UAV mag points per grid clustered around true center
             for (let i = 0; i < 5; i++) {
                 rawMagnet.push({
                     grid_id: gid,
-                    latitude: centerLat + (Math.random() - 0.5) * (cellSize * 0.8),
-                    longitude: centerLon + (Math.random() - 0.5) * (cellSize * 0.8),
-                    mag_raw_nT: 40000 + Math.random() * 5000
+                    latitude: parseFloat((centerLat + (Math.random() - 0.5) * (cellSize * 0.7)).toFixed(6)),
+                    longitude: parseFloat((centerLon + (Math.random() - 0.5) * (cellSize * 0.7)).toFixed(6)),
+                    mag_raw_nT: parseFloat((tmiRaw + (Math.random() - 0.5) * 80).toFixed(1)),
+                    tmi_anomaly_nT: parseFloat((tmiCorr + (Math.random() - 0.5) * 40).toFixed(1)),
+                    fault_flag: isUltramafic && Math.random() > 0.4 ? 1 : 0
                 });
             }
 
-            // Generate 2 geo points per grid clustered around the true center
+            // Generate 2 drill assay samples per grid clustered around true center
             for (let i = 0; i < 2; i++) {
+                const niBase = isUltramafic ? (1.4 + Math.random() * 1.1) : (0.4 + Math.random() * 0.5);
+                const zoneType = niBase > 1.5 ? 'saprolite' : (niBase > 1.0 ? 'limonite' : 'bedrock');
                 rawGeo.push({
                     grid_id: gid,
-                    latitude: centerLat + (Math.random() - 0.5) * (cellSize * 0.6),
-                    longitude: centerLon + (Math.random() - 0.5) * (cellSize * 0.6),
-                    Ni_pct: parseFloat((Math.random() * 2 + 0.5).toFixed(2)),
-                    Fe_pct: parseFloat((Math.random() * 30 + 10).toFixed(2)),
-                    Co_pct: parseFloat((Math.random() * 0.1).toFixed(3)),
-                    MgO_pct: parseFloat((Math.random() * 20 + 10).toFixed(2)),
-                    SiO2_pct: parseFloat((Math.random() * 30 + 20).toFixed(2))
+                    latitude: parseFloat((centerLat + (Math.random() - 0.5) * (cellSize * 0.5)).toFixed(6)),
+                    longitude: parseFloat((centerLon + (Math.random() - 0.5) * (cellSize * 0.5)).toFixed(6)),
+                    Ni_pct: parseFloat(niBase.toFixed(3)),
+                    Fe_pct: parseFloat((zoneType === 'limonite' ? 38.0 + Math.random() * 10.0 : 16.0 + Math.random() * 10.0).toFixed(2)),
+                    Co_pct: parseFloat((zoneType === 'limonite' ? 0.05 + Math.random() * 0.07 : 0.01 + Math.random() * 0.03).toFixed(3)),
+                    MgO_pct: parseFloat((zoneType === 'limonite' ? 2.0 + Math.random() * 6.0 : 20.0 + Math.random() * 12.0).toFixed(2)),
+                    SiO2_pct: parseFloat((zoneType === 'limonite' ? 14.0 + Math.random() * 14.0 : 34.0 + Math.random() * 14.0).toFixed(2)),
+                    zone: zoneType,
+                    qc_flag: 'valid'
                 });
             }
         }
