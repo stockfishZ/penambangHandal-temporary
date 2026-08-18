@@ -98,6 +98,8 @@ function bindEvents() {
     });
     els.close3dBtn.addEventListener('click', () => {
       els.plotly3dContainer.style.display = 'none';
+      const cCard = document.getElementById('info3dSelectedCard');
+      if (cCard) cCard.style.display = 'none';
       document.body.style.overflow = ''; // Restore background scrolling
       document.documentElement.style.overflow = '';
       if (typeof _3dAnimFrame !== 'undefined' && _3dAnimFrame) {
@@ -1220,6 +1222,64 @@ function createGridTextSprite(text, opacity = 0.70) {
     return sprite;
 }
 
+function show3DGridDetail(gridId) {
+  const card = document.getElementById('info3dSelectedCard');
+  const cardId = document.getElementById('card3dGridId');
+  const cardPri = document.getElementById('card3dPriority');
+  const cardContent = document.getElementById('card3dContent');
+  const closeBtn = document.getElementById('close3dCardBtn');
+
+  if (!card || !cardContent) return;
+
+  const row = resultRows.find(r => r.grid_id === gridId);
+  if (!row) return;
+
+  const pKey = row.priority_class ? row.priority_class.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'low';
+  
+  if (cardId) cardId.textContent = row.grid_id;
+  if (cardPri) {
+    cardPri.className = `badge ${pKey}`;
+    cardPri.textContent = row.priority_class || '-';
+  }
+
+  cardContent.innerHTML = `
+    <div style="margin: 8px 0; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.05); overflow: hidden;">
+      <div style="height: 100%; width: ${row.final_priority_score}%; background: var(--accent-emerald, #10b981); border-radius: 2px;"></div>
+    </div>
+    <div class="detail-line" style="margin: 4px 0;"><span>Final Priority Score:</span><b style="color:#fff;">${row.final_priority_score}/100</b></div>
+    <div class="detail-line" style="margin: 4px 0;"><span>ML Score:</span><b style="color:#6366f1;">${row.ml_masked ? 'BLOCKED' : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
+    
+    <div style="border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);padding:8px 0;margin:8px 0;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#10b981;margin-bottom:6px;">🧪 Geochemistry & Assays</div>
+      <div class="detail-line" style="margin:2px 0;"><span>Ni (Nickel):</span><b style="color:#10b981;">${row.Ni_avg != null ? row.Ni_avg + '%' : '-'}</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>Fe (Iron):</span><b>${row.Fe_avg != null ? row.Fe_avg + '%' : '-'}</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>Co (Cobalt):</span><b>${row.Co_avg != null ? row.Co_avg + '%' : '-'}</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>MgO / SiO₂:</span><b>${row.MgO_avg}% / ${row.SiO2_avg}%</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>SiO₂/MgO Ratio:</span><b>${row.MgO_avg > 0 ? (row.SiO2_avg / row.MgO_avg).toFixed(2) : '-'}</b></div>
+    </div>
+
+    ${row.fe_oxide_index != null ? `
+    <div style="border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:6px;margin-bottom:8px;font-size:11px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">🛰️ Sentinel-2 Remote Sensing</div>
+      <div class="detail-line" style="margin:2px 0;"><span>Fe-Oxide (B4/B2):</span><b>${row.fe_oxide_index}</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>Clay Index (B11/B12):</span><b>${row.clay_index || '-'}</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>NDVI Stress:</span><b>${row.ndvi_stress_index || '-'}</b></div>
+    </div>` : ''}
+
+    <div class="detail-line" style="margin:2px 0;"><span>Recommended Spacing:</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
+    <div class="detail-line" style="margin:2px 0;"><span>Est. Drilling Cost:</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
+    <div class="detail-line" style="margin:2px 0;"><span>Processing Route:</span><b style="color:#0ea5e9;">${row.processing_route || '-'}</b></div>
+    <div class="detail-line" style="margin:2px 0;"><span>Slope / River:</span><b>${row.slope_deg}° / ${row.distance_to_river_m}m</b></div>
+    <div class="detail-line" style="margin:2px 0;"><span>Compliance:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
+  `;
+
+  card.style.display = 'block';
+
+  if (closeBtn) {
+    closeBtn.onclick = () => { card.style.display = 'none'; };
+  }
+}
+
 function renderPlotly3D() {
   if (!resultRows.length || !window.THREE) return;
   const container = els.plotlyDiv;
@@ -1384,6 +1444,7 @@ function renderPlotly3D() {
       scene.add(wireMesh);
 
       // Add low-opacity grid ID text labels floating over each 3D grid cell
+      const spriteList = [];
       cells.forEach(cell => {
           const u = (cell.lonC - minLon) / (maxLon - minLon || 1);
           const v = (cell.latC - minLat) / (maxLat - minLat || 1);
@@ -1400,7 +1461,54 @@ function renderPlotly3D() {
           const h = (closestVert.elevation - minElev) * heightScale;
           const sprite = createGridTextSprite(cell.gid, 0.70);
           sprite.position.set(px, h + 0.8, pz);
+          sprite.userData = { gid: cell.gid };
           scene.add(sprite);
+          spriteList.push(sprite);
+      });
+
+      // 3D Raycasting Tap/Click Listener for Grid Selection
+      let pointerDownPos = { x: 0, y: 0 };
+      renderer.domElement.addEventListener('pointerdown', (e) => {
+          pointerDownPos = { x: e.clientX, y: e.clientY };
+      });
+
+      renderer.domElement.addEventListener('pointerup', (e) => {
+          const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+          if (dist > 6) return; // ignore camera orbit dragging
+
+          const rect = renderer.domElement.getBoundingClientRect();
+          const mouse = new THREE.Vector2(
+              ((e.clientX - rect.left) / rect.width) * 2 - 1,
+              -((e.clientY - rect.top) / rect.height) * 2 + 1
+          );
+
+          const raycaster = new THREE.Raycaster();
+          raycaster.setFromCamera(mouse, camera);
+
+          const spriteHits = raycaster.intersectObjects(spriteList);
+          let targetGid = null;
+
+          if (spriteHits.length > 0) {
+              targetGid = spriteHits[0].object.userData.gid;
+          } else {
+              const meshHits = raycaster.intersectObject(mesh);
+              if (meshHits.length > 0) {
+                  const pt = meshHits[0].point;
+                  let minD = Infinity;
+                  cells.forEach(c => {
+                      const u = (c.lonC - minLon) / (maxLon - minLon || 1);
+                      const v = (c.latC - minLat) / (maxLat - minLat || 1);
+                      const px = (u - 0.5) * terrainWidth;
+                      const pz = (v - 0.5) * terrainDepth;
+                      const d = (pt.x - px)**2 + (pt.z - pz)**2;
+                      if (d < minD) { minD = d; targetGid = c.gid; }
+                  });
+              }
+          }
+
+          if (targetGid) {
+              show3DGridDetail(targetGid);
+          }
       });
 
       const groundGeo = new THREE.PlaneGeometry(terrainWidth * 1.5, terrainDepth * 1.5);
