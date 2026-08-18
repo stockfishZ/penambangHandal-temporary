@@ -1252,14 +1252,10 @@ function renderPlotly3D() {
       const getColorForScore = (s) => {
           const t = Math.max(0, Math.min(1, s / 10.0));
           const color = new THREE.Color();
-          if (t < 0.25) {
-              color.setHex(0xff0000).lerp(new THREE.Color(0xffff00), t / 0.25);
-          } else if (t < 0.5) {
-              color.setHex(0xffff00).lerp(new THREE.Color(0x00ff00), (t - 0.25) / 0.25);
-          } else if (t < 0.75) {
-              color.setHex(0x00ff00).lerp(new THREE.Color(0x00ffff), (t - 0.5) / 0.25);
+          if (t < 0.5) {
+              color.setHex(0xef4444).lerp(new THREE.Color(0xf59e0b), t / 0.5);
           } else {
-              color.setHex(0x00ffff).lerp(new THREE.Color(0x00008b), (t - 0.75) / 0.25);
+              color.setHex(0xf59e0b).lerp(new THREE.Color(0x10b981), (t - 0.5) / 0.5);
           }
           return color;
       };
