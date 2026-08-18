@@ -10,35 +10,35 @@ TEST_CONFIGS = [
         "folder_name": "test1-sorowako-sulsel",
         "site_id": "sorowako",
         "prefix": "SOR",
-        "label": "Sorowako Greenfield Interior Ridge (Sulawesi Selatan)"
+        "label": "Sorowako Nuha North Inland Mountain Ridge (Sulawesi Selatan)"
     },
     {
         "folder_num": "test2",
         "folder_name": "test2-morowali-sulteng",
         "site_id": "morowali",
         "prefix": "MOR",
-        "label": "Morowali Deep Greenfield Mountains (Sulawesi Tengah)"
+        "label": "Morowali Bungku Central Mountain Ridge (Sulawesi Tengah)"
     },
     {
         "folder_num": "test3",
         "folder_name": "test3-wedabay-halmahera",
         "site_id": "weda_bay",
         "prefix": "WED",
-        "label": "Weda Bay Central Greenfield Ridge (Maluku Utara)"
+        "label": "Weda Bay Central Halmahera Spine Ridge (Maluku Utara)"
     },
     {
         "folder_num": "test4",
         "folder_name": "test4-konawe-sultra",
         "site_id": "konawe",
         "prefix": "KON",
-        "label": "Konawe Deep Inland Ridge (Sulawesi Tenggara)"
+        "label": "Konawe Abuki High Inland Mountain Ridge (Sulawesi Tenggara)"
     },
     {
         "folder_num": "test5",
         "folder_name": "test5-pomalaa-sultra",
         "site_id": "pomalaa",
         "prefix": "POM",
-        "label": "Pomalaa Greenfield Interior Range (Sulawesi Tenggara)"
+        "label": "Pomalaa Baula High Inland Ridge (Sulawesi Tenggara)"
     }
 ]
 
@@ -68,11 +68,18 @@ def build_test_packages():
         with open(site_geojson_path, mode="r", encoding="utf-8") as f:
             full_geojson = json.load(f)
 
-        # Slice exactly 16 grid cells (compact 4x4 block for ultra-fast demo testing)
-        features = full_geojson.get("features", [])[:16]
-        geojson_data = {"type": "FeatureCollection", "name": f"study_grid_{site_id}_demo", "features": features}
+        # Select a perfect 4x4 rectangular block (4 rows x 4 cols = 16 cells) centered in the grid
+        all_feats = full_geojson.get("features", [])
+        block_feats = []
+        for r in range(8, 12):
+            for c in range(8, 12):
+                idx = r * 20 + c
+                if idx < len(all_feats):
+                    block_feats.append(all_feats[idx])
 
-        valid_gids = set(f["properties"]["grid_id"] for f in features)
+        geojson_data = {"type": "FeatureCollection", "name": f"study_grid_{site_id}_demo", "features": block_feats}
+
+        valid_gids = set(f["properties"]["grid_id"] for f in block_feats)
         geo_rows = [r for r in geo_all if r["grid_id"] in valid_gids]
         mag_rows = [r for r in mag_all if r["grid_id"] in valid_gids]
 
@@ -97,13 +104,13 @@ def build_test_packages():
 
             readme_out = os.path.join(tdir, "README.md")
             with open(readme_out, mode="w", encoding="utf-8") as f:
-                f.write(f"""# {cfg['label']} - Compact Demo Testing Dataset
+                f.write(f"""# {cfg['label']} - Compact 4x4 Demo Block
 
-This folder contains a compact 16-grid exploration test block ready for rapid testing on the **NiTERRA WebGIS Platform**:
+This folder contains a compact 4x4 rectangular exploration test block (16 grid cells) ready for rapid testing on the **NiTERRA WebGIS Platform**:
 
 1. `magnetometer_data.csv`: UAV Magnetometer raw & structural TMI telemetry ({len(mag_rows)} records).
 2. `geochemistry_data.csv`: Multi-element drill assay chemistry records ({len(geo_rows)} records).
-3. `study_grid.geojson`: GeoJSON Polygon grid boundaries ({len(features)} grid cells).
+3. `study_grid.geojson`: GeoJSON Polygon 4x4 rectangular grid block ({len(block_feats)} grid cells).
 
 ### How to use on Dashboard:
 1. Open the **NiTERRA Dashboard** homepage (`index.html`).
@@ -113,24 +120,24 @@ This folder contains a compact 16-grid exploration test block ready for rapid te
 5. Click **Run Analysis** to execute real-time spatial weighting & ML scoring.
 """)
 
-        print(f"[OK] Created {cfg['folder_name']} & {cfg['folder_num']} ({len(features)} cells, {len(geo_rows)} geochem, {len(mag_rows)} mag)")
+        print(f"[OK] Created 4x4 rectangular block for {cfg['folder_name']} & {cfg['folder_num']} ({len(block_feats)} cells, {len(geo_rows)} geochem, {len(mag_rows)} mag)")
 
     # Root README in testing-files
     root_readme = os.path.join(OUT_DIR, "README.md")
     with open(root_readme, mode="w", encoding="utf-8") as f:
         f.write("""# NiTERRA Demo Day Testing Datasets
 
-Welcome Demo Testers & Judges! This directory provides pre-packaged, compact 16-grid nickel laterite exploration datasets ready for testing on the **NiTERRA Dashboard**.
+Welcome Demo Testers & Judges! This directory provides pre-packaged, 4x4 rectangular nickel laterite exploration blocks (16 grid cells) ready for testing on the **NiTERRA Dashboard**.
 
 ## 📁 Available Test Folders
 
-| Folder | Concession Target | Location / Region | Grid Size |
+| Folder | Concession Target | Location / Region | Grid Block Geometry |
 | :--- | :--- | :--- | :--- |
-| **`test1`** (`test1-sorowako-sulsel`) | Sorowako Greenfield Interior Ridge | Sulawesi Selatan | 16 grids (Compact 4x4) |
-| **`test2`** (`test2-morowali-sulteng`) | Morowali Deep Greenfield Mountains | Sulawesi Tengah | 16 grids (Compact 4x4) |
-| **`test3`** (`test3-wedabay-halmahera`) | Weda Bay Central Greenfield Ridge | Halmahera, Maluku Utara | 16 grids (Compact 4x4) |
-| **`test4`** (`test4-konawe-sultra`) | Konawe Deep Inland Ridge | Sulawesi Tenggara | 16 grids (Compact 4x4) |
-| **`test5`** (`test5-pomalaa-sultra`) | Pomalaa Greenfield Interior Range | Sulawesi Tenggara | 16 grids (Compact 4x4) |
+| **`test1`** (`test1-sorowako-sulsel`) | Sorowako Nuha North Inland Ridge | Sulawesi Selatan | 4x4 Rectangular Block (16 grids) |
+| **`test2`** (`test2-morowali-sulteng`) | Morowali Bungku Central Ridge | Sulawesi Tengah | 4x4 Rectangular Block (16 grids) |
+| **`test3`** (`test3-wedabay-halmahera`) | Weda Bay Central Halmahera Ridge | Halmahera, Maluku Utara | 4x4 Rectangular Block (16 grids) |
+| **`test4`** (`test4-konawe-sultra`) | Konawe Abuki High Inland Ridge | Sulawesi Tenggara | 4x4 Rectangular Block (16 grids) |
+| **`test5`** (`test5-pomalaa-sultra`) | Pomalaa Baula High Inland Ridge | Sulawesi Tenggara | 4x4 Rectangular Block (16 grids) |
 
 ---
 

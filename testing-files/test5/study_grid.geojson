@@ -5,406 +5,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "POM001",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 6.3,
-        "distance_to_river_m": 1680,
-        "distance_to_road_m": 4085,
-        "distance_to_settlement_m": 10796,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 76.8,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 2.374,
-        "clay_index": 1.661,
-        "ndvi_stress_index": 0.276,
-        "tmi_structural_nT": 45208.4,
-        "tmi_anomaly_nT": 208.4,
-        "elevation_mdpl": 260.3,
-        "geochem_assay_ratio": 1.82
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.625,
-              -4.205
-            ],
-            [
-              121.633,
-              -4.205
-            ],
-            [
-              121.633,
-              -4.197
-            ],
-            [
-              121.625,
-              -4.197
-            ],
-            [
-              121.625,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM002",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 11.8,
-        "distance_to_river_m": 2013,
-        "distance_to_road_m": 6090,
-        "distance_to_settlement_m": 4034,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 73.8,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 1.401,
-        "clay_index": 1.312,
-        "ndvi_stress_index": 0.558,
-        "tmi_structural_nT": 44480.1,
-        "tmi_anomaly_nT": -519.9,
-        "elevation_mdpl": 272.8,
-        "geochem_assay_ratio": 4.26
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.633,
-              -4.205
-            ],
-            [
-              121.641,
-              -4.205
-            ],
-            [
-              121.641,
-              -4.197
-            ],
-            [
-              121.633,
-              -4.197
-            ],
-            [
-              121.633,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM003",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 5.0,
-        "distance_to_river_m": 1275,
-        "distance_to_road_m": 1797,
-        "distance_to_settlement_m": 13781,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 71.0,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 1.674,
-        "clay_index": 1.142,
-        "ndvi_stress_index": 0.514,
-        "tmi_structural_nT": 44804.7,
-        "tmi_anomaly_nT": -195.3,
-        "elevation_mdpl": 337.9,
-        "geochem_assay_ratio": 5.37
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.641,
-              -4.205
-            ],
-            [
-              121.649,
-              -4.205
-            ],
-            [
-              121.649,
-              -4.197
-            ],
-            [
-              121.641,
-              -4.197
-            ],
-            [
-              121.641,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM004",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 13.4,
-        "distance_to_river_m": 2897,
-        "distance_to_road_m": 5584,
-        "distance_to_settlement_m": 13535,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 68.4,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 2.149,
-        "clay_index": 2.273,
-        "ndvi_stress_index": 0.243,
-        "tmi_structural_nT": 45885.3,
-        "tmi_anomaly_nT": 885.3,
-        "elevation_mdpl": 298.5,
-        "geochem_assay_ratio": 1.74
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.649,
-              -4.205
-            ],
-            [
-              121.657,
-              -4.205
-            ],
-            [
-              121.657,
-              -4.197
-            ],
-            [
-              121.649,
-              -4.197
-            ],
-            [
-              121.649,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM005",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 12.0,
-        "distance_to_river_m": 843,
-        "distance_to_road_m": 6406,
-        "distance_to_settlement_m": 14314,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 66.0,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 1.911,
-        "clay_index": 2.282,
-        "ndvi_stress_index": 0.274,
-        "tmi_structural_nT": 46007.8,
-        "tmi_anomaly_nT": 1007.8,
-        "elevation_mdpl": 348.0,
-        "geochem_assay_ratio": 2.96
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.657,
-              -4.205
-            ],
-            [
-              121.665,
-              -4.205
-            ],
-            [
-              121.665,
-              -4.197
-            ],
-            [
-              121.657,
-              -4.197
-            ],
-            [
-              121.657,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM006",
+        "grid_id": "POM169",
         "site": "pomalaa",
         "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 9.3,
-        "distance_to_river_m": 2768,
-        "distance_to_road_m": 5279,
-        "distance_to_settlement_m": 9336,
+        "slope_deg": 6.5,
+        "distance_to_river_m": 3112,
+        "distance_to_road_m": 4450,
+        "distance_to_settlement_m": 7623,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 64.0,
+        "distance_to_smelter_km": 27.3,
         "area_ha": 0.79,
         "region_id": "SW",
-        "fe_oxide_index": 2.824,
-        "clay_index": 1.976,
-        "ndvi_stress_index": 0.198,
-        "tmi_structural_nT": 45781.0,
-        "tmi_anomaly_nT": 781.0,
-        "elevation_mdpl": 270.9,
-        "geochem_assay_ratio": 2.82
+        "fe_oxide_index": 2.268,
+        "clay_index": 1.692,
+        "ndvi_stress_index": 0.396,
+        "tmi_structural_nT": 45584.7,
+        "tmi_anomaly_nT": 584.7,
+        "elevation_mdpl": 346.8,
+        "geochem_assay_ratio": 1.68
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.665,
-              -4.205
+              121.689,
+              -4.141
             ],
             [
-              121.673,
-              -4.205
+              121.697,
+              -4.141
             ],
             [
-              121.673,
-              -4.197
-            ],
-            [
-              121.665,
-              -4.197
-            ],
-            [
-              121.665,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM007",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 5.3,
-        "distance_to_river_m": 2046,
-        "distance_to_road_m": 3172,
-        "distance_to_settlement_m": 11370,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 62.3,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 1.475,
-        "clay_index": 1.344,
-        "ndvi_stress_index": 0.753,
-        "tmi_structural_nT": 44603.4,
-        "tmi_anomaly_nT": -396.6,
-        "elevation_mdpl": 352.6,
-        "geochem_assay_ratio": 4.82
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.673,
-              -4.205
-            ],
-            [
-              121.681,
-              -4.205
-            ],
-            [
-              121.681,
-              -4.197
-            ],
-            [
-              121.673,
-              -4.197
-            ],
-            [
-              121.673,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM008",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 15.5,
-        "distance_to_river_m": 637,
-        "distance_to_road_m": 4964,
-        "distance_to_settlement_m": 7559,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 61.0,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 2.521,
-        "clay_index": 2.271,
-        "ndvi_stress_index": 0.242,
-        "tmi_structural_nT": 45378.8,
-        "tmi_anomaly_nT": 378.8,
-        "elevation_mdpl": 305.8,
-        "geochem_assay_ratio": 2.21
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.681,
-              -4.205
+              121.697,
+              -4.133
             ],
             [
               121.689,
-              -4.205
+              -4.133
             ],
             [
               121.689,
-              -4.197
-            ],
-            [
-              121.681,
-              -4.197
-            ],
-            [
-              121.681,
-              -4.205
+              -4.141
             ]
           ]
         ]
@@ -413,178 +56,331 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "POM009",
+        "grid_id": "POM170",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 5.0,
+        "distance_to_river_m": 2850,
+        "distance_to_road_m": 2972,
+        "distance_to_settlement_m": 14652,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 0.79,
+        "region_id": "SW",
+        "fe_oxide_index": 1.229,
+        "clay_index": 1.482,
+        "ndvi_stress_index": 0.55,
+        "tmi_structural_nT": 44515.4,
+        "tmi_anomaly_nT": -484.6,
+        "elevation_mdpl": 306.3,
+        "geochem_assay_ratio": 4.3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.697,
+              -4.141
+            ],
+            [
+              121.705,
+              -4.141
+            ],
+            [
+              121.705,
+              -4.133
+            ],
+            [
+              121.697,
+              -4.133
+            ],
+            [
+              121.697,
+              -4.141
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM171",
         "site": "pomalaa",
         "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
+        "slope_deg": 6.8,
+        "distance_to_river_m": 1770,
+        "distance_to_road_m": 3946,
+        "distance_to_settlement_m": 4120,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 0.79,
+        "region_id": "SE",
+        "fe_oxide_index": 1.846,
+        "clay_index": 2.309,
+        "ndvi_stress_index": 0.252,
+        "tmi_structural_nT": 45532.4,
+        "tmi_anomaly_nT": 532.4,
+        "elevation_mdpl": 263.1,
+        "geochem_assay_ratio": 2.44
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.705,
+              -4.141
+            ],
+            [
+              121.713,
+              -4.141
+            ],
+            [
+              121.713,
+              -4.133
+            ],
+            [
+              121.705,
+              -4.133
+            ],
+            [
+              121.705,
+              -4.141
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM172",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 7.8,
+        "distance_to_river_m": 2705,
+        "distance_to_road_m": 3104,
+        "distance_to_settlement_m": 9523,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 0.79,
+        "region_id": "SE",
+        "fe_oxide_index": 2.227,
+        "clay_index": 1.998,
+        "ndvi_stress_index": 0.352,
+        "tmi_structural_nT": 45218.0,
+        "tmi_anomaly_nT": 218.0,
+        "elevation_mdpl": 328.8,
+        "geochem_assay_ratio": 3.02
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.713,
+              -4.141
+            ],
+            [
+              121.721,
+              -4.141
+            ],
+            [
+              121.721,
+              -4.133
+            ],
+            [
+              121.713,
+              -4.133
+            ],
+            [
+              121.713,
+              -4.141
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM189",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 13.2,
+        "distance_to_river_m": 1529,
+        "distance_to_road_m": 3077,
+        "distance_to_settlement_m": 11797,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 0.79,
+        "region_id": "SW",
+        "fe_oxide_index": 2.69,
+        "clay_index": 2.327,
+        "ndvi_stress_index": 0.297,
+        "tmi_structural_nT": 45714.8,
+        "tmi_anomaly_nT": 714.8,
+        "elevation_mdpl": 315.8,
+        "geochem_assay_ratio": 1.72
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.689,
+              -4.133
+            ],
+            [
+              121.697,
+              -4.133
+            ],
+            [
+              121.697,
+              -4.125
+            ],
+            [
+              121.689,
+              -4.125
+            ],
+            [
+              121.689,
+              -4.133
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM190",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 7.4,
+        "distance_to_river_m": 1712,
+        "distance_to_road_m": 2832,
+        "distance_to_settlement_m": 9273,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 0.79,
+        "region_id": "SW",
+        "fe_oxide_index": 1.152,
+        "clay_index": 1.17,
+        "ndvi_stress_index": 0.567,
+        "tmi_structural_nT": 45201.6,
+        "tmi_anomaly_nT": 201.6,
+        "elevation_mdpl": 343.6,
+        "geochem_assay_ratio": 5.81
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.697,
+              -4.133
+            ],
+            [
+              121.705,
+              -4.133
+            ],
+            [
+              121.705,
+              -4.125
+            ],
+            [
+              121.697,
+              -4.125
+            ],
+            [
+              121.697,
+              -4.133
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM191",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 11.9,
+        "distance_to_river_m": 2812,
+        "distance_to_road_m": 5960,
+        "distance_to_settlement_m": 6564,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 0.79,
+        "region_id": "SE",
+        "fe_oxide_index": 1.508,
+        "clay_index": 1.227,
+        "ndvi_stress_index": 0.587,
+        "tmi_structural_nT": 44495.0,
+        "tmi_anomaly_nT": -505.0,
+        "elevation_mdpl": 346.2,
+        "geochem_assay_ratio": 5.74
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.705,
+              -4.133
+            ],
+            [
+              121.713,
+              -4.133
+            ],
+            [
+              121.713,
+              -4.125
+            ],
+            [
+              121.705,
+              -4.125
+            ],
+            [
+              121.705,
+              -4.133
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM192",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 14.7,
-        "distance_to_river_m": 947,
-        "distance_to_road_m": 3570,
-        "distance_to_settlement_m": 14446,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 2.749,
-        "clay_index": 2.076,
-        "ndvi_stress_index": 0.335,
-        "tmi_structural_nT": 45634.9,
-        "tmi_anomaly_nT": 634.9,
-        "elevation_mdpl": 308.0,
-        "geochem_assay_ratio": 1.4
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.689,
-              -4.205
-            ],
-            [
-              121.697,
-              -4.205
-            ],
-            [
-              121.697,
-              -4.197
-            ],
-            [
-              121.689,
-              -4.197
-            ],
-            [
-              121.689,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM010",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 5.7,
-        "distance_to_river_m": 1458,
-        "distance_to_road_m": 3532,
-        "distance_to_settlement_m": 12042,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 59.6,
-        "area_ha": 0.79,
-        "region_id": "SW",
-        "fe_oxide_index": 1.347,
-        "clay_index": 1.202,
-        "ndvi_stress_index": 0.565,
-        "tmi_structural_nT": 44626.5,
-        "tmi_anomaly_nT": -373.5,
-        "elevation_mdpl": 316.2,
-        "geochem_assay_ratio": 4.02
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.697,
-              -4.205
-            ],
-            [
-              121.705,
-              -4.205
-            ],
-            [
-              121.705,
-              -4.197
-            ],
-            [
-              121.697,
-              -4.197
-            ],
-            [
-              121.697,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM011",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 15.5,
-        "distance_to_river_m": 1005,
-        "distance_to_road_m": 2784,
-        "distance_to_settlement_m": 10195,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 59.6,
+        "distance_to_river_m": 858,
+        "distance_to_road_m": 5149,
+        "distance_to_settlement_m": 5487,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 0.79,
         "region_id": "SE",
-        "fe_oxide_index": 1.914,
-        "clay_index": 1.995,
-        "ndvi_stress_index": 0.221,
-        "tmi_structural_nT": 46005.1,
-        "tmi_anomaly_nT": 1005.1,
-        "elevation_mdpl": 325.2,
-        "geochem_assay_ratio": 2.93
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.705,
-              -4.205
-            ],
-            [
-              121.713,
-              -4.205
-            ],
-            [
-              121.713,
-              -4.197
-            ],
-            [
-              121.705,
-              -4.197
-            ],
-            [
-              121.705,
-              -4.205
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "POM012",
-        "site": "pomalaa",
-        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 7.1,
-        "distance_to_river_m": 2574,
-        "distance_to_road_m": 3081,
-        "distance_to_settlement_m": 12868,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 0.79,
-        "region_id": "SE",
-        "fe_oxide_index": 1.514,
-        "clay_index": 1.348,
-        "ndvi_stress_index": 0.541,
-        "tmi_structural_nT": 44823.2,
-        "tmi_anomaly_nT": -176.8,
-        "elevation_mdpl": 301.7,
-        "geochem_assay_ratio": 5.61
+        "fe_oxide_index": 2.257,
+        "clay_index": 1.906,
+        "ndvi_stress_index": 0.382,
+        "tmi_structural_nT": 45601.6,
+        "tmi_anomaly_nT": 601.6,
+        "elevation_mdpl": 286.7,
+        "geochem_assay_ratio": 2.32
       },
       "geometry": {
         "type": "Polygon",
@@ -592,23 +388,23 @@
           [
             [
               121.713,
-              -4.205
+              -4.133
             ],
             [
               121.721,
-              -4.205
+              -4.133
             ],
             [
               121.721,
-              -4.197
+              -4.125
             ],
             [
               121.713,
-              -4.197
+              -4.125
             ],
             [
               121.713,
-              -4.205
+              -4.133
             ]
           ]
         ]
@@ -617,49 +413,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "POM013",
+        "grid_id": "POM209",
         "site": "pomalaa",
         "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 5.9,
-        "distance_to_river_m": 2817,
-        "distance_to_road_m": 5086,
-        "distance_to_settlement_m": 14391,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 61.0,
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 5.1,
+        "distance_to_river_m": 2435,
+        "distance_to_road_m": 4869,
+        "distance_to_settlement_m": 8789,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 0.79,
-        "region_id": "SE",
-        "fe_oxide_index": 1.139,
-        "clay_index": 1.107,
-        "ndvi_stress_index": 0.65,
-        "tmi_structural_nT": 44463.0,
-        "tmi_anomaly_nT": -537.0,
+        "region_id": "NW",
+        "fe_oxide_index": 2.681,
+        "clay_index": 2.299,
+        "ndvi_stress_index": 0.23,
+        "tmi_structural_nT": 46003.5,
+        "tmi_anomaly_nT": 1003.5,
         "elevation_mdpl": 325.1,
-        "geochem_assay_ratio": 5.7
+        "geochem_assay_ratio": 1.51
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.721,
-              -4.205
+              121.689,
+              -4.125
             ],
             [
-              121.729,
-              -4.205
+              121.697,
+              -4.125
             ],
             [
-              121.729,
-              -4.197
+              121.697,
+              -4.117
             ],
             [
-              121.721,
-              -4.197
+              121.689,
+              -4.117
             ],
             [
-              121.721,
-              -4.205
+              121.689,
+              -4.125
             ]
           ]
         ]
@@ -668,49 +464,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "POM014",
+        "grid_id": "POM210",
         "site": "pomalaa",
         "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 12.4,
-        "distance_to_river_m": 1552,
-        "distance_to_road_m": 3014,
-        "distance_to_settlement_m": 4570,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 62.3,
+        "slope_deg": 10.6,
+        "distance_to_river_m": 3088,
+        "distance_to_road_m": 2673,
+        "distance_to_settlement_m": 12589,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 21.1,
         "area_ha": 0.79,
-        "region_id": "SE",
-        "fe_oxide_index": 2.541,
-        "clay_index": 2.034,
-        "ndvi_stress_index": 0.324,
-        "tmi_structural_nT": 45992.6,
-        "tmi_anomaly_nT": 992.6,
-        "elevation_mdpl": 328.0,
-        "geochem_assay_ratio": 2.89
+        "region_id": "NW",
+        "fe_oxide_index": 2.179,
+        "clay_index": 1.664,
+        "ndvi_stress_index": 0.266,
+        "tmi_structural_nT": 45420.4,
+        "tmi_anomaly_nT": 420.4,
+        "elevation_mdpl": 346.4,
+        "geochem_assay_ratio": 2.41
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.729,
-              -4.205
+              121.697,
+              -4.125
             ],
             [
-              121.737,
-              -4.205
+              121.705,
+              -4.125
             ],
             [
-              121.737,
-              -4.197
+              121.705,
+              -4.117
             ],
             [
-              121.729,
-              -4.197
+              121.697,
+              -4.117
             ],
             [
-              121.729,
-              -4.205
+              121.697,
+              -4.125
             ]
           ]
         ]
@@ -719,49 +515,202 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "POM015",
+        "grid_id": "POM211",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 11.8,
+        "distance_to_river_m": 825,
+        "distance_to_road_m": 3998,
+        "distance_to_settlement_m": 13289,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 0.79,
+        "region_id": "NE",
+        "fe_oxide_index": 2.356,
+        "clay_index": 1.631,
+        "ndvi_stress_index": 0.276,
+        "tmi_structural_nT": 45253.2,
+        "tmi_anomaly_nT": 253.2,
+        "elevation_mdpl": 262.7,
+        "geochem_assay_ratio": 2.81
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.705,
+              -4.125
+            ],
+            [
+              121.713,
+              -4.125
+            ],
+            [
+              121.713,
+              -4.117
+            ],
+            [
+              121.705,
+              -4.117
+            ],
+            [
+              121.705,
+              -4.125
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM212",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 9.0,
+        "distance_to_river_m": 3155,
+        "distance_to_road_m": 4588,
+        "distance_to_settlement_m": 13179,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 0.79,
+        "region_id": "NE",
+        "fe_oxide_index": 1.518,
+        "clay_index": 1.214,
+        "ndvi_stress_index": 0.636,
+        "tmi_structural_nT": 45291.3,
+        "tmi_anomaly_nT": 291.3,
+        "elevation_mdpl": 281.3,
+        "geochem_assay_ratio": 5.51
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.713,
+              -4.125
+            ],
+            [
+              121.721,
+              -4.125
+            ],
+            [
+              121.721,
+              -4.117
+            ],
+            [
+              121.713,
+              -4.117
+            ],
+            [
+              121.713,
+              -4.125
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM229",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 8.7,
+        "distance_to_river_m": 2596,
+        "distance_to_road_m": 3573,
+        "distance_to_settlement_m": 11485,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 0.79,
+        "region_id": "NW",
+        "fe_oxide_index": 2.664,
+        "clay_index": 2.078,
+        "ndvi_stress_index": 0.225,
+        "tmi_structural_nT": 45135.1,
+        "tmi_anomaly_nT": 135.1,
+        "elevation_mdpl": 347.9,
+        "geochem_assay_ratio": 2.01
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.689,
+              -4.117
+            ],
+            [
+              121.697,
+              -4.117
+            ],
+            [
+              121.697,
+              -4.109
+            ],
+            [
+              121.689,
+              -4.109
+            ],
+            [
+              121.689,
+              -4.117
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM230",
         "site": "pomalaa",
         "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 14.3,
-        "distance_to_river_m": 995,
-        "distance_to_road_m": 5323,
-        "distance_to_settlement_m": 12521,
+        "slope_deg": 11.8,
+        "distance_to_river_m": 1546,
+        "distance_to_road_m": 4535,
+        "distance_to_settlement_m": 4861,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 64.0,
+        "distance_to_smelter_km": 24.9,
         "area_ha": 0.79,
-        "region_id": "SE",
-        "fe_oxide_index": 1.153,
-        "clay_index": 1.435,
-        "ndvi_stress_index": 0.589,
-        "tmi_structural_nT": 44774.3,
-        "tmi_anomaly_nT": -225.7,
-        "elevation_mdpl": 347.7,
-        "geochem_assay_ratio": 5.71
+        "region_id": "NW",
+        "fe_oxide_index": 1.663,
+        "clay_index": 1.496,
+        "ndvi_stress_index": 0.659,
+        "tmi_structural_nT": 45006.7,
+        "tmi_anomaly_nT": 6.7,
+        "elevation_mdpl": 281.7,
+        "geochem_assay_ratio": 4.81
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.737,
-              -4.205
+              121.697,
+              -4.117
             ],
             [
-              121.745,
-              -4.205
+              121.705,
+              -4.117
             ],
             [
-              121.745,
-              -4.197
+              121.705,
+              -4.109
             ],
             [
-              121.737,
-              -4.197
+              121.697,
+              -4.109
             ],
             [
-              121.737,
-              -4.205
+              121.697,
+              -4.117
             ]
           ]
         ]
@@ -770,49 +719,100 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "POM016",
+        "grid_id": "POM231",
         "site": "pomalaa",
         "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 8.6,
-        "distance_to_river_m": 2589,
-        "distance_to_road_m": 2660,
-        "distance_to_settlement_m": 7472,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 66.0,
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.0,
+        "distance_to_river_m": 1798,
+        "distance_to_road_m": 3482,
+        "distance_to_settlement_m": 6395,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 0.79,
-        "region_id": "SE",
-        "fe_oxide_index": 2.814,
-        "clay_index": 2.107,
-        "ndvi_stress_index": 0.24,
-        "tmi_structural_nT": 45992.0,
-        "tmi_anomaly_nT": 992.0,
-        "elevation_mdpl": 335.8,
-        "geochem_assay_ratio": 2.38
+        "region_id": "NE",
+        "fe_oxide_index": 2.15,
+        "clay_index": 1.772,
+        "ndvi_stress_index": 0.391,
+        "tmi_structural_nT": 45134.3,
+        "tmi_anomaly_nT": 134.3,
+        "elevation_mdpl": 310.5,
+        "geochem_assay_ratio": 2.87
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.745,
-              -4.205
+              121.705,
+              -4.117
             ],
             [
-              121.753,
-              -4.205
+              121.713,
+              -4.117
             ],
             [
-              121.753,
-              -4.197
+              121.713,
+              -4.109
             ],
             [
-              121.745,
-              -4.197
+              121.705,
+              -4.109
             ],
             [
-              121.745,
-              -4.205
+              121.705,
+              -4.117
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "POM232",
+        "site": "pomalaa",
+        "location_label": "Pomalaa Baula High Inland Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 9.4,
+        "distance_to_river_m": 1342,
+        "distance_to_road_m": 5452,
+        "distance_to_settlement_m": 12240,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 0.79,
+        "region_id": "NE",
+        "fe_oxide_index": 1.363,
+        "clay_index": 1.033,
+        "ndvi_stress_index": 0.513,
+        "tmi_structural_nT": 44604.9,
+        "tmi_anomaly_nT": -395.1,
+        "elevation_mdpl": 265.5,
+        "geochem_assay_ratio": 5.15
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.713,
+              -4.117
+            ],
+            [
+              121.721,
+              -4.117
+            ],
+            [
+              121.721,
+              -4.109
+            ],
+            [
+              121.713,
+              -4.109
+            ],
+            [
+              121.713,
+              -4.117
             ]
           ]
         ]

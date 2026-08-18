@@ -5,253 +5,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON001",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 8.9,
-        "distance_to_river_m": 1593,
-        "distance_to_road_m": 5551,
-        "distance_to_settlement_m": 13597,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 76.8,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.724,
-        "clay_index": 2.258,
-        "ndvi_stress_index": 0.201,
-        "tmi_structural_nT": 45787.4,
-        "tmi_anomaly_nT": 787.4,
-        "elevation_mdpl": 400.8,
-        "geochem_assay_ratio": 1.86
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.855,
-              -3.805
-            ],
-            [
-              121.865,
-              -3.805
-            ],
-            [
-              121.865,
-              -3.795
-            ],
-            [
-              121.855,
-              -3.795
-            ],
-            [
-              121.855,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON002",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 16.6,
-        "distance_to_river_m": 610,
-        "distance_to_road_m": 5743,
-        "distance_to_settlement_m": 4883,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 73.8,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.783,
-        "clay_index": 2.0,
-        "ndvi_stress_index": 0.246,
-        "tmi_structural_nT": 45973.5,
-        "tmi_anomaly_nT": 973.5,
-        "elevation_mdpl": 466.3,
-        "geochem_assay_ratio": 2.52
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.865,
-              -3.805
-            ],
-            [
-              121.875,
-              -3.805
-            ],
-            [
-              121.875,
-              -3.795
-            ],
-            [
-              121.865,
-              -3.795
-            ],
-            [
-              121.865,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON003",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 11.3,
-        "distance_to_river_m": 1015,
-        "distance_to_road_m": 6368,
-        "distance_to_settlement_m": 6643,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 71.0,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 1.824,
-        "clay_index": 2.197,
-        "ndvi_stress_index": 0.408,
-        "tmi_structural_nT": 45923.2,
-        "tmi_anomaly_nT": 923.2,
-        "elevation_mdpl": 442.1,
-        "geochem_assay_ratio": 1.77
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.875,
-              -3.805
-            ],
-            [
-              121.885,
-              -3.805
-            ],
-            [
-              121.885,
-              -3.795
-            ],
-            [
-              121.875,
-              -3.795
-            ],
-            [
-              121.875,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON004",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 9.7,
-        "distance_to_river_m": 3119,
-        "distance_to_road_m": 3313,
-        "distance_to_settlement_m": 7471,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 68.4,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.729,
-        "clay_index": 2.43,
-        "ndvi_stress_index": 0.387,
-        "tmi_structural_nT": 45584.6,
-        "tmi_anomaly_nT": 584.6,
-        "elevation_mdpl": 396.1,
-        "geochem_assay_ratio": 1.98
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.885,
-              -3.805
-            ],
-            [
-              121.895,
-              -3.805
-            ],
-            [
-              121.895,
-              -3.795
-            ],
-            [
-              121.885,
-              -3.795
-            ],
-            [
-              121.885,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON005",
+        "grid_id": "KON169",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 11.5,
-        "distance_to_river_m": 1315,
-        "distance_to_road_m": 5292,
-        "distance_to_settlement_m": 13271,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 66.0,
+        "slope_deg": 12.5,
+        "distance_to_river_m": 2107,
+        "distance_to_road_m": 2996,
+        "distance_to_settlement_m": 10024,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 27.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.276,
-        "clay_index": 1.781,
-        "ndvi_stress_index": 0.325,
-        "tmi_structural_nT": 45252.8,
-        "tmi_anomaly_nT": 252.8,
-        "elevation_mdpl": 419.1,
-        "geochem_assay_ratio": 1.46
+        "fe_oxide_index": 2.572,
+        "clay_index": 2.178,
+        "ndvi_stress_index": 0.303,
+        "tmi_structural_nT": 45456.8,
+        "tmi_anomaly_nT": 456.8,
+        "elevation_mdpl": 396.2,
+        "geochem_assay_ratio": 2.73
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.895,
-              -3.805
+              121.935,
+              -3.725
             ],
             [
-              121.905,
-              -3.805
+              121.945,
+              -3.725
             ],
             [
-              121.905,
-              -3.795
+              121.945,
+              -3.715
             ],
             [
-              121.895,
-              -3.795
+              121.935,
+              -3.715
             ],
             [
-              121.895,
-              -3.805
+              121.935,
+              -3.725
             ]
           ]
         ]
@@ -260,49 +56,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON006",
+        "grid_id": "KON170",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 14.6,
-        "distance_to_river_m": 1825,
-        "distance_to_road_m": 6437,
-        "distance_to_settlement_m": 11114,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 64.0,
+        "slope_deg": 12.6,
+        "distance_to_river_m": 2420,
+        "distance_to_road_m": 1922,
+        "distance_to_settlement_m": 9897,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.453,
-        "clay_index": 1.483,
-        "ndvi_stress_index": 0.506,
-        "tmi_structural_nT": 44969.3,
-        "tmi_anomaly_nT": -30.7,
-        "elevation_mdpl": 430.6,
-        "geochem_assay_ratio": 5.76
+        "fe_oxide_index": 1.622,
+        "clay_index": 1.254,
+        "ndvi_stress_index": 0.52,
+        "tmi_structural_nT": 44974.9,
+        "tmi_anomaly_nT": -25.1,
+        "elevation_mdpl": 413.8,
+        "geochem_assay_ratio": 3.75
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.905,
-              -3.805
+              121.945,
+              -3.725
             ],
             [
-              121.915,
-              -3.805
+              121.955,
+              -3.725
             ],
             [
-              121.915,
-              -3.795
+              121.955,
+              -3.715
             ],
             [
-              121.905,
-              -3.795
+              121.945,
+              -3.715
             ],
             [
-              121.905,
-              -3.805
+              121.945,
+              -3.725
             ]
           ]
         ]
@@ -311,100 +107,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON007",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 16.5,
-        "distance_to_river_m": 1820,
-        "distance_to_road_m": 6037,
-        "distance_to_settlement_m": 12227,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 62.3,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 1.915,
-        "clay_index": 2.252,
-        "ndvi_stress_index": 0.191,
-        "tmi_structural_nT": 45564.9,
-        "tmi_anomaly_nT": 564.9,
-        "elevation_mdpl": 446.8,
-        "geochem_assay_ratio": 2.6
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.915,
-              -3.805
-            ],
-            [
-              121.925,
-              -3.805
-            ],
-            [
-              121.925,
-              -3.795
-            ],
-            [
-              121.915,
-              -3.795
-            ],
-            [
-              121.915,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON008",
+        "grid_id": "KON171",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 13.9,
-        "distance_to_river_m": 1357,
-        "distance_to_road_m": 5366,
-        "distance_to_settlement_m": 11581,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 61.0,
+        "slope_deg": 9.9,
+        "distance_to_river_m": 2347,
+        "distance_to_road_m": 4743,
+        "distance_to_settlement_m": 13435,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.111,
-        "clay_index": 2.051,
-        "ndvi_stress_index": 0.36,
-        "tmi_structural_nT": 45159.6,
-        "tmi_anomaly_nT": 159.6,
-        "elevation_mdpl": 449.4,
-        "geochem_assay_ratio": 2.58
+        "region_id": "SE",
+        "fe_oxide_index": 2.351,
+        "clay_index": 2.058,
+        "ndvi_stress_index": 0.235,
+        "tmi_structural_nT": 45451.1,
+        "tmi_anomaly_nT": 451.1,
+        "elevation_mdpl": 435.4,
+        "geochem_assay_ratio": 3.05
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.925,
-              -3.805
+              121.955,
+              -3.725
             ],
             [
-              121.935,
-              -3.805
+              121.965,
+              -3.725
             ],
             [
-              121.935,
-              -3.795
+              121.965,
+              -3.715
             ],
             [
-              121.925,
-              -3.795
+              121.955,
+              -3.715
             ],
             [
-              121.925,
-              -3.805
+              121.955,
+              -3.725
             ]
           ]
         ]
@@ -413,100 +158,304 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON009",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 10.2,
-        "distance_to_river_m": 2467,
-        "distance_to_road_m": 2508,
-        "distance_to_settlement_m": 10200,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 1.129,
-        "clay_index": 1.329,
-        "ndvi_stress_index": 0.686,
-        "tmi_structural_nT": 44802.1,
-        "tmi_anomaly_nT": -197.9,
-        "elevation_mdpl": 441.8,
-        "geochem_assay_ratio": 5.06
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.935,
-              -3.805
-            ],
-            [
-              121.945,
-              -3.805
-            ],
-            [
-              121.945,
-              -3.795
-            ],
-            [
-              121.935,
-              -3.795
-            ],
-            [
-              121.935,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON010",
+        "grid_id": "KON172",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 9.0,
+        "distance_to_river_m": 2355,
+        "distance_to_road_m": 2349,
+        "distance_to_settlement_m": 8928,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.291,
+        "clay_index": 1.308,
+        "ndvi_stress_index": 0.588,
+        "tmi_structural_nT": 44903.9,
+        "tmi_anomaly_nT": -96.1,
+        "elevation_mdpl": 475.1,
+        "geochem_assay_ratio": 4.24
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.965,
+              -3.725
+            ],
+            [
+              121.975,
+              -3.725
+            ],
+            [
+              121.975,
+              -3.715
+            ],
+            [
+              121.965,
+              -3.715
+            ],
+            [
+              121.965,
+              -3.725
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON189",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 14.8,
+        "distance_to_river_m": 1025,
+        "distance_to_road_m": 3081,
+        "distance_to_settlement_m": 12734,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.371,
+        "clay_index": 2.29,
+        "ndvi_stress_index": 0.382,
+        "tmi_structural_nT": 45906.0,
+        "tmi_anomaly_nT": 906.0,
+        "elevation_mdpl": 384.1,
+        "geochem_assay_ratio": 2.7
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.935,
+              -3.715
+            ],
+            [
+              121.945,
+              -3.715
+            ],
+            [
+              121.945,
+              -3.705
+            ],
+            [
+              121.935,
+              -3.705
+            ],
+            [
+              121.935,
+              -3.715
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON190",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.8,
+        "distance_to_river_m": 453,
+        "distance_to_road_m": 2875,
+        "distance_to_settlement_m": 12444,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 1.811,
+        "clay_index": 2.133,
+        "ndvi_stress_index": 0.182,
+        "tmi_structural_nT": 45528.1,
+        "tmi_anomaly_nT": 528.1,
+        "elevation_mdpl": 392.5,
+        "geochem_assay_ratio": 2.65
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.945,
+              -3.715
+            ],
+            [
+              121.955,
+              -3.715
+            ],
+            [
+              121.955,
+              -3.705
+            ],
+            [
+              121.945,
+              -3.705
+            ],
+            [
+              121.945,
+              -3.715
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON191",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.3,
+        "distance_to_river_m": 3054,
+        "distance_to_road_m": 5945,
+        "distance_to_settlement_m": 12713,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.433,
+        "clay_index": 2.36,
+        "ndvi_stress_index": 0.395,
+        "tmi_structural_nT": 45609.7,
+        "tmi_anomaly_nT": 609.7,
+        "elevation_mdpl": 381.1,
+        "geochem_assay_ratio": 1.48
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.955,
+              -3.715
+            ],
+            [
+              121.965,
+              -3.715
+            ],
+            [
+              121.965,
+              -3.705
+            ],
+            [
+              121.955,
+              -3.705
+            ],
+            [
+              121.955,
+              -3.715
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON192",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 13.1,
+        "distance_to_river_m": 953,
+        "distance_to_road_m": 5634,
+        "distance_to_settlement_m": 10577,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.818,
+        "clay_index": 2.12,
+        "ndvi_stress_index": 0.239,
+        "tmi_structural_nT": 45492.4,
+        "tmi_anomaly_nT": 492.4,
+        "elevation_mdpl": 458.1,
+        "geochem_assay_ratio": 3.01
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.965,
+              -3.715
+            ],
+            [
+              121.975,
+              -3.715
+            ],
+            [
+              121.975,
+              -3.705
+            ],
+            [
+              121.965,
+              -3.705
+            ],
+            [
+              121.965,
+              -3.715
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON209",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 11.4,
-        "distance_to_river_m": 3144,
-        "distance_to_road_m": 4147,
-        "distance_to_settlement_m": 6402,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 59.6,
+        "distance_to_river_m": 551,
+        "distance_to_road_m": 3329,
+        "distance_to_settlement_m": 11742,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 1.618,
-        "clay_index": 1.257,
-        "ndvi_stress_index": 0.724,
-        "tmi_structural_nT": 45309.9,
-        "tmi_anomaly_nT": 309.9,
-        "elevation_mdpl": 409.2,
-        "geochem_assay_ratio": 4.96
+        "region_id": "NW",
+        "fe_oxide_index": 2.33,
+        "clay_index": 1.996,
+        "ndvi_stress_index": 0.287,
+        "tmi_structural_nT": 45108.7,
+        "tmi_anomaly_nT": 108.7,
+        "elevation_mdpl": 436.3,
+        "geochem_assay_ratio": 2.55
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.945,
-              -3.805
-            ],
-            [
-              121.955,
-              -3.805
-            ],
-            [
-              121.955,
-              -3.795
+              121.935,
+              -3.705
             ],
             [
               121.945,
-              -3.795
+              -3.705
             ],
             [
               121.945,
-              -3.805
+              -3.695
+            ],
+            [
+              121.935,
+              -3.695
+            ],
+            [
+              121.935,
+              -3.705
             ]
           ]
         ]
@@ -515,100 +464,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON011",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 16.4,
-        "distance_to_river_m": 2719,
-        "distance_to_road_m": 3806,
-        "distance_to_settlement_m": 7357,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 59.6,
-        "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 2.378,
-        "clay_index": 2.152,
-        "ndvi_stress_index": 0.383,
-        "tmi_structural_nT": 45656.1,
-        "tmi_anomaly_nT": 656.1,
-        "elevation_mdpl": 427.4,
-        "geochem_assay_ratio": 1.89
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.955,
-              -3.805
-            ],
-            [
-              121.965,
-              -3.805
-            ],
-            [
-              121.965,
-              -3.795
-            ],
-            [
-              121.955,
-              -3.795
-            ],
-            [
-              121.955,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON012",
+        "grid_id": "KON210",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 16.0,
-        "distance_to_river_m": 563,
-        "distance_to_road_m": 5217,
-        "distance_to_settlement_m": 14445,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 60.1,
+        "slope_deg": 18.3,
+        "distance_to_river_m": 377,
+        "distance_to_road_m": 4583,
+        "distance_to_settlement_m": 12620,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
         "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 2.716,
-        "clay_index": 2.025,
-        "ndvi_stress_index": 0.294,
-        "tmi_structural_nT": 45366.0,
-        "tmi_anomaly_nT": 366.0,
-        "elevation_mdpl": 392.8,
-        "geochem_assay_ratio": 2.36
+        "region_id": "NW",
+        "fe_oxide_index": 2.188,
+        "clay_index": 2.275,
+        "ndvi_stress_index": 0.325,
+        "tmi_structural_nT": 45996.4,
+        "tmi_anomaly_nT": 996.4,
+        "elevation_mdpl": 394.5,
+        "geochem_assay_ratio": 3.04
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.965,
-              -3.805
+              121.945,
+              -3.705
             ],
             [
-              121.975,
-              -3.805
+              121.955,
+              -3.705
             ],
             [
-              121.975,
-              -3.795
+              121.955,
+              -3.695
             ],
             [
-              121.965,
-              -3.795
+              121.945,
+              -3.695
             ],
             [
-              121.965,
-              -3.805
+              121.945,
+              -3.705
             ]
           ]
         ]
@@ -617,49 +515,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON013",
+        "grid_id": "KON211",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 13.4,
-        "distance_to_river_m": 1530,
-        "distance_to_road_m": 2694,
-        "distance_to_settlement_m": 4787,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 61.0,
+        "lithology": "peridotite_simulated",
+        "slope_deg": 14.4,
+        "distance_to_river_m": 1613,
+        "distance_to_road_m": 1521,
+        "distance_to_settlement_m": 12819,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
         "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 1.674,
-        "clay_index": 1.06,
-        "ndvi_stress_index": 0.569,
-        "tmi_structural_nT": 45236.6,
-        "tmi_anomaly_nT": 236.6,
-        "elevation_mdpl": 449.7,
-        "geochem_assay_ratio": 3.59
+        "region_id": "NE",
+        "fe_oxide_index": 2.269,
+        "clay_index": 2.222,
+        "ndvi_stress_index": 0.261,
+        "tmi_structural_nT": 45618.3,
+        "tmi_anomaly_nT": 618.3,
+        "elevation_mdpl": 461.3,
+        "geochem_assay_ratio": 1.54
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.975,
-              -3.805
+              121.955,
+              -3.705
             ],
             [
-              121.985,
-              -3.805
+              121.965,
+              -3.705
             ],
             [
-              121.985,
-              -3.795
+              121.965,
+              -3.695
             ],
             [
-              121.975,
-              -3.795
+              121.955,
+              -3.695
             ],
             [
-              121.975,
-              -3.805
+              121.955,
+              -3.705
             ]
           ]
         ]
@@ -668,49 +566,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON014",
+        "grid_id": "KON212",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 11.8,
-        "distance_to_river_m": 1778,
-        "distance_to_road_m": 4604,
-        "distance_to_settlement_m": 4461,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 62.3,
+        "slope_deg": 17.1,
+        "distance_to_river_m": 1479,
+        "distance_to_road_m": 6194,
+        "distance_to_settlement_m": 5205,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 2.135,
-        "clay_index": 2.021,
-        "ndvi_stress_index": 0.326,
-        "tmi_structural_nT": 45579.9,
-        "tmi_anomaly_nT": 579.9,
-        "elevation_mdpl": 411.2,
-        "geochem_assay_ratio": 2.38
+        "region_id": "NE",
+        "fe_oxide_index": 1.953,
+        "clay_index": 2.135,
+        "ndvi_stress_index": 0.201,
+        "tmi_structural_nT": 46002.7,
+        "tmi_anomaly_nT": 1002.7,
+        "elevation_mdpl": 381.4,
+        "geochem_assay_ratio": 2.12
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.985,
-              -3.805
+              121.965,
+              -3.705
             ],
             [
-              121.995,
-              -3.805
+              121.975,
+              -3.705
             ],
             [
-              121.995,
-              -3.795
+              121.975,
+              -3.695
             ],
             [
-              121.985,
-              -3.795
+              121.965,
+              -3.695
             ],
             [
-              121.985,
-              -3.805
+              121.965,
+              -3.705
             ]
           ]
         ]
@@ -719,100 +617,202 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "KON015",
+        "grid_id": "KON229",
         "site": "konawe",
         "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "alluvium",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 8.3,
+        "distance_to_river_m": 1272,
+        "distance_to_road_m": 2360,
+        "distance_to_settlement_m": 6802,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.23,
+        "region_id": "NW",
+        "fe_oxide_index": 2.174,
+        "clay_index": 2.05,
+        "ndvi_stress_index": 0.19,
+        "tmi_structural_nT": 45699.8,
+        "tmi_anomaly_nT": 699.8,
+        "elevation_mdpl": 446.2,
+        "geochem_assay_ratio": 2.61
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.935,
+              -3.695
+            ],
+            [
+              121.945,
+              -3.695
+            ],
+            [
+              121.945,
+              -3.685
+            ],
+            [
+              121.935,
+              -3.685
+            ],
+            [
+              121.935,
+              -3.695
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON230",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 8.7,
+        "distance_to_river_m": 1988,
+        "distance_to_road_m": 4979,
+        "distance_to_settlement_m": 8566,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.23,
+        "region_id": "NW",
+        "fe_oxide_index": 2.053,
+        "clay_index": 1.987,
+        "ndvi_stress_index": 0.355,
+        "tmi_structural_nT": 46073.8,
+        "tmi_anomaly_nT": 1073.8,
+        "elevation_mdpl": 427.0,
+        "geochem_assay_ratio": 1.87
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.945,
+              -3.695
+            ],
+            [
+              121.955,
+              -3.695
+            ],
+            [
+              121.955,
+              -3.685
+            ],
+            [
+              121.945,
+              -3.685
+            ],
+            [
+              121.945,
+              -3.695
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON231",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 16.3,
+        "distance_to_river_m": 3026,
+        "distance_to_road_m": 2213,
+        "distance_to_settlement_m": 12102,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.23,
+        "region_id": "NE",
+        "fe_oxide_index": 2.27,
+        "clay_index": 2.166,
+        "ndvi_stress_index": 0.337,
+        "tmi_structural_nT": 46024.1,
+        "tmi_anomaly_nT": 1024.1,
+        "elevation_mdpl": 399.0,
+        "geochem_assay_ratio": 2.03
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.955,
+              -3.695
+            ],
+            [
+              121.965,
+              -3.695
+            ],
+            [
+              121.965,
+              -3.685
+            ],
+            [
+              121.955,
+              -3.685
+            ],
+            [
+              121.955,
+              -3.695
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "KON232",
+        "site": "konawe",
+        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 18.7,
-        "distance_to_river_m": 2786,
-        "distance_to_road_m": 3915,
-        "distance_to_settlement_m": 9924,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 64.0,
+        "distance_to_river_m": 1141,
+        "distance_to_road_m": 2290,
+        "distance_to_settlement_m": 5370,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
         "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 1.602,
-        "clay_index": 1.452,
-        "ndvi_stress_index": 0.647,
-        "tmi_structural_nT": 45098.6,
-        "tmi_anomaly_nT": 98.6,
-        "elevation_mdpl": 470.9,
-        "geochem_assay_ratio": 4.48
+        "region_id": "NE",
+        "fe_oxide_index": 2.143,
+        "clay_index": 1.991,
+        "ndvi_stress_index": 0.335,
+        "tmi_structural_nT": 45779.0,
+        "tmi_anomaly_nT": 779.0,
+        "elevation_mdpl": 476.9,
+        "geochem_assay_ratio": 3.07
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.995,
-              -3.805
+              121.965,
+              -3.695
             ],
             [
-              122.005,
-              -3.805
+              121.975,
+              -3.695
             ],
             [
-              122.005,
-              -3.795
+              121.975,
+              -3.685
             ],
             [
-              121.995,
-              -3.795
+              121.965,
+              -3.685
             ],
             [
-              121.995,
-              -3.805
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "KON016",
-        "site": "konawe",
-        "location_label": "Konawe Abuki High Inland Mountain Ridge - Sulawesi Tenggara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 15.4,
-        "distance_to_river_m": 1332,
-        "distance_to_road_m": 2423,
-        "distance_to_settlement_m": 7060,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 66.0,
-        "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 2.445,
-        "clay_index": 2.04,
-        "ndvi_stress_index": 0.212,
-        "tmi_structural_nT": 45710.3,
-        "tmi_anomaly_nT": 710.3,
-        "elevation_mdpl": 443.1,
-        "geochem_assay_ratio": 2.06
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              122.005,
-              -3.805
-            ],
-            [
-              122.015,
-              -3.805
-            ],
-            [
-              122.015,
-              -3.795
-            ],
-            [
-              122.005,
-              -3.795
-            ],
-            [
-              122.005,
-              -3.805
+              121.965,
+              -3.695
             ]
           ]
         ]

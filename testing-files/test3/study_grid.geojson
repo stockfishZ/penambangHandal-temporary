@@ -5,202 +5,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "WED001",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 16.2,
-        "distance_to_river_m": 2873,
-        "distance_to_road_m": 4915,
-        "distance_to_settlement_m": 9739,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 76.8,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.263,
-        "clay_index": 2.209,
-        "ndvi_stress_index": 0.416,
-        "tmi_structural_nT": 45862.5,
-        "tmi_anomaly_nT": 862.5,
-        "elevation_mdpl": 519.1,
-        "geochem_assay_ratio": 2.03
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.835,
-              0.415
-            ],
-            [
-              127.847,
-              0.415
-            ],
-            [
-              127.847,
-              0.427
-            ],
-            [
-              127.835,
-              0.427
-            ],
-            [
-              127.835,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED002",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 15.2,
-        "distance_to_river_m": 3074,
-        "distance_to_road_m": 5925,
-        "distance_to_settlement_m": 4356,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 73.8,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.365,
-        "clay_index": 1.818,
-        "ndvi_stress_index": 0.211,
-        "tmi_structural_nT": 45529.3,
-        "tmi_anomaly_nT": 529.3,
-        "elevation_mdpl": 507.3,
-        "geochem_assay_ratio": 2.64
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.847,
-              0.415
-            ],
-            [
-              127.859,
-              0.415
-            ],
-            [
-              127.859,
-              0.427
-            ],
-            [
-              127.847,
-              0.427
-            ],
-            [
-              127.847,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED003",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 15.3,
-        "distance_to_river_m": 2050,
-        "distance_to_road_m": 5856,
-        "distance_to_settlement_m": 11804,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 71.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.64,
-        "clay_index": 1.213,
-        "ndvi_stress_index": 0.608,
-        "tmi_structural_nT": 44958.2,
-        "tmi_anomaly_nT": -41.8,
-        "elevation_mdpl": 562.7,
-        "geochem_assay_ratio": 4.26
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.859,
-              0.415
-            ],
-            [
-              127.871,
-              0.415
-            ],
-            [
-              127.871,
-              0.427
-            ],
-            [
-              127.859,
-              0.427
-            ],
-            [
-              127.859,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED004",
+        "grid_id": "WED169",
         "site": "weda_bay",
         "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 16.6,
-        "distance_to_river_m": 3040,
-        "distance_to_road_m": 5651,
-        "distance_to_settlement_m": 5870,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 68.4,
+        "slope_deg": 22.1,
+        "distance_to_river_m": 1709,
+        "distance_to_road_m": 3273,
+        "distance_to_settlement_m": 6830,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
         "area_ha": 1.77,
         "region_id": "SW",
-        "fe_oxide_index": 2.134,
-        "clay_index": 1.615,
-        "ndvi_stress_index": 0.326,
-        "tmi_structural_nT": 45906.1,
-        "tmi_anomaly_nT": 906.1,
-        "elevation_mdpl": 551.5,
-        "geochem_assay_ratio": 3.16
+        "fe_oxide_index": 2.266,
+        "clay_index": 2.004,
+        "ndvi_stress_index": 0.234,
+        "tmi_structural_nT": 45420.5,
+        "tmi_anomaly_nT": 420.5,
+        "elevation_mdpl": 545.7,
+        "geochem_assay_ratio": 1.59
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              127.871,
-              0.415
+              127.931,
+              0.511
             ],
             [
-              127.883,
-              0.415
+              127.943,
+              0.511
             ],
             [
-              127.883,
-              0.427
+              127.943,
+              0.523
             ],
             [
-              127.871,
-              0.427
+              127.931,
+              0.523
             ],
             [
-              127.871,
-              0.415
+              127.931,
+              0.511
             ]
           ]
         ]
@@ -209,280 +56,25 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "WED005",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 24.4,
-        "distance_to_river_m": 1174,
-        "distance_to_road_m": 6475,
-        "distance_to_settlement_m": 5918,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 66.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.219,
-        "clay_index": 1.182,
-        "ndvi_stress_index": 0.716,
-        "tmi_structural_nT": 44486.9,
-        "tmi_anomaly_nT": -513.1,
-        "elevation_mdpl": 581.5,
-        "geochem_assay_ratio": 5.44
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.883,
-              0.415
-            ],
-            [
-              127.895,
-              0.415
-            ],
-            [
-              127.895,
-              0.427
-            ],
-            [
-              127.883,
-              0.427
-            ],
-            [
-              127.883,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED006",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 15.1,
-        "distance_to_river_m": 2497,
-        "distance_to_road_m": 3854,
-        "distance_to_settlement_m": 13204,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 64.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.692,
-        "clay_index": 1.863,
-        "ndvi_stress_index": 0.396,
-        "tmi_structural_nT": 45278.1,
-        "tmi_anomaly_nT": 278.1,
-        "elevation_mdpl": 589.2,
-        "geochem_assay_ratio": 1.8
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.895,
-              0.415
-            ],
-            [
-              127.907,
-              0.415
-            ],
-            [
-              127.907,
-              0.427
-            ],
-            [
-              127.895,
-              0.427
-            ],
-            [
-              127.895,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED007",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 20.1,
-        "distance_to_river_m": 3117,
-        "distance_to_road_m": 3711,
-        "distance_to_settlement_m": 6751,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 62.3,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.892,
-        "clay_index": 1.931,
-        "ndvi_stress_index": 0.312,
-        "tmi_structural_nT": 46078.9,
-        "tmi_anomaly_nT": 1078.9,
-        "elevation_mdpl": 574.9,
-        "geochem_assay_ratio": 3.14
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.907,
-              0.415
-            ],
-            [
-              127.919,
-              0.415
-            ],
-            [
-              127.919,
-              0.427
-            ],
-            [
-              127.907,
-              0.427
-            ],
-            [
-              127.907,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED008",
+        "grid_id": "WED170",
         "site": "weda_bay",
         "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 21.8,
-        "distance_to_river_m": 944,
-        "distance_to_road_m": 4934,
-        "distance_to_settlement_m": 14127,
+        "slope_deg": 21.3,
+        "distance_to_river_m": 1555,
+        "distance_to_road_m": 3863,
+        "distance_to_settlement_m": 13401,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 61.0,
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.77,
         "region_id": "SW",
-        "fe_oxide_index": 2.567,
-        "clay_index": 2.086,
-        "ndvi_stress_index": 0.361,
-        "tmi_structural_nT": 45579.2,
-        "tmi_anomaly_nT": 579.2,
-        "elevation_mdpl": 578.4,
-        "geochem_assay_ratio": 2.92
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.919,
-              0.415
-            ],
-            [
-              127.931,
-              0.415
-            ],
-            [
-              127.931,
-              0.427
-            ],
-            [
-              127.919,
-              0.427
-            ],
-            [
-              127.919,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED009",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 23.5,
-        "distance_to_river_m": 1034,
-        "distance_to_road_m": 2674,
-        "distance_to_settlement_m": 10329,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.547,
-        "clay_index": 2.362,
-        "ndvi_stress_index": 0.182,
-        "tmi_structural_nT": 45104.1,
-        "tmi_anomaly_nT": 104.1,
-        "elevation_mdpl": 513.7,
-        "geochem_assay_ratio": 2.46
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.931,
-              0.415
-            ],
-            [
-              127.943,
-              0.415
-            ],
-            [
-              127.943,
-              0.427
-            ],
-            [
-              127.931,
-              0.427
-            ],
-            [
-              127.931,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED010",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 17.6,
-        "distance_to_river_m": 2524,
-        "distance_to_road_m": 5652,
-        "distance_to_settlement_m": 14929,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 59.6,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.784,
-        "clay_index": 2.224,
-        "ndvi_stress_index": 0.24,
-        "tmi_structural_nT": 45679.7,
-        "tmi_anomaly_nT": 679.7,
-        "elevation_mdpl": 582.0,
-        "geochem_assay_ratio": 1.78
+        "fe_oxide_index": 2.73,
+        "clay_index": 2.029,
+        "ndvi_stress_index": 0.394,
+        "tmi_structural_nT": 45912.4,
+        "tmi_anomaly_nT": 912.4,
+        "elevation_mdpl": 537.3,
+        "geochem_assay_ratio": 1.79
       },
       "geometry": {
         "type": "Polygon",
@@ -490,23 +82,23 @@
           [
             [
               127.943,
-              0.415
+              0.511
             ],
             [
               127.955,
-              0.415
+              0.511
             ],
             [
               127.955,
-              0.427
+              0.523
             ],
             [
               127.943,
-              0.427
+              0.523
             ],
             [
               127.943,
-              0.415
+              0.511
             ]
           ]
         ]
@@ -515,49 +107,202 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "WED011",
+        "grid_id": "WED171",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 17.1,
+        "distance_to_river_m": 798,
+        "distance_to_road_m": 5666,
+        "distance_to_settlement_m": 11768,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "SE",
+        "fe_oxide_index": 1.295,
+        "clay_index": 1.044,
+        "ndvi_stress_index": 0.501,
+        "tmi_structural_nT": 44676.1,
+        "tmi_anomaly_nT": -323.9,
+        "elevation_mdpl": 515.1,
+        "geochem_assay_ratio": 4.48
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.955,
+              0.511
+            ],
+            [
+              127.967,
+              0.511
+            ],
+            [
+              127.967,
+              0.523
+            ],
+            [
+              127.955,
+              0.523
+            ],
+            [
+              127.955,
+              0.511
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED172",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 20.5,
+        "distance_to_river_m": 1212,
+        "distance_to_road_m": 3809,
+        "distance_to_settlement_m": 4517,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.77,
+        "region_id": "SE",
+        "fe_oxide_index": 2.766,
+        "clay_index": 2.383,
+        "ndvi_stress_index": 0.257,
+        "tmi_structural_nT": 45582.4,
+        "tmi_anomaly_nT": 582.4,
+        "elevation_mdpl": 495.6,
+        "geochem_assay_ratio": 3.05
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.967,
+              0.511
+            ],
+            [
+              127.979,
+              0.511
+            ],
+            [
+              127.979,
+              0.523
+            ],
+            [
+              127.967,
+              0.523
+            ],
+            [
+              127.967,
+              0.511
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED189",
         "site": "weda_bay",
         "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 25.9,
+        "slope_deg": 19.3,
         "distance_to_river_m": 2257,
-        "distance_to_road_m": 3944,
-        "distance_to_settlement_m": 14508,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 59.6,
+        "distance_to_road_m": 2154,
+        "distance_to_settlement_m": 6637,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.521,
-        "clay_index": 1.996,
-        "ndvi_stress_index": 0.41,
-        "tmi_structural_nT": 45193.9,
-        "tmi_anomaly_nT": 193.9,
-        "elevation_mdpl": 582.1,
-        "geochem_assay_ratio": 2.55
+        "region_id": "SW",
+        "fe_oxide_index": 1.974,
+        "clay_index": 2.426,
+        "ndvi_stress_index": 0.294,
+        "tmi_structural_nT": 45433.5,
+        "tmi_anomaly_nT": 433.5,
+        "elevation_mdpl": 588.1,
+        "geochem_assay_ratio": 1.81
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
+            [
+              127.931,
+              0.523
+            ],
+            [
+              127.943,
+              0.523
+            ],
+            [
+              127.943,
+              0.535
+            ],
+            [
+              127.931,
+              0.535
+            ],
+            [
+              127.931,
+              0.523
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED190",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 21.1,
+        "distance_to_river_m": 811,
+        "distance_to_road_m": 2586,
+        "distance_to_settlement_m": 8009,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "SW",
+        "fe_oxide_index": 1.318,
+        "clay_index": 1.4,
+        "ndvi_stress_index": 0.533,
+        "tmi_structural_nT": 45307.8,
+        "tmi_anomaly_nT": 307.8,
+        "elevation_mdpl": 555.2,
+        "geochem_assay_ratio": 4.27
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.943,
+              0.523
+            ],
             [
               127.955,
-              0.415
-            ],
-            [
-              127.967,
-              0.415
-            ],
-            [
-              127.967,
-              0.427
+              0.523
             ],
             [
               127.955,
-              0.427
+              0.535
             ],
             [
-              127.955,
-              0.415
+              127.943,
+              0.535
+            ],
+            [
+              127.943,
+              0.523
             ]
           ]
         ]
@@ -566,253 +311,508 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "WED012",
+        "grid_id": "WED191",
         "site": "weda_bay",
         "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 25.6,
-        "distance_to_river_m": 2995,
-        "distance_to_road_m": 4917,
-        "distance_to_settlement_m": 8318,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.129,
-        "clay_index": 2.17,
-        "ndvi_stress_index": 0.259,
-        "tmi_structural_nT": 45218.9,
-        "tmi_anomaly_nT": 218.9,
-        "elevation_mdpl": 552.3,
-        "geochem_assay_ratio": 1.68
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.967,
-              0.415
-            ],
-            [
-              127.979,
-              0.415
-            ],
-            [
-              127.979,
-              0.427
-            ],
-            [
-              127.967,
-              0.427
-            ],
-            [
-              127.967,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED013",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 18.4,
-        "distance_to_river_m": 3016,
-        "distance_to_road_m": 5465,
-        "distance_to_settlement_m": 10200,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 61.0,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.379,
-        "clay_index": 1.812,
-        "ndvi_stress_index": 0.339,
-        "tmi_structural_nT": 45193.2,
-        "tmi_anomaly_nT": 193.2,
-        "elevation_mdpl": 553.5,
-        "geochem_assay_ratio": 2.26
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.979,
-              0.415
-            ],
-            [
-              127.991,
-              0.415
-            ],
-            [
-              127.991,
-              0.427
-            ],
-            [
-              127.979,
-              0.427
-            ],
-            [
-              127.979,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED014",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 18.7,
-        "distance_to_river_m": 1252,
-        "distance_to_road_m": 2130,
-        "distance_to_settlement_m": 8487,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 62.3,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.325,
-        "clay_index": 2.014,
-        "ndvi_stress_index": 0.309,
-        "tmi_structural_nT": 45902.0,
-        "tmi_anomaly_nT": 902.0,
-        "elevation_mdpl": 521.2,
-        "geochem_assay_ratio": 2.83
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              127.991,
-              0.415
-            ],
-            [
-              128.003,
-              0.415
-            ],
-            [
-              128.003,
-              0.427
-            ],
-            [
-              127.991,
-              0.427
-            ],
-            [
-              127.991,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED015",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 16.6,
-        "distance_to_river_m": 1928,
-        "distance_to_road_m": 3373,
-        "distance_to_settlement_m": 7709,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 64.0,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 1.825,
-        "clay_index": 2.213,
-        "ndvi_stress_index": 0.409,
-        "tmi_structural_nT": 45778.2,
-        "tmi_anomaly_nT": 778.2,
-        "elevation_mdpl": 507.3,
-        "geochem_assay_ratio": 1.5
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              128.003,
-              0.415
-            ],
-            [
-              128.015,
-              0.415
-            ],
-            [
-              128.015,
-              0.427
-            ],
-            [
-              128.003,
-              0.427
-            ],
-            [
-              128.003,
-              0.415
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "WED016",
-        "site": "weda_bay",
-        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 16.2,
-        "distance_to_river_m": 2762,
-        "distance_to_road_m": 2622,
-        "distance_to_settlement_m": 9284,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 66.0,
+        "distance_to_river_m": 1352,
+        "distance_to_road_m": 2307,
+        "distance_to_settlement_m": 5224,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
         "area_ha": 1.77,
         "region_id": "SE",
-        "fe_oxide_index": 2.336,
-        "clay_index": 2.155,
-        "ndvi_stress_index": 0.287,
-        "tmi_structural_nT": 45379.7,
-        "tmi_anomaly_nT": 379.7,
-        "elevation_mdpl": 535.4,
-        "geochem_assay_ratio": 1.5
+        "fe_oxide_index": 2.59,
+        "clay_index": 2.145,
+        "ndvi_stress_index": 0.222,
+        "tmi_structural_nT": 45351.7,
+        "tmi_anomaly_nT": 351.7,
+        "elevation_mdpl": 528.7,
+        "geochem_assay_ratio": 1.72
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              128.015,
-              0.415
+              127.955,
+              0.523
             ],
             [
-              128.027,
-              0.415
+              127.967,
+              0.523
             ],
             [
-              128.027,
-              0.427
+              127.967,
+              0.535
             ],
             [
-              128.015,
-              0.427
+              127.955,
+              0.535
             ],
             [
-              128.015,
-              0.415
+              127.955,
+              0.523
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED192",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.1,
+        "distance_to_river_m": 2860,
+        "distance_to_road_m": 2387,
+        "distance_to_settlement_m": 11561,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "SE",
+        "fe_oxide_index": 2.289,
+        "clay_index": 2.355,
+        "ndvi_stress_index": 0.221,
+        "tmi_structural_nT": 45424.3,
+        "tmi_anomaly_nT": 424.3,
+        "elevation_mdpl": 509.7,
+        "geochem_assay_ratio": 1.54
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.967,
+              0.523
+            ],
+            [
+              127.979,
+              0.523
+            ],
+            [
+              127.979,
+              0.535
+            ],
+            [
+              127.967,
+              0.535
+            ],
+            [
+              127.967,
+              0.523
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED209",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 21.7,
+        "distance_to_river_m": 1946,
+        "distance_to_road_m": 4012,
+        "distance_to_settlement_m": 8678,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 1.818,
+        "clay_index": 2.046,
+        "ndvi_stress_index": 0.34,
+        "tmi_structural_nT": 45326.2,
+        "tmi_anomaly_nT": 326.2,
+        "elevation_mdpl": 528.8,
+        "geochem_assay_ratio": 2.16
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.931,
+              0.535
+            ],
+            [
+              127.943,
+              0.535
+            ],
+            [
+              127.943,
+              0.547
+            ],
+            [
+              127.931,
+              0.547
+            ],
+            [
+              127.931,
+              0.535
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED210",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 23.3,
+        "distance_to_river_m": 1181,
+        "distance_to_road_m": 4119,
+        "distance_to_settlement_m": 11804,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.2,
+        "clay_index": 2.236,
+        "ndvi_stress_index": 0.258,
+        "tmi_structural_nT": 45783.5,
+        "tmi_anomaly_nT": 783.5,
+        "elevation_mdpl": 512.9,
+        "geochem_assay_ratio": 2.01
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.943,
+              0.535
+            ],
+            [
+              127.955,
+              0.535
+            ],
+            [
+              127.955,
+              0.547
+            ],
+            [
+              127.943,
+              0.547
+            ],
+            [
+              127.943,
+              0.535
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED211",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 16.0,
+        "distance_to_river_m": 2996,
+        "distance_to_road_m": 4013,
+        "distance_to_settlement_m": 4865,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.65,
+        "clay_index": 1.778,
+        "ndvi_stress_index": 0.274,
+        "tmi_structural_nT": 45484.9,
+        "tmi_anomaly_nT": 484.9,
+        "elevation_mdpl": 512.9,
+        "geochem_assay_ratio": 2.57
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.955,
+              0.535
+            ],
+            [
+              127.967,
+              0.535
+            ],
+            [
+              127.967,
+              0.547
+            ],
+            [
+              127.955,
+              0.547
+            ],
+            [
+              127.955,
+              0.535
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED212",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 22.3,
+        "distance_to_river_m": 594,
+        "distance_to_road_m": 2504,
+        "distance_to_settlement_m": 11815,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.524,
+        "clay_index": 2.41,
+        "ndvi_stress_index": 0.259,
+        "tmi_structural_nT": 45551.6,
+        "tmi_anomaly_nT": 551.6,
+        "elevation_mdpl": 499.8,
+        "geochem_assay_ratio": 2.54
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.967,
+              0.535
+            ],
+            [
+              127.979,
+              0.535
+            ],
+            [
+              127.979,
+              0.547
+            ],
+            [
+              127.967,
+              0.547
+            ],
+            [
+              127.967,
+              0.535
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED229",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 23.5,
+        "distance_to_river_m": 1540,
+        "distance_to_road_m": 6424,
+        "distance_to_settlement_m": 14682,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.134,
+        "clay_index": 1.662,
+        "ndvi_stress_index": 0.36,
+        "tmi_structural_nT": 45633.4,
+        "tmi_anomaly_nT": 633.4,
+        "elevation_mdpl": 523.1,
+        "geochem_assay_ratio": 2.51
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.931,
+              0.547
+            ],
+            [
+              127.943,
+              0.547
+            ],
+            [
+              127.943,
+              0.559
+            ],
+            [
+              127.931,
+              0.559
+            ],
+            [
+              127.931,
+              0.547
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED230",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 17.9,
+        "distance_to_river_m": 2208,
+        "distance_to_road_m": 2496,
+        "distance_to_settlement_m": 13122,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.555,
+        "clay_index": 2.358,
+        "ndvi_stress_index": 0.212,
+        "tmi_structural_nT": 45412.3,
+        "tmi_anomaly_nT": 412.3,
+        "elevation_mdpl": 497.3,
+        "geochem_assay_ratio": 1.44
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.943,
+              0.547
+            ],
+            [
+              127.955,
+              0.547
+            ],
+            [
+              127.955,
+              0.559
+            ],
+            [
+              127.943,
+              0.559
+            ],
+            [
+              127.943,
+              0.547
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED231",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 25.2,
+        "distance_to_river_m": 2286,
+        "distance_to_road_m": 5280,
+        "distance_to_settlement_m": 10782,
+        "legal_status": "conditional",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.494,
+        "clay_index": 1.622,
+        "ndvi_stress_index": 0.263,
+        "tmi_structural_nT": 46030.1,
+        "tmi_anomaly_nT": 1030.1,
+        "elevation_mdpl": 493.0,
+        "geochem_assay_ratio": 2.17
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.955,
+              0.547
+            ],
+            [
+              127.967,
+              0.547
+            ],
+            [
+              127.967,
+              0.559
+            ],
+            [
+              127.955,
+              0.559
+            ],
+            [
+              127.955,
+              0.547
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "WED232",
+        "site": "weda_bay",
+        "location_label": "Weda Bay Central Halmahera Spine Ridge - Maluku Utara greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 25.5,
+        "distance_to_river_m": 2909,
+        "distance_to_road_m": 1861,
+        "distance_to_settlement_m": 12648,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.703,
+        "clay_index": 2.178,
+        "ndvi_stress_index": 0.213,
+        "tmi_structural_nT": 45944.7,
+        "tmi_anomaly_nT": 944.7,
+        "elevation_mdpl": 577.3,
+        "geochem_assay_ratio": 2.39
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              127.967,
+              0.547
+            ],
+            [
+              127.979,
+              0.547
+            ],
+            [
+              127.979,
+              0.559
+            ],
+            [
+              127.967,
+              0.559
+            ],
+            [
+              127.967,
+              0.547
             ]
           ]
         ]

@@ -5,712 +5,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "SOR001",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 12.3,
-        "distance_to_river_m": 1083,
-        "distance_to_road_m": 2616,
-        "distance_to_settlement_m": 12101,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 76.8,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.891,
-        "clay_index": 1.959,
-        "ndvi_stress_index": 0.187,
-        "tmi_structural_nT": 45318.6,
-        "tmi_anomaly_nT": 318.6,
-        "elevation_mdpl": 670.5,
-        "geochem_assay_ratio": 1.45
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.385,
-              -2.635
-            ],
-            [
-              121.397,
-              -2.635
-            ],
-            [
-              121.397,
-              -2.623
-            ],
-            [
-              121.385,
-              -2.623
-            ],
-            [
-              121.385,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR002",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 18.1,
-        "distance_to_river_m": 2702,
-        "distance_to_road_m": 4593,
-        "distance_to_settlement_m": 13479,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 73.8,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.848,
-        "clay_index": 1.794,
-        "ndvi_stress_index": 0.249,
-        "tmi_structural_nT": 45179.8,
-        "tmi_anomaly_nT": 179.8,
-        "elevation_mdpl": 643.3,
-        "geochem_assay_ratio": 1.58
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.397,
-              -2.635
-            ],
-            [
-              121.409,
-              -2.635
-            ],
-            [
-              121.409,
-              -2.623
-            ],
-            [
-              121.397,
-              -2.623
-            ],
-            [
-              121.397,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR003",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 14.9,
-        "distance_to_river_m": 896,
-        "distance_to_road_m": 6215,
-        "distance_to_settlement_m": 13640,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 71.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.215,
-        "clay_index": 2.377,
-        "ndvi_stress_index": 0.29,
-        "tmi_structural_nT": 45364.9,
-        "tmi_anomaly_nT": 364.9,
-        "elevation_mdpl": 644.7,
-        "geochem_assay_ratio": 2.41
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.409,
-              -2.635
-            ],
-            [
-              121.421,
-              -2.635
-            ],
-            [
-              121.421,
-              -2.623
-            ],
-            [
-              121.409,
-              -2.623
-            ],
-            [
-              121.409,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR004",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 17.9,
-        "distance_to_river_m": 1059,
-        "distance_to_road_m": 4705,
-        "distance_to_settlement_m": 5227,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 68.4,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.802,
-        "clay_index": 2.344,
-        "ndvi_stress_index": 0.243,
-        "tmi_structural_nT": 45600.6,
-        "tmi_anomaly_nT": 600.6,
-        "elevation_mdpl": 637.9,
-        "geochem_assay_ratio": 3.04
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.421,
-              -2.635
-            ],
-            [
-              121.433,
-              -2.635
-            ],
-            [
-              121.433,
-              -2.623
-            ],
-            [
-              121.421,
-              -2.623
-            ],
-            [
-              121.421,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR005",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 20.4,
-        "distance_to_river_m": 2516,
-        "distance_to_road_m": 2142,
-        "distance_to_settlement_m": 9228,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 66.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.716,
-        "clay_index": 1.96,
-        "ndvi_stress_index": 0.231,
-        "tmi_structural_nT": 45639.3,
-        "tmi_anomaly_nT": 639.3,
-        "elevation_mdpl": 693.0,
-        "geochem_assay_ratio": 1.76
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.433,
-              -2.635
-            ],
-            [
-              121.445,
-              -2.635
-            ],
-            [
-              121.445,
-              -2.623
-            ],
-            [
-              121.433,
-              -2.623
-            ],
-            [
-              121.433,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR006",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 18.3,
-        "distance_to_river_m": 1660,
-        "distance_to_road_m": 5423,
-        "distance_to_settlement_m": 12882,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 64.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.359,
-        "clay_index": 1.212,
-        "ndvi_stress_index": 0.631,
-        "tmi_structural_nT": 45129.1,
-        "tmi_anomaly_nT": 129.1,
-        "elevation_mdpl": 687.3,
-        "geochem_assay_ratio": 5.96
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.445,
-              -2.635
-            ],
-            [
-              121.457,
-              -2.635
-            ],
-            [
-              121.457,
-              -2.623
-            ],
-            [
-              121.445,
-              -2.623
-            ],
-            [
-              121.445,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR007",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 21.3,
-        "distance_to_river_m": 766,
-        "distance_to_road_m": 3928,
-        "distance_to_settlement_m": 6351,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 62.3,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.327,
-        "clay_index": 1.493,
-        "ndvi_stress_index": 0.574,
-        "tmi_structural_nT": 45184.1,
-        "tmi_anomaly_nT": 184.1,
-        "elevation_mdpl": 665.5,
-        "geochem_assay_ratio": 4.56
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.457,
-              -2.635
-            ],
-            [
-              121.469,
-              -2.635
-            ],
-            [
-              121.469,
-              -2.623
-            ],
-            [
-              121.457,
-              -2.623
-            ],
-            [
-              121.457,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR008",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 19.4,
-        "distance_to_river_m": 967,
-        "distance_to_road_m": 2099,
-        "distance_to_settlement_m": 13793,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 61.0,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.45,
-        "clay_index": 1.956,
-        "ndvi_stress_index": 0.32,
-        "tmi_structural_nT": 45622.8,
-        "tmi_anomaly_nT": 622.8,
-        "elevation_mdpl": 713.5,
-        "geochem_assay_ratio": 1.77
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.469,
-              -2.635
-            ],
-            [
-              121.481,
-              -2.635
-            ],
-            [
-              121.481,
-              -2.623
-            ],
-            [
-              121.469,
-              -2.623
-            ],
-            [
-              121.469,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR009",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 22.9,
-        "distance_to_river_m": 2190,
-        "distance_to_road_m": 1539,
-        "distance_to_settlement_m": 12988,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 2.786,
-        "clay_index": 1.714,
-        "ndvi_stress_index": 0.208,
-        "tmi_structural_nT": 45207.0,
-        "tmi_anomaly_nT": 207.0,
-        "elevation_mdpl": 675.3,
-        "geochem_assay_ratio": 1.89
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.481,
-              -2.635
-            ],
-            [
-              121.493,
-              -2.635
-            ],
-            [
-              121.493,
-              -2.623
-            ],
-            [
-              121.481,
-              -2.623
-            ],
-            [
-              121.481,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR010",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 18.0,
-        "distance_to_river_m": 2717,
-        "distance_to_road_m": 4413,
-        "distance_to_settlement_m": 5629,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 59.6,
-        "area_ha": 1.77,
-        "region_id": "SW",
-        "fe_oxide_index": 1.639,
-        "clay_index": 1.398,
-        "ndvi_stress_index": 0.741,
-        "tmi_structural_nT": 45298.9,
-        "tmi_anomaly_nT": 298.9,
-        "elevation_mdpl": 641.0,
-        "geochem_assay_ratio": 4.12
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.493,
-              -2.635
-            ],
-            [
-              121.505,
-              -2.635
-            ],
-            [
-              121.505,
-              -2.623
-            ],
-            [
-              121.493,
-              -2.623
-            ],
-            [
-              121.493,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR011",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 20.7,
-        "distance_to_river_m": 596,
-        "distance_to_road_m": 5861,
-        "distance_to_settlement_m": 13445,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 59.6,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.283,
-        "clay_index": 1.859,
-        "ndvi_stress_index": 0.371,
-        "tmi_structural_nT": 45327.6,
-        "tmi_anomaly_nT": 327.6,
-        "elevation_mdpl": 622.4,
-        "geochem_assay_ratio": 1.75
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.505,
-              -2.635
-            ],
-            [
-              121.517,
-              -2.635
-            ],
-            [
-              121.517,
-              -2.623
-            ],
-            [
-              121.505,
-              -2.623
-            ],
-            [
-              121.505,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR012",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 14.8,
-        "distance_to_river_m": 2350,
-        "distance_to_road_m": 1508,
-        "distance_to_settlement_m": 14181,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 60.1,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.579,
-        "clay_index": 2.17,
-        "ndvi_stress_index": 0.267,
-        "tmi_structural_nT": 45170.0,
-        "tmi_anomaly_nT": 170.0,
-        "elevation_mdpl": 686.4,
-        "geochem_assay_ratio": 1.99
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.517,
-              -2.635
-            ],
-            [
-              121.529,
-              -2.635
-            ],
-            [
-              121.529,
-              -2.623
-            ],
-            [
-              121.517,
-              -2.623
-            ],
-            [
-              121.517,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR013",
-        "site": "sorowako",
-        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 16.9,
-        "distance_to_river_m": 904,
-        "distance_to_road_m": 3866,
-        "distance_to_settlement_m": 13913,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 61.0,
-        "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 1.889,
-        "clay_index": 2.038,
-        "ndvi_stress_index": 0.332,
-        "tmi_structural_nT": 45435.2,
-        "tmi_anomaly_nT": 435.2,
-        "elevation_mdpl": 701.8,
-        "geochem_assay_ratio": 2.75
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.529,
-              -2.635
-            ],
-            [
-              121.541,
-              -2.635
-            ],
-            [
-              121.541,
-              -2.623
-            ],
-            [
-              121.529,
-              -2.623
-            ],
-            [
-              121.529,
-              -2.635
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR014",
+        "grid_id": "SOR169",
         "site": "sorowako",
         "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "alluvium",
-        "slope_deg": 17.7,
-        "distance_to_river_m": 427,
-        "distance_to_road_m": 2746,
-        "distance_to_settlement_m": 13332,
+        "slope_deg": 14.3,
+        "distance_to_river_m": 2455,
+        "distance_to_road_m": 2627,
+        "distance_to_settlement_m": 7880,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 62.3,
+        "distance_to_smelter_km": 27.3,
         "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 1.501,
-        "clay_index": 1.494,
-        "ndvi_stress_index": 0.667,
-        "tmi_structural_nT": 45350.0,
-        "tmi_anomaly_nT": 350.0,
-        "elevation_mdpl": 709.1,
-        "geochem_assay_ratio": 5.03
+        "region_id": "SW",
+        "fe_oxide_index": 1.266,
+        "clay_index": 1.032,
+        "ndvi_stress_index": 0.597,
+        "tmi_structural_nT": 44886.2,
+        "tmi_anomaly_nT": -113.8,
+        "elevation_mdpl": 672.7,
+        "geochem_assay_ratio": 3.81
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.541,
-              -2.635
+              121.481,
+              -2.539
             ],
             [
-              121.553,
-              -2.635
+              121.493,
+              -2.539
             ],
             [
-              121.553,
-              -2.623
+              121.493,
+              -2.527
             ],
             [
-              121.541,
-              -2.623
+              121.481,
+              -2.527
             ],
             [
-              121.541,
-              -2.635
+              121.481,
+              -2.539
             ]
           ]
         ]
@@ -719,49 +56,49 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "SOR015",
+        "grid_id": "SOR170",
         "site": "sorowako",
         "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 13.5,
-        "distance_to_river_m": 955,
-        "distance_to_road_m": 4970,
-        "distance_to_settlement_m": 11771,
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.5,
+        "distance_to_river_m": 2835,
+        "distance_to_road_m": 4103,
+        "distance_to_settlement_m": 10900,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 64.0,
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.77,
-        "region_id": "SE",
-        "fe_oxide_index": 2.37,
-        "clay_index": 1.953,
-        "ndvi_stress_index": 0.23,
-        "tmi_structural_nT": 45520.1,
-        "tmi_anomaly_nT": 520.1,
-        "elevation_mdpl": 710.5,
-        "geochem_assay_ratio": 2.45
+        "region_id": "SW",
+        "fe_oxide_index": 2.164,
+        "clay_index": 1.977,
+        "ndvi_stress_index": 0.335,
+        "tmi_structural_nT": 45391.5,
+        "tmi_anomaly_nT": 391.5,
+        "elevation_mdpl": 626.3,
+        "geochem_assay_ratio": 2.97
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.553,
-              -2.635
+              121.493,
+              -2.539
             ],
             [
-              121.565,
-              -2.635
+              121.505,
+              -2.539
             ],
             [
-              121.565,
-              -2.623
+              121.505,
+              -2.527
             ],
             [
-              121.553,
-              -2.623
+              121.493,
+              -2.527
             ],
             [
-              121.553,
-              -2.635
+              121.493,
+              -2.539
             ]
           ]
         ]
@@ -770,49 +107,712 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "SOR016",
+        "grid_id": "SOR171",
         "site": "sorowako",
         "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
+        "slope_deg": 13.8,
+        "distance_to_river_m": 2978,
+        "distance_to_road_m": 5059,
+        "distance_to_settlement_m": 7138,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "SE",
+        "fe_oxide_index": 1.961,
+        "clay_index": 1.802,
+        "ndvi_stress_index": 0.19,
+        "tmi_structural_nT": 45416.6,
+        "tmi_anomaly_nT": 416.6,
+        "elevation_mdpl": 632.6,
+        "geochem_assay_ratio": 1.87
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.505,
+              -2.539
+            ],
+            [
+              121.517,
+              -2.539
+            ],
+            [
+              121.517,
+              -2.527
+            ],
+            [
+              121.505,
+              -2.527
+            ],
+            [
+              121.505,
+              -2.539
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR172",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 22.4,
+        "distance_to_river_m": 3144,
+        "distance_to_road_m": 4369,
+        "distance_to_settlement_m": 5618,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.77,
+        "region_id": "SE",
+        "fe_oxide_index": 2.264,
+        "clay_index": 2.186,
+        "ndvi_stress_index": 0.356,
+        "tmi_structural_nT": 46000.2,
+        "tmi_anomaly_nT": 1000.2,
+        "elevation_mdpl": 633.9,
+        "geochem_assay_ratio": 2.39
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.517,
+              -2.539
+            ],
+            [
+              121.529,
+              -2.539
+            ],
+            [
+              121.529,
+              -2.527
+            ],
+            [
+              121.517,
+              -2.527
+            ],
+            [
+              121.517,
+              -2.539
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR189",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.7,
+        "distance_to_river_m": 1788,
+        "distance_to_road_m": 6348,
+        "distance_to_settlement_m": 13137,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "SW",
+        "fe_oxide_index": 2.135,
+        "clay_index": 2.007,
+        "ndvi_stress_index": 0.356,
+        "tmi_structural_nT": 45360.7,
+        "tmi_anomaly_nT": 360.7,
+        "elevation_mdpl": 688.7,
+        "geochem_assay_ratio": 2.89
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.481,
+              -2.527
+            ],
+            [
+              121.493,
+              -2.527
+            ],
+            [
+              121.493,
+              -2.515
+            ],
+            [
+              121.481,
+              -2.515
+            ],
+            [
+              121.481,
+              -2.527
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR190",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 22.4,
+        "distance_to_river_m": 623,
+        "distance_to_road_m": 5093,
+        "distance_to_settlement_m": 8787,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "SW",
+        "fe_oxide_index": 2.507,
+        "clay_index": 1.701,
+        "ndvi_stress_index": 0.351,
+        "tmi_structural_nT": 45290.5,
+        "tmi_anomaly_nT": 290.5,
+        "elevation_mdpl": 706.2,
+        "geochem_assay_ratio": 2.81
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.493,
+              -2.527
+            ],
+            [
+              121.505,
+              -2.527
+            ],
+            [
+              121.505,
+              -2.515
+            ],
+            [
+              121.493,
+              -2.515
+            ],
+            [
+              121.493,
+              -2.527
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR191",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 19.6,
+        "distance_to_river_m": 2363,
+        "distance_to_road_m": 5042,
+        "distance_to_settlement_m": 12097,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "SE",
+        "fe_oxide_index": 1.862,
+        "clay_index": 1.883,
+        "ndvi_stress_index": 0.236,
+        "tmi_structural_nT": 46008.2,
+        "tmi_anomaly_nT": 1008.2,
+        "elevation_mdpl": 719.7,
+        "geochem_assay_ratio": 3.09
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.505,
+              -2.527
+            ],
+            [
+              121.517,
+              -2.527
+            ],
+            [
+              121.517,
+              -2.515
+            ],
+            [
+              121.505,
+              -2.515
+            ],
+            [
+              121.505,
+              -2.527
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR192",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
         "slope_deg": 13.4,
-        "distance_to_river_m": 2097,
-        "distance_to_road_m": 1635,
-        "distance_to_settlement_m": 8334,
+        "distance_to_river_m": 2825,
+        "distance_to_road_m": 5674,
+        "distance_to_settlement_m": 12226,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 66.0,
+        "distance_to_smelter_km": 24.9,
         "area_ha": 1.77,
         "region_id": "SE",
-        "fe_oxide_index": 2.475,
-        "clay_index": 1.715,
-        "ndvi_stress_index": 0.291,
-        "tmi_structural_nT": 45150.3,
-        "tmi_anomaly_nT": 150.3,
-        "elevation_mdpl": 657.9,
-        "geochem_assay_ratio": 1.78
+        "fe_oxide_index": 2.721,
+        "clay_index": 2.121,
+        "ndvi_stress_index": 0.363,
+        "tmi_structural_nT": 45363.8,
+        "tmi_anomaly_nT": 363.8,
+        "elevation_mdpl": 651.3,
+        "geochem_assay_ratio": 3.01
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.565,
-              -2.635
+              121.517,
+              -2.527
             ],
             [
-              121.577,
-              -2.635
+              121.529,
+              -2.527
             ],
             [
-              121.577,
-              -2.623
+              121.529,
+              -2.515
             ],
             [
-              121.565,
-              -2.623
+              121.517,
+              -2.515
             ],
             [
-              121.565,
-              -2.635
+              121.517,
+              -2.527
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR209",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 16.5,
+        "distance_to_river_m": 1694,
+        "distance_to_road_m": 3537,
+        "distance_to_settlement_m": 6571,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.812,
+        "clay_index": 2.174,
+        "ndvi_stress_index": 0.239,
+        "tmi_structural_nT": 45654.7,
+        "tmi_anomaly_nT": 654.7,
+        "elevation_mdpl": 698.5,
+        "geochem_assay_ratio": 1.95
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.481,
+              -2.515
+            ],
+            [
+              121.493,
+              -2.515
+            ],
+            [
+              121.493,
+              -2.503
+            ],
+            [
+              121.481,
+              -2.503
+            ],
+            [
+              121.481,
+              -2.515
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR210",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 16.2,
+        "distance_to_river_m": 1306,
+        "distance_to_road_m": 4661,
+        "distance_to_settlement_m": 10437,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.576,
+        "clay_index": 2.079,
+        "ndvi_stress_index": 0.252,
+        "tmi_structural_nT": 45495.3,
+        "tmi_anomaly_nT": 495.3,
+        "elevation_mdpl": 632.3,
+        "geochem_assay_ratio": 1.65
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.493,
+              -2.515
+            ],
+            [
+              121.505,
+              -2.515
+            ],
+            [
+              121.505,
+              -2.503
+            ],
+            [
+              121.493,
+              -2.503
+            ],
+            [
+              121.493,
+              -2.515
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR211",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 19.4,
+        "distance_to_river_m": 1486,
+        "distance_to_road_m": 5976,
+        "distance_to_settlement_m": 11736,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 21.1,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 1.572,
+        "clay_index": 1.325,
+        "ndvi_stress_index": 0.522,
+        "tmi_structural_nT": 44430.9,
+        "tmi_anomaly_nT": -569.1,
+        "elevation_mdpl": 703.2,
+        "geochem_assay_ratio": 5.18
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.505,
+              -2.515
+            ],
+            [
+              121.517,
+              -2.515
+            ],
+            [
+              121.517,
+              -2.503
+            ],
+            [
+              121.505,
+              -2.503
+            ],
+            [
+              121.505,
+              -2.515
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR212",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 15.3,
+        "distance_to_river_m": 2376,
+        "distance_to_road_m": 2671,
+        "distance_to_settlement_m": 9432,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.75,
+        "clay_index": 2.201,
+        "ndvi_stress_index": 0.23,
+        "tmi_structural_nT": 45296.1,
+        "tmi_anomaly_nT": 296.1,
+        "elevation_mdpl": 702.1,
+        "geochem_assay_ratio": 2.11
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.517,
+              -2.515
+            ],
+            [
+              121.529,
+              -2.515
+            ],
+            [
+              121.529,
+              -2.503
+            ],
+            [
+              121.517,
+              -2.503
+            ],
+            [
+              121.517,
+              -2.515
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR229",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 20.4,
+        "distance_to_river_m": 1801,
+        "distance_to_road_m": 6388,
+        "distance_to_settlement_m": 11129,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.054,
+        "clay_index": 2.058,
+        "ndvi_stress_index": 0.398,
+        "tmi_structural_nT": 45765.0,
+        "tmi_anomaly_nT": 765.0,
+        "elevation_mdpl": 644.8,
+        "geochem_assay_ratio": 2.64
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.481,
+              -2.503
+            ],
+            [
+              121.493,
+              -2.503
+            ],
+            [
+              121.493,
+              -2.491
+            ],
+            [
+              121.481,
+              -2.491
+            ],
+            [
+              121.481,
+              -2.503
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR230",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.9,
+        "distance_to_river_m": 1007,
+        "distance_to_road_m": 2927,
+        "distance_to_settlement_m": 8931,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NW",
+        "fe_oxide_index": 2.62,
+        "clay_index": 1.668,
+        "ndvi_stress_index": 0.413,
+        "tmi_structural_nT": 45498.2,
+        "tmi_anomaly_nT": 498.2,
+        "elevation_mdpl": 636.8,
+        "geochem_assay_ratio": 2.19
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.493,
+              -2.503
+            ],
+            [
+              121.505,
+              -2.503
+            ],
+            [
+              121.505,
+              -2.491
+            ],
+            [
+              121.493,
+              -2.491
+            ],
+            [
+              121.493,
+              -2.503
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR231",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.1,
+        "distance_to_river_m": 317,
+        "distance_to_road_m": 4003,
+        "distance_to_settlement_m": 11979,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 24.9,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.787,
+        "clay_index": 2.425,
+        "ndvi_stress_index": 0.27,
+        "tmi_structural_nT": 45589.6,
+        "tmi_anomaly_nT": 589.6,
+        "elevation_mdpl": 684.1,
+        "geochem_assay_ratio": 2.46
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.505,
+              -2.503
+            ],
+            [
+              121.517,
+              -2.503
+            ],
+            [
+              121.517,
+              -2.491
+            ],
+            [
+              121.505,
+              -2.491
+            ],
+            [
+              121.505,
+              -2.503
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR232",
+        "site": "sorowako",
+        "location_label": "Sorowako Nuha North Inland Mountain Ridge - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 19.7,
+        "distance_to_river_m": 2164,
+        "distance_to_road_m": 2807,
+        "distance_to_settlement_m": 9010,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 27.3,
+        "area_ha": 1.77,
+        "region_id": "NE",
+        "fe_oxide_index": 2.432,
+        "clay_index": 2.409,
+        "ndvi_stress_index": 0.382,
+        "tmi_structural_nT": 45112.3,
+        "tmi_anomaly_nT": 112.3,
+        "elevation_mdpl": 697.1,
+        "geochem_assay_ratio": 2.56
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.517,
+              -2.503
+            ],
+            [
+              121.529,
+              -2.503
+            ],
+            [
+              121.529,
+              -2.491
+            ],
+            [
+              121.517,
+              -2.491
+            ],
+            [
+              121.517,
+              -2.503
             ]
           ]
         ]
