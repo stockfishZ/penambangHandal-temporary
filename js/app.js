@@ -1161,6 +1161,50 @@ function fetchElevationDataForApp(cells, callback) {
     if (total === 0) finish();
 }
 
+function createGridTextSprite(text, opacity = 0.50) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = `rgba(15, 23, 42, ${opacity * 0.7})`;
+    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.4})`;
+    ctx.lineWidth = 2;
+    
+    const r = 10, x = 12, y = 8, w = 104, h = 48;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.font = 'Bold 22px "Space Grotesk", sans-serif';
+    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 1);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+    
+    const spriteMaterial = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        opacity: opacity,
+        depthTest: false
+    });
+    
+    const sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(1.8, 0.9, 1);
+    return sprite;
+}
+
 function renderPlotly3D() {
   if (!resultRows.length || !window.THREE) return;
   const container = els.plotlyDiv;
@@ -1323,6 +1367,26 @@ function renderPlotly3D() {
       const wireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1 });
       const wireMesh = new THREE.Mesh(geo, wireMat);
       scene.add(wireMesh);
+
+      // Add low-opacity grid ID text labels floating over each 3D grid cell
+      cells.forEach(cell => {
+          const u = (cell.lonC - minLon) / (maxLon - minLon || 1);
+          const v = (cell.latC - minLat) / (maxLat - minLat || 1);
+          const px = (u - 0.5) * terrainWidth;
+          const pz = (v - 0.5) * terrainDepth;
+          
+          let closestVert = vertexCells[0];
+          let minD = Infinity;
+          vertexCells.forEach(vc => {
+              const d = (vc.lonC - cell.lonC)**2 + (vc.latC - cell.latC)**2;
+              if (d < minD) { minD = d; closestVert = vc; }
+          });
+          
+          const h = (closestVert.elevation - minElev) * heightScale;
+          const sprite = createGridTextSprite(cell.gid, 0.50);
+          sprite.position.set(px, h + 0.8, pz);
+          scene.add(sprite);
+      });
 
       const groundGeo = new THREE.PlaneGeometry(terrainWidth * 1.5, terrainDepth * 1.5);
       const groundMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });

@@ -600,6 +600,41 @@ document.addEventListener('DOMContentLoaded', () => {
       scene.add(mesh);
       _3dMesh = mesh;
 
+      // Add low-opacity grid ID text labels floating over 3D terrain cells
+      if (cells && cells.length) {
+        cells.forEach(function(c) {
+          if (!c.gid) return;
+          var u = (c.col + 0.5) / NX;
+          var v = (c.row + 0.5) / NY;
+          var px = (u - 0.5) * terrainWidth;
+          var pz = (v - 0.5) * terrainDepth;
+          var h = ((c.elevation || 0) - elevMin) * heightScale;
+          
+          var lCanvas = document.createElement('canvas');
+          lCanvas.width = 128; lCanvas.height = 64;
+          var lCtx = lCanvas.getContext('2d');
+          lCtx.fillStyle = 'rgba(15, 23, 42, 0.45)';
+          lCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+          lCtx.lineWidth = 2;
+          lCtx.beginPath();
+          lCtx.rect(12, 8, 104, 48);
+          lCtx.fill(); lCtx.stroke();
+          
+          lCtx.font = 'Bold 22px "Space Grotesk", sans-serif';
+          lCtx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+          lCtx.textAlign = 'center';
+          lCtx.textBaseline = 'middle';
+          lCtx.fillText(c.gid, 64, 33);
+          
+          var lTex = new THREE.CanvasTexture(lCanvas);
+          var lMat = new THREE.SpriteMaterial({ map: lTex, transparent: true, opacity: 0.55, depthTest: false });
+          var lSprite = new THREE.Sprite(lMat);
+          lSprite.scale.set(1.6, 0.8, 1);
+          lSprite.position.set(px, h + 0.7, pz);
+          scene.add(lSprite);
+        });
+      }
+
       // Populate metric overlay
       var eOverlay = document.getElementById('terrainMetricOverlay');
       if (eOverlay) eOverlay.style.display = '';
