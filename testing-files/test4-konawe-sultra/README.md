@@ -1,10 +1,10 @@
-# Konawe Deep Inland Ridge (Sulawesi Tenggara) - Demo Testing Dataset
+# Konawe Deep Inland Ridge (Sulawesi Tenggara) - Compact Demo Testing Dataset
 
-This folder contains 3 exploration input files ready for upload into **NiTERRA WebGIS Platform**:
+This folder contains a compact 16-grid exploration test block ready for rapid testing on the **NiTERRA WebGIS Platform**:
 
-1. `magnetometer_data.csv`: UAV Magnetometer raw & structural TMI telemetry (1200 records).
-2. `geochemistry_data.csv`: Multi-element drill assay chemistry records (400 records).
-3. `study_grid.geojson`: GeoJSON Polygon grid boundaries (400 cells).
+1. `magnetometer_data.csv`: UAV Magnetometer raw & structural TMI telemetry (48 records).
+2. `geochemistry_data.csv`: Multi-element drill assay chemistry records (16 records).
+3. `study_grid.geojson`: GeoJSON Polygon grid boundaries (16 grid cells).
 
 ### How to use on Dashboard:
 1. Open the **NiTERRA Dashboard** homepage (`index.html`).

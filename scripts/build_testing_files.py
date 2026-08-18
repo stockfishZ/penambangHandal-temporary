@@ -63,13 +63,18 @@ def build_test_packages():
     for cfg in TEST_CONFIGS:
         pfx = cfg["prefix"]
         site_id = cfg["site_id"]
-        
-        geo_rows = [r for r in geo_all if r["grid_id"].startswith(pfx)]
-        mag_rows = [r for r in mag_all if r["grid_id"].startswith(pfx)]
 
         site_geojson_path = os.path.join(DATA_DIR, site_id, "study_grid.geojson")
         with open(site_geojson_path, mode="r", encoding="utf-8") as f:
-            geojson_data = json.load(f)
+            full_geojson = json.load(f)
+
+        # Slice exactly 16 grid cells (compact 4x4 block for ultra-fast demo testing)
+        features = full_geojson.get("features", [])[:16]
+        geojson_data = {"type": "FeatureCollection", "name": f"study_grid_{site_id}_demo", "features": features}
+
+        valid_gids = set(f["properties"]["grid_id"] for f in features)
+        geo_rows = [r for r in geo_all if r["grid_id"] in valid_gids]
+        mag_rows = [r for r in mag_all if r["grid_id"] in valid_gids]
 
         target_dirs = [
             os.path.join(OUT_DIR, cfg["folder_name"]),
@@ -92,13 +97,13 @@ def build_test_packages():
 
             readme_out = os.path.join(tdir, "README.md")
             with open(readme_out, mode="w", encoding="utf-8") as f:
-                f.write(f"""# {cfg['label']} - Demo Testing Dataset
+                f.write(f"""# {cfg['label']} - Compact Demo Testing Dataset
 
-This folder contains 3 exploration input files ready for upload into **NiTERRA WebGIS Platform**:
+This folder contains a compact 16-grid exploration test block ready for rapid testing on the **NiTERRA WebGIS Platform**:
 
 1. `magnetometer_data.csv`: UAV Magnetometer raw & structural TMI telemetry ({len(mag_rows)} records).
 2. `geochemistry_data.csv`: Multi-element drill assay chemistry records ({len(geo_rows)} records).
-3. `study_grid.geojson`: GeoJSON Polygon grid boundaries ({len(geojson_data.get('features', []))} cells).
+3. `study_grid.geojson`: GeoJSON Polygon grid boundaries ({len(features)} grid cells).
 
 ### How to use on Dashboard:
 1. Open the **NiTERRA Dashboard** homepage (`index.html`).
@@ -108,24 +113,24 @@ This folder contains 3 exploration input files ready for upload into **NiTERRA W
 5. Click **Run Analysis** to execute real-time spatial weighting & ML scoring.
 """)
 
-        print(f"[OK] Created {cfg['folder_name']} & {cfg['folder_num']} ({len(geojson_data.get('features', []))} cells, {len(geo_rows)} geochem, {len(mag_rows)} mag)")
+        print(f"[OK] Created {cfg['folder_name']} & {cfg['folder_num']} ({len(features)} cells, {len(geo_rows)} geochem, {len(mag_rows)} mag)")
 
     # Root README in testing-files
     root_readme = os.path.join(OUT_DIR, "README.md")
     with open(root_readme, mode="w", encoding="utf-8") as f:
         f.write("""# NiTERRA Demo Day Testing Datasets
 
-Welcome Demo Testers & Judges! This directory provides pre-packaged real-world Indonesian nickel laterite exploration datasets ready for testing on the **NiTERRA Dashboard**.
+Welcome Demo Testers & Judges! This directory provides pre-packaged, compact 16-grid nickel laterite exploration datasets ready for testing on the **NiTERRA Dashboard**.
 
 ## 📁 Available Test Folders
 
-| Folder | Concession Target | Location / Region | Files Included |
+| Folder | Concession Target | Location / Region | Grid Size |
 | :--- | :--- | :--- | :--- |
-| **`test1`** (`test1-sorowako-sulsel`) | Sorowako Greenfield Interior Ridge | Sulawesi Selatan | 3 input files |
-| **`test2`** (`test2-morowali-sulteng`) | Morowali Deep Greenfield Mountains | Sulawesi Tengah | 3 input files |
-| **`test3`** (`test3-wedabay-halmahera`) | Weda Bay Central Greenfield Ridge | Halmahera, Maluku Utara | 3 input files |
-| **`test4`** (`test4-konawe-sultra`) | Konawe Deep Inland Ridge | Sulawesi Tenggara | 3 input files |
-| **`test5`** (`test5-pomalaa-sultra`) | Pomalaa Greenfield Interior Range | Sulawesi Tenggara | 3 input files |
+| **`test1`** (`test1-sorowako-sulsel`) | Sorowako Greenfield Interior Ridge | Sulawesi Selatan | 16 grids (Compact 4x4) |
+| **`test2`** (`test2-morowali-sulteng`) | Morowali Deep Greenfield Mountains | Sulawesi Tengah | 16 grids (Compact 4x4) |
+| **`test3`** (`test3-wedabay-halmahera`) | Weda Bay Central Greenfield Ridge | Halmahera, Maluku Utara | 16 grids (Compact 4x4) |
+| **`test4`** (`test4-konawe-sultra`) | Konawe Deep Inland Ridge | Sulawesi Tenggara | 16 grids (Compact 4x4) |
+| **`test5`** (`test5-pomalaa-sultra`) | Pomalaa Greenfield Interior Range | Sulawesi Tenggara | 16 grids (Compact 4x4) |
 
 ---
 
