@@ -193,12 +193,17 @@ function initMap() {
   ro.observe(document.getElementById('map'));
 }
 
+let _resizeAnimationFrame = null;
 function forceMapResize() {
   if (!map) return;
-  const el = document.getElementById('map');
-  if (el && el.offsetWidth > 0 && el.offsetHeight > 0) {
-    map.invalidateSize({ pan: false, animate: false });
-  }
+  if (_resizeAnimationFrame) cancelAnimationFrame(_resizeAnimationFrame);
+  _resizeAnimationFrame = requestAnimationFrame(() => {
+    _resizeAnimationFrame = null;
+    const el = document.getElementById('map');
+    if (el && el.offsetWidth > 0 && el.offsetHeight > 0) {
+      map.invalidateSize({ pan: false, animate: false });
+    }
+  });
 }
 
 function updateFileName(input, target) {
@@ -1054,23 +1059,34 @@ function renderMapLayers() {
     }
   });
 
-  magnetLayer = L.layerGroup(rawMagnet.map(r => {
+  // Performance Optimization: Sample raw telemetry to prevent DOM bloat (rendering 12,800 Leaflet elements)
+  const maxMag = 180;
+  const sampledMagnet = rawMagnet.length > maxMag 
+    ? rawMagnet.filter((_, idx) => idx % Math.ceil(rawMagnet.length / maxMag) === 0)
+    : rawMagnet;
+
+  const maxGeo = 120;
+  const sampledGeo = rawGeo.length > maxGeo
+    ? rawGeo.filter((_, idx) => idx % Math.ceil(rawGeo.length / maxGeo) === 0)
+    : rawGeo;
+
+  magnetLayer = L.layerGroup(sampledMagnet.map(r => {
     const lat = Number(r.latitude); const lon = Number(r.longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
     return L.circleMarker([lat, lon], {
-      radius: activeLayerMode === 'magnet' ? 7 : 4,
+      radius: activeLayerMode === 'magnet' ? 6 : 4,
       color: '#07140f',
       weight: 1,
       fillColor: '#0ea5e9',
       fillOpacity: activeLayerMode === 'magnet' ? 0.9 : 0.55
-    }).bindPopup(`<b>${r.point_id}</b><br>Grid: ${r.grid_id}<br>Mag raw: ${r.mag_raw_nT} nT`);
+    }).bindPopup(`<b>${r.point_id || r.mag_id}</b><br>Grid: ${r.grid_id}<br>Mag raw: ${r.mag_raw_nT} nT`);
   }).filter(Boolean));
 
-  sampleLayer = L.layerGroup(rawGeo.map(r => {
+  sampleLayer = L.layerGroup(sampledGeo.map(r => {
     const lat = Number(r.latitude); const lon = Number(r.longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
     return L.circleMarker([lat, lon], {
-      radius: activeLayerMode === 'samples' ? 7 : 4,
+      radius: activeLayerMode === 'samples' ? 6 : 4,
       color: '#07140f',
       weight: 1,
       fillColor: '#fbbf24',
@@ -1090,7 +1106,6 @@ function renderMapLayers() {
   if (activeLayerMode === 'magnet') magnetLayer.addTo(map);
   if (activeLayerMode === 'samples') sampleLayer.addTo(map);
   if (activeLayerMode === 'priority') {
-    magnetLayer.addTo(map);
     sampleLayer.addTo(map);
   }
   const bounds = gridLayer.getBounds();
