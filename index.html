@@ -237,66 +237,54 @@
   </main>
 
   <div id="plotly3dContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; backdrop-filter: blur(8px);">
-    <div style="position: relative; width: 95%; height: 95%; background: #0f172a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; overflow: hidden;">
+    <div style="position: relative; width: 96%; height: 94%; background: #0f172a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); display: flex; overflow: hidden;">
       
-      <!-- Top Action Bar -->
-      <div style="position: absolute; top: 16px; right: 16px; z-index: 99999; display: flex; gap: 12px;">
-        <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border-color: rgba(255,255,255,0.2);">✕ Close</button>
-      </div>
+      <!-- 3D Canvas Area -->
+      <div id="plotlyDiv" style="flex: 1; width: 100%; height: 100%; position: relative; border-radius: 16px 0 0 16px; overflow: hidden;"></div>
 
-      <!-- Left Overlay Info Panel -->
-      <div style="position: absolute; top: 16px; left: 16px; z-index: 99999; width: 280px; display: flex; flex-direction: column; gap: 12px;">
+      <!-- Right Side Scoring & Target Detail Panel (Default visible on right side) -->
+      <div id="info3dSelectedCard" style="width: 340px; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px); border-left: 1px solid rgba(255,255,255,0.12); padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; box-shadow: -8px 0 32px rgba(0,0,0,0.4); flex-shrink: 0;">
         
-        <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px;">
-          <h3 style="font-family: var(--font-display); font-size: 16px; margin: 0 0 4px; color: #fff;">Digital Elevation Model</h3>
-          <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 16px;">Topographic simulation with ML overlay</p>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-            <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Max Elev</span>
-              <div id="info3dMaxElev" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
-            </div>
-            <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Min Elev</span>
-              <div id="info3dMinElev" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
+        <!-- Header with Integrated Close Button -->
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; flex-shrink: 0;">
+          <div>
+            <h3 style="font-family: var(--font-display); font-size: 15px; margin: 0 0 4px; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <span>⛰️ 3D Analytics</span>
+            </h3>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="card3dGridId" style="font-size: 15px; font-weight: 700; color: #fff;">Grid -</span>
+              <span id="card3dPriority" class="badge" style="font-size: 10px;">-</span>
             </div>
           </div>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Max Score</span>
-              <div id="info3dMaxScore" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
-            </div>
-            <div>
-              <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Top Grid</span>
-              <div id="info3dTopGrid" style="font-size: 18px; font-weight: 600; color: #fff;">-</div>
-            </div>
-          </div>
+          <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); font-weight: 600; padding: 6px 12px; cursor: pointer; border-radius: 6px;">✕ Close 3D</button>
         </div>
 
-        <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px;">
-          <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Prospectivity Score (ML)</span>
-          <div style="height: 12px; width: 100%; border-radius: 6px; background: linear-gradient(to right, #ef4444, #f59e0b, #10b981); margin-bottom: 6px;"></div>
-          <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+        <!-- Selected Target Detail Section -->
+        <div id="card3dContent" style="font-size: 12px; color: var(--text-secondary); flex-grow: 1;">
+          <p style="text-align: center; color: var(--text-muted); margin: 12px 0;">Tap any 3D grid cell to view detailed stats.</p>
+        </div>
+
+        <!-- DEM Elevation & ML Prospectivity Summary -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px; margin-top: auto; flex-shrink: 0;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Elevation & ML Summary</span>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; margin-bottom: 10px;">
+            <div><span style="color:var(--text-muted);">Max Elev:</span> <b id="info3dMaxElev" style="color:#fff;">-</b></div>
+            <div><span style="color:var(--text-muted);">Min Elev:</span> <b id="info3dMinElev" style="color:#fff;">-</b></div>
+            <div><span style="color:var(--text-muted);">Max Score:</span> <b id="info3dMaxScore" style="color:#10b981;">-</b></div>
+            <div><span style="color:var(--text-muted);">Top Grid:</span> <b id="info3dTopGrid" style="color:#fff;">-</b></div>
+          </div>
+
+          <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 4px;">ML Prospectivity Gradient</span>
+          <div style="height: 10px; width: 100%; border-radius: 5px; background: linear-gradient(to right, #ef4444, #f59e0b, #10b981); margin-bottom: 4px;"></div>
+          <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted);">
             <span>Low (0)</span>
             <span>High (10)</span>
           </div>
         </div>
-      </div>
 
-      <!-- Right Overlay Selected Grid Detail Card -->
-      <div id="info3dSelectedCard" style="display: none; position: absolute; top: 16px; right: 85px; z-index: 99999; width: 310px; max-height: calc(100% - 32px); overflow-y: auto; background: rgba(15, 23, 42, 0.90); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.6);">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="card3dGridId" style="font-size: 16px; font-weight: 700; color: #fff;">-</span>
-            <span id="card3dPriority" class="badge" style="font-size: 11px;">-</span>
-          </div>
-          <button id="close3dCardBtn" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 24px; height: 24px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;">✕</button>
-        </div>
-        <div id="card3dContent" style="font-size: 12px; color: var(--text-secondary);">
-          <p style="text-align: center; color: var(--text-muted); margin: 12px 0;">Tap any 3D grid cell to view detailed stats.</p>
-        </div>
       </div>
+    </div>
+  </div>
 
       <div id="plotlyDiv" style="flex: 1; width: 100%; min-height: 0; position: relative; border-radius: 16px; overflow: hidden;"></div>
     </div>

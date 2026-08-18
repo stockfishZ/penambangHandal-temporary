@@ -1297,12 +1297,6 @@ function show3DGridDetail(gridId) {
     <div class="detail-line" style="margin:2px 0;"><span>Slope / River:</span><b>${row.slope_deg}° / ${row.distance_to_river_m}m</b></div>
     <div class="detail-line" style="margin:2px 0;"><span>Compliance:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || '-'}</b></div>
   `;
-
-  card.style.display = 'block';
-
-  if (closeBtn) {
-    closeBtn.onclick = () => { card.style.display = 'none'; };
-  }
 }
 
 function renderPlotly3D() {
