@@ -102,14 +102,7 @@ function bindEvents() {
       els.plotly3dContainer.style.display = 'none';
       document.body.style.overflow = ''; // Restore background scrolling
       document.documentElement.style.overflow = '';
-      if (typeof _3dAnimFrame !== 'undefined' && _3dAnimFrame) {
-        cancelAnimationFrame(_3dAnimFrame);
-        _3dAnimFrame = null;
-      }
-      if (typeof _3dResizeObserver !== 'undefined' && _3dResizeObserver) {
-        _3dResizeObserver.disconnect();
-        _3dResizeObserver = null;
-      }
+      dispose3DViewer();
     });
   }
 
@@ -1180,6 +1173,49 @@ function fetchElevationDataForApp(cells, callback) {
 
 let _active3DSelectedGid = null;
 let _3dSpriteMap = {};
+let _3dRenderer = null;
+let _3dScene = null;
+let _3dAnimFrame = null;
+let _3dResizeObserver = null;
+
+function dispose3DViewer() {
+    if (_3dAnimFrame) {
+        cancelAnimationFrame(_3dAnimFrame);
+        _3dAnimFrame = null;
+    }
+    if (_3dResizeObserver) {
+        _3dResizeObserver.disconnect();
+        _3dResizeObserver = null;
+    }
+    if (_3dRenderer) {
+        try {
+            _3dRenderer.dispose();
+            _3dRenderer.forceContextLoss();
+            if (_3dRenderer.domElement && _3dRenderer.domElement.parentNode) {
+                _3dRenderer.domElement.parentNode.removeChild(_3dRenderer.domElement);
+            }
+        } catch(e) {}
+        _3dRenderer = null;
+    }
+    if (_3dScene) {
+        try {
+            _3dScene.traverse(obj => {
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (Array.isArray(obj.material)) {
+                        obj.material.forEach(m => { if (m.map) m.map.dispose(); m.dispose(); });
+                    } else {
+                        if (obj.material.map) obj.material.map.dispose();
+                        obj.material.dispose();
+                    }
+                }
+            });
+            _3dScene.clear();
+        } catch(e) {}
+        _3dScene = null;
+    }
+    _3dSpriteMap = {};
+}
 
 function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
     const canvas = document.createElement('canvas');
@@ -1302,11 +1338,9 @@ function show3DGridDetail(gridId) {
 
 function renderPlotly3D() {
   if (!resultRows.length || !window.THREE) return;
+  dispose3DViewer();
   const container = els.plotlyDiv;
   container.innerHTML = '<div style="color:white;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--font-ui);">Fetching AWS Terrarium DEM tiles...</div>';
-  
-  if (_3dAnimFrame) cancelAnimationFrame(_3dAnimFrame);
-  if (_3dResizeObserver) _3dResizeObserver.disconnect();
   
   const cells = [];
   rawGrid.features.forEach(feat => {
@@ -1353,15 +1387,18 @@ function renderPlotly3D() {
       container.innerHTML = ''; // clear loading
 
       const w = container.clientWidth || 800;
-      const h = container.clientHeight || 600;
+      const h = container.clientHeight || 500;
 
       const scene = new THREE.Scene();
+      _3dScene = scene;
       scene.background = new THREE.Color(0x0f172a);
 
       const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
-      camera.position.set(0, 15, 20);
+      camera.position.set(0, 22, 28);
+      camera.lookAt(0, 0, 0);
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+      _3dRenderer = renderer;
       renderer.setSize(w, h);
       renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
       container.appendChild(renderer.domElement);
@@ -1556,6 +1593,7 @@ function renderPlotly3D() {
       controls.target.set(0, 0, 0);
 
       function animate() {
+          if (!_3dRenderer || !_3dScene) return;
           _3dAnimFrame = requestAnimationFrame(animate);
           controls.update();
           renderer.render(scene, camera);
