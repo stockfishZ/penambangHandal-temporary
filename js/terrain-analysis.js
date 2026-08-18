@@ -1,7 +1,9 @@
 // ponytail: ultra — single-page exploration with real backend ML inference
 document.addEventListener('DOMContentLoaded', () => {
   const NICKEL_BELTS_URL = 'data/indonesia_nickel_belts.geojson';
-  const API_BASE = '';
+  const API_BASE = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin.startsWith('http'))
+    ? window.location.origin
+    : 'http://localhost:8000';
   const $ = id => document.getElementById(id);
   const sites = window.NICKEL_SITES.features;
 

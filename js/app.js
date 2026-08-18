@@ -495,7 +495,9 @@ function avg(arr, key) {
   return vals.length ? vals.reduce((a,b) => a + b, 0) / vals.length : 0;
 }
 
-const BACKEND_URL = 'http://localhost:8001';
+const BACKEND_URL = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin.startsWith('http'))
+  ? window.location.origin
+  : 'http://localhost:8000';
 
 function generateEsgDraftClient(row) {
   const ni = row.Ni_avg || 0;
