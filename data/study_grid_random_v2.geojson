@@ -6,45 +6,46 @@
       "properties": {
         "grid_id": "SOR001",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 8.3,
-        "distance_to_river_m": 818,
-        "distance_to_road_m": 1276,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 70.8,
+        "slope_deg": 10.3,
+        "distance_to_river_m": 951,
+        "distance_to_road_m": 2160,
+        "distance_to_settlement_m": 9760,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 76.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.737,
-        "clay_index": 1.674,
-        "ndvi_stress_index": 0.281,
-        "tmi_structural_nT": 45129.8,
-        "tmi_anomaly_nT": 129.8,
-        "elevation_mdpl": 461.9,
-        "geochem_assay_ratio": 2.31
+        "fe_oxide_index": 1.891,
+        "clay_index": 1.959,
+        "ndvi_stress_index": 0.187,
+        "tmi_structural_nT": 45318.6,
+        "tmi_anomaly_nT": 318.6,
+        "elevation_mdpl": 540.5,
+        "geochem_assay_ratio": 1.45
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.36,
+              121.39,
               -2.7
             ],
             [
-              121.37,
+              121.4,
               -2.7
             ],
             [
-              121.37,
+              121.4,
               -2.69
             ],
             [
-              121.36,
+              121.39,
               -2.69
             ],
             [
-              121.36,
+              121.39,
               -2.7
             ]
           ]
@@ -56,45 +57,46 @@
       "properties": {
         "grid_id": "SOR002",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 12.2,
-        "distance_to_river_m": 1461,
-        "distance_to_road_m": 3792,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 16.1,
+        "distance_to_river_m": 2365,
+        "distance_to_road_m": 3860,
+        "distance_to_settlement_m": 10825,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 67.8,
+        "distance_to_smelter_km": 73.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.446,
-        "clay_index": 1.352,
-        "ndvi_stress_index": 0.513,
-        "tmi_structural_nT": 44627.9,
-        "tmi_anomaly_nT": -372.1,
-        "elevation_mdpl": 468.9,
-        "geochem_assay_ratio": 3.7
+        "fe_oxide_index": 1.848,
+        "clay_index": 1.794,
+        "ndvi_stress_index": 0.249,
+        "tmi_structural_nT": 45179.8,
+        "tmi_anomaly_nT": 179.8,
+        "elevation_mdpl": 513.3,
+        "geochem_assay_ratio": 1.58
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.37,
+              121.4,
               -2.7
             ],
             [
-              121.38,
+              121.41,
               -2.7
             ],
             [
-              121.38,
+              121.41,
               -2.69
             ],
             [
-              121.37,
+              121.4,
               -2.69
             ],
             [
-              121.37,
+              121.4,
               -2.7
             ]
           ]
@@ -106,45 +108,46 @@
       "properties": {
         "grid_id": "SOR003",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 17.3,
-        "distance_to_river_m": 1980,
-        "distance_to_road_m": 1301,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.9,
+        "distance_to_river_m": 788,
+        "distance_to_road_m": 5255,
+        "distance_to_settlement_m": 10949,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 65.0,
+        "distance_to_smelter_km": 71.0,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.081,
-        "clay_index": 1.779,
-        "ndvi_stress_index": 0.406,
-        "tmi_structural_nT": 45976.4,
-        "tmi_anomaly_nT": 976.4,
-        "elevation_mdpl": 471.5,
-        "geochem_assay_ratio": 2.58
+        "fe_oxide_index": 2.215,
+        "clay_index": 2.377,
+        "ndvi_stress_index": 0.29,
+        "tmi_structural_nT": 45364.9,
+        "tmi_anomaly_nT": 364.9,
+        "elevation_mdpl": 514.7,
+        "geochem_assay_ratio": 2.41
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.38,
+              121.41,
               -2.7
             ],
             [
-              121.39,
+              121.42,
               -2.7
             ],
             [
-              121.39,
+              121.42,
               -2.69
             ],
             [
-              121.38,
+              121.41,
               -2.69
             ],
             [
-              121.38,
+              121.41,
               -2.7
             ]
           ]
@@ -156,45 +159,46 @@
       "properties": {
         "grid_id": "SOR004",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 13.8,
-        "distance_to_river_m": 2433,
-        "distance_to_road_m": 3922,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.9,
+        "distance_to_river_m": 930,
+        "distance_to_road_m": 3956,
+        "distance_to_settlement_m": 4448,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 62.4,
+        "distance_to_smelter_km": 68.4,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.26,
-        "clay_index": 1.32,
-        "ndvi_stress_index": 0.531,
-        "tmi_structural_nT": 44834.8,
-        "tmi_anomaly_nT": -165.2,
-        "elevation_mdpl": 485.4,
-        "geochem_assay_ratio": 5.88
+        "fe_oxide_index": 2.802,
+        "clay_index": 2.344,
+        "ndvi_stress_index": 0.243,
+        "tmi_structural_nT": 45600.6,
+        "tmi_anomaly_nT": 600.6,
+        "elevation_mdpl": 507.9,
+        "geochem_assay_ratio": 3.04
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.39,
+              121.42,
               -2.7
             ],
             [
-              121.4,
+              121.43,
               -2.7
             ],
             [
-              121.4,
+              121.43,
               -2.69
             ],
             [
-              121.39,
+              121.42,
               -2.69
             ],
             [
-              121.39,
+              121.42,
               -2.7
             ]
           ]
@@ -206,45 +210,46 @@
       "properties": {
         "grid_id": "SOR005",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 17.1,
-        "distance_to_river_m": 893,
-        "distance_to_road_m": 590,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 18.4,
+        "distance_to_river_m": 2203,
+        "distance_to_road_m": 1752,
+        "distance_to_settlement_m": 7540,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 60.0,
+        "distance_to_smelter_km": 66.0,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.142,
-        "clay_index": 1.38,
-        "ndvi_stress_index": 0.714,
-        "tmi_structural_nT": 44528.4,
-        "tmi_anomaly_nT": -471.6,
-        "elevation_mdpl": 487.5,
-        "geochem_assay_ratio": 4.87
+        "fe_oxide_index": 2.716,
+        "clay_index": 1.96,
+        "ndvi_stress_index": 0.231,
+        "tmi_structural_nT": 45639.3,
+        "tmi_anomaly_nT": 639.3,
+        "elevation_mdpl": 563.0,
+        "geochem_assay_ratio": 1.76
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.4,
+              121.43,
               -2.7
             ],
             [
-              121.41,
+              121.44,
               -2.7
             ],
             [
-              121.41,
+              121.44,
               -2.69
             ],
             [
-              121.4,
+              121.43,
               -2.69
             ],
             [
-              121.4,
+              121.43,
               -2.7
             ]
           ]
@@ -256,45 +261,46 @@
       "properties": {
         "grid_id": "SOR006",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 14.9,
-        "distance_to_river_m": 711,
-        "distance_to_road_m": 4107,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 16.3,
+        "distance_to_river_m": 1455,
+        "distance_to_road_m": 4574,
+        "distance_to_settlement_m": 10364,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 58.0,
+        "distance_to_smelter_km": 64.0,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.025,
-        "clay_index": 1.712,
-        "ndvi_stress_index": 0.405,
-        "tmi_structural_nT": 45671.0,
-        "tmi_anomaly_nT": 671.0,
-        "elevation_mdpl": 487.3,
-        "geochem_assay_ratio": 2.81
+        "fe_oxide_index": 1.359,
+        "clay_index": 1.212,
+        "ndvi_stress_index": 0.631,
+        "tmi_structural_nT": 45129.1,
+        "tmi_anomaly_nT": 129.1,
+        "elevation_mdpl": 557.3,
+        "geochem_assay_ratio": 5.96
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.41,
+              121.44,
               -2.7
             ],
             [
-              121.42,
+              121.45,
               -2.7
             ],
             [
-              121.42,
+              121.45,
               -2.69
             ],
             [
-              121.41,
+              121.44,
               -2.69
             ],
             [
-              121.41,
+              121.44,
               -2.7
             ]
           ]
@@ -306,45 +312,46 @@
       "properties": {
         "grid_id": "SOR007",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 14.1,
-        "distance_to_river_m": 297,
-        "distance_to_road_m": 4497,
+        "slope_deg": 19.3,
+        "distance_to_river_m": 674,
+        "distance_to_road_m": 3288,
+        "distance_to_settlement_m": 5317,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 56.3,
+        "distance_to_smelter_km": 62.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.228,
-        "clay_index": 1.201,
-        "ndvi_stress_index": 0.516,
-        "tmi_structural_nT": 44779.0,
-        "tmi_anomaly_nT": -221.0,
-        "elevation_mdpl": 538.5,
-        "geochem_assay_ratio": 4.16
+        "fe_oxide_index": 1.327,
+        "clay_index": 1.493,
+        "ndvi_stress_index": 0.574,
+        "tmi_structural_nT": 45184.1,
+        "tmi_anomaly_nT": 184.1,
+        "elevation_mdpl": 535.5,
+        "geochem_assay_ratio": 4.56
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.42,
+              121.45,
               -2.7
             ],
             [
-              121.43,
+              121.46,
               -2.7
             ],
             [
-              121.43,
+              121.46,
               -2.69
             ],
             [
-              121.42,
+              121.45,
               -2.69
             ],
             [
-              121.42,
+              121.45,
               -2.7
             ]
           ]
@@ -356,45 +363,46 @@
       "properties": {
         "grid_id": "SOR008",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 8.9,
-        "distance_to_river_m": 611,
-        "distance_to_road_m": 2819,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 17.4,
+        "distance_to_river_m": 850,
+        "distance_to_road_m": 1716,
+        "distance_to_settlement_m": 11067,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 55.0,
+        "distance_to_smelter_km": 61.0,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.172,
-        "clay_index": 1.445,
-        "ndvi_stress_index": 0.569,
-        "tmi_structural_nT": 44994.5,
-        "tmi_anomaly_nT": -5.5,
-        "elevation_mdpl": 501.9,
-        "geochem_assay_ratio": 4.55
+        "fe_oxide_index": 2.45,
+        "clay_index": 1.956,
+        "ndvi_stress_index": 0.32,
+        "tmi_structural_nT": 45622.8,
+        "tmi_anomaly_nT": 622.8,
+        "elevation_mdpl": 583.5,
+        "geochem_assay_ratio": 1.77
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.43,
+              121.46,
               -2.7
             ],
             [
-              121.44,
+              121.47,
               -2.7
             ],
             [
-              121.44,
+              121.47,
               -2.69
             ],
             [
-              121.43,
+              121.46,
               -2.69
             ],
             [
-              121.43,
+              121.46,
               -2.7
             ]
           ]
@@ -406,45 +414,46 @@
       "properties": {
         "grid_id": "SOR009",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 17.7,
-        "distance_to_river_m": 2220,
-        "distance_to_road_m": 1884,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 20.9,
+        "distance_to_river_m": 1918,
+        "distance_to_road_m": 1234,
+        "distance_to_settlement_m": 10445,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 54.1,
+        "distance_to_smelter_km": 60.1,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.692,
-        "clay_index": 1.327,
-        "ndvi_stress_index": 0.502,
-        "tmi_structural_nT": 45217.1,
-        "tmi_anomaly_nT": 217.1,
-        "elevation_mdpl": 469.9,
-        "geochem_assay_ratio": 5.16
+        "fe_oxide_index": 2.786,
+        "clay_index": 1.714,
+        "ndvi_stress_index": 0.208,
+        "tmi_structural_nT": 45207.0,
+        "tmi_anomaly_nT": 207.0,
+        "elevation_mdpl": 545.3,
+        "geochem_assay_ratio": 1.89
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.44,
+              121.47,
               -2.7
             ],
             [
-              121.45,
+              121.48,
               -2.7
             ],
             [
-              121.45,
+              121.48,
               -2.69
             ],
             [
-              121.44,
+              121.47,
               -2.69
             ],
             [
-              121.44,
+              121.47,
               -2.7
             ]
           ]
@@ -456,45 +465,46 @@
       "properties": {
         "grid_id": "SOR010",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 15.0,
-        "distance_to_river_m": 788,
-        "distance_to_road_m": 3426,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 16.0,
+        "distance_to_river_m": 2378,
+        "distance_to_road_m": 3705,
+        "distance_to_settlement_m": 4759,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 53.6,
+        "distance_to_smelter_km": 59.6,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.81,
-        "clay_index": 1.664,
-        "ndvi_stress_index": 0.392,
-        "tmi_structural_nT": 46003.9,
-        "tmi_anomaly_nT": 1003.9,
-        "elevation_mdpl": 494.6,
-        "geochem_assay_ratio": 2.9
+        "fe_oxide_index": 1.639,
+        "clay_index": 1.398,
+        "ndvi_stress_index": 0.741,
+        "tmi_structural_nT": 45298.9,
+        "tmi_anomaly_nT": 298.9,
+        "elevation_mdpl": 511.0,
+        "geochem_assay_ratio": 4.12
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.45,
+              121.48,
               -2.7
             ],
             [
-              121.46,
+              121.49,
               -2.7
             ],
             [
-              121.46,
+              121.49,
               -2.69
             ],
             [
-              121.45,
+              121.48,
               -2.69
             ],
             [
-              121.45,
+              121.48,
               -2.7
             ]
           ]
@@ -506,45 +516,46 @@
       "properties": {
         "grid_id": "SOR011",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 16.1,
-        "distance_to_river_m": 951,
-        "distance_to_road_m": 4213,
+        "slope_deg": 18.7,
+        "distance_to_river_m": 526,
+        "distance_to_road_m": 4950,
+        "distance_to_settlement_m": 10798,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 53.6,
+        "distance_to_smelter_km": 59.6,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.627,
-        "clay_index": 1.692,
-        "ndvi_stress_index": 0.389,
-        "tmi_structural_nT": 45958.6,
-        "tmi_anomaly_nT": 958.6,
-        "elevation_mdpl": 462.2,
-        "geochem_assay_ratio": 2.87
+        "fe_oxide_index": 2.283,
+        "clay_index": 1.859,
+        "ndvi_stress_index": 0.371,
+        "tmi_structural_nT": 45327.6,
+        "tmi_anomaly_nT": 327.6,
+        "elevation_mdpl": 492.4,
+        "geochem_assay_ratio": 1.75
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.46,
+              121.49,
               -2.7
             ],
             [
-              121.47,
+              121.5,
               -2.7
             ],
             [
-              121.47,
+              121.5,
               -2.69
             ],
             [
-              121.46,
+              121.49,
               -2.69
             ],
             [
-              121.46,
+              121.49,
               -2.7
             ]
           ]
@@ -556,45 +567,46 @@
       "properties": {
         "grid_id": "SOR012",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 16.0,
-        "distance_to_river_m": 908,
-        "distance_to_road_m": 2866,
+        "slope_deg": 12.8,
+        "distance_to_river_m": 2057,
+        "distance_to_road_m": 1207,
+        "distance_to_settlement_m": 11367,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 54.1,
+        "distance_to_smelter_km": 60.1,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.405,
-        "clay_index": 1.817,
-        "ndvi_stress_index": 0.35,
-        "tmi_structural_nT": 45101.7,
-        "tmi_anomaly_nT": 101.7,
-        "elevation_mdpl": 532.6,
-        "geochem_assay_ratio": 2.37
+        "fe_oxide_index": 2.579,
+        "clay_index": 2.17,
+        "ndvi_stress_index": 0.267,
+        "tmi_structural_nT": 45170.0,
+        "tmi_anomaly_nT": 170.0,
+        "elevation_mdpl": 556.4,
+        "geochem_assay_ratio": 1.99
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.47,
+              121.5,
               -2.7
             ],
             [
-              121.48,
+              121.51,
               -2.7
             ],
             [
-              121.48,
+              121.51,
               -2.69
             ],
             [
-              121.47,
+              121.5,
               -2.69
             ],
             [
-              121.47,
+              121.5,
               -2.7
             ]
           ]
@@ -606,45 +618,46 @@
       "properties": {
         "grid_id": "SOR013",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 14.0,
-        "distance_to_river_m": 181,
-        "distance_to_road_m": 1541,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 14.9,
+        "distance_to_river_m": 795,
+        "distance_to_road_m": 3235,
+        "distance_to_settlement_m": 11160,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 55.0,
+        "distance_to_smelter_km": 61.0,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.487,
-        "clay_index": 1.995,
-        "ndvi_stress_index": 0.286,
-        "tmi_structural_nT": 45313.7,
-        "tmi_anomaly_nT": 313.7,
-        "elevation_mdpl": 487.3,
-        "geochem_assay_ratio": 3.02
+        "fe_oxide_index": 1.889,
+        "clay_index": 2.038,
+        "ndvi_stress_index": 0.332,
+        "tmi_structural_nT": 45435.2,
+        "tmi_anomaly_nT": 435.2,
+        "elevation_mdpl": 571.8,
+        "geochem_assay_ratio": 2.75
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.48,
+              121.51,
               -2.7
             ],
             [
-              121.49,
+              121.52,
               -2.7
             ],
             [
-              121.49,
+              121.52,
               -2.69
             ],
             [
-              121.48,
+              121.51,
               -2.69
             ],
             [
-              121.48,
+              121.51,
               -2.7
             ]
           ]
@@ -656,45 +669,46 @@
       "properties": {
         "grid_id": "SOR014",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 15.2,
-        "distance_to_river_m": 193,
-        "distance_to_road_m": 3467,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "alluvium",
+        "slope_deg": 15.7,
+        "distance_to_river_m": 378,
+        "distance_to_road_m": 2272,
+        "distance_to_settlement_m": 10711,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 56.3,
+        "distance_to_smelter_km": 62.3,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.246,
-        "clay_index": 1.75,
-        "ndvi_stress_index": 0.41,
-        "tmi_structural_nT": 45618.0,
-        "tmi_anomaly_nT": 618.0,
-        "elevation_mdpl": 445.0,
-        "geochem_assay_ratio": 1.85
+        "fe_oxide_index": 1.501,
+        "clay_index": 1.494,
+        "ndvi_stress_index": 0.667,
+        "tmi_structural_nT": 45350.0,
+        "tmi_anomaly_nT": 350.0,
+        "elevation_mdpl": 579.1,
+        "geochem_assay_ratio": 5.03
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.49,
+              121.52,
               -2.7
             ],
             [
-              121.5,
+              121.53,
               -2.7
             ],
             [
-              121.5,
+              121.53,
               -2.69
             ],
             [
-              121.49,
+              121.52,
               -2.69
             ],
             [
-              121.49,
+              121.52,
               -2.7
             ]
           ]
@@ -706,45 +720,46 @@
       "properties": {
         "grid_id": "SOR015",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 11.0,
-        "distance_to_river_m": 360,
-        "distance_to_road_m": 1536,
+        "slope_deg": 11.5,
+        "distance_to_river_m": 840,
+        "distance_to_road_m": 4184,
+        "distance_to_settlement_m": 9505,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 58.0,
+        "distance_to_smelter_km": 64.0,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.367,
-        "clay_index": 1.718,
-        "ndvi_stress_index": 0.236,
-        "tmi_structural_nT": 45793.9,
-        "tmi_anomaly_nT": 793.9,
-        "elevation_mdpl": 510.6,
-        "geochem_assay_ratio": 1.52
+        "fe_oxide_index": 2.37,
+        "clay_index": 1.953,
+        "ndvi_stress_index": 0.23,
+        "tmi_structural_nT": 45520.1,
+        "tmi_anomaly_nT": 520.1,
+        "elevation_mdpl": 580.5,
+        "geochem_assay_ratio": 2.45
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.5,
+              121.53,
               -2.7
             ],
             [
-              121.51,
+              121.54,
               -2.7
             ],
             [
-              121.51,
+              121.54,
               -2.69
             ],
             [
-              121.5,
+              121.53,
               -2.69
             ],
             [
-              121.5,
+              121.53,
               -2.7
             ]
           ]
@@ -756,45 +771,46 @@
       "properties": {
         "grid_id": "SOR016",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 12.8,
-        "distance_to_river_m": 247,
-        "distance_to_road_m": 1745,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.4,
+        "distance_to_river_m": 1837,
+        "distance_to_road_m": 1316,
+        "distance_to_settlement_m": 6849,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 60.0,
+        "distance_to_smelter_km": 66.0,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.973,
-        "clay_index": 1.997,
-        "ndvi_stress_index": 0.211,
-        "tmi_structural_nT": 45722.3,
-        "tmi_anomaly_nT": 722.3,
-        "elevation_mdpl": 442.7,
-        "geochem_assay_ratio": 2.11
+        "fe_oxide_index": 2.475,
+        "clay_index": 1.715,
+        "ndvi_stress_index": 0.291,
+        "tmi_structural_nT": 45150.3,
+        "tmi_anomaly_nT": 150.3,
+        "elevation_mdpl": 527.9,
+        "geochem_assay_ratio": 1.78
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.51,
+              121.54,
               -2.7
             ],
             [
-              121.52,
+              121.55,
               -2.7
             ],
             [
-              121.52,
+              121.55,
               -2.69
             ],
             [
-              121.51,
+              121.54,
               -2.69
             ],
             [
-              121.51,
+              121.54,
               -2.7
             ]
           ]
@@ -806,45 +822,46 @@
       "properties": {
         "grid_id": "SOR017",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 16.3,
-        "distance_to_river_m": 2383,
-        "distance_to_road_m": 1177,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 12.4,
+        "distance_to_river_m": 2034,
+        "distance_to_road_m": 4498,
+        "distance_to_settlement_m": 4926,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 62.4,
+        "distance_to_smelter_km": 68.4,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.392,
-        "clay_index": 1.785,
-        "ndvi_stress_index": 0.348,
-        "tmi_structural_nT": 45866.9,
-        "tmi_anomaly_nT": 866.9,
-        "elevation_mdpl": 456.8,
-        "geochem_assay_ratio": 2.49
+        "fe_oxide_index": 1.92,
+        "clay_index": 2.296,
+        "ndvi_stress_index": 0.412,
+        "tmi_structural_nT": 45208.1,
+        "tmi_anomaly_nT": 208.1,
+        "elevation_mdpl": 492.6,
+        "geochem_assay_ratio": 1.96
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.52,
+              121.55,
               -2.7
             ],
             [
-              121.53,
+              121.56,
               -2.7
             ],
             [
-              121.53,
+              121.56,
               -2.69
             ],
             [
-              121.52,
+              121.55,
               -2.69
             ],
             [
-              121.52,
+              121.55,
               -2.7
             ]
           ]
@@ -856,45 +873,46 @@
       "properties": {
         "grid_id": "SOR018",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 12.7,
-        "distance_to_river_m": 1040,
-        "distance_to_road_m": 2450,
+        "slope_deg": 20.6,
+        "distance_to_river_m": 1871,
+        "distance_to_road_m": 4763,
+        "distance_to_settlement_m": 9512,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 65.0,
+        "distance_to_smelter_km": 71.0,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.663,
-        "clay_index": 1.69,
-        "ndvi_stress_index": 0.411,
-        "tmi_structural_nT": 45735.6,
-        "tmi_anomaly_nT": 735.6,
-        "elevation_mdpl": 522.9,
-        "geochem_assay_ratio": 2.67
+        "fe_oxide_index": 2.814,
+        "clay_index": 1.83,
+        "ndvi_stress_index": 0.374,
+        "tmi_structural_nT": 45638.2,
+        "tmi_anomaly_nT": 638.2,
+        "elevation_mdpl": 538.3,
+        "geochem_assay_ratio": 2.18
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.53,
+              121.56,
               -2.7
             ],
             [
-              121.54,
+              121.57,
               -2.7
             ],
             [
-              121.54,
+              121.57,
               -2.69
             ],
             [
-              121.53,
+              121.56,
               -2.69
             ],
             [
-              121.53,
+              121.56,
               -2.7
             ]
           ]
@@ -906,45 +924,46 @@
       "properties": {
         "grid_id": "SOR019",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 16.8,
-        "distance_to_river_m": 970,
-        "distance_to_road_m": 4003,
+        "slope_deg": 17.9,
+        "distance_to_river_m": 1496,
+        "distance_to_road_m": 4460,
+        "distance_to_settlement_m": 9370,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 67.8,
+        "distance_to_smelter_km": 73.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.811,
-        "clay_index": 2.406,
-        "ndvi_stress_index": 0.201,
-        "tmi_structural_nT": 45820.1,
-        "tmi_anomaly_nT": 820.1,
-        "elevation_mdpl": 488.9,
-        "geochem_assay_ratio": 2.76
+        "fe_oxide_index": 2.633,
+        "clay_index": 1.679,
+        "ndvi_stress_index": 0.233,
+        "tmi_structural_nT": 45791.8,
+        "tmi_anomaly_nT": 791.8,
+        "elevation_mdpl": 520.6,
+        "geochem_assay_ratio": 2.45
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.54,
+              121.57,
               -2.7
             ],
             [
-              121.55,
+              121.58,
               -2.7
             ],
             [
-              121.55,
+              121.58,
               -2.69
             ],
             [
-              121.54,
+              121.57,
               -2.69
             ],
             [
-              121.54,
+              121.57,
               -2.7
             ]
           ]
@@ -956,45 +975,46 @@
       "properties": {
         "grid_id": "SOR020",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 10.0,
-        "distance_to_river_m": 682,
-        "distance_to_road_m": 2359,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.5,
+        "distance_to_river_m": 708,
+        "distance_to_road_m": 1261,
+        "distance_to_settlement_m": 8040,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 70.8,
+        "distance_to_smelter_km": 76.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.906,
-        "clay_index": 1.765,
-        "ndvi_stress_index": 0.235,
-        "tmi_structural_nT": 45279.4,
-        "tmi_anomaly_nT": 279.4,
-        "elevation_mdpl": 441.4,
-        "geochem_assay_ratio": 2.36
+        "fe_oxide_index": 1.933,
+        "clay_index": 2.338,
+        "ndvi_stress_index": 0.298,
+        "tmi_structural_nT": 45972.7,
+        "tmi_anomaly_nT": 972.7,
+        "elevation_mdpl": 547.4,
+        "geochem_assay_ratio": 2.24
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.55,
+              121.58,
               -2.7
             ],
             [
-              121.56,
+              121.59,
               -2.7
             ],
             [
-              121.56,
+              121.59,
               -2.69
             ],
             [
-              121.55,
+              121.58,
               -2.69
             ],
             [
-              121.55,
+              121.58,
               -2.7
             ]
           ]
@@ -1006,45 +1026,46 @@
       "properties": {
         "grid_id": "SOR021",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 11.3,
-        "distance_to_river_m": 2486,
-        "distance_to_road_m": 842,
-        "legal_status": "conditional",
-        "distance_to_smelter_km": 67.8,
+        "slope_deg": 19.5,
+        "distance_to_river_m": 2775,
+        "distance_to_road_m": 2513,
+        "distance_to_settlement_m": 8779,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 73.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.63,
-        "clay_index": 1.792,
-        "ndvi_stress_index": 0.305,
-        "tmi_structural_nT": 45550.5,
-        "tmi_anomaly_nT": 550.5,
-        "elevation_mdpl": 484.3,
-        "geochem_assay_ratio": 2.95
+        "fe_oxide_index": 2.795,
+        "clay_index": 1.777,
+        "ndvi_stress_index": 0.231,
+        "tmi_structural_nT": 45760.4,
+        "tmi_anomaly_nT": 760.4,
+        "elevation_mdpl": 505.7,
+        "geochem_assay_ratio": 1.71
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.36,
+              121.39,
               -2.69
             ],
             [
-              121.37,
+              121.4,
               -2.69
             ],
             [
-              121.37,
+              121.4,
               -2.68
             ],
             [
-              121.36,
+              121.39,
               -2.68
             ],
             [
-              121.36,
+              121.39,
               -2.69
             ]
           ]
@@ -1056,45 +1077,46 @@
       "properties": {
         "grid_id": "SOR022",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 16.7,
-        "distance_to_river_m": 1630,
-        "distance_to_road_m": 3094,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.4,
+        "distance_to_river_m": 2160,
+        "distance_to_road_m": 3648,
+        "distance_to_settlement_m": 5953,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 64.6,
+        "distance_to_smelter_km": 70.6,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.427,
-        "clay_index": 1.324,
-        "ndvi_stress_index": 0.754,
-        "tmi_structural_nT": 45226.6,
-        "tmi_anomaly_nT": 226.6,
-        "elevation_mdpl": 447.1,
-        "geochem_assay_ratio": 3.91
+        "fe_oxide_index": 2.535,
+        "clay_index": 2.401,
+        "ndvi_stress_index": 0.3,
+        "tmi_structural_nT": 45593.8,
+        "tmi_anomaly_nT": 593.8,
+        "elevation_mdpl": 498.0,
+        "geochem_assay_ratio": 1.47
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.37,
+              121.4,
               -2.69
             ],
             [
-              121.38,
+              121.41,
               -2.69
             ],
             [
-              121.38,
+              121.41,
               -2.68
             ],
             [
-              121.37,
+              121.4,
               -2.68
             ],
             [
-              121.37,
+              121.4,
               -2.69
             ]
           ]
@@ -1106,45 +1128,46 @@
       "properties": {
         "grid_id": "SOR023",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 18.5,
-        "distance_to_river_m": 2499,
-        "distance_to_road_m": 3140,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.7,
+        "distance_to_river_m": 1959,
+        "distance_to_road_m": 4888,
+        "distance_to_settlement_m": 6303,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 61.6,
+        "distance_to_smelter_km": 67.6,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.484,
-        "clay_index": 2.379,
-        "ndvi_stress_index": 0.224,
-        "tmi_structural_nT": 45685.3,
-        "tmi_anomaly_nT": 685.3,
-        "elevation_mdpl": 503.5,
-        "geochem_assay_ratio": 2.29
+        "fe_oxide_index": 2.792,
+        "clay_index": 2.292,
+        "ndvi_stress_index": 0.312,
+        "tmi_structural_nT": 45554.8,
+        "tmi_anomaly_nT": 554.8,
+        "elevation_mdpl": 521.5,
+        "geochem_assay_ratio": 1.98
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.38,
+              121.41,
               -2.69
             ],
             [
-              121.39,
+              121.42,
               -2.69
             ],
             [
-              121.39,
+              121.42,
               -2.68
             ],
             [
-              121.38,
+              121.41,
               -2.68
             ],
             [
-              121.38,
+              121.41,
               -2.69
             ]
           ]
@@ -1156,45 +1179,46 @@
       "properties": {
         "grid_id": "SOR024",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 12.0,
-        "distance_to_river_m": 1935,
-        "distance_to_road_m": 2945,
+        "slope_deg": 16.1,
+        "distance_to_river_m": 1658,
+        "distance_to_road_m": 1601,
+        "distance_to_settlement_m": 11934,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 58.8,
+        "distance_to_smelter_km": 64.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.377,
-        "clay_index": 2.389,
-        "ndvi_stress_index": 0.285,
-        "tmi_structural_nT": 45798.3,
-        "tmi_anomaly_nT": 798.3,
-        "elevation_mdpl": 452.1,
-        "geochem_assay_ratio": 3.15
+        "fe_oxide_index": 1.923,
+        "clay_index": 2.307,
+        "ndvi_stress_index": 0.3,
+        "tmi_structural_nT": 45816.6,
+        "tmi_anomaly_nT": 816.6,
+        "elevation_mdpl": 540.9,
+        "geochem_assay_ratio": 1.89
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.39,
+              121.42,
               -2.69
             ],
             [
-              121.4,
+              121.43,
               -2.69
             ],
             [
-              121.4,
+              121.43,
               -2.68
             ],
             [
-              121.39,
+              121.42,
               -2.68
             ],
             [
-              121.39,
+              121.42,
               -2.69
             ]
           ]
@@ -1206,45 +1230,46 @@
       "properties": {
         "grid_id": "SOR025",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 17.7,
-        "distance_to_river_m": 2185,
-        "distance_to_road_m": 1496,
+        "slope_deg": 13.8,
+        "distance_to_river_m": 1657,
+        "distance_to_road_m": 3537,
+        "distance_to_settlement_m": 7370,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 56.3,
+        "distance_to_smelter_km": 62.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.781,
-        "clay_index": 2.032,
-        "ndvi_stress_index": 0.377,
-        "tmi_structural_nT": 45382.8,
-        "tmi_anomaly_nT": 382.8,
-        "elevation_mdpl": 469.9,
-        "geochem_assay_ratio": 2.46
+        "fe_oxide_index": 2.532,
+        "clay_index": 2.086,
+        "ndvi_stress_index": 0.236,
+        "tmi_structural_nT": 45875.5,
+        "tmi_anomaly_nT": 875.5,
+        "elevation_mdpl": 494.4,
+        "geochem_assay_ratio": 2.74
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.4,
+              121.43,
               -2.69
             ],
             [
-              121.41,
+              121.44,
               -2.69
             ],
             [
-              121.41,
+              121.44,
               -2.68
             ],
             [
-              121.4,
+              121.43,
               -2.68
             ],
             [
-              121.4,
+              121.43,
               -2.69
             ]
           ]
@@ -1256,45 +1281,46 @@
       "properties": {
         "grid_id": "SOR026",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 13.4,
-        "distance_to_river_m": 266,
-        "distance_to_road_m": 2435,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 17.6,
+        "distance_to_river_m": 1907,
+        "distance_to_road_m": 4863,
+        "distance_to_settlement_m": 10745,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 54.1,
+        "distance_to_smelter_km": 60.1,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.625,
-        "clay_index": 1.22,
-        "ndvi_stress_index": 0.647,
-        "tmi_structural_nT": 44856.9,
-        "tmi_anomaly_nT": -143.1,
-        "elevation_mdpl": 512.2,
-        "geochem_assay_ratio": 4.52
+        "fe_oxide_index": 2.132,
+        "clay_index": 2.211,
+        "ndvi_stress_index": 0.362,
+        "tmi_structural_nT": 45972.4,
+        "tmi_anomaly_nT": 972.4,
+        "elevation_mdpl": 493.6,
+        "geochem_assay_ratio": 1.52
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.41,
+              121.44,
               -2.69
             ],
             [
-              121.42,
+              121.45,
               -2.69
             ],
             [
-              121.42,
+              121.45,
               -2.68
             ],
             [
-              121.41,
+              121.44,
               -2.68
             ],
             [
-              121.41,
+              121.44,
               -2.69
             ]
           ]
@@ -1306,45 +1332,46 @@
       "properties": {
         "grid_id": "SOR027",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 19.0,
-        "distance_to_river_m": 1912,
-        "distance_to_road_m": 2151,
+        "slope_deg": 16.8,
+        "distance_to_river_m": 864,
+        "distance_to_road_m": 5125,
+        "distance_to_settlement_m": 4717,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 52.2,
+        "distance_to_smelter_km": 58.2,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.624,
-        "clay_index": 1.222,
-        "ndvi_stress_index": 0.694,
-        "tmi_structural_nT": 45303.4,
-        "tmi_anomaly_nT": 303.4,
-        "elevation_mdpl": 444.6,
-        "geochem_assay_ratio": 5.49
+        "fe_oxide_index": 1.253,
+        "clay_index": 1.005,
+        "ndvi_stress_index": 0.725,
+        "tmi_structural_nT": 45301.2,
+        "tmi_anomaly_nT": 301.2,
+        "elevation_mdpl": 557.8,
+        "geochem_assay_ratio": 3.89
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.42,
+              121.45,
               -2.69
             ],
             [
-              121.43,
+              121.46,
               -2.69
             ],
             [
-              121.43,
+              121.46,
               -2.68
             ],
             [
-              121.42,
+              121.45,
               -2.68
             ],
             [
-              121.42,
+              121.45,
               -2.69
             ]
           ]
@@ -1356,45 +1383,46 @@
       "properties": {
         "grid_id": "SOR028",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 15.5,
-        "distance_to_river_m": 547,
-        "distance_to_road_m": 2183,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 17.5,
+        "distance_to_river_m": 2149,
+        "distance_to_road_m": 1411,
+        "distance_to_settlement_m": 8654,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 50.8,
+        "distance_to_smelter_km": 56.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.483,
-        "clay_index": 1.212,
-        "ndvi_stress_index": 0.57,
-        "tmi_structural_nT": 45245.3,
-        "tmi_anomaly_nT": 245.3,
-        "elevation_mdpl": 459.9,
-        "geochem_assay_ratio": 4.46
+        "fe_oxide_index": 2.101,
+        "clay_index": 2.279,
+        "ndvi_stress_index": 0.326,
+        "tmi_structural_nT": 45452.3,
+        "tmi_anomaly_nT": 452.3,
+        "elevation_mdpl": 553.7,
+        "geochem_assay_ratio": 2.52
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.43,
+              121.46,
               -2.69
             ],
             [
-              121.44,
+              121.47,
               -2.69
             ],
             [
-              121.44,
+              121.47,
               -2.68
             ],
             [
-              121.43,
+              121.46,
               -2.68
             ],
             [
-              121.43,
+              121.46,
               -2.69
             ]
           ]
@@ -1406,45 +1434,46 @@
       "properties": {
         "grid_id": "SOR029",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 11.9,
-        "distance_to_river_m": 1657,
-        "distance_to_road_m": 2927,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 19.1,
+        "distance_to_river_m": 1479,
+        "distance_to_road_m": 4668,
+        "distance_to_settlement_m": 9846,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 49.8,
+        "distance_to_smelter_km": 55.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.492,
-        "clay_index": 2.313,
-        "ndvi_stress_index": 0.331,
-        "tmi_structural_nT": 46003.4,
-        "tmi_anomaly_nT": 1003.4,
-        "elevation_mdpl": 504.6,
-        "geochem_assay_ratio": 1.96
+        "fe_oxide_index": 2.811,
+        "clay_index": 1.72,
+        "ndvi_stress_index": 0.412,
+        "tmi_structural_nT": 45960.1,
+        "tmi_anomaly_nT": 960.1,
+        "elevation_mdpl": 562.4,
+        "geochem_assay_ratio": 3.16
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.44,
+              121.47,
               -2.69
             ],
             [
-              121.45,
+              121.48,
               -2.69
             ],
             [
-              121.45,
+              121.48,
               -2.68
             ],
             [
-              121.44,
+              121.47,
               -2.68
             ],
             [
-              121.44,
+              121.47,
               -2.69
             ]
           ]
@@ -1456,45 +1485,46 @@
       "properties": {
         "grid_id": "SOR030",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 18.6,
-        "distance_to_river_m": 2176,
-        "distance_to_road_m": 3355,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 13.3,
+        "distance_to_river_m": 1291,
+        "distance_to_road_m": 1801,
+        "distance_to_settlement_m": 11543,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 49.3,
+        "distance_to_smelter_km": 55.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.63,
-        "clay_index": 1.612,
-        "ndvi_stress_index": 0.309,
-        "tmi_structural_nT": 45554.8,
-        "tmi_anomaly_nT": 554.8,
-        "elevation_mdpl": 507.3,
-        "geochem_assay_ratio": 2.61
+        "fe_oxide_index": 1.158,
+        "clay_index": 1.444,
+        "ndvi_stress_index": 0.538,
+        "tmi_structural_nT": 44853.6,
+        "tmi_anomaly_nT": -146.4,
+        "elevation_mdpl": 557.0,
+        "geochem_assay_ratio": 5.36
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.45,
+              121.48,
               -2.69
             ],
             [
-              121.46,
+              121.49,
               -2.69
             ],
             [
-              121.46,
+              121.49,
               -2.68
             ],
             [
-              121.45,
+              121.48,
               -2.68
             ],
             [
-              121.45,
+              121.48,
               -2.69
             ]
           ]
@@ -1506,45 +1536,46 @@
       "properties": {
         "grid_id": "SOR031",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 13.0,
-        "distance_to_river_m": 1736,
-        "distance_to_road_m": 3434,
+        "slope_deg": 14.4,
+        "distance_to_river_m": 734,
+        "distance_to_road_m": 1725,
+        "distance_to_settlement_m": 10708,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 49.3,
+        "distance_to_smelter_km": 55.3,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.579,
-        "clay_index": 1.731,
-        "ndvi_stress_index": 0.28,
-        "tmi_structural_nT": 45199.0,
-        "tmi_anomaly_nT": 199.0,
-        "elevation_mdpl": 488.9,
-        "geochem_assay_ratio": 2.13
+        "fe_oxide_index": 2.474,
+        "clay_index": 2.108,
+        "ndvi_stress_index": 0.185,
+        "tmi_structural_nT": 45886.8,
+        "tmi_anomaly_nT": 886.8,
+        "elevation_mdpl": 514.4,
+        "geochem_assay_ratio": 1.63
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.46,
+              121.49,
               -2.69
             ],
             [
-              121.47,
+              121.5,
               -2.69
             ],
             [
-              121.47,
+              121.5,
               -2.68
             ],
             [
-              121.46,
+              121.49,
               -2.68
             ],
             [
-              121.46,
+              121.49,
               -2.69
             ]
           ]
@@ -1556,45 +1587,46 @@
       "properties": {
         "grid_id": "SOR032",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 9.4,
-        "distance_to_river_m": 1490,
-        "distance_to_road_m": 635,
+        "slope_deg": 10.6,
+        "distance_to_river_m": 2141,
+        "distance_to_road_m": 3462,
+        "distance_to_settlement_m": 9838,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 49.8,
+        "distance_to_smelter_km": 55.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.027,
-        "clay_index": 2.339,
-        "ndvi_stress_index": 0.259,
-        "tmi_structural_nT": 45247.6,
-        "tmi_anomaly_nT": 247.6,
-        "elevation_mdpl": 530.1,
-        "geochem_assay_ratio": 1.41
+        "fe_oxide_index": 2.339,
+        "clay_index": 1.693,
+        "ndvi_stress_index": 0.301,
+        "tmi_structural_nT": 46045.4,
+        "tmi_anomaly_nT": 1045.4,
+        "elevation_mdpl": 494.3,
+        "geochem_assay_ratio": 2.81
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.47,
+              121.5,
               -2.69
             ],
             [
-              121.48,
+              121.51,
               -2.69
             ],
             [
-              121.48,
+              121.51,
               -2.68
             ],
             [
-              121.47,
+              121.5,
               -2.68
             ],
             [
-              121.47,
+              121.5,
               -2.69
             ]
           ]
@@ -1606,45 +1638,46 @@
       "properties": {
         "grid_id": "SOR033",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 8.5,
-        "distance_to_river_m": 1997,
-        "distance_to_road_m": 3948,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 11.1,
+        "distance_to_river_m": 2040,
+        "distance_to_road_m": 4867,
+        "distance_to_settlement_m": 9033,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 50.8,
+        "distance_to_smelter_km": 56.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.678,
-        "clay_index": 1.03,
-        "ndvi_stress_index": 0.634,
-        "tmi_structural_nT": 44801.6,
-        "tmi_anomaly_nT": -198.4,
-        "elevation_mdpl": 508.6,
-        "geochem_assay_ratio": 4.73
+        "fe_oxide_index": 2.026,
+        "clay_index": 1.984,
+        "ndvi_stress_index": 0.235,
+        "tmi_structural_nT": 45438.9,
+        "tmi_anomaly_nT": 438.9,
+        "elevation_mdpl": 535.3,
+        "geochem_assay_ratio": 2.15
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.48,
+              121.51,
               -2.69
             ],
             [
-              121.49,
+              121.52,
               -2.69
             ],
             [
-              121.49,
+              121.52,
               -2.68
             ],
             [
-              121.48,
+              121.51,
               -2.68
             ],
             [
-              121.48,
+              121.51,
               -2.69
             ]
           ]
@@ -1656,45 +1689,46 @@
       "properties": {
         "grid_id": "SOR034",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 10.4,
-        "distance_to_river_m": 1228,
-        "distance_to_road_m": 1298,
+        "slope_deg": 20.7,
+        "distance_to_river_m": 1781,
+        "distance_to_road_m": 2712,
+        "distance_to_settlement_m": 8412,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 52.2,
+        "distance_to_smelter_km": 58.2,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.237,
-        "clay_index": 1.681,
-        "ndvi_stress_index": 0.282,
-        "tmi_structural_nT": 45765.1,
-        "tmi_anomaly_nT": 765.1,
-        "elevation_mdpl": 477.4,
-        "geochem_assay_ratio": 1.67
+        "fe_oxide_index": 2.035,
+        "clay_index": 1.692,
+        "ndvi_stress_index": 0.383,
+        "tmi_structural_nT": 45467.6,
+        "tmi_anomaly_nT": 467.6,
+        "elevation_mdpl": 566.3,
+        "geochem_assay_ratio": 2.43
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.49,
+              121.52,
               -2.69
             ],
             [
-              121.5,
+              121.53,
               -2.69
             ],
             [
-              121.5,
+              121.53,
               -2.68
             ],
             [
-              121.49,
+              121.52,
               -2.68
             ],
             [
-              121.49,
+              121.52,
               -2.69
             ]
           ]
@@ -1706,45 +1740,46 @@
       "properties": {
         "grid_id": "SOR035",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 15.2,
-        "distance_to_river_m": 700,
-        "distance_to_road_m": 799,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 12.4,
+        "distance_to_river_m": 1321,
+        "distance_to_road_m": 2666,
+        "distance_to_settlement_m": 6645,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 54.1,
+        "distance_to_smelter_km": 60.1,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.601,
-        "clay_index": 2.088,
-        "ndvi_stress_index": 0.374,
-        "tmi_structural_nT": 45945.2,
-        "tmi_anomaly_nT": 945.2,
-        "elevation_mdpl": 537.5,
-        "geochem_assay_ratio": 2.87
+        "fe_oxide_index": 2.396,
+        "clay_index": 1.672,
+        "ndvi_stress_index": 0.193,
+        "tmi_structural_nT": 45257.4,
+        "tmi_anomaly_nT": 257.4,
+        "elevation_mdpl": 551.8,
+        "geochem_assay_ratio": 2.61
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.5,
+              121.53,
               -2.69
             ],
             [
-              121.51,
+              121.54,
               -2.69
             ],
             [
-              121.51,
+              121.54,
               -2.68
             ],
             [
-              121.5,
+              121.53,
               -2.68
             ],
             [
-              121.5,
+              121.53,
               -2.69
             ]
           ]
@@ -1756,45 +1791,46 @@
       "properties": {
         "grid_id": "SOR036",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 15.9,
-        "distance_to_river_m": 1982,
-        "distance_to_road_m": 2706,
+        "slope_deg": 18.2,
+        "distance_to_river_m": 698,
+        "distance_to_road_m": 2835,
+        "distance_to_settlement_m": 9481,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 56.3,
+        "distance_to_smelter_km": 62.3,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.508,
-        "clay_index": 1.831,
-        "ndvi_stress_index": 0.339,
-        "tmi_structural_nT": 45585.7,
-        "tmi_anomaly_nT": 585.7,
-        "elevation_mdpl": 484.2,
-        "geochem_assay_ratio": 1.89
+        "fe_oxide_index": 2.647,
+        "clay_index": 1.661,
+        "ndvi_stress_index": 0.387,
+        "tmi_structural_nT": 45142.3,
+        "tmi_anomaly_nT": 142.3,
+        "elevation_mdpl": 491.9,
+        "geochem_assay_ratio": 3.06
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.51,
+              121.54,
               -2.69
             ],
             [
-              121.52,
+              121.55,
               -2.69
             ],
             [
-              121.52,
+              121.55,
               -2.68
             ],
             [
-              121.51,
+              121.54,
               -2.68
             ],
             [
-              121.51,
+              121.54,
               -2.69
             ]
           ]
@@ -1806,45 +1842,46 @@
       "properties": {
         "grid_id": "SOR037",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 17.2,
-        "distance_to_river_m": 2050,
-        "distance_to_road_m": 649,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.6,
+        "distance_to_river_m": 541,
+        "distance_to_road_m": 3393,
+        "distance_to_settlement_m": 11200,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 58.8,
+        "distance_to_smelter_km": 64.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.402,
-        "clay_index": 2.203,
-        "ndvi_stress_index": 0.28,
-        "tmi_structural_nT": 45215.2,
-        "tmi_anomaly_nT": 215.2,
-        "elevation_mdpl": 442.1,
-        "geochem_assay_ratio": 1.98
+        "fe_oxide_index": 2.66,
+        "clay_index": 2.293,
+        "ndvi_stress_index": 0.237,
+        "tmi_structural_nT": 45246.4,
+        "tmi_anomaly_nT": 246.4,
+        "elevation_mdpl": 509.7,
+        "geochem_assay_ratio": 2.48
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.52,
+              121.55,
               -2.69
             ],
             [
-              121.53,
+              121.56,
               -2.69
             ],
             [
-              121.53,
+              121.56,
               -2.68
             ],
             [
-              121.52,
+              121.55,
               -2.68
             ],
             [
-              121.52,
+              121.55,
               -2.69
             ]
           ]
@@ -1856,45 +1893,46 @@
       "properties": {
         "grid_id": "SOR038",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 10.6,
-        "distance_to_river_m": 520,
-        "distance_to_road_m": 1169,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.0,
+        "distance_to_river_m": 395,
+        "distance_to_road_m": 4776,
+        "distance_to_settlement_m": 4152,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 61.6,
+        "distance_to_smelter_km": 67.6,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.488,
-        "clay_index": 1.751,
-        "ndvi_stress_index": 0.365,
-        "tmi_structural_nT": 45594.1,
-        "tmi_anomaly_nT": 594.1,
-        "elevation_mdpl": 515.4,
-        "geochem_assay_ratio": 2.77
+        "fe_oxide_index": 2.286,
+        "clay_index": 2.071,
+        "ndvi_stress_index": 0.37,
+        "tmi_structural_nT": 45995.9,
+        "tmi_anomaly_nT": 995.9,
+        "elevation_mdpl": 535.0,
+        "geochem_assay_ratio": 2.86
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.53,
+              121.56,
               -2.69
             ],
             [
-              121.54,
+              121.57,
               -2.69
             ],
             [
-              121.54,
+              121.57,
               -2.68
             ],
             [
-              121.53,
+              121.56,
               -2.68
             ],
             [
-              121.53,
+              121.56,
               -2.69
             ]
           ]
@@ -1906,45 +1944,46 @@
       "properties": {
         "grid_id": "SOR039",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 13.6,
-        "distance_to_river_m": 1253,
-        "distance_to_road_m": 2650,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.1,
+        "distance_to_river_m": 418,
+        "distance_to_road_m": 1606,
+        "distance_to_settlement_m": 9266,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 64.6,
+        "distance_to_smelter_km": 70.6,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.484,
-        "clay_index": 1.873,
-        "ndvi_stress_index": 0.294,
-        "tmi_structural_nT": 45250.9,
-        "tmi_anomaly_nT": 250.9,
-        "elevation_mdpl": 446.2,
-        "geochem_assay_ratio": 1.59
+        "fe_oxide_index": 2.489,
+        "clay_index": 2.37,
+        "ndvi_stress_index": 0.39,
+        "tmi_structural_nT": 45433.4,
+        "tmi_anomaly_nT": 433.4,
+        "elevation_mdpl": 548.3,
+        "geochem_assay_ratio": 1.65
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.54,
+              121.57,
               -2.69
             ],
             [
-              121.55,
+              121.58,
               -2.69
             ],
             [
-              121.55,
+              121.58,
               -2.68
             ],
             [
-              121.54,
+              121.57,
               -2.68
             ],
             [
-              121.54,
+              121.57,
               -2.69
             ]
           ]
@@ -1956,45 +1995,46 @@
       "properties": {
         "grid_id": "SOR040",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 15.2,
-        "distance_to_river_m": 2283,
-        "distance_to_road_m": 3974,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 15.3,
+        "distance_to_river_m": 828,
+        "distance_to_road_m": 1792,
+        "distance_to_settlement_m": 4156,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 67.8,
+        "distance_to_smelter_km": 73.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.948,
-        "clay_index": 1.897,
-        "ndvi_stress_index": 0.412,
-        "tmi_structural_nT": 45798.5,
-        "tmi_anomaly_nT": 798.5,
-        "elevation_mdpl": 479.2,
-        "geochem_assay_ratio": 2.47
+        "fe_oxide_index": 1.179,
+        "clay_index": 1.188,
+        "ndvi_stress_index": 0.545,
+        "tmi_structural_nT": 45231.3,
+        "tmi_anomaly_nT": 231.3,
+        "elevation_mdpl": 567.1,
+        "geochem_assay_ratio": 5.52
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.55,
+              121.58,
               -2.69
             ],
             [
-              121.56,
+              121.59,
               -2.69
             ],
             [
-              121.56,
+              121.59,
               -2.68
             ],
             [
-              121.55,
+              121.58,
               -2.68
             ],
             [
-              121.55,
+              121.58,
               -2.69
             ]
           ]
@@ -2006,45 +2046,46 @@
       "properties": {
         "grid_id": "SOR041",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 9.1,
-        "distance_to_river_m": 1968,
-        "distance_to_road_m": 3816,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.2,
+        "distance_to_river_m": 1595,
+        "distance_to_road_m": 5355,
+        "distance_to_settlement_m": 10444,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 65.0,
+        "distance_to_smelter_km": 71.0,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.938,
-        "clay_index": 1.92,
-        "ndvi_stress_index": 0.219,
-        "tmi_structural_nT": 45931.3,
-        "tmi_anomaly_nT": 931.3,
-        "elevation_mdpl": 517.1,
-        "geochem_assay_ratio": 2.86
+        "fe_oxide_index": 2.063,
+        "clay_index": 2.145,
+        "ndvi_stress_index": 0.39,
+        "tmi_structural_nT": 45654.5,
+        "tmi_anomaly_nT": 654.5,
+        "elevation_mdpl": 500.3,
+        "geochem_assay_ratio": 2.92
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.36,
+              121.39,
               -2.68
             ],
             [
-              121.37,
+              121.4,
               -2.68
             ],
             [
-              121.37,
+              121.4,
               -2.67
             ],
             [
-              121.36,
+              121.39,
               -2.67
             ],
             [
-              121.36,
+              121.39,
               -2.68
             ]
           ]
@@ -2056,45 +2097,46 @@
       "properties": {
         "grid_id": "SOR042",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 17.0,
-        "distance_to_river_m": 2039,
-        "distance_to_road_m": 924,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 61.6,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 11.5,
+        "distance_to_river_m": 982,
+        "distance_to_road_m": 4768,
+        "distance_to_settlement_m": 9417,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 67.6,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.624,
-        "clay_index": 1.277,
-        "ndvi_stress_index": 0.529,
-        "tmi_structural_nT": 45245.9,
-        "tmi_anomaly_nT": 245.9,
-        "elevation_mdpl": 525.1,
-        "geochem_assay_ratio": 4.21
+        "fe_oxide_index": 2.271,
+        "clay_index": 1.604,
+        "ndvi_stress_index": 0.199,
+        "tmi_structural_nT": 45355.9,
+        "tmi_anomaly_nT": 355.9,
+        "elevation_mdpl": 573.5,
+        "geochem_assay_ratio": 2.39
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.37,
+              121.4,
               -2.68
             ],
             [
-              121.38,
+              121.41,
               -2.68
             ],
             [
-              121.38,
+              121.41,
               -2.67
             ],
             [
-              121.37,
+              121.4,
               -2.67
             ],
             [
-              121.37,
+              121.4,
               -2.68
             ]
           ]
@@ -2106,45 +2148,46 @@
       "properties": {
         "grid_id": "SOR043",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 16.7,
-        "distance_to_river_m": 499,
-        "distance_to_road_m": 1541,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 58.4,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 20.7,
+        "distance_to_river_m": 423,
+        "distance_to_road_m": 3462,
+        "distance_to_settlement_m": 7812,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 64.4,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.946,
-        "clay_index": 2.2,
-        "ndvi_stress_index": 0.288,
-        "tmi_structural_nT": 45105.3,
-        "tmi_anomaly_nT": 105.3,
-        "elevation_mdpl": 447.9,
-        "geochem_assay_ratio": 1.86
+        "fe_oxide_index": 2.467,
+        "clay_index": 2.434,
+        "ndvi_stress_index": 0.241,
+        "tmi_structural_nT": 45116.2,
+        "tmi_anomaly_nT": 116.2,
+        "elevation_mdpl": 568.9,
+        "geochem_assay_ratio": 2.02
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.38,
+              121.41,
               -2.68
             ],
             [
-              121.39,
+              121.42,
               -2.68
             ],
             [
-              121.39,
+              121.42,
               -2.67
             ],
             [
-              121.38,
+              121.41,
               -2.67
             ],
             [
-              121.38,
+              121.41,
               -2.68
             ]
           ]
@@ -2156,45 +2199,46 @@
       "properties": {
         "grid_id": "SOR044",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 15.3,
-        "distance_to_river_m": 379,
-        "distance_to_road_m": 4395,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 15.7,
+        "distance_to_river_m": 2772,
+        "distance_to_road_m": 3535,
+        "distance_to_settlement_m": 5653,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 55.4,
+        "distance_to_smelter_km": 61.4,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.333,
-        "clay_index": 2.44,
-        "ndvi_stress_index": 0.313,
-        "tmi_structural_nT": 45490.5,
-        "tmi_anomaly_nT": 490.5,
-        "elevation_mdpl": 487.0,
-        "geochem_assay_ratio": 2.54
+        "fe_oxide_index": 1.314,
+        "clay_index": 1.39,
+        "ndvi_stress_index": 0.742,
+        "tmi_structural_nT": 44731.9,
+        "tmi_anomaly_nT": -268.1,
+        "elevation_mdpl": 502.4,
+        "geochem_assay_ratio": 4.42
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.39,
+              121.42,
               -2.68
             ],
             [
-              121.4,
+              121.43,
               -2.68
             ],
             [
-              121.4,
+              121.43,
               -2.67
             ],
             [
-              121.39,
+              121.42,
               -2.67
             ],
             [
-              121.39,
+              121.42,
               -2.68
             ]
           ]
@@ -2206,21 +2250,22 @@
       "properties": {
         "grid_id": "SOR045",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 11.2,
-        "distance_to_river_m": 282,
-        "distance_to_road_m": 1178,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 52.7,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 16.6,
+        "distance_to_river_m": 1337,
+        "distance_to_road_m": 4166,
+        "distance_to_settlement_m": 6488,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.7,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.37,
-        "clay_index": 1.815,
-        "ndvi_stress_index": 0.361,
-        "tmi_structural_nT": 45291.1,
-        "tmi_anomaly_nT": 291.1,
-        "elevation_mdpl": 475.7,
+        "fe_oxide_index": 2.641,
+        "clay_index": 2.177,
+        "ndvi_stress_index": 0.409,
+        "tmi_structural_nT": 45242.8,
+        "tmi_anomaly_nT": 242.8,
+        "elevation_mdpl": 550.8,
         "geochem_assay_ratio": 2.81
       },
       "geometry": {
@@ -2228,23 +2273,23 @@
         "coordinates": [
           [
             [
-              121.4,
+              121.43,
               -2.68
             ],
             [
-              121.41,
+              121.44,
               -2.68
             ],
             [
-              121.41,
+              121.44,
               -2.67
             ],
             [
-              121.4,
+              121.43,
               -2.67
             ],
             [
-              121.4,
+              121.43,
               -2.68
             ]
           ]
@@ -2256,45 +2301,46 @@
       "properties": {
         "grid_id": "SOR046",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 11.4,
-        "distance_to_river_m": 1578,
-        "distance_to_road_m": 2118,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 50.3,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 12.9,
+        "distance_to_river_m": 1388,
+        "distance_to_road_m": 5484,
+        "distance_to_settlement_m": 5927,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 56.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.844,
-        "clay_index": 2.34,
-        "ndvi_stress_index": 0.265,
-        "tmi_structural_nT": 46098.2,
-        "tmi_anomaly_nT": 1098.2,
-        "elevation_mdpl": 467.5,
-        "geochem_assay_ratio": 3.16
+        "fe_oxide_index": 1.929,
+        "clay_index": 2.325,
+        "ndvi_stress_index": 0.288,
+        "tmi_structural_nT": 45998.7,
+        "tmi_anomaly_nT": 998.7,
+        "elevation_mdpl": 534.5,
+        "geochem_assay_ratio": 1.56
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.41,
+              121.44,
               -2.68
             ],
             [
-              121.42,
+              121.45,
               -2.68
             ],
             [
-              121.42,
+              121.45,
               -2.67
             ],
             [
-              121.41,
+              121.44,
               -2.67
             ],
             [
-              121.41,
+              121.44,
               -2.68
             ]
           ]
@@ -2306,45 +2352,46 @@
       "properties": {
         "grid_id": "SOR047",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 13.8,
-        "distance_to_river_m": 1103,
-        "distance_to_road_m": 3046,
+        "slope_deg": 16.7,
+        "distance_to_river_m": 470,
+        "distance_to_road_m": 2530,
+        "distance_to_settlement_m": 11997,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 48.2,
+        "distance_to_smelter_km": 54.2,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.572,
-        "clay_index": 2.024,
-        "ndvi_stress_index": 0.273,
-        "tmi_structural_nT": 45661.7,
-        "tmi_anomaly_nT": 661.7,
-        "elevation_mdpl": 466.2,
-        "geochem_assay_ratio": 1.87
+        "fe_oxide_index": 2.608,
+        "clay_index": 2.3,
+        "ndvi_stress_index": 0.198,
+        "tmi_structural_nT": 46072.4,
+        "tmi_anomaly_nT": 1072.4,
+        "elevation_mdpl": 554.2,
+        "geochem_assay_ratio": 2.21
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.42,
+              121.45,
               -2.68
             ],
             [
-              121.43,
+              121.46,
               -2.68
             ],
             [
-              121.43,
+              121.46,
               -2.67
             ],
             [
-              121.42,
+              121.45,
               -2.67
             ],
             [
-              121.42,
+              121.45,
               -2.68
             ]
           ]
@@ -2356,45 +2403,46 @@
       "properties": {
         "grid_id": "SOR048",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 16.7,
-        "distance_to_river_m": 1360,
-        "distance_to_road_m": 854,
+        "slope_deg": 11.4,
+        "distance_to_river_m": 1022,
+        "distance_to_road_m": 3494,
+        "distance_to_settlement_m": 7772,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 46.6,
+        "distance_to_smelter_km": 52.6,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.63,
-        "clay_index": 1.622,
-        "ndvi_stress_index": 0.313,
-        "tmi_structural_nT": 45468.9,
-        "tmi_anomaly_nT": 468.9,
-        "elevation_mdpl": 520.4,
-        "geochem_assay_ratio": 2.39
+        "fe_oxide_index": 2.557,
+        "clay_index": 2.114,
+        "ndvi_stress_index": 0.382,
+        "tmi_structural_nT": 45663.6,
+        "tmi_anomaly_nT": 663.6,
+        "elevation_mdpl": 572.5,
+        "geochem_assay_ratio": 1.45
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.43,
+              121.46,
               -2.68
             ],
             [
-              121.44,
+              121.47,
               -2.68
             ],
             [
-              121.44,
+              121.47,
               -2.67
             ],
             [
-              121.43,
+              121.46,
               -2.67
             ],
             [
-              121.43,
+              121.46,
               -2.68
             ]
           ]
@@ -2406,45 +2454,46 @@
       "properties": {
         "grid_id": "SOR049",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 9.4,
-        "distance_to_river_m": 535,
-        "distance_to_road_m": 1033,
+        "slope_deg": 17.9,
+        "distance_to_river_m": 2122,
+        "distance_to_road_m": 4901,
+        "distance_to_settlement_m": 11791,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 45.5,
+        "distance_to_smelter_km": 51.5,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.163,
-        "clay_index": 2.4,
-        "ndvi_stress_index": 0.395,
-        "tmi_structural_nT": 45945.9,
-        "tmi_anomaly_nT": 945.9,
-        "elevation_mdpl": 465.1,
-        "geochem_assay_ratio": 2.54
+        "fe_oxide_index": 2.39,
+        "clay_index": 1.871,
+        "ndvi_stress_index": 0.292,
+        "tmi_structural_nT": 45367.5,
+        "tmi_anomaly_nT": 367.5,
+        "elevation_mdpl": 514.8,
+        "geochem_assay_ratio": 1.57
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.44,
+              121.47,
               -2.68
             ],
             [
-              121.45,
+              121.48,
               -2.68
             ],
             [
-              121.45,
+              121.48,
               -2.67
             ],
             [
-              121.44,
+              121.47,
               -2.67
             ],
             [
-              121.44,
+              121.47,
               -2.68
             ]
           ]
@@ -2456,45 +2505,46 @@
       "properties": {
         "grid_id": "SOR050",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 13.5,
-        "distance_to_river_m": 1635,
-        "distance_to_road_m": 1552,
+        "slope_deg": 19.7,
+        "distance_to_river_m": 1918,
+        "distance_to_road_m": 3224,
+        "distance_to_settlement_m": 8062,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 44.9,
+        "distance_to_smelter_km": 50.9,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.645,
-        "clay_index": 2.182,
-        "ndvi_stress_index": 0.251,
-        "tmi_structural_nT": 45173.0,
-        "tmi_anomaly_nT": 173.0,
-        "elevation_mdpl": 446.0,
-        "geochem_assay_ratio": 2.19
+        "fe_oxide_index": 2.727,
+        "clay_index": 2.218,
+        "ndvi_stress_index": 0.363,
+        "tmi_structural_nT": 45465.9,
+        "tmi_anomaly_nT": 465.9,
+        "elevation_mdpl": 530.1,
+        "geochem_assay_ratio": 2.43
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.45,
+              121.48,
               -2.68
             ],
             [
-              121.46,
+              121.49,
               -2.68
             ],
             [
-              121.46,
+              121.49,
               -2.67
             ],
             [
-              121.45,
+              121.48,
               -2.67
             ],
             [
-              121.45,
+              121.48,
               -2.68
             ]
           ]
@@ -2506,45 +2556,46 @@
       "properties": {
         "grid_id": "SOR051",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 11.6,
-        "distance_to_river_m": 1520,
-        "distance_to_road_m": 1648,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 15.0,
+        "distance_to_river_m": 1796,
+        "distance_to_road_m": 3417,
+        "distance_to_settlement_m": 6288,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 44.9,
+        "distance_to_smelter_km": 50.9,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.34,
-        "clay_index": 2.024,
-        "ndvi_stress_index": 0.254,
-        "tmi_structural_nT": 45123.2,
-        "tmi_anomaly_nT": 123.2,
-        "elevation_mdpl": 534.5,
-        "geochem_assay_ratio": 2.31
+        "fe_oxide_index": 2.84,
+        "clay_index": 2.228,
+        "ndvi_stress_index": 0.252,
+        "tmi_structural_nT": 45436.4,
+        "tmi_anomaly_nT": 436.4,
+        "elevation_mdpl": 572.8,
+        "geochem_assay_ratio": 2.36
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.46,
+              121.49,
               -2.68
             ],
             [
-              121.47,
+              121.5,
               -2.68
             ],
             [
-              121.47,
+              121.5,
               -2.67
             ],
             [
-              121.46,
+              121.49,
               -2.67
             ],
             [
-              121.46,
+              121.49,
               -2.68
             ]
           ]
@@ -2556,45 +2607,46 @@
       "properties": {
         "grid_id": "SOR052",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 11.1,
-        "distance_to_river_m": 2475,
-        "distance_to_road_m": 3174,
+        "slope_deg": 11.6,
+        "distance_to_river_m": 1986,
+        "distance_to_road_m": 1336,
+        "distance_to_settlement_m": 11560,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 45.5,
+        "distance_to_smelter_km": 51.5,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.156,
-        "clay_index": 2.398,
-        "ndvi_stress_index": 0.361,
-        "tmi_structural_nT": 45299.1,
-        "tmi_anomaly_nT": 299.1,
-        "elevation_mdpl": 490.9,
-        "geochem_assay_ratio": 2.3
+        "fe_oxide_index": 2.525,
+        "clay_index": 1.949,
+        "ndvi_stress_index": 0.366,
+        "tmi_structural_nT": 46020.5,
+        "tmi_anomaly_nT": 1020.5,
+        "elevation_mdpl": 577.3,
+        "geochem_assay_ratio": 2.72
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.47,
+              121.5,
               -2.68
             ],
             [
-              121.48,
+              121.51,
               -2.68
             ],
             [
-              121.48,
+              121.51,
               -2.67
             ],
             [
-              121.47,
+              121.5,
               -2.67
             ],
             [
-              121.47,
+              121.5,
               -2.68
             ]
           ]
@@ -2606,45 +2658,46 @@
       "properties": {
         "grid_id": "SOR053",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 14.4,
-        "distance_to_river_m": 2028,
-        "distance_to_road_m": 3360,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.2,
+        "distance_to_river_m": 779,
+        "distance_to_road_m": 4231,
+        "distance_to_settlement_m": 6195,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 46.6,
+        "distance_to_smelter_km": 52.6,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.57,
-        "clay_index": 1.388,
-        "ndvi_stress_index": 0.662,
-        "tmi_structural_nT": 45121.4,
-        "tmi_anomaly_nT": 121.4,
-        "elevation_mdpl": 498.4,
-        "geochem_assay_ratio": 3.93
+        "fe_oxide_index": 1.928,
+        "clay_index": 2.175,
+        "ndvi_stress_index": 0.271,
+        "tmi_structural_nT": 46080.2,
+        "tmi_anomaly_nT": 1080.2,
+        "elevation_mdpl": 571.8,
+        "geochem_assay_ratio": 3.12
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.48,
+              121.51,
               -2.68
             ],
             [
-              121.49,
+              121.52,
               -2.68
             ],
             [
-              121.49,
+              121.52,
               -2.67
             ],
             [
-              121.48,
+              121.51,
               -2.67
             ],
             [
-              121.48,
+              121.51,
               -2.68
             ]
           ]
@@ -2656,45 +2709,46 @@
       "properties": {
         "grid_id": "SOR054",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 10.3,
-        "distance_to_river_m": 934,
-        "distance_to_road_m": 3098,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 11.1,
+        "distance_to_river_m": 2215,
+        "distance_to_road_m": 1222,
+        "distance_to_settlement_m": 8178,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 48.2,
+        "distance_to_smelter_km": 54.2,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.982,
-        "clay_index": 2.375,
-        "ndvi_stress_index": 0.262,
-        "tmi_structural_nT": 45454.3,
-        "tmi_anomaly_nT": 454.3,
-        "elevation_mdpl": 517.2,
-        "geochem_assay_ratio": 2.7
+        "fe_oxide_index": 2.782,
+        "clay_index": 2.347,
+        "ndvi_stress_index": 0.295,
+        "tmi_structural_nT": 45299.5,
+        "tmi_anomaly_nT": 299.5,
+        "elevation_mdpl": 586.4,
+        "geochem_assay_ratio": 1.98
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.49,
+              121.52,
               -2.68
             ],
             [
-              121.5,
+              121.53,
               -2.68
             ],
             [
-              121.5,
+              121.53,
               -2.67
             ],
             [
-              121.49,
+              121.52,
               -2.67
             ],
             [
-              121.49,
+              121.52,
               -2.68
             ]
           ]
@@ -2706,45 +2760,46 @@
       "properties": {
         "grid_id": "SOR055",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 18.5,
-        "distance_to_river_m": 2047,
-        "distance_to_road_m": 1555,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 20.8,
+        "distance_to_river_m": 976,
+        "distance_to_road_m": 5453,
+        "distance_to_settlement_m": 8118,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 50.3,
+        "distance_to_smelter_km": 56.3,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.164,
-        "clay_index": 1.976,
-        "ndvi_stress_index": 0.242,
-        "tmi_structural_nT": 45579.1,
-        "tmi_anomaly_nT": 579.1,
-        "elevation_mdpl": 460.2,
-        "geochem_assay_ratio": 2.37
+        "fe_oxide_index": 2.694,
+        "clay_index": 1.998,
+        "ndvi_stress_index": 0.226,
+        "tmi_structural_nT": 45212.6,
+        "tmi_anomaly_nT": 212.6,
+        "elevation_mdpl": 506.2,
+        "geochem_assay_ratio": 2.23
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.5,
+              121.53,
               -2.68
             ],
             [
-              121.51,
+              121.54,
               -2.68
             ],
             [
-              121.51,
+              121.54,
               -2.67
             ],
             [
-              121.5,
+              121.53,
               -2.67
             ],
             [
-              121.5,
+              121.53,
               -2.68
             ]
           ]
@@ -2756,45 +2811,46 @@
       "properties": {
         "grid_id": "SOR056",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 18.6,
-        "distance_to_river_m": 925,
-        "distance_to_road_m": 3030,
+        "slope_deg": 18.0,
+        "distance_to_river_m": 279,
+        "distance_to_road_m": 4011,
+        "distance_to_settlement_m": 9389,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 52.7,
+        "distance_to_smelter_km": 58.7,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.559,
-        "clay_index": 2.396,
-        "ndvi_stress_index": 0.399,
-        "tmi_structural_nT": 45275.1,
-        "tmi_anomaly_nT": 275.1,
-        "elevation_mdpl": 528.2,
-        "geochem_assay_ratio": 1.72
+        "fe_oxide_index": 2.328,
+        "clay_index": 2.361,
+        "ndvi_stress_index": 0.349,
+        "tmi_structural_nT": 45411.0,
+        "tmi_anomaly_nT": 411.0,
+        "elevation_mdpl": 501.7,
+        "geochem_assay_ratio": 3.05
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.51,
+              121.54,
               -2.68
             ],
             [
-              121.52,
+              121.55,
               -2.68
             ],
             [
-              121.52,
+              121.55,
               -2.67
             ],
             [
-              121.51,
+              121.54,
               -2.67
             ],
             [
-              121.51,
+              121.54,
               -2.68
             ]
           ]
@@ -2806,45 +2862,46 @@
       "properties": {
         "grid_id": "SOR057",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "serpentinite_simulated",
-        "slope_deg": 13.0,
-        "distance_to_river_m": 777,
-        "distance_to_road_m": 1123,
+        "slope_deg": 16.0,
+        "distance_to_river_m": 1539,
+        "distance_to_road_m": 3663,
+        "distance_to_settlement_m": 4774,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 55.4,
+        "distance_to_smelter_km": 61.4,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.396,
-        "clay_index": 2.244,
-        "ndvi_stress_index": 0.222,
-        "tmi_structural_nT": 45956.1,
-        "tmi_anomaly_nT": 956.1,
-        "elevation_mdpl": 529.7,
-        "geochem_assay_ratio": 2.89
+        "fe_oxide_index": 1.922,
+        "clay_index": 1.775,
+        "ndvi_stress_index": 0.32,
+        "tmi_structural_nT": 45190.9,
+        "tmi_anomaly_nT": 190.9,
+        "elevation_mdpl": 541.0,
+        "geochem_assay_ratio": 2.86
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.52,
+              121.55,
               -2.68
             ],
             [
-              121.53,
+              121.56,
               -2.68
             ],
             [
-              121.53,
+              121.56,
               -2.67
             ],
             [
-              121.52,
+              121.55,
               -2.67
             ],
             [
-              121.52,
+              121.55,
               -2.68
             ]
           ]
@@ -2856,45 +2913,46 @@
       "properties": {
         "grid_id": "SOR058",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 15.7,
-        "distance_to_river_m": 901,
-        "distance_to_road_m": 837,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 20.8,
+        "distance_to_river_m": 1897,
+        "distance_to_road_m": 3008,
+        "distance_to_settlement_m": 11939,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 58.4,
+        "distance_to_smelter_km": 64.4,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.469,
-        "clay_index": 1.11,
-        "ndvi_stress_index": 0.537,
-        "tmi_structural_nT": 44553.2,
-        "tmi_anomaly_nT": -446.8,
-        "elevation_mdpl": 514.8,
-        "geochem_assay_ratio": 5.01
+        "fe_oxide_index": 2.752,
+        "clay_index": 1.919,
+        "ndvi_stress_index": 0.344,
+        "tmi_structural_nT": 45761.8,
+        "tmi_anomaly_nT": 761.8,
+        "elevation_mdpl": 543.9,
+        "geochem_assay_ratio": 2.58
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.53,
+              121.56,
               -2.68
             ],
             [
-              121.54,
+              121.57,
               -2.68
             ],
             [
-              121.54,
+              121.57,
               -2.67
             ],
             [
-              121.53,
+              121.56,
               -2.67
             ],
             [
-              121.53,
+              121.56,
               -2.68
             ]
           ]
@@ -2906,45 +2964,46 @@
       "properties": {
         "grid_id": "SOR059",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 11.6,
-        "distance_to_river_m": 1387,
-        "distance_to_road_m": 832,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 19.7,
+        "distance_to_river_m": 290,
+        "distance_to_road_m": 2086,
+        "distance_to_settlement_m": 4358,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 61.6,
+        "distance_to_smelter_km": 67.6,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.895,
-        "clay_index": 2.034,
-        "ndvi_stress_index": 0.374,
-        "tmi_structural_nT": 45553.4,
-        "tmi_anomaly_nT": 553.4,
-        "elevation_mdpl": 491.3,
-        "geochem_assay_ratio": 2.22
+        "fe_oxide_index": 2.578,
+        "clay_index": 1.942,
+        "ndvi_stress_index": 0.236,
+        "tmi_structural_nT": 45317.3,
+        "tmi_anomaly_nT": 317.3,
+        "elevation_mdpl": 576.4,
+        "geochem_assay_ratio": 1.5
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.54,
+              121.57,
               -2.68
             ],
             [
-              121.55,
+              121.58,
               -2.68
             ],
             [
-              121.55,
+              121.58,
               -2.67
             ],
             [
-              121.54,
+              121.57,
               -2.67
             ],
             [
-              121.54,
+              121.57,
               -2.68
             ]
           ]
@@ -2956,45 +3015,46 @@
       "properties": {
         "grid_id": "SOR060",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 18.9,
-        "distance_to_river_m": 1067,
-        "distance_to_road_m": 3959,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 17.4,
+        "distance_to_river_m": 2254,
+        "distance_to_road_m": 2571,
+        "distance_to_settlement_m": 7039,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 65.0,
+        "distance_to_smelter_km": 71.0,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.517,
-        "clay_index": 2.163,
-        "ndvi_stress_index": 0.309,
-        "tmi_structural_nT": 45753.5,
-        "tmi_anomaly_nT": 753.5,
-        "elevation_mdpl": 474.8,
-        "geochem_assay_ratio": 1.72
+        "fe_oxide_index": 1.553,
+        "clay_index": 1.237,
+        "ndvi_stress_index": 0.738,
+        "tmi_structural_nT": 44700.7,
+        "tmi_anomaly_nT": -299.3,
+        "elevation_mdpl": 560.8,
+        "geochem_assay_ratio": 5.51
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.55,
+              121.58,
               -2.68
             ],
             [
-              121.56,
+              121.59,
               -2.68
             ],
             [
-              121.56,
+              121.59,
               -2.67
             ],
             [
-              121.55,
+              121.58,
               -2.67
             ],
             [
-              121.55,
+              121.58,
               -2.68
             ]
           ]
@@ -3006,45 +3066,46 @@
       "properties": {
         "grid_id": "SOR061",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 10.3,
-        "distance_to_river_m": 414,
-        "distance_to_road_m": 489,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 18.0,
+        "distance_to_river_m": 1675,
+        "distance_to_road_m": 3261,
+        "distance_to_settlement_m": 10891,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 62.4,
+        "distance_to_smelter_km": 68.4,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.851,
-        "clay_index": 2.229,
-        "ndvi_stress_index": 0.277,
-        "tmi_structural_nT": 45334.3,
-        "tmi_anomaly_nT": 334.3,
-        "elevation_mdpl": 461.7,
-        "geochem_assay_ratio": 2.95
+        "fe_oxide_index": 2.015,
+        "clay_index": 2.378,
+        "ndvi_stress_index": 0.312,
+        "tmi_structural_nT": 45875.5,
+        "tmi_anomaly_nT": 875.5,
+        "elevation_mdpl": 528.1,
+        "geochem_assay_ratio": 2.36
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.36,
+              121.39,
               -2.67
             ],
             [
-              121.37,
+              121.4,
               -2.67
             ],
             [
-              121.37,
+              121.4,
               -2.66
             ],
             [
-              121.36,
+              121.39,
               -2.66
             ],
             [
-              121.36,
+              121.39,
               -2.67
             ]
           ]
@@ -3056,45 +3117,46 @@
       "properties": {
         "grid_id": "SOR062",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 18.4,
-        "distance_to_river_m": 1738,
-        "distance_to_road_m": 3611,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 58.8,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 15.5,
+        "distance_to_river_m": 1919,
+        "distance_to_road_m": 4145,
+        "distance_to_settlement_m": 5687,
+        "legal_status": "allowed",
+        "distance_to_smelter_km": 64.8,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.19,
-        "clay_index": 1.188,
-        "ndvi_stress_index": 0.711,
-        "tmi_structural_nT": 44873.5,
-        "tmi_anomaly_nT": -126.5,
-        "elevation_mdpl": 524.9,
-        "geochem_assay_ratio": 4.25
+        "fe_oxide_index": 1.977,
+        "clay_index": 2.276,
+        "ndvi_stress_index": 0.221,
+        "tmi_structural_nT": 45820.3,
+        "tmi_anomaly_nT": 820.3,
+        "elevation_mdpl": 538.8,
+        "geochem_assay_ratio": 3.05
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.37,
+              121.4,
               -2.67
             ],
             [
-              121.38,
+              121.41,
               -2.67
             ],
             [
-              121.38,
+              121.41,
               -2.66
             ],
             [
-              121.37,
+              121.4,
               -2.66
             ],
             [
-              121.37,
+              121.4,
               -2.67
             ]
           ]
@@ -3106,45 +3168,46 @@
       "properties": {
         "grid_id": "SOR063",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "mafic_volcanic_simulated",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
         "slope_deg": 10.1,
-        "distance_to_river_m": 1947,
-        "distance_to_road_m": 3356,
+        "distance_to_river_m": 1600,
+        "distance_to_road_m": 2381,
+        "distance_to_settlement_m": 11809,
         "legal_status": "allowed",
-        "distance_to_smelter_km": 55.4,
+        "distance_to_smelter_km": 61.4,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.622,
-        "clay_index": 1.166,
-        "ndvi_stress_index": 0.768,
-        "tmi_structural_nT": 44415.3,
-        "tmi_anomaly_nT": -584.7,
-        "elevation_mdpl": 533.7,
-        "geochem_assay_ratio": 5.91
+        "fe_oxide_index": 2.755,
+        "clay_index": 1.691,
+        "ndvi_stress_index": 0.203,
+        "tmi_structural_nT": 45248.9,
+        "tmi_anomaly_nT": 248.9,
+        "elevation_mdpl": 509.2,
+        "geochem_assay_ratio": 2.35
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.38,
+              121.41,
               -2.67
             ],
             [
-              121.39,
+              121.42,
               -2.67
             ],
             [
-              121.39,
+              121.42,
               -2.66
             ],
             [
-              121.38,
+              121.41,
               -2.66
             ],
             [
-              121.38,
+              121.41,
               -2.67
             ]
           ]
@@ -3156,45 +3219,46 @@
       "properties": {
         "grid_id": "SOR064",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 18.1,
-        "distance_to_river_m": 1040,
-        "distance_to_road_m": 2068,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 52.2,
+        "slope_deg": 16.2,
+        "distance_to_river_m": 2438,
+        "distance_to_road_m": 1610,
+        "distance_to_settlement_m": 7989,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 58.2,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.953,
-        "clay_index": 1.822,
-        "ndvi_stress_index": 0.404,
-        "tmi_structural_nT": 45679.1,
-        "tmi_anomaly_nT": 679.1,
-        "elevation_mdpl": 481.8,
-        "geochem_assay_ratio": 1.67
+        "fe_oxide_index": 1.878,
+        "clay_index": 2.387,
+        "ndvi_stress_index": 0.396,
+        "tmi_structural_nT": 45663.5,
+        "tmi_anomaly_nT": 663.5,
+        "elevation_mdpl": 493.3,
+        "geochem_assay_ratio": 3.07
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.39,
+              121.42,
               -2.67
             ],
             [
-              121.4,
+              121.43,
               -2.67
             ],
             [
-              121.4,
+              121.43,
               -2.66
             ],
             [
-              121.39,
+              121.42,
               -2.66
             ],
             [
-              121.39,
+              121.42,
               -2.67
             ]
           ]
@@ -3206,21 +3270,22 @@
       "properties": {
         "grid_id": "SOR065",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 18.4,
-        "distance_to_river_m": 1730,
-        "distance_to_road_m": 3522,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 49.3,
+        "slope_deg": 13.7,
+        "distance_to_river_m": 2211,
+        "distance_to_road_m": 5306,
+        "distance_to_settlement_m": 6872,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 55.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 2.043,
-        "clay_index": 2.201,
-        "ndvi_stress_index": 0.182,
-        "tmi_structural_nT": 45605.7,
-        "tmi_anomaly_nT": 605.7,
-        "elevation_mdpl": 477.3,
+        "fe_oxide_index": 2.788,
+        "clay_index": 1.967,
+        "ndvi_stress_index": 0.343,
+        "tmi_structural_nT": 45760.7,
+        "tmi_anomaly_nT": 760.7,
+        "elevation_mdpl": 498.6,
         "geochem_assay_ratio": 2.51
       },
       "geometry": {
@@ -3228,23 +3293,23 @@
         "coordinates": [
           [
             [
-              121.4,
+              121.43,
               -2.67
             ],
             [
-              121.41,
+              121.44,
               -2.67
             ],
             [
-              121.41,
+              121.44,
               -2.66
             ],
             [
-              121.4,
+              121.43,
               -2.66
             ],
             [
-              121.4,
+              121.43,
               -2.67
             ]
           ]
@@ -3256,163 +3321,14 @@
       "properties": {
         "grid_id": "SOR066",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 12.4,
-        "distance_to_river_m": 1045,
-        "distance_to_road_m": 2035,
-        "legal_status": "allowed",
-        "distance_to_smelter_km": 46.6,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.69,
-        "clay_index": 2.156,
-        "ndvi_stress_index": 0.386,
-        "tmi_structural_nT": 45859.6,
-        "tmi_anomaly_nT": 859.6,
-        "elevation_mdpl": 449.4,
-        "geochem_assay_ratio": 2.08
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.41,
-              -2.67
-            ],
-            [
-              121.42,
-              -2.67
-            ],
-            [
-              121.42,
-              -2.66
-            ],
-            [
-              121.41,
-              -2.66
-            ],
-            [
-              121.41,
-              -2.67
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR067",
-        "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 18.2,
-        "distance_to_river_m": 910,
-        "distance_to_road_m": 4340,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "peridotite_simulated",
+        "slope_deg": 13.6,
+        "distance_to_river_m": 1232,
+        "distance_to_road_m": 2455,
+        "distance_to_settlement_m": 6796,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 44.3,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.548,
-        "clay_index": 1.939,
-        "ndvi_stress_index": 0.198,
-        "tmi_structural_nT": 45262.5,
-        "tmi_anomaly_nT": 262.5,
-        "elevation_mdpl": 464.0,
-        "geochem_assay_ratio": 2.9
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.42,
-              -2.67
-            ],
-            [
-              121.43,
-              -2.67
-            ],
-            [
-              121.43,
-              -2.66
-            ],
-            [
-              121.42,
-              -2.66
-            ],
-            [
-              121.42,
-              -2.67
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR068",
-        "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 18.4,
-        "distance_to_river_m": 1182,
-        "distance_to_road_m": 3171,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 42.5,
-        "area_ha": 1.23,
-        "region_id": "SW",
-        "fe_oxide_index": 2.45,
-        "clay_index": 2.278,
-        "ndvi_stress_index": 0.351,
-        "tmi_structural_nT": 45182.0,
-        "tmi_anomaly_nT": 182.0,
-        "elevation_mdpl": 455.4,
-        "geochem_assay_ratio": 2.68
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              121.43,
-              -2.67
-            ],
-            [
-              121.44,
-              -2.67
-            ],
-            [
-              121.44,
-              -2.66
-            ],
-            [
-              121.43,
-              -2.66
-            ],
-            [
-              121.43,
-              -2.67
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "grid_id": "SOR069",
-        "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 17.9,
-        "distance_to_river_m": 2280,
-        "distance_to_road_m": 4409,
-        "legal_status": "no-go",
-        "distance_to_smelter_km": 41.2,
+        "distance_to_smelter_km": 52.6,
         "area_ha": 1.23,
         "region_id": "SW",
         "fe_oxide_index": 2.2,
@@ -3420,7 +3336,7 @@
         "ndvi_stress_index": 0.252,
         "tmi_structural_nT": 45593.1,
         "tmi_anomaly_nT": 593.1,
-        "elevation_mdpl": 446.3,
+        "elevation_mdpl": 496.3,
         "geochem_assay_ratio": 2.18
       },
       "geometry": {
@@ -3454,24 +3370,25 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "SOR070",
+        "grid_id": "SOR067",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "mafic_volcanic_simulated",
-        "slope_deg": 10.2,
-        "distance_to_river_m": 909,
-        "distance_to_road_m": 4353,
+        "slope_deg": 12.2,
+        "distance_to_river_m": 1051,
+        "distance_to_road_m": 5348,
+        "distance_to_settlement_m": 11734,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 40.5,
+        "distance_to_smelter_km": 50.3,
         "area_ha": 1.23,
         "region_id": "SW",
-        "fe_oxide_index": 1.517,
-        "clay_index": 1.246,
-        "ndvi_stress_index": 0.661,
-        "tmi_structural_nT": 44642.4,
-        "tmi_anomaly_nT": -357.6,
-        "elevation_mdpl": 477.6,
-        "geochem_assay_ratio": 5.54
+        "fe_oxide_index": 1.395,
+        "clay_index": 1.288,
+        "ndvi_stress_index": 0.568,
+        "tmi_structural_nT": 44776.1,
+        "tmi_anomaly_nT": -223.9,
+        "elevation_mdpl": 571.6,
+        "geochem_assay_ratio": 4.48
       },
       "geometry": {
         "type": "Polygon",
@@ -3504,23 +3421,24 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "SOR071",
+        "grid_id": "SOR068",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 15.2,
-        "distance_to_river_m": 1839,
-        "distance_to_road_m": 3625,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.9,
+        "distance_to_river_m": 2262,
+        "distance_to_road_m": 1518,
+        "distance_to_settlement_m": 11921,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 40.5,
+        "distance_to_smelter_km": 48.5,
         "area_ha": 1.23,
-        "region_id": "SE",
+        "region_id": "SW",
         "fe_oxide_index": 2.332,
         "clay_index": 2.382,
         "ndvi_stress_index": 0.346,
         "tmi_structural_nT": 45643.6,
         "tmi_anomaly_nT": 643.6,
-        "elevation_mdpl": 519.1,
+        "elevation_mdpl": 569.1,
         "geochem_assay_ratio": 2.05
       },
       "geometry": {
@@ -3554,24 +3472,25 @@
     {
       "type": "Feature",
       "properties": {
-        "grid_id": "SOR072",
+        "grid_id": "SOR069",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 12.3,
-        "distance_to_river_m": 1972,
-        "distance_to_road_m": 2793,
+        "slope_deg": 14.3,
+        "distance_to_river_m": 2219,
+        "distance_to_road_m": 3731,
+        "distance_to_settlement_m": 7754,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 41.2,
+        "distance_to_smelter_km": 47.2,
         "area_ha": 1.23,
-        "region_id": "SE",
-        "fe_oxide_index": 1.826,
-        "clay_index": 1.689,
-        "ndvi_stress_index": 0.28,
-        "tmi_structural_nT": 46061.7,
-        "tmi_anomaly_nT": 1061.7,
-        "elevation_mdpl": 451.6,
-        "geochem_assay_ratio": 3.09
+        "region_id": "SW",
+        "fe_oxide_index": 1.91,
+        "clay_index": 1.954,
+        "ndvi_stress_index": 0.411,
+        "tmi_structural_nT": 45216.1,
+        "tmi_anomaly_nT": 216.1,
+        "elevation_mdpl": 584.1,
+        "geochem_assay_ratio": 1.66
       },
       "geometry": {
         "type": "Polygon",
@@ -3595,6 +3514,159 @@
             ],
             [
               121.47,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR070",
+        "site": "sorowako",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.5,
+        "distance_to_river_m": 720,
+        "distance_to_road_m": 3954,
+        "distance_to_settlement_m": 7173,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 46.5,
+        "area_ha": 1.23,
+        "region_id": "SW",
+        "fe_oxide_index": 2.208,
+        "clay_index": 2.199,
+        "ndvi_stress_index": 0.229,
+        "tmi_structural_nT": 45852.3,
+        "tmi_anomaly_nT": 852.3,
+        "elevation_mdpl": 570.9,
+        "geochem_assay_ratio": 1.51
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.48,
+              -2.67
+            ],
+            [
+              121.49,
+              -2.67
+            ],
+            [
+              121.49,
+              -2.66
+            ],
+            [
+              121.48,
+              -2.66
+            ],
+            [
+              121.48,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR071",
+        "site": "sorowako",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.4,
+        "distance_to_river_m": 717,
+        "distance_to_road_m": 4182,
+        "distance_to_settlement_m": 7842,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 46.5,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 2.203,
+        "clay_index": 1.758,
+        "ndvi_stress_index": 0.333,
+        "tmi_structural_nT": 45793.4,
+        "tmi_anomaly_nT": 793.4,
+        "elevation_mdpl": 554.5,
+        "geochem_assay_ratio": 3.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.49,
+              -2.67
+            ],
+            [
+              121.5,
+              -2.67
+            ],
+            [
+              121.5,
+              -2.66
+            ],
+            [
+              121.49,
+              -2.66
+            ],
+            [
+              121.49,
+              -2.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "grid_id": "SOR072",
+        "site": "sorowako",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 15.9,
+        "distance_to_river_m": 679,
+        "distance_to_road_m": 3166,
+        "distance_to_settlement_m": 9811,
+        "legal_status": "no-go",
+        "distance_to_smelter_km": 47.2,
+        "area_ha": 1.23,
+        "region_id": "SE",
+        "fe_oxide_index": 1.919,
+        "clay_index": 1.697,
+        "ndvi_stress_index": 0.366,
+        "tmi_structural_nT": 45923.3,
+        "tmi_anomaly_nT": 923.3,
+        "elevation_mdpl": 526.7,
+        "geochem_assay_ratio": 2.88
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              121.5,
+              -2.67
+            ],
+            [
+              121.51,
+              -2.67
+            ],
+            [
+              121.51,
+              -2.66
+            ],
+            [
+              121.5,
+              -2.66
+            ],
+            [
+              121.5,
               -2.67
             ]
           ]
@@ -3606,45 +3678,46 @@
       "properties": {
         "grid_id": "SOR073",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 10.6,
-        "distance_to_river_m": 1120,
-        "distance_to_road_m": 1115,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 11.5,
+        "distance_to_river_m": 777,
+        "distance_to_road_m": 2090,
+        "distance_to_settlement_m": 4005,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 42.5,
+        "distance_to_smelter_km": 48.5,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.118,
-        "clay_index": 1.307,
-        "ndvi_stress_index": 0.555,
-        "tmi_structural_nT": 44992.2,
-        "tmi_anomaly_nT": -7.8,
-        "elevation_mdpl": 478.9,
-        "geochem_assay_ratio": 5.26
+        "fe_oxide_index": 2.366,
+        "clay_index": 1.875,
+        "ndvi_stress_index": 0.349,
+        "tmi_structural_nT": 45389.3,
+        "tmi_anomaly_nT": 389.3,
+        "elevation_mdpl": 516.7,
+        "geochem_assay_ratio": 2.94
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.48,
+              121.51,
               -2.67
             ],
             [
-              121.49,
+              121.52,
               -2.67
             ],
             [
-              121.49,
+              121.52,
               -2.66
             ],
             [
-              121.48,
+              121.51,
               -2.66
             ],
             [
-              121.48,
+              121.51,
               -2.67
             ]
           ]
@@ -3656,45 +3729,46 @@
       "properties": {
         "grid_id": "SOR074",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "peridotite_simulated",
-        "slope_deg": 17.0,
-        "distance_to_river_m": 1818,
-        "distance_to_road_m": 1584,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "mafic_volcanic_simulated",
+        "slope_deg": 11.0,
+        "distance_to_river_m": 1565,
+        "distance_to_road_m": 2396,
+        "distance_to_settlement_m": 11459,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 44.3,
+        "distance_to_smelter_km": 50.3,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.941,
-        "clay_index": 1.7,
-        "ndvi_stress_index": 0.253,
-        "tmi_structural_nT": 45283.0,
-        "tmi_anomaly_nT": 283.0,
-        "elevation_mdpl": 509.3,
-        "geochem_assay_ratio": 2.32
+        "fe_oxide_index": 1.539,
+        "clay_index": 1.229,
+        "ndvi_stress_index": 0.686,
+        "tmi_structural_nT": 44758.2,
+        "tmi_anomaly_nT": -241.8,
+        "elevation_mdpl": 496.3,
+        "geochem_assay_ratio": 4.84
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.49,
+              121.52,
               -2.67
             ],
             [
-              121.5,
+              121.53,
               -2.67
             ],
             [
-              121.5,
+              121.53,
               -2.66
             ],
             [
-              121.49,
+              121.52,
               -2.66
             ],
             [
-              121.49,
+              121.52,
               -2.67
             ]
           ]
@@ -3706,45 +3780,46 @@
       "properties": {
         "grid_id": "SOR075",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 12.6,
-        "distance_to_river_m": 2129,
-        "distance_to_road_m": 2378,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 20.5,
+        "distance_to_river_m": 766,
+        "distance_to_road_m": 4161,
+        "distance_to_settlement_m": 4621,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 46.6,
+        "distance_to_smelter_km": 52.6,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.089,
-        "clay_index": 2.057,
-        "ndvi_stress_index": 0.22,
-        "tmi_structural_nT": 45557.3,
-        "tmi_anomaly_nT": 557.3,
-        "elevation_mdpl": 514.3,
-        "geochem_assay_ratio": 2.78
+        "fe_oxide_index": 2.779,
+        "clay_index": 1.833,
+        "ndvi_stress_index": 0.337,
+        "tmi_structural_nT": 45350.4,
+        "tmi_anomaly_nT": 350.4,
+        "elevation_mdpl": 527.2,
+        "geochem_assay_ratio": 3.03
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.5,
+              121.53,
               -2.67
             ],
             [
-              121.51,
+              121.54,
               -2.67
             ],
             [
-              121.51,
+              121.54,
               -2.66
             ],
             [
-              121.5,
+              121.53,
               -2.66
             ],
             [
-              121.5,
+              121.53,
               -2.67
             ]
           ]
@@ -3756,45 +3831,46 @@
       "properties": {
         "grid_id": "SOR076",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "ultramafic_simulated",
-        "slope_deg": 10.6,
-        "distance_to_river_m": 2061,
-        "distance_to_road_m": 2790,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 13.4,
+        "distance_to_river_m": 2497,
+        "distance_to_road_m": 1790,
+        "distance_to_settlement_m": 10074,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 49.3,
+        "distance_to_smelter_km": 55.3,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.464,
-        "clay_index": 1.741,
-        "ndvi_stress_index": 0.213,
-        "tmi_structural_nT": 45306.6,
-        "tmi_anomaly_nT": 306.6,
-        "elevation_mdpl": 460.7,
-        "geochem_assay_ratio": 1.51
+        "fe_oxide_index": 2.843,
+        "clay_index": 1.721,
+        "ndvi_stress_index": 0.307,
+        "tmi_structural_nT": 45108.5,
+        "tmi_anomaly_nT": 108.5,
+        "elevation_mdpl": 555.0,
+        "geochem_assay_ratio": 2.19
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.51,
+              121.54,
               -2.67
             ],
             [
-              121.52,
+              121.55,
               -2.67
             ],
             [
-              121.52,
+              121.55,
               -2.66
             ],
             [
-              121.51,
+              121.54,
               -2.66
             ],
             [
-              121.51,
+              121.54,
               -2.67
             ]
           ]
@@ -3806,45 +3882,46 @@
       "properties": {
         "grid_id": "SOR077",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "ultramafic_simulated",
-        "slope_deg": 15.4,
-        "distance_to_river_m": 1316,
-        "distance_to_road_m": 2746,
+        "slope_deg": 17.2,
+        "distance_to_river_m": 1019,
+        "distance_to_road_m": 3426,
+        "distance_to_settlement_m": 7831,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 52.2,
+        "distance_to_smelter_km": 58.2,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.275,
-        "clay_index": 2.139,
-        "ndvi_stress_index": 0.391,
-        "tmi_structural_nT": 45193.1,
-        "tmi_anomaly_nT": 193.1,
-        "elevation_mdpl": 491.6,
-        "geochem_assay_ratio": 1.9
+        "fe_oxide_index": 1.857,
+        "clay_index": 2.363,
+        "ndvi_stress_index": 0.409,
+        "tmi_structural_nT": 45594.9,
+        "tmi_anomaly_nT": 594.9,
+        "elevation_mdpl": 501.3,
+        "geochem_assay_ratio": 2.3
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.52,
+              121.55,
               -2.67
             ],
             [
-              121.53,
+              121.56,
               -2.67
             ],
             [
-              121.53,
+              121.56,
               -2.66
             ],
             [
-              121.52,
+              121.55,
               -2.66
             ],
             [
-              121.52,
+              121.55,
               -2.67
             ]
           ]
@@ -3856,45 +3933,46 @@
       "properties": {
         "grid_id": "SOR078",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
         "lithology": "peridotite_simulated",
-        "slope_deg": 11.8,
-        "distance_to_river_m": 1764,
-        "distance_to_road_m": 551,
+        "slope_deg": 14.6,
+        "distance_to_river_m": 2040,
+        "distance_to_road_m": 1554,
+        "distance_to_settlement_m": 8061,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 55.4,
+        "distance_to_smelter_km": 61.4,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 2.701,
-        "clay_index": 1.975,
-        "ndvi_stress_index": 0.18,
-        "tmi_structural_nT": 46058.0,
-        "tmi_anomaly_nT": 1058.0,
-        "elevation_mdpl": 460.2,
-        "geochem_assay_ratio": 2.64
+        "fe_oxide_index": 2.125,
+        "clay_index": 2.035,
+        "ndvi_stress_index": 0.229,
+        "tmi_structural_nT": 45908.1,
+        "tmi_anomaly_nT": 908.1,
+        "elevation_mdpl": 543.6,
+        "geochem_assay_ratio": 2.1
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.53,
+              121.56,
               -2.67
             ],
             [
-              121.54,
+              121.57,
               -2.67
             ],
             [
-              121.54,
+              121.57,
               -2.66
             ],
             [
-              121.53,
+              121.56,
               -2.66
             ],
             [
-              121.53,
+              121.56,
               -2.67
             ]
           ]
@@ -3906,45 +3984,46 @@
       "properties": {
         "grid_id": "SOR079",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "serpentinite_simulated",
-        "slope_deg": 15.7,
-        "distance_to_river_m": 2076,
-        "distance_to_road_m": 4451,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "ultramafic_simulated",
+        "slope_deg": 17.9,
+        "distance_to_river_m": 676,
+        "distance_to_road_m": 1746,
+        "distance_to_settlement_m": 10140,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 58.8,
+        "distance_to_smelter_km": 64.8,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.874,
-        "clay_index": 1.926,
-        "ndvi_stress_index": 0.355,
-        "tmi_structural_nT": 45202.4,
-        "tmi_anomaly_nT": 202.4,
-        "elevation_mdpl": 471.3,
-        "geochem_assay_ratio": 2.99
+        "fe_oxide_index": 1.867,
+        "clay_index": 2.205,
+        "ndvi_stress_index": 0.318,
+        "tmi_structural_nT": 45177.1,
+        "tmi_anomaly_nT": 177.1,
+        "elevation_mdpl": 535.5,
+        "geochem_assay_ratio": 2.05
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.54,
+              121.57,
               -2.67
             ],
             [
-              121.55,
+              121.58,
               -2.67
             ],
             [
-              121.55,
+              121.58,
               -2.66
             ],
             [
-              121.54,
+              121.57,
               -2.66
             ],
             [
-              121.54,
+              121.57,
               -2.67
             ]
           ]
@@ -3956,45 +4035,46 @@
       "properties": {
         "grid_id": "SOR080",
         "site": "sorowako",
-        "location_label": "Sorowako East Block (PT Vale Deposit) - Sulawesi Selatan nickel laterite",
-        "lithology": "alluvium",
-        "slope_deg": 11.5,
-        "distance_to_river_m": 504,
-        "distance_to_road_m": 1499,
+        "location_label": "Sorowako Greenfield Interior Ridge (East Plateau) - Sulawesi Selatan greenfield nickel laterite",
+        "lithology": "serpentinite_simulated",
+        "slope_deg": 14.6,
+        "distance_to_river_m": 2087,
+        "distance_to_road_m": 2366,
+        "distance_to_settlement_m": 4162,
         "legal_status": "no-go",
-        "distance_to_smelter_km": 62.4,
+        "distance_to_smelter_km": 68.4,
         "area_ha": 1.23,
         "region_id": "SE",
-        "fe_oxide_index": 1.46,
-        "clay_index": 1.304,
-        "ndvi_stress_index": 0.718,
-        "tmi_structural_nT": 45090.5,
-        "tmi_anomaly_nT": 90.5,
-        "elevation_mdpl": 524.8,
-        "geochem_assay_ratio": 5.15
+        "fe_oxide_index": 2.747,
+        "clay_index": 1.752,
+        "ndvi_stress_index": 0.373,
+        "tmi_structural_nT": 46081.4,
+        "tmi_anomaly_nT": 1081.4,
+        "elevation_mdpl": 585.4,
+        "geochem_assay_ratio": 1.52
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              121.55,
+              121.58,
               -2.67
             ],
             [
-              121.56,
+              121.59,
               -2.67
             ],
             [
-              121.56,
+              121.59,
               -2.66
             ],
             [
-              121.55,
+              121.58,
               -2.66
             ],
             [
-              121.55,
+              121.58,
               -2.67
             ]
           ]
