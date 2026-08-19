@@ -682,11 +682,14 @@
     /* ── Grid Prospectivity (ML Tab KPI & Content) ── */
     .ml-kpi-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
       margin-bottom: 16px;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
+      .ml-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 600px) {
       .ml-kpi-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -695,7 +698,7 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -707,7 +710,7 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.25);
     }
     .ml-kpi-label {
-      font-size: 10.5px;
+      font-size: 10px;
       color: var(--text-secondary);
       font-weight: 600;
       text-transform: uppercase;
@@ -717,22 +720,23 @@
       display: flex;
       align-items: baseline;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .ml-kpi-val {
       font-family: var(--font-display);
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
       color: #ffffff;
       line-height: 1.1;
     }
     .ml-kpi-sub {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       font-weight: 500;
     }
     .text-emerald { color: #10b981 !important; }
     .text-amber { color: #f59e0b !important; }
+    .text-rose { color: #f87171 !important; }
     .text-indigo { color: #818cf8 !important; }
 
     /* Verdict Card */
@@ -1083,26 +1087,32 @@
         <div class="tab-content" id="tabMlpred">
           <div class="ml-kpi-grid">
             <div class="ml-kpi-card">
-              <span class="ml-kpi-label">Total Grid Cells</span>
+              <span class="ml-kpi-label">Total Grid</span>
               <div class="ml-kpi-val-row">
                 <b id="mlTotalCells" class="ml-kpi-val">-</b>
                 <span class="ml-kpi-sub">cells</span>
               </div>
             </div>
             <div class="ml-kpi-card">
-              <span class="ml-kpi-label">Target Tinggi (&ge; 6.5)</span>
+              <span class="ml-kpi-label">Tinggi (&ge; 6.5)</span>
               <div class="ml-kpi-val-row">
                 <b id="mlHighCount" class="ml-kpi-val text-emerald">-</b>
               </div>
             </div>
             <div class="ml-kpi-card">
-              <span class="ml-kpi-label">Target Sedang (3.5&ndash;6.4)</span>
+              <span class="ml-kpi-label">Sedang (3.5&ndash;6.4)</span>
               <div class="ml-kpi-val-row">
                 <b id="mlMedCount" class="ml-kpi-val text-amber">-</b>
               </div>
             </div>
             <div class="ml-kpi-card">
-              <span class="ml-kpi-label">Top Target Prospek</span>
+              <span class="ml-kpi-label">Rendah (&lt; 3.5)</span>
+              <div class="ml-kpi-val-row">
+                <b id="mlLowCount" class="ml-kpi-val text-rose">-</b>
+              </div>
+            </div>
+            <div class="ml-kpi-card">
+              <span class="ml-kpi-label">Top Target</span>
               <div class="ml-kpi-val-row">
                 <b id="mlTopTarget" class="ml-kpi-val text-indigo">-</b>
               </div>

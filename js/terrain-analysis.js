@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ? window.location.origin
     : 'http://localhost:8000';
   const $ = id => document.getElementById(id);
+  const safeSet = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
   const sites = window.NICKEL_SITES.features;
 
   let map, drawnItems, drawControl, activeDrawHandler;
@@ -256,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
     _3dRenderedWithMl = false;
     _elevationLoading = false;
     _3dMesh = null;
-    ['mlTotalCells','mlHighCount','mlMedCount','mlLowCount','mlTopTarget'].forEach(id => $(id).textContent = '-');
-    ['compAllowed','compConditional','compNoGo'].forEach(id => $(id).textContent = '-');
+    ['mlTotalCells','mlHighCount','mlMedCount','mlLowCount','mlTopTarget'].forEach(id => safeSet(id, '-'));
+    ['compAllowed','compConditional','compNoGo'].forEach(id => safeSet(id, '-'));
     currentBbox = null;
     currentGrid = null;
     currentParams = null;
@@ -272,11 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
     mlLoading = true;
     mlResults = null;
     mlError = null;
-    $('mlTotalCells').textContent = '...';
-    $('mlHighCount').textContent = '...';
-    $('mlMedCount').textContent = '...';
-    $('mlLowCount').textContent = '...';
-    $('mlTopTarget').textContent = 'Loading...';
+    safeSet('mlTotalCells', '...');
+    safeSet('mlHighCount', '...');
+    safeSet('mlMedCount', '...');
+    safeSet('mlLowCount', '...');
+    safeSet('mlTopTarget', 'Loading...');
 
     const feat = f => f && f.properties ? f.properties : {};
     let grids;
@@ -868,21 +872,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = $('mlExplanation');
 
     if (mlError) {
-      $('mlTotalCells').textContent = 'Error';
-      $('mlHighCount').textContent = '-';
-      $('mlMedCount').textContent = '-';
-      $('mlLowCount').textContent = '-';
-      $('mlTopTarget').textContent = '-';
+      safeSet('mlTotalCells', 'Error');
+      safeSet('mlHighCount', '-');
+      safeSet('mlMedCount', '-');
+      safeSet('mlLowCount', '-');
+      safeSet('mlTopTarget', '-');
       if (gridMlLayer) { map.removeLayer(gridMlLayer); gridMlLayer = null; }
       container.innerHTML = `<div class="ml-verdict low"><span class="verdict-icon">⚠️</span><div class="verdict-text"><h3>Analisis Gagal</h3><p>${mlError}</p></div></div>`;
       return;
     }
     if (!mlResults) {
-      $('mlTotalCells').textContent = '...';
-      $('mlHighCount').textContent = '...';
-      $('mlMedCount').textContent = '...';
-      $('mlLowCount').textContent = '...';
-      $('mlTopTarget').textContent = 'Loading...';
+      safeSet('mlTotalCells', '...');
+      safeSet('mlHighCount', '...');
+      safeSet('mlMedCount', '...');
+      safeSet('mlLowCount', '...');
+      safeSet('mlTopTarget', 'Loading...');
       container.innerHTML = '<p style="font-size:13px;color:var(--text-secondary);text-align:center;padding:20px;">Memproses prospektivitas grid...</p>';
       return;
     }
@@ -908,11 +912,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const top = sorted[0];
 
     // Update stat cards
-    $('mlTotalCells').textContent = total;
-    $('mlHighCount').textContent = high.length + ' (' + (total ? Math.round(high.length / total * 100) : 0) + '%)';
-    $('mlMedCount').textContent = med.length + ' (' + (total ? Math.round(med.length / total * 100) : 0) + '%)';
-    $('mlLowCount').textContent = low.length + ' (' + (total ? Math.round(low.length / total * 100) : 0) + '%)';
-    $('mlTopTarget').textContent = top ? top.gid + ' @ ' + top.score.toFixed(2) : '-';
+    safeSet('mlTotalCells', total);
+    safeSet('mlHighCount', high.length + ' (' + (total ? Math.round(high.length / total * 100) : 0) + '%)');
+    safeSet('mlMedCount', med.length + ' (' + (total ? Math.round(med.length / total * 100) : 0) + '%)');
+    safeSet('mlLowCount', low.length + ' (' + (total ? Math.round(low.length / total * 100) : 0) + '%)');
+    safeSet('mlTopTarget', top ? top.gid + ' @ ' + top.score.toFixed(2) : '-');
 
     // Update main map grid overlay with ML colors
     if (gridMlLayer) { map.removeLayer(gridMlLayer); gridMlLayer = null; }
