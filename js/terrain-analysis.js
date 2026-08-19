@@ -11,16 +11,119 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const sites = window.NICKEL_SITES.features;
 
+  const INDONESIA_SMELTERS = [
+    {
+      id: 'pomalaa',
+      name: 'Smelter Feronikel Pomalaa (Kolaka)',
+      shortName: 'PT ANTAM Pomalaa',
+      company: 'PT ANTAM Tbk',
+      location: 'Kolaka, Sulawesi Tenggara',
+      lat: -4.180,
+      lon: 121.600,
+      type: 'Pabrik Feronikel (FeNi)',
+      capacity: '27.000 ton Ni/tahun'
+    },
+    {
+      id: 'halmahera_timur',
+      name: 'Pabrik Feronikel Haltim (P3FH)',
+      shortName: 'PT ANTAM Haltim',
+      company: 'PT ANTAM Tbk',
+      location: 'Halmahera Timur, Maluku Utara',
+      lat: 0.880,
+      lon: 128.320,
+      type: 'Pabrik Feronikel (FeNi)',
+      capacity: '13.500 ton Ni/tahun'
+    },
+    {
+      id: 'sorowako',
+      name: 'Smelter Sorowako',
+      shortName: 'PT Vale Sorowako',
+      company: 'PT Vale Indonesia Tbk',
+      location: 'Luwu Timur, Sulawesi Selatan',
+      lat: -2.533,
+      lon: 121.350,
+      type: 'Nickel Matte & FeNi',
+      capacity: '75.000 ton Ni/tahun'
+    },
+    {
+      id: 'imip',
+      name: 'Kawasan Industri IMIP (Morowali)',
+      shortName: 'IMIP Morowali',
+      company: 'PT Indonesia Morowali Industrial Park',
+      location: 'Morowali, Sulawesi Tengah',
+      lat: -2.825,
+      lon: 122.158,
+      type: 'RKEF (NPI) & HPAL (MHP)',
+      capacity: '3.000.000 ton/tahun'
+    },
+    {
+      id: 'konawe',
+      name: 'Kawasan Industri Konawe (VDNI/OSS)',
+      shortName: 'VDNI Konawe',
+      company: 'PT Virtue Dragon Nickel Industry',
+      location: 'Konawe, Sulawesi Tenggara',
+      lat: -3.880,
+      lon: 122.430,
+      type: 'RKEF (NPI) & Stainless Steel',
+      capacity: '1.800.000 ton/tahun'
+    },
+    {
+      id: 'wedabay',
+      name: 'Kawasan Industri IWIP (Weda Bay)',
+      shortName: 'IWIP Weda Bay',
+      company: 'PT Indonesia Weda Bay Industrial Park',
+      location: 'Halmahera Tengah, Maluku Utara',
+      lat: 0.485,
+      lon: 127.915,
+      type: 'RKEF & HPAL (MHP)',
+      capacity: '2.400.000 ton/tahun'
+    },
+    {
+      id: 'obi',
+      name: 'Kawasan Industri Pulau Obi (Harita)',
+      shortName: 'Harita Pulau Obi',
+      company: 'PT Trimegah Bangun Persada (Harita)',
+      location: 'Halmahera Selatan, Maluku Utara',
+      lat: -1.545,
+      lon: 127.575,
+      type: 'HPAL & RKEF',
+      capacity: '1.200.000 ton/tahun'
+    },
+    {
+      id: 'bantaeng',
+      name: 'Smelter Bantaeng',
+      shortName: 'Huadi Bantaeng',
+      company: 'PT Huadi Nickel-Alloy Indonesia',
+      location: 'Bantaeng, Sulawesi Selatan',
+      lat: -5.550,
+      lon: 120.020,
+      type: 'RKEF (FeNi)',
+      capacity: '250.000 ton/tahun'
+    }
+  ];
+
   let map, drawnItems, drawControl, activeDrawHandler;
   let currentBbox = null, currentGrid = null, currentParams = null;
   let gridLayer = null, gridMlLayer = null;
   let beltLayer = null, beltPolygons = null, forestryLayer = null, forestryData = null;
+  let smelterMarkers = [], smelterLineLayer = null, currentNearestSmelter = null;
   let _3dRendered = false, _3dRenderedWithMl = false, _elevationLoading = false, _drawingActive = false, _3dMesh = null;
   let mlResults = null, mlLoading = false, mlError = null;
 
   const tierColor = t => t === 'HIGH' ? '#9FD8BD' : t === 'MEDIUM' ? '#E2A356' : '#ef4444';
   const tierLabel = t => t === 'HIGH' ? 'High' : t === 'MEDIUM' ? 'Medium' : 'Low';
   const scoreColor = s => s >= 75 ? 'green' : s >= 50 ? 'yellow' : 'red';
+
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
 
   function initMap() {
     map = L.map('exploreMap').setView([-2.0, 121.5], 6);
@@ -30,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadNickelBelts();
     loadForestryBoundaries();
+    loadSmelterMarkers();
     loadMineMarkers();
     setupDrawControl();
   }
@@ -95,11 +199,90 @@ document.addEventListener('DOMContentLoaded', () => {
           html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#ef4444;"></span> No-Go (HL/HSA)</div>';
           html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#E2A356;"></span> Conditional (HP/HPT/HPK)</div>';
           html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#22c55e;"></span> Allowed (APL/default)</div>';
+          html += '<div style="font-weight:600;margin:8px 0 4px;">Infrastruktur Hilirisasi</div>';
+          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="font-size:12px;">🏭</span> Smelter / Kawasan Industri</div>';
           div.innerHTML = html;
           return div;
         };
         legend.addTo(map);
       });
+  }
+
+  function loadSmelterMarkers() {
+    INDONESIA_SMELTERS.forEach(s => {
+      const icon = L.divIcon({
+        className: 'custom-smelter-icon',
+        html: `<div class="smelter-pin-icon" id="smelter-pin-${s.id}"><div class="smelter-pin-badge" title="${s.name}">🏭</div></div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+      const marker = L.marker([s.lat, s.lon], { icon: icon }).addTo(map);
+      marker.bindPopup(`
+        <div style="font-family:var(--font-ui);min-width:210px;line-height:1.45;">
+          <div style="font-weight:700;font-size:13px;color:#38bdf8;margin-bottom:4px;">🏭 ${s.name}</div>
+          <div style="font-size:11px;color:#e2e8f0;margin-bottom:3px;"><b>Operator:</b> ${s.company}</div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:2px;"><b>Lokasi:</b> ${s.location}</div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:2px;"><b>Teknologi:</b> ${s.type}</div>
+          <div style="font-size:11px;color:#34d399;"><b>Kapasitas:</b> ${s.capacity}</div>
+        </div>
+      `);
+      marker.bindTooltip(`🏭 ${s.shortName}`, { direction: 'top', offset: [0, -14], className: 'smelter-label' });
+      marker._smelterData = s;
+      smelterMarkers.push(marker);
+    });
+  }
+
+  function pinpointNearestSmelter(center) {
+    let nearest = null, minDist = Infinity;
+    INDONESIA_SMELTERS.forEach(s => {
+      const d = haversineKm(center[1], center[0], s.lat, s.lon);
+      if (d < minDist) { minDist = d; nearest = s; }
+    });
+    if (!nearest) return null;
+
+    currentNearestSmelter = { smelter: nearest, distanceKm: minDist };
+
+    // Remove existing route line
+    if (smelterLineLayer) { map.removeLayer(smelterLineLayer); smelterLineLayer = null; }
+
+    // Reset previous smelter pin visual states
+    document.querySelectorAll('.smelter-pin-icon').forEach(el => {
+      el.classList.remove('active-target');
+      const pulse = el.querySelector('.smelter-pin-pulse');
+      if (pulse) pulse.remove();
+    });
+
+    // Add glowing radar pulse on nearest smelter marker
+    const targetEl = document.getElementById(`smelter-pin-${nearest.id}`);
+    if (targetEl) {
+      targetEl.classList.add('active-target');
+      const pulseDiv = document.createElement('div');
+      pulseDiv.className = 'smelter-pin-pulse';
+      targetEl.appendChild(pulseDiv);
+    }
+
+    // Draw connecting dashed route line with distance indicator
+    smelterLineLayer = L.featureGroup().addTo(map);
+
+    L.polyline([[center[1], center[0]], [nearest.lat, nearest.lon]], {
+      color: '#38bdf8',
+      weight: 2.5,
+      opacity: 0.85,
+      dashArray: '8 6'
+    }).addTo(smelterLineLayer);
+
+    const midLat = (center[1] + nearest.lat) / 2;
+    const midLon = (center[0] + nearest.lon) / 2;
+    L.marker([midLat, midLon], {
+      icon: L.divIcon({
+        className: 'custom-smelter-icon',
+        html: `<div class="smelter-dist-pill">✈️ ~${minDist.toFixed(1)} km ke ${nearest.shortName}</div>`,
+        iconAnchor: [90, 12]
+      }),
+      interactive: false
+    }).addTo(smelterLineLayer);
+
+    return currentNearestSmelter;
   }
 
   function loadMineMarkers() {
@@ -164,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentBbox = bbox;
       currentParams = params;
       currentGrid = generateGrid(bbox, params, forestryData);
+      pinpointNearestSmelter(center);
       _drawingActive = false;
       activeDrawHandler = null;
       mlResults = null;
@@ -264,6 +448,13 @@ document.addEventListener('DOMContentLoaded', () => {
     $('mapHint').classList.remove('hidden');
     if (gridLayer) { map.removeLayer(gridLayer); gridLayer = null; }
     if (gridMlLayer) { map.removeLayer(gridMlLayer); gridMlLayer = null; }
+    if (smelterLineLayer) { map.removeLayer(smelterLineLayer); smelterLineLayer = null; }
+    document.querySelectorAll('.smelter-pin-icon').forEach(el => {
+      el.classList.remove('active-target');
+      const pulse = el.querySelector('.smelter-pin-pulse');
+      if (pulse) pulse.remove();
+    });
+    currentNearestSmelter = null;
     $('mlExplanation').innerHTML = '';
     drawnItems.clearLayers();
     if (drawControl) { map.removeControl(drawControl); drawControl = null; }
@@ -437,6 +628,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Kelayakan Ekonomi (Continuous Economics Index: 0-100)
     // - Real distance to nearest operational smelter
+    const clon = avg(cells, c => c.lonC);
+    const clat = avg(cells, c => c.latC);
+    let nearestSmelter = null, minSmelterDist = Infinity;
+    INDONESIA_SMELTERS.forEach(s => {
+      const d = haversineKm(clat, clon, s.lat, s.lon);
+      if (d < minSmelterDist) { minSmelterDist = d; nearestSmelter = s; }
+    });
+
     const smelterScore = Math.max(15, Math.min(100, Math.round(100 - Math.min(85, avgSmelter * 0.45))));
     // - Deposit footprint / scale
     const areaScore = Math.max(25, Math.min(100, Math.round(Math.min(100, 30 + (totalArea / 500) * 70))));
@@ -454,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
       recommendation = 'NO-GO';
     }
 
-    return { safety, probable, worth, overall, recommendation, avgSlope, avgRoad, ultraPct, totalArea, avgSmelter };
+    return { safety, probable, worth, overall, recommendation, avgSlope, avgRoad, ultraPct, totalArea, avgSmelter, nearestSmelter, minSmelterDist };
   }
 
   function showAssessment(a, params) {
@@ -500,12 +699,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setScore('scoreWorth', 'barWorth', a.worth);
 
     $('detailSafety').textContent =
-      `Slope avg ${a.avgSlope.toFixed(1)} (${a.avgSlope < 8 ? 'gentle' : a.avgSlope < 15 ? 'moderate' : 'steep'}) ` +
+      `Slope avg ${a.avgSlope.toFixed(1)}° (${a.avgSlope < 8 ? 'gentle' : a.avgSlope < 15 ? 'moderate' : 'steep'}) ` +
       `Road avg ${Math.round(a.avgRoad)}m Terrain: ${params.terrain_class}`;
     $('detailProb').textContent =
       `Ultramafic ${a.ultraPct.toFixed(0)}% Tier: ${params.tier} ${params.inBelt ? 'Inside nickel belt' : 'Outside known belt'}`;
+    
+    const smelterTitle = a.nearestSmelter ? `${a.nearestSmelter.shortName} (~${a.avgSmelter.toFixed(1)} km)` : `~${a.avgSmelter.toFixed(0)} km`;
     $('detailWorth').textContent =
-      `Area ${a.totalArea.toFixed(0)} ha Smelter ~${a.avgSmelter.toFixed(0)}km Tier: ${params.tier}`;
+      `Smelter: ${smelterTitle} • Area: ${a.totalArea.toFixed(0)} ha • Tier: ${params.tier}`;
     const siteInfoEl = $('siteInfo');
     const siteText = params.inBelt
       ? `${params.name}, ${params.province} — ${params.terrain_class} terrain — ${currentGrid.features.length} grid cells`
