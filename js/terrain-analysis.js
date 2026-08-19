@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadNickelBelts();
     loadForestryBoundaries();
     loadSmelterMarkers();
-    loadMineMarkers();
     setupDrawControl();
   }
 
