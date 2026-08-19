@@ -1223,6 +1223,24 @@ function dispose3DViewer() {
     _3dSpriteMap = {};
 }
 
+function formatAreaM2(ha) {
+    if (ha == null || isNaN(ha)) return '100,000 m²';
+    const m2 = Math.round(Number(ha) * 10000);
+    return m2.toLocaleString('en-US') + ' m²';
+}
+
+function isPointInRing(lon, lat, ring) {
+    if (!ring || ring.length < 3) return false;
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        let xi = ring[i][0], yi = ring[i][1];
+        let xj = ring[j][0], yj = ring[j][1];
+        let intersect = ((yi > lat) !== (yj > lat)) && (lon < (xj - xi) * (lat - yi) / (yj - yi || 0.000001) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}
+
 function getInterpolatedElevation(lon, lat, vertexCells, minLon, maxLon, minLat, maxLat, resX, resY) {
     if (!vertexCells || !vertexCells.length) return 0;
     const u = Math.max(0, Math.min(1, (lon - minLon) / (maxLon - minLon || 1)));
@@ -1264,7 +1282,7 @@ function update3DSelectedGridOutline(gridId) {
 
     const ring = feat.geometry.coordinates[0];
     const points = [];
-    const subSteps = 8;
+    const subSteps = 12;
     
     for (let i = 0; i < ring.length - 1; i++) {
         const p1 = ring[i];
@@ -1278,7 +1296,7 @@ function update3DSelectedGridOutline(gridId) {
             const px = (u - 0.5) * terrainWidth;
             const pz = (v - 0.5) * terrainDepth;
             const elev = getInterpolatedElevation(curLon, curLat, vertexCells, minLon, maxLon, minLat, maxLat, resX, resY);
-            const py = (elev - minElev) * heightScale + 0.08;
+            const py = (elev - minElev) * heightScale + 0.10;
             points.push(new THREE.Vector3(px, py, pz));
         }
     }
@@ -1289,16 +1307,16 @@ function update3DSelectedGridOutline(gridId) {
     const px0 = (u0 - 0.5) * terrainWidth;
     const pz0 = (v0 - 0.5) * terrainDepth;
     const elev0 = getInterpolatedElevation(firstP[0], firstP[1], vertexCells, minLon, maxLon, minLat, maxLat, resX, resY);
-    points.push(new THREE.Vector3(px0, (elev0 - minElev) * heightScale + 0.08, pz0));
+    points.push(new THREE.Vector3(px0, (elev0 - minElev) * heightScale + 0.10, pz0));
 
     const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
     const lineMat = new THREE.LineDashedMaterial({
         color: 0xffffff,
-        dashSize: 0.28,
-        gapSize: 0.16,
+        dashSize: 0.32,
+        gapSize: 0.18,
         linewidth: 1,
         transparent: true,
-        opacity: 0.95
+        opacity: 0.98
     });
 
     _3dSelectedOutline = new THREE.Line(lineGeo, lineMat);
@@ -1306,10 +1324,10 @@ function update3DSelectedGridOutline(gridId) {
     scene.add(_3dSelectedOutline);
 }
 
-function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
+function createGridTextSprite(text, areaText = '', opacity = 0.70, isSelected = false) {
     const canvas = document.createElement('canvas');
-    canvas.width = 160;
-    canvas.height = 80;
+    canvas.width = 180;
+    canvas.height = 90;
     const ctx = canvas.getContext('2d');
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1319,12 +1337,12 @@ function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 4;
     } else {
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
         ctx.lineWidth = 2;
     }
     
-    const r = 12, x = 12, y = 10, w = 136, h = 60;
+    const r = 12, x = 10, y = 8, w = 160, h = 74;
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.arcTo(x + w, y, x + w, y + h, r);
@@ -1335,11 +1353,17 @@ function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
     ctx.fill();
     ctx.stroke();
 
-    ctx.font = isSelected ? 'Bold 28px "Space Grotesk", sans-serif' : 'Bold 24px "Space Grotesk", sans-serif';
+    // Codename Text (Bold)
+    ctx.font = isSelected ? 'Bold 25px "Space Grotesk", sans-serif' : 'Bold 22px "Space Grotesk", sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 1);
+    ctx.fillText(text, canvas.width / 2, 33);
+
+    // Area Subtitle (e.g. "100,000 m²")
+    ctx.font = isSelected ? 'Bold 15px "Space Grotesk", sans-serif' : '500 14px "Space Grotesk", sans-serif';
+    ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.80)';
+    ctx.fillText(areaText || '', canvas.width / 2, 59);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.minFilter = THREE.LinearFilter;
@@ -1352,7 +1376,7 @@ function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
     });
     
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(isSelected ? 2.5 : 1.8, isSelected ? 1.25 : 0.9, 1);
+    sprite.scale.set(isSelected ? 2.5 : 1.9, isSelected ? 1.25 : 0.95, 1);
     return sprite;
 }
 
@@ -1362,12 +1386,14 @@ function highlight3DGridLabel(gridId) {
         const sprite = _3dSpriteMap[gid];
         if (!sprite) return;
         const isSel = (gid === gridId);
+        const row = resultRows.find(r => r.grid_id === gid);
+        const areaText = formatAreaM2(row ? row.area_ha : 10);
         
-        const tempSprite = createGridTextSprite(gid, 0.70, isSel);
+        const tempSprite = createGridTextSprite(gid, areaText, 0.70, isSel);
         if (sprite.material.map) sprite.material.map.dispose();
         sprite.material.map = tempSprite.material.map;
         sprite.material.opacity = isSel ? 1.0 : 0.70;
-        sprite.scale.set(isSel ? 2.5 : 1.8, isSel ? 1.25 : 0.9, 1);
+        sprite.scale.set(isSel ? 2.5 : 1.9, isSel ? 1.25 : 0.95, 1);
     });
     update3DSelectedGridOutline(gridId);
 }
@@ -1400,6 +1426,7 @@ function show3DGridDetail(gridId) {
     </div>
     <div class="detail-line" style="margin: 4px 0;"><span>Final Priority Score:</span><b style="color:#fff;">${row.final_priority_score}/100</b></div>
     <div class="detail-line" style="margin: 4px 0;"><span>ML Score:</span><b style="color:#6366f1;">${row.ml_masked ? 'BLOCKED' : row.ml_score != null ? row.ml_score + '/10' : 'N/A'}</b></div>
+    <div class="detail-line" style="margin: 4px 0;"><span>Surface Area:</span><b style="color:#38bdf8;">${formatAreaM2(row.area_ha)} (${row.area_ha || 10} Ha)</b></div>
     
     <div style="border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);padding:8px 0;margin:8px 0;">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#10b981;margin-bottom:6px;">🧪 Geochemistry & Assays</div>
@@ -1433,33 +1460,56 @@ function renderPlotly3D() {
   container.innerHTML = '<div style="color:white;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--font-ui);">Fetching AWS Terrarium DEM tiles...</div>';
   
   const cells = [];
+  const allLons = [];
+  const allLats = [];
+
   rawGrid.features.forEach(feat => {
       if (!feat || !feat.geometry || !feat.geometry.coordinates || !feat.geometry.coordinates[0]) return;
       const gid = feat.properties.grid_id;
       const ring = feat.geometry.coordinates[0];
       
       let sumLon = 0, sumLat = 0;
-      ring.forEach(pt => { sumLon += pt[0]; sumLat += pt[1]; });
+      ring.forEach(pt => {
+          sumLon += pt[0];
+          sumLat += pt[1];
+          allLons.push(pt[0]);
+          allLats.push(pt[1]);
+      });
       const lonC = sumLon / ring.length;
       const latC = sumLat / ring.length;
 
       const res = resultRows.find(r => r.grid_id === gid);
+      const areaHa = (res && res.area_ha) || feat.properties.area_ha || 10.0;
       cells.push({
           gid,
           lonC,
           latC,
+          ring,
+          area_ha: areaHa,
+          area_m2: Math.round(areaHa * 10000),
           score: res ? (res.ml_masked ? 0 : (res.ml_score != null ? res.ml_score : (res.final_priority_score/10))) : 0
       });
   });
 
+  if (!allLons.length || !allLats.length) return;
+
+  // True polygon bounding box with padding so 100% of all grid matrix cells are fully rendered
+  const rawMinLon = Math.min(...allLons);
+  const rawMaxLon = Math.max(...allLons);
+  const rawMinLat = Math.min(...allLats);
+  const rawMaxLat = Math.max(...allLats);
+
+  const padLon = (rawMaxLon - rawMinLon) * 0.12 || 0.003;
+  const padLat = (rawMaxLat - rawMinLat) * 0.12 || 0.003;
+
+  const minLon = rawMinLon - padLon;
+  const maxLon = rawMaxLon + padLon;
+  const minLat = rawMinLat - padLat;
+  const maxLat = rawMaxLat + padLat;
+
   // Create high-res vertices for smooth terrain
-  const resX = 64, resY = 40;
+  const resX = 72, resY = 48;
   const vertexCells = [];
-  
-  let minLon = Math.min(...cells.map(c => c.lonC));
-  let maxLon = Math.max(...cells.map(c => c.lonC));
-  let minLat = Math.min(...cells.map(c => c.latC));
-  let maxLat = Math.max(...cells.map(c => c.latC));
   
   for (let iy = 0; iy < resY; iy++) {
       for (let ix = 0; ix < resX; ix++) {
@@ -1551,18 +1601,30 @@ function renderPlotly3D() {
       for (let i = 0; i < pos.count; i++) {
           const vc = vertexCells[i];
           
-          let closestDist = Infinity;
-          let score = 0;
+          // Match exact polygon boundary for crisp grid cuts
+          let matchedCell = null;
           for (let c of cells) {
-              const d = (c.lonC - vc.lonC)**2 + (c.latC - vc.latC)**2;
-              if (d < closestDist) {
-                  closestDist = d;
-                  score = c.score;
+              if (isPointInRing(vc.lonC, vc.latC, c.ring)) {
+                  matchedCell = c;
+                  break;
+              }
+          }
+
+          let score = 0;
+          if (matchedCell) {
+              score = matchedCell.score;
+          } else {
+              let closestDist = Infinity;
+              for (let c of cells) {
+                  const d = (c.lonC - vc.lonC)**2 + (c.latC - vc.latC)**2;
+                  if (d < closestDist) {
+                      closestDist = d;
+                      score = c.score;
+                  }
               }
           }
           
           const height = (vc.elevation - minElev) * heightScale;
-          
           pos.setY(i, height);
           
           const clr = getColorForScore(score);
@@ -1586,7 +1648,7 @@ function renderPlotly3D() {
       const mesh = new THREE.Mesh(geo, mat);
       scene.add(mesh);
       
-      const wireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1 });
+      const wireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.08 });
       const wireMesh = new THREE.Mesh(geo, wireMat);
       scene.add(wireMesh);
 
@@ -1614,8 +1676,9 @@ function renderPlotly3D() {
           
           const h = (closestVert.elevation - minElev) * heightScale;
           const isSel = (cell.gid === initSelected);
-          const sprite = createGridTextSprite(cell.gid, 0.70, isSel);
-          sprite.position.set(px, h + (isSel ? 1.0 : 0.8), pz);
+          const areaText = formatAreaM2(cell.area_ha);
+          const sprite = createGridTextSprite(cell.gid, areaText, 0.70, isSel);
+          sprite.position.set(px, h + (isSel ? 1.1 : 0.9), pz);
           sprite.userData = { gid: cell.gid };
           scene.add(sprite);
           spriteList.push(sprite);
@@ -1857,6 +1920,7 @@ function selectTarget(gridId) {
       <div style="height: 100%; width: ${row.final_priority_score}%; background: ${pColor}; border-radius: 2px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);"></div>
     </div>
     <div class="detail-line"><span>Final score:</span><b>${row.final_priority_score}/100</b></div>
+    <div class="detail-line"><span>Surface Area:</span><b style="color:#38bdf8;">${formatAreaM2(row.area_ha)} (${row.area_ha || 10} Ha)</b></div>
     <div class="detail-line" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;margin:4px 0;"><span>Recommended Spacing:</span><b>${row.drill_spacing || '-'}m &times; ${row.drill_spacing || '-'}m</b></div>
     <div class="detail-line"><span>Required Drill Holes:</span><b>${row.estimated_drill_holes ?? '-'}</b></div>
     <div class="detail-line"><span>Est. Drilling Cost:</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
