@@ -75,12 +75,49 @@ function cellLegalStatus(lonC, latC, forestryData) {
   return 'allowed';
 }
 
+// Known Indonesian Nickel Smelters & Industrial Parks
+const INDONESIA_SMELTERS = [
+  { name: 'Morowali (IMIP)', lat: -2.825, lon: 122.158 },
+  { name: 'Sorowako (Vale/Antam)', lat: -2.533, lon: 121.350 },
+  { name: 'Pomalaa (Antam Kolaka)', lat: -4.180, lon: 121.600 },
+  { name: 'Konawe (VDNI/OSS)', lat: -3.880, lon: 122.430 },
+  { name: 'Weda Bay (IWIP Halmahera)', lat: 0.485, lon: 127.915 },
+  { name: 'Bantaeng (Huadi)', lat: -5.550, lon: 120.020 }
+];
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Earth radius in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function getDistanceToNearestSmelter(lat, lon) {
+  let minD = Infinity;
+  for (const s of INDONESIA_SMELTERS) {
+    const d = haversineKm(lat, lon, s.lat, s.lon);
+    if (d < minD) minD = d;
+  }
+  return minD;
+}
+
 function generateGrid(bbox, params, forestryData) {
-  const rng = mulberry32(42);
+  // Derive a unique deterministic seed from bounding box coordinates
+  const seedString = `${bbox[0].toFixed(4)}_${bbox[1].toFixed(4)}_${bbox[2].toFixed(4)}_${bbox[3].toFixed(4)}`;
+  let hash = 0;
+  for (let i = 0; i < seedString.length; i++) {
+    hash = ((hash << 5) - hash) + seedString.charCodeAt(i);
+    hash |= 0;
+  }
+  const rng = mulberry32(Math.abs(hash) || 42);
+
   const NX = 20, NY = 20;
   const terrain = params.terrain_class || 'ROLLING';
   const tier = params.tier || 'LOW';
-  const cellDeg = CELL_SIZE_MAP[terrain] || 0.008;
   const lithWeights = TIER_WEIGHTS[tier] || TIER_WEIGHTS.LOW;
   const slopeMean = params.slope_mean || 10;
 
@@ -90,9 +127,12 @@ function generateGrid(bbox, params, forestryData) {
   const cellH = (latMax - latMin) / NY;
   const clon = (lonMin + lonMax) / 2;
   const clat = (latMin + latMax) / 2;
-  const halfExtent = (lonMax - lonMin) / 2;
-  const spatialScale = halfExtent * 0.8;
   const prefix = (params.prefix || 'GEN').toUpperCase();
+
+  // Compute real dynamic area in hectares for each cell based on geographic extent
+  const widthKm = Math.abs(lonMax - lonMin) * 111.32 * Math.cos(clat * Math.PI / 180);
+  const heightKm = Math.abs(latMax - latMin) * 110.57;
+  const cellAreaHa = Math.max(0.01, Math.round(((widthKm / NX) * (heightKm / NY) * 100) * 100) / 100);
 
   const cells = [];
   for (let row = 0; row < NY; row++) {
@@ -106,15 +146,14 @@ function generateGrid(bbox, params, forestryData) {
 
       const lith = weightedRandom(rng, LITHOLOGIES, lithWeights);
       const legal = cellLegalStatus(lonC, latC, forestryData);
-      const slope = Math.round((Math.random() * (slopeMean + 8 - Math.max(1, slopeMean - 5)) + Math.max(1, slopeMean - 5)) * 10) / 10;
-      const river = Math.round(Math.random() * (1200 - 80) + 80);
-      const road = Math.round(Math.random() * (3500 - 300) + 300);
+      const slope = Math.round((rng() * (slopeMean + 8 - Math.max(1, slopeMean - 5)) + Math.max(1, slopeMean - 5)) * 10) / 10;
+      const river = Math.round(rng() * (1200 - 80) + 80);
+      const road = Math.round(rng() * (3500 - 300) + 300);
 
-      const dLon = (lonC - clon) / spatialScale;
-      const dLat = (latC - clat) / spatialScale;
-      const distFactor = 0.5 + 0.5 * Math.exp(-Math.sqrt(dLon * dLon + dLat * dLat));
-      const smelterKm = Math.round((10 + Math.sqrt(dLon * dLon + dLat * dLat) * 40) * 10) / 10;
-      const area = Math.round(cellDeg * cellDeg * 111 * 111 * 100) / 100;
+      // Real distance to nearest smelter + local perturbation
+      const baseSmelterKm = getDistanceToNearestSmelter(latC, lonC);
+      const localSmelterVar = (rng() - 0.5) * 4;
+      const smelterKm = Math.max(1, Math.round((baseSmelterKm + localSmelterVar) * 10) / 10);
 
       const regionId = `${latC >= clat ? 'N' : 'S'}${lonC >= clon ? 'E' : 'W'}`;
 
@@ -125,7 +164,7 @@ function generateGrid(bbox, params, forestryData) {
         lat0: Math.round(lat0 * 100000) / 100000,
         cellW, cellH,
         lith, legal, slope, river, road,
-        smelter: smelterKm, area, regionId,
+        smelter: smelterKm, area: cellAreaHa, regionId,
       });
     }
   }

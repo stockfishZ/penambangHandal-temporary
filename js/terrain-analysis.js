@@ -195,21 +195,42 @@ document.addEventListener('DOMContentLoaded', () => {
       const d = Math.sqrt((c[0] - center[0]) ** 2 + (c[1] - center[1]) ** 2);
       if (d < minDist) { minDist = d; nearest = s; }
     });
+
     if (nearest && inBelt) {
       const p = nearest.properties;
+      // If within ~45km (0.4 deg) of known deposit site
+      if (minDist < 0.4) {
+        return {
+          id: p.id, name: p.name, province: p.province,
+          terrain_class: p.terrain_class, tier: p.tier,
+          elevation_mean: p.elevation_mean, elevation_max: p.elevation_max,
+          elevation_min: p.elevation_min, slope_mean: p.slope_mean,
+          inBelt: true, prefix: p.id.slice(0, 3).toUpperCase()
+        };
+      }
+      // Greenfield area inside Indonesian nickel belt
+      const province = center[0] > 125 ? 'Maluku Utara' : (center[1] > -1.5 ? 'Sulawesi Tengah' : (center[0] > 121.8 ? 'Sulawesi Tenggara' : 'Sulawesi Selatan'));
+      const tier = minDist < 1.0 ? 'MEDIUM' : 'LOW';
       return {
-        id: p.id, name: p.name, province: p.province,
-        terrain_class: p.terrain_class, tier: p.tier,
-        elevation_mean: p.elevation_mean, elevation_max: p.elevation_max,
-        elevation_min: p.elevation_min, slope_mean: p.slope_mean,
-        inBelt: true, prefix: p.id.slice(0, 3).toUpperCase()
+        id: 'greenfield_' + Math.abs(Math.floor(center[0] * 10 + center[1] * 100)),
+        name: `Sektor Eksplorasi (${nearest.properties.name} Ext.)`,
+        province: province,
+        terrain_class: p.terrain_class || 'ROLLING',
+        tier: tier,
+        elevation_mean: p.elevation_mean || 250,
+        elevation_max: p.elevation_max || 500,
+        elevation_min: p.elevation_min || 80,
+        slope_mean: p.slope_mean || 12,
+        inBelt: true,
+        prefix: 'EXP'
       };
     }
+
     return {
-      id: 'custom', name: 'Custom Area', province: 'Indonesia',
+      id: 'custom', name: 'Non-Belt Greenfield', province: 'Indonesia',
       terrain_class: 'ROLLING', tier: 'LOW',
-      elevation_mean: 200, elevation_max: 400, elevation_min: 50,
-      slope_mean: 10, inBelt: false, prefix: 'GEN'
+      elevation_mean: 150, elevation_max: 300, elevation_min: 30,
+      slope_mean: 8, inBelt: false, prefix: 'GEN'
     };
   }
 
@@ -368,32 +389,70 @@ document.addEventListener('DOMContentLoaded', () => {
     map.fitBounds(gridLayer.getBounds().pad(0.05));
   }
 
-  // ----- Assessment -----
+  // ----- Assessment (Continuous Dynamic Scoring) -----
   function computeAssessment(cells, params) {
+    if (!cells || !cells.length) {
+      return { safety: 0, probable: 0, worth: 0, overall: 0, recommendation: 'NO-GO', avgSlope: 0, avgRoad: 0, ultraPct: 0, totalArea: 0, avgSmelter: 0 };
+    }
     const avg = (arr, fn) => { const v = arr.map(fn); return v.reduce((a, b) => a + b, 0) / v.length; };
     const avgSlope = avg(cells, c => c.slope);
     const avgRoad = avg(cells, c => c.road);
-    const ultraPct = cells.filter(c => c.lith && c.lith.includes('ultra')).length / cells.length * 100;
+    
+    // Count all ultramafic rock families
+    const ULTRA_FAMILIES = ['serpentinite', 'peridotite', 'ultramafic', 'dunite', 'harzburgite', 'lherzolite', 'pyroxenite'];
+    const isUltra = lith => ULTRA_FAMILIES.some(u => (lith || '').toLowerCase().includes(u));
+    const ultraCount = cells.filter(c => isUltra(c.lith)).length;
+    const ultraPct = (ultraCount / cells.length) * 100;
+    
     const totalArea = cells.reduce((s, c) => s + (c.area || 0), 0);
     const avgSmelter = avg(cells, c => c.smelter);
 
-    const slopeScore = avgSlope < 8 ? 100 : avgSlope < 15 ? 70 : avgSlope < 20 ? 40 : 10;
-    const roadScore = avgRoad < 500 ? 100 : avgRoad < 2000 ? 70 : 30;
-    const terrainPenalty = {FLAT: 100, ROLLING: 80, HILLY: 50, MOUNTAINOUS: 20}[params.terrain_class] || 50;
-    const safety = Math.round(slopeScore * 0.4 + roadScore * 0.3 + terrainPenalty * 0.3);
+    // 1. Keselamatan Operasi (Continuous Safety Index: 0-100)
+    // - Flatter slopes = higher safety score
+    const slopeScore = Math.max(15, Math.min(100, 100 - (avgSlope * 3.2)));
+    // - Proximity to existing access roads
+    const roadScore = Math.max(30, Math.min(100, 100 - ((avgRoad / 3500) * 55)));
+    // - Legal safety (Penalize overlaps with Hutan Lindung/Hutan Produksi)
+    const noGoCount = cells.filter(c => c.legal === 'no-go').length;
+    const condCount = cells.filter(c => c.legal === 'conditional').length;
+    const legalSafetyScore = Math.max(10, 100 - ((noGoCount / cells.length) * 70) - ((condCount / cells.length) * 25));
+    // - Terrain roughness baseline
+    const terrainBase = { FLAT: 95, ROLLING: 85, HILLY: 65, MOUNTAINOUS: 45 }[params.terrain_class] || 70;
 
-    const ultraScore = Math.min(ultraPct, 100);
-    const tierScore = {HIGH: 100, MEDIUM: 60, LOW: 20}[params.tier] || 20;
-    const beltScore = params.inBelt ? 100 : 30;
-    const probable = Math.round(ultraScore * 0.4 + tierScore * 0.3 + beltScore * 0.3);
+    const safety = Math.max(10, Math.min(99, Math.round(
+      slopeScore * 0.35 + roadScore * 0.25 + legalSafetyScore * 0.25 + terrainBase * 0.15
+    )));
 
-    const areaScore = totalArea > 500 ? 100 : totalArea > 100 ? 60 : 20;
-    const smelterScore = avgSmelter < 50 ? 100 : avgSmelter < 150 ? 60 : 20;
-    const worth = Math.round(areaScore * 0.3 + smelterScore * 0.3 + tierScore * 0.4);
+    // 2. Probabilitas Geologis (Continuous Geology Index: 0-100)
+    // - Real ultramafic lithology concentration (0 - 100)
+    const ultraScore = Math.max(10, Math.min(100, ultraPct));
+    // - Tier baseline
+    const tierScore = { HIGH: 95, MEDIUM: 65, LOW: 30 }[params.tier] || 35;
+    // - Regional Nickel Belt membership
+    const beltScore = params.inBelt ? 100 : 15;
 
-    let overall = Math.round(safety * 0.3 + probable * 0.4 + worth * 0.3);
+    const probable = Math.max(5, Math.min(99, Math.round(
+      ultraScore * 0.50 + beltScore * 0.30 + tierScore * 0.20
+    )));
+
+    // 3. Kelayakan Ekonomi (Continuous Economics Index: 0-100)
+    // - Real distance to nearest operational smelter
+    const smelterScore = Math.max(15, Math.min(100, Math.round(100 - Math.min(85, avgSmelter * 0.45))));
+    // - Deposit footprint / scale
+    const areaScore = Math.max(25, Math.min(100, Math.round(Math.min(100, 30 + (totalArea / 500) * 70))));
+    // - Operability & market tier
+    const econTierScore = { HIGH: 95, MEDIUM: 65, LOW: 35 }[params.tier] || 40;
+
+    const worth = Math.max(10, Math.min(99, Math.round(
+      smelterScore * 0.45 + areaScore * 0.30 + econTierScore * 0.25
+    )));
+
+    let overall = Math.round(safety * 0.30 + probable * 0.45 + worth * 0.25);
     let recommendation = overall >= 75 ? 'GO' : overall >= 50 ? 'CONDITIONAL' : 'NO-GO';
-    if (!params.inBelt) { overall = 0; recommendation = 'NO-GO'; }
+    if (!params.inBelt) {
+      overall = Math.min(25, overall);
+      recommendation = 'NO-GO';
+    }
 
     return { safety, probable, worth, overall, recommendation, avgSlope, avgRoad, ultraPct, totalArea, avgSmelter };
   }
