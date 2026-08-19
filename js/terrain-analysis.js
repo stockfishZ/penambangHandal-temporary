@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'pomalaa',
       name: 'Smelter Feronikel Pomalaa (Kolaka)',
       shortName: 'PT ANTAM Pomalaa',
-      company: 'PT ANTAM Tbk',
+      company: 'PT ANTAM Tbk (MIND ID)',
+      isAntam: true,
       location: 'Kolaka, Sulawesi Tenggara',
       lat: -4.180,
       lon: 121.600,
@@ -27,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'halmahera_timur',
       name: 'Pabrik Feronikel Haltim (P3FH)',
       shortName: 'PT ANTAM Haltim',
-      company: 'PT ANTAM Tbk',
+      company: 'PT ANTAM Tbk (MIND ID)',
+      isAntam: true,
       location: 'Halmahera Timur, Maluku Utara',
       lat: 0.880,
       lon: 128.320,
@@ -38,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'sorowako',
       name: 'Smelter Sorowako',
       shortName: 'PT Vale Sorowako',
-      company: 'PT Vale Indonesia Tbk',
+      company: 'PT Vale Indonesia Tbk (MIND ID Ecosystem)',
+      isAntam: false,
       location: 'Luwu Timur, Sulawesi Selatan',
       lat: -2.533,
       lon: 121.350,
@@ -50,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'Kawasan Industri IMIP (Morowali)',
       shortName: 'IMIP Morowali',
       company: 'PT Indonesia Morowali Industrial Park',
+      isAntam: false,
       location: 'Morowali, Sulawesi Tengah',
       lat: -2.825,
       lon: 122.158,
@@ -61,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'Kawasan Industri Konawe (VDNI/OSS)',
       shortName: 'VDNI Konawe',
       company: 'PT Virtue Dragon Nickel Industry',
+      isAntam: false,
       location: 'Konawe, Sulawesi Tenggara',
       lat: -3.880,
       lon: 122.430,
@@ -72,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'Kawasan Industri IWIP (Weda Bay)',
       shortName: 'IWIP Weda Bay',
       company: 'PT Indonesia Weda Bay Industrial Park',
+      isAntam: false,
       location: 'Halmahera Tengah, Maluku Utara',
       lat: 0.485,
       lon: 127.915,
@@ -83,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'Kawasan Industri Pulau Obi (Harita)',
       shortName: 'Harita Pulau Obi',
       company: 'PT Trimegah Bangun Persada (Harita)',
+      isAntam: false,
       location: 'Halmahera Selatan, Maluku Utara',
       lat: -1.545,
       lon: 127.575,
@@ -94,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'Smelter Bantaeng',
       shortName: 'Huadi Bantaeng',
       company: 'PT Huadi Nickel-Alloy Indonesia',
+      isAntam: false,
       location: 'Bantaeng, Sulawesi Selatan',
       lat: -5.550,
       lon: 120.020,
@@ -199,7 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
           html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#E2A356;"></span> Conditional (HP/HPT/HPK)</div>';
           html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#22c55e;"></span> Allowed (APL/default)</div>';
           html += '<div style="font-weight:600;margin:8px 0 4px;">Infrastruktur Hilirisasi</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="font-size:12px;">🏭</span> Smelter / Kawasan Industri</div>';
+          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid #fbbf24;box-shadow:0 0 6px rgba(251,191,36,0.8);font-size:9px;">🏭</span> <span style="color:#fbbf24;font-weight:600;">Smelter Internal ANTAM</span></div>';
+          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid #38bdf8;font-size:9px;">🏭</span> Smelter Mitra / Offtaker</div>';
           div.innerHTML = html;
           return div;
         };
@@ -209,23 +218,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function loadSmelterMarkers() {
     INDONESIA_SMELTERS.forEach(s => {
+      const isAntam = !!s.isAntam;
+      const antamClass = isAntam ? ' antam-smelter' : '';
+      const ringHtml = isAntam ? '<div class="smelter-gold-ring"></div>' : '';
       const icon = L.divIcon({
         className: 'custom-smelter-icon',
-        html: `<div class="smelter-pin-icon" id="smelter-pin-${s.id}"><div class="smelter-pin-badge" title="${s.name}">🏭</div></div>`,
+        html: `<div class="smelter-pin-icon${antamClass}" id="smelter-pin-${s.id}"><div class="smelter-pin-badge" title="${s.name}">🏭</div>${ringHtml}</div>`,
         iconSize: [28, 28],
         iconAnchor: [14, 14]
       });
       const marker = L.marker([s.lat, s.lon], { icon: icon }).addTo(map);
       marker.bindPopup(`
-        <div style="font-family:var(--font-ui);min-width:210px;line-height:1.45;">
-          <div style="font-weight:700;font-size:13px;color:#38bdf8;margin-bottom:4px;">🏭 ${s.name}</div>
+        <div style="font-family:var(--font-ui);min-width:220px;line-height:1.45;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px;">
+            <div style="font-weight:700;font-size:13px;color:${isAntam ? '#fbbf24' : '#38bdf8'};">🏭 ${s.name}</div>
+            ${isAntam ? '<span style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid #fbbf24;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;">ANTAM</span>' : ''}
+          </div>
           <div style="font-size:11px;color:#e2e8f0;margin-bottom:3px;"><b>Operator:</b> ${s.company}</div>
           <div style="font-size:11px;color:#94a3b8;margin-bottom:2px;"><b>Lokasi:</b> ${s.location}</div>
           <div style="font-size:11px;color:#94a3b8;margin-bottom:2px;"><b>Teknologi:</b> ${s.type}</div>
           <div style="font-size:11px;color:#34d399;"><b>Kapasitas:</b> ${s.capacity}</div>
         </div>
       `);
-      marker.bindTooltip(`🏭 ${s.shortName}`, { direction: 'top', offset: [0, -14], className: 'smelter-label' });
+      const tooltipLabel = isAntam ? `🏭 ${s.shortName} ⭐ [ANTAM]` : `🏭 ${s.shortName}`;
+      marker.bindTooltip(tooltipLabel, {
+        direction: 'top',
+        offset: [0, -14],
+        className: `smelter-label${isAntam ? ' antam-label' : ''}`
+      });
       marker._smelterData = s;
       smelterMarkers.push(marker);
     });
