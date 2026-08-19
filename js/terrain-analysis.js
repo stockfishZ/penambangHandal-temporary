@@ -241,11 +241,24 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `);
       const tooltipLabel = `🏭 ${s.shortName}`;
-      marker.bindTooltip(tooltipLabel, {
-        direction: 'top',
-        offset: [0, -14],
-        className: `smelter-label${isAntam ? ' antam-label' : ''}`
+      const bindSmelterTooltip = () => {
+        marker.bindTooltip(tooltipLabel, {
+          direction: 'top',
+          offset: [0, -14],
+          className: `smelter-label${isAntam ? ' antam-label' : ''}`
+        });
+      };
+      bindSmelterTooltip();
+
+      // Disable hover tooltip when clicked/popup is open, restore when closed
+      marker.on('popupopen', () => {
+        marker.closeTooltip();
+        marker.unbindTooltip();
       });
+      marker.on('popupclose', () => {
+        bindSmelterTooltip();
+      });
+
       marker._smelterData = s;
       smelterMarkers.push(marker);
     });
