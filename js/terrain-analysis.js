@@ -948,11 +948,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const verdictIcon = high.length > 5 ? '🎯' : high.length > 0 ? '🔎' : '⚠️';
     const verdictTitle = high.length > 5 ? 'Prospektivitas Sangat Baik' : high.length > 0 ? 'Terdapat Target Potensial' : 'Prospektivitas Rendah';
     const verdictDesc = high.length > 0
-      ? `Ditemukan <b>${high.length} sel</b> dengan skor tinggi (>6.5). Area ini direkomendasikan untuk difokuskan dalam perencanaan survei drone.`
+      ? `Ditemukan <b>${high.length} sel</b> (${total ? Math.round(high.length / total * 100) : 0}%) dengan skor prospektivitas tinggi (&ge;6.5). Direkomendasikan sebagai prioritas survei drone.`
       : `Tidak ditemukan sel dengan skor tinggi. Sebagian besar area memiliki indikator geologis atau legal yang kurang mendukung.`;
-    html += `<div class="ml-verdict ${verdictClass}"><span class="verdict-icon">${verdictIcon}</span><div class="verdict-text"><h3>${verdictTitle}</h3><p>${verdictDesc}</p></div></div>`;
 
-    // 1.5 Lithology Composition Strip
+    // 1.5 Lithology Composition (Donut Chart calculations)
     let ultraCount = 0, maficCount = 0, otherCount = 0;
     const ultraTypes = ['serpentinite', 'peridotite', 'ultramafic', 'dunite', 'harzburgite', 'lherzolite', 'pyroxenite'];
     const maficTypes = ['gabbro', 'basalt', 'mafic_volcanic', 'mafic'];
@@ -966,28 +965,69 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const ultraPct = total ? Math.round((ultraCount / total) * 100) : 0;
     const maficPct = total ? Math.round((maficCount / total) * 100) : 0;
-    const otherPct = total ? Math.round((otherCount / total) * 100) : 0;
+    const otherPct = total ? Math.max(0, 100 - ultraPct - maficPct) : 0;
+
+    const r = 32;
+    const c = 2 * Math.PI * r;
+    const uLen = (ultraPct / 100) * c;
+    const mLen = (maficPct / 100) * c;
+    const oLen = (otherPct / 100) * c;
+    
+    const uOffset = 0;
+    const mOffset = -uLen;
+    const oOffset = -(uLen + mLen);
 
     html += `
-      <div class="lith-strip-container">
-        <div class="lith-strip-header">
-          <span class="lith-strip-title">Komposisi Litologi Area</span>
-          <span class="lith-strip-total">${ultraPct}% Ultramafik</span>
-        </div>
-        <div class="lith-strip-bar">
-          <div class="lith-segment ultra" style="width: ${ultraPct}%;"></div>
-          <div class="lith-segment mafic" style="width: ${maficPct}%;"></div>
-          <div class="lith-segment other" style="width: ${otherPct}%;"></div>
-        </div>
-        <div class="lith-legend">
-          <div class="lith-legend-item">
-            <span class="lith-legend-dot ultra"></span> Serpentinite / Ultramafik <span class="lith-legend-pct">${ultraPct}%</span>
+      <div class="ml-insights-row">
+        <!-- AI Verdict -->
+        <div class="ml-verdict ${verdictClass}">
+          <span class="verdict-icon">${verdictIcon}</span>
+          <div class="verdict-text">
+            <h3>${verdictTitle}</h3>
+            <p>${verdictDesc}</p>
           </div>
-          <div class="lith-legend-item">
-            <span class="lith-legend-dot mafic"></span> Mafic / Basalt <span class="lith-legend-pct">${maficPct}%</span>
+        </div>
+
+        <!-- Lithology Donut Chart -->
+        <div class="lith-donut-card">
+          <div class="lith-donut-header">
+            <span class="lith-donut-title">Komposisi Litologi</span>
+            <span class="lith-donut-badge">${ultraPct}% Ultramafik</span>
           </div>
-          <div class="lith-legend-item">
-            <span class="lith-legend-dot other"></span> Sedimen / Lainnya <span class="lith-legend-pct">${otherPct}%</span>
+          <div class="lith-donut-body">
+            <div class="lith-donut-chart-wrap">
+              <svg viewBox="0 0 100 100" class="lith-donut-svg">
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12" />
+                ${otherPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="12" stroke-dasharray="${oLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${oOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
+                ${maficPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#0ea5e9" stroke-width="12" stroke-dasharray="${mLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${mOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
+                ${ultraPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#10b981" stroke-width="12" stroke-dasharray="${uLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${uOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
+                <text x="50" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">${ultraPct}%</text>
+                <text x="50" y="59" text-anchor="middle" font-size="7" font-weight="600" fill="#10b981" letter-spacing="0.04em">ULTRAMAFIK</text>
+              </svg>
+            </div>
+            <div class="lith-donut-legend">
+              <div class="lith-donut-legend-item">
+                <span class="lith-legend-dot ultra"></span>
+                <div class="lith-legend-text">
+                  <span class="lith-legend-name">Serpentinite / Ultramafik</span>
+                  <b class="lith-legend-pct text-emerald">${ultraPct}%</b>
+                </div>
+              </div>
+              <div class="lith-donut-legend-item">
+                <span class="lith-legend-dot mafic"></span>
+                <div class="lith-legend-text">
+                  <span class="lith-legend-name">Mafic / Basalt</span>
+                  <b class="lith-legend-pct text-sky">${maficPct}%</b>
+                </div>
+              </div>
+              <div class="lith-donut-legend-item">
+                <span class="lith-legend-dot other"></span>
+                <div class="lith-legend-text">
+                  <span class="lith-legend-name">Sedimen / Lainnya</span>
+                  <b class="lith-legend-pct text-muted">${otherPct}%</b>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

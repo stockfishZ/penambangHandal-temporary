@@ -737,7 +737,19 @@
     .text-emerald { color: #10b981 !important; }
     .text-amber { color: #f59e0b !important; }
     .text-rose { color: #f87171 !important; }
-    .text-indigo { color: #818cf8 !important; }
+    .text-sky { color: #38bdf8 !important; }
+
+    /* ── Insights Row: AI Verdict + Lithology Donut Chart ── */
+    .ml-insights-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: stretch;
+    }
+    @media (max-width: 860px) {
+      .ml-insights-row { grid-template-columns: 1fr; }
+    }
 
     /* Verdict Card */
     .ml-verdict {
@@ -746,93 +758,124 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-left: 4px solid #10b981;
       border-radius: var(--radius-md);
-      padding: 14px 18px;
+      padding: 16px 18px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 14px;
-      margin-bottom: 16px;
+      margin-bottom: 0;
       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      height: 100%;
+      box-sizing: border-box;
     }
     .ml-verdict.medium { border-left-color: #f59e0b; }
     .ml-verdict.low { border-left-color: #ef4444; }
-    .verdict-icon { font-size: 24px; }
+    .verdict-icon { font-size: 26px; line-height: 1; margin-top: 2px; }
     .verdict-text h3 {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       color: #ffffff;
-      margin: 0 0 3px 0;
+      margin: 0 0 4px 0;
     }
     .verdict-text p {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
       line-height: 1.5;
       margin: 0;
     }
 
-    /* Lithology Strip */
-    .lith-strip-container {
+    /* Donut Chart Card */
+    .lith-donut-card {
       background: rgba(14, 21, 37, 0.78);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      padding: 14px 18px;
-      margin-bottom: 16px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
-    .lith-strip-header {
+    .lith-donut-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-    .lith-strip-title {
-      font-size: 11.5px;
+    .lith-donut-title {
+      font-size: 10.5px;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .lith-strip-total {
-      font-size: 11.5px;
+    .lith-donut-badge {
+      font-size: 10.5px;
       font-weight: 600;
       color: #10b981;
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid rgba(16, 185, 129, 0.25);
-      padding: 2px 8px;
+      padding: 1px 6px;
       border-radius: 4px;
     }
-    .lith-strip-bar {
+    .lith-donut-body {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+    .lith-donut-chart-wrap {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .lith-donut-svg {
       width: 100%;
-      height: 8px;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.06);
-      display: flex;
-      overflow: hidden;
-      margin-bottom: 12px;
+      height: 100%;
+      overflow: visible;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
     }
-    .lith-segment { height: 100%; transition: width 0.5s ease-out; }
-    .lith-segment.ultra { background: #10b981; }
-    .lith-segment.mafic { background: #0ea5e9; }
-    .lith-segment.other { background: rgba(255, 255, 255, 0.2); }
-
-    .lith-legend {
+    .lith-donut-legend {
       display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 0;
     }
-    .lith-legend-item {
+    .lith-donut-legend-item {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
-      color: var(--text-secondary);
     }
     .lith-legend-dot {
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
-    .lith-legend-dot.ultra { background: #10b981; }
-    .lith-legend-dot.mafic { background: #0ea5e9; }
-    .lith-legend-dot.other { background: rgba(255, 255, 255, 0.3); }
-    .lith-legend-pct { color: #ffffff; font-weight: 600; }
+    .lith-legend-dot.ultra { background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.5); }
+    .lith-legend-dot.mafic { background: #0ea5e9; box-shadow: 0 0 6px rgba(14,165,233,0.5); }
+    .lith-legend-dot.other { background: rgba(255,255,255,0.35); }
+    .lith-legend-text {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      width: 100%;
+      font-size: 10.5px;
+      gap: 6px;
+    }
+    .lith-legend-name {
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lith-legend-pct {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
 
     /* Pros & Cons */
     .pros-cons-grid {
