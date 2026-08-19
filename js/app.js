@@ -1110,9 +1110,6 @@ function renderMapLayers() {
   setTimeout(forceMapResize, 350);
 }
 
-let _3dAnimFrame = null;
-let _3dResizeObserver = null;
-
 function fetchElevationDataForApp(cells, callback) {
     if (!cells || !cells.length) return callback();
     let lats = cells.map(c => c.latC);
