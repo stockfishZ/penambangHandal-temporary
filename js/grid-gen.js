@@ -75,14 +75,20 @@ function cellLegalStatus(lonC, latC, forestryData) {
   return 'allowed';
 }
 
-// Known Indonesian Nickel Smelters & Industrial Parks
+// Verified Indonesian Nickel Smelters & Industrial Parks
 const INDONESIA_SMELTERS = [
-  { name: 'Morowali (IMIP)', lat: -2.825, lon: 122.158 },
-  { name: 'Sorowako (Vale/Antam)', lat: -2.533, lon: 121.350 },
-  { name: 'Pomalaa (Antam Kolaka)', lat: -4.180, lon: 121.600 },
-  { name: 'Konawe (VDNI/OSS)', lat: -3.880, lon: 122.430 },
-  { name: 'Weda Bay (IWIP Halmahera)', lat: 0.485, lon: 127.915 },
-  { name: 'Bantaeng (Huadi)', lat: -5.550, lon: 120.020 }
+  { id: 'pomalaa', name: 'PT ANTAM Pomalaa', lat: -4.180, lon: 121.600 },
+  { id: 'halmahera_timur', name: 'PT ANTAM Haltim', lat: 0.880, lon: 128.320 },
+  { id: 'sorowako', name: 'PT Vale Sorowako', lat: -2.533, lon: 121.350 },
+  { id: 'imip', name: 'IMIP Morowali', lat: -2.825, lon: 122.158 },
+  { id: 'gni', name: 'PT GNI Morowali Utara', lat: -1.975, lon: 121.340 },
+  { id: 'konawe', name: 'VDNI & OSS Konawe', lat: -3.880, lon: 122.430 },
+  { id: 'cni', name: 'PT Ceria Wolo (Kolaka)', lat: -3.890, lon: 121.280 },
+  { id: 'stargate', name: 'PT Stargate Konawe Utara', lat: -3.320, lon: 122.250 },
+  { id: 'wedabay', name: 'IWIP Weda Bay', lat: 0.485, lon: 127.915 },
+  { id: 'harita_obi', name: 'Harita Pulau Obi', lat: -1.545, lon: 127.575 },
+  { id: 'wanatiara', name: 'PT Wanatiara Obi', lat: -1.510, lon: 127.630 },
+  { id: 'bantaeng', name: 'Huadi Bantaeng', lat: -5.550, lon: 120.020 }
 ];
 
 function haversineKm(lat1, lon1, lat2, lon2) {
