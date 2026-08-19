@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div style="font-size:11px;color:#34d399;"><b>Kapasitas:</b> ${s.capacity}</div>
         </div>
       `);
-      const tooltipLabel = isAntam ? `🏭 ${s.shortName} ⭐ [ANTAM]` : `🏭 ${s.shortName}`;
+      const tooltipLabel = isAntam ? `🏭 ${s.shortName} [ANTAM]` : `🏭 ${s.shortName}`;
       marker.bindTooltip(tooltipLabel, {
         direction: 'top',
         offset: [0, -14],
@@ -302,17 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(smelterLineLayer);
 
     return currentNearestSmelter;
-  }
-
-  function loadMineMarkers() {
-    sites.forEach(s => {
-      const p = s.properties, c = s.geometry.coordinates;
-      L.circleMarker([c[1], c[0]], {
-        radius: 7, fillColor: tierColor(p.tier), color: '#000', weight: 2, fillOpacity: 0.9
-      }).addTo(map)
-        .bindPopup(`<b>${p.name}</b><br>${p.province}<br>Tier: ${p.tier}<br>${p.context}`)
-        .bindTooltip(p.name, {permanent: true, direction: 'right', offset: [10, 0], className: 'site-label'});
-    });
   }
 
   function setupDrawControl() {
