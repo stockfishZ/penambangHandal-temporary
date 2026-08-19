@@ -239,6 +239,12 @@ body::-webkit-scrollbar {
   background: rgba(255,255,255,0.05);
 }
 
+.nav-links a.active {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+}
+
 .nav-links a:active {
   transform: scale(0.96);
 }
