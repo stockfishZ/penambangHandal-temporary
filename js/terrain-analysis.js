@@ -423,10 +423,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const iconEl = banner.querySelector('.banner-status-icon');
     if (iconEl) iconEl.innerHTML = iconSvgs[a.recommendation] || iconSvgs['GO'];
 
-    const setScore = (id, val) => { const el = $(id); el.textContent = val; el.className = 'score-big ' + scoreColor(val); };
-    setScore('scoreSafety', a.safety);
-    setScore('scoreProb', a.probable);
-    setScore('scoreWorth', a.worth);
+    const setScore = (id, barId, val) => {
+      const el = $(id);
+      if (el) {
+        el.textContent = val;
+        el.className = 'score-big';
+      }
+      const barEl = $(barId);
+      if (barEl) barEl.style.width = Math.min(100, Math.max(0, val)) + '%';
+    };
+    setScore('scoreSafety', 'barSafety', a.safety);
+    setScore('scoreProb', 'barProb', a.probable);
+    setScore('scoreWorth', 'barWorth', a.worth);
 
     $('detailSafety').textContent =
       `Slope avg ${a.avgSlope.toFixed(1)} (${a.avgSlope < 8 ? 'gentle' : a.avgSlope < 15 ? 'moderate' : 'steep'}) ` +

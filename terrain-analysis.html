@@ -381,7 +381,7 @@
       100% { transform: scale(1.1) rotate(2deg); }
     }
 
-    /* ── Score Cards Grid ── */
+    /* ── Score Cards Grid (Cohesive Modern Dimensions) ── */
     .assess-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -392,97 +392,107 @@
     .assess-card-shell {
       position: relative;
       border-radius: var(--radius-md);
-      padding: 0.8px;
-      transition: box-shadow 0.4s var(--ease-out);
-    }
-    .assess-card-shell:nth-child(1) {
-      background: linear-gradient(135deg, rgba(159,216,189,0.25) 0%, rgba(159,216,189,0.04) 30%, transparent 64%);
-    }
-    .assess-card-shell:nth-child(2) {
-      background: linear-gradient(135deg, rgba(226,163,86,0.25) 0%, rgba(226,163,86,0.04) 30%, transparent 64%);
-    }
-    .assess-card-shell:nth-child(3) {
-      background: linear-gradient(135deg, rgba(244,63,94,0.25) 0%, rgba(244,63,94,0.04) 30%, transparent 64%);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.03) 100%);
+      transition: all 0.3s var(--ease-out);
     }
     .assess-card-shell:hover {
-      box-shadow: 0 8px 30px rgba(159,216,189,0.1);
+      background: linear-gradient(135deg, rgba(16,185,129,0.3) 0%, rgba(56,189,248,0.15) 100%);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
     }
 
     .assess-card {
-      background: var(--bg-glass);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(14, 21, 37, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-default);
-      box-shadow: 0px 0px 0px 0.34px rgba(159,216,189,0.4);
       border-radius: calc(var(--radius-md) - 1px);
-      padding: var(--sp-lg) var(--sp-md) var(--sp-md);
-      text-align: center;
+      padding: 18px 16px 14px;
+      text-align: left;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       transition: all 0.3s var(--ease-out);
     }
-    .assess-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: var(--sp-lg);
-      right: var(--sp-lg);
-      height: 2px;
-      border-radius: 1px;
-      opacity: 0.5;
-    }
-    .assess-card-shell:nth-child(1) .assess-card::after { background: linear-gradient(90deg, var(--accent-emerald), transparent); }
-    .assess-card-shell:nth-child(2) .assess-card::after { background: linear-gradient(90deg, var(--accent-gold), transparent); }
-    .assess-card-shell:nth-child(3) .assess-card::after { background: linear-gradient(90deg, var(--accent-rose), transparent); }
 
     .assess-card:hover {
-      border-color: rgba(238,234,224,0.12);
+      border-color: rgba(255,255,255,0.18);
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     }
 
     .assess-card-label {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 11px;
       color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
     .assess-card-label .label-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 8px rgba(56,189,248,0.5);
     }
-    .assess-card-shell:nth-child(1) .label-dot { background: var(--accent-emerald); box-shadow: 0 0 8px rgba(159,216,189,0.4); }
-    .assess-card-shell:nth-child(2) .label-dot { background: var(--accent-gold); box-shadow: 0 0 8px rgba(226,163,86,0.4); }
-    .assess-card-shell:nth-child(3) .label-dot { background: var(--accent-rose); box-shadow: 0 0 8px rgba(244,63,94,0.4); }
+    .assess-card-shell:nth-child(1) .label-dot { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.5); }
+    .assess-card-shell:nth-child(2) .label-dot { background: #818cf8; box-shadow: 0 0 8px rgba(129,140,248,0.5); }
+    .assess-card-shell:nth-child(3) .label-dot { background: #38bdf8; box-shadow: 0 0 8px rgba(56,189,248,0.5); }
+
+    .score-display {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin: 4px 0 6px;
+    }
 
     .score-big {
       font-family: var(--font-display);
-      font-size: 48px;
-      font-weight: 400;
+      font-size: 40px;
+      font-weight: 700;
       letter-spacing: -0.03em;
-      margin: 4px 0;
       line-height: 1;
-      transition: all 0.3s ease;
-      position: relative;
-      display: block;
+      color: #ffffff;
+      text-shadow: 0 0 24px rgba(255,255,255,0.15);
     }
-    .score-big.green { color: var(--accent-emerald); text-shadow: 0 0 40px rgba(159,216,189,0.25); }
-    .score-big.yellow { color: var(--accent-gold); text-shadow: 0 0 40px rgba(226,163,86,0.25); }
-    .score-big.red { color: #ef4444; text-shadow: 0 0 40px rgba(239,68,68,0.25); }
+
+    .score-unit {
+      font-size: 13px;
+      color: var(--text-muted, rgba(255,255,255,0.4));
+      font-weight: 500;
+    }
+
+    .assess-mini-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 4px 0 10px;
+    }
+
+    .assess-mini-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #38bdf8);
+      border-radius: 2px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .assess-card-shell:nth-child(1) .assess-mini-bar-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+    .assess-card-shell:nth-child(2) .assess-mini-bar-fill { background: linear-gradient(90deg, #818cf8, #a78bfa); }
+    .assess-card-shell:nth-child(3) .assess-mini-bar-fill { background: linear-gradient(90deg, #38bdf8, #0ea5e9); }
 
     .assess-detail {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
-      margin-top: 10px;
-      line-height: 1.6;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-subtle);
+      margin-top: auto;
+      line-height: 1.5;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
 
     /* ── Compliance Strip ── */
@@ -669,19 +679,137 @@
       font-weight: 600;
       color: #10b981;
     }
-    .lith-strip-bar {
+    /* ── Grid Prospectivity (ML Tab KPI & Content) ── */
+    .ml-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 768px) {
+      .ml-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .ml-kpi-card {
+      background: rgba(14, 21, 37, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
       display: flex;
-      height: 10px;
-      border-radius: 5px;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+    .ml-kpi-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .ml-kpi-label {
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .ml-kpi-val-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .ml-kpi-val {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    .ml-kpi-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .text-emerald { color: #10b981 !important; }
+    .text-amber { color: #f59e0b !important; }
+    .text-indigo { color: #818cf8 !important; }
+
+    /* Verdict Card */
+    .ml-verdict {
+      background: rgba(14, 21, 37, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-left: 4px solid #10b981;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .ml-verdict.medium { border-left-color: #f59e0b; }
+    .ml-verdict.low { border-left-color: #ef4444; }
+    .verdict-icon { font-size: 24px; }
+    .verdict-text h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0 0 3px 0;
+    }
+    .verdict-text p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Lithology Strip */
+    .lith-strip-container {
+      background: rgba(14, 21, 37, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .lith-strip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lith-strip-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lith-strip-total {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .lith-strip-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
       overflow: hidden;
-      background: rgba(255,255,255,0.05);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .lith-segment { height: 100%; transition: width 0.5s ease-out; }
-    .lith-segment.ultra { background: #10b981; box-shadow: 0 0 12px rgba(16,185,129,0.5); z-index: 3; }
-    .lith-segment.mafic { background: #E2A356; z-index: 2; }
-    .lith-segment.other { background: rgba(255,255,255,0.15); z-index: 1; }
-    
+    .lith-segment.ultra { background: #10b981; }
+    .lith-segment.mafic { background: #0ea5e9; }
+    .lith-segment.other { background: rgba(255, 255, 255, 0.2); }
+
     .lith-legend {
       display: flex;
       gap: 16px;
@@ -692,102 +820,126 @@
       align-items: center;
       gap: 6px;
       font-size: 11px;
-      color: var(--text-primary);
+      color: var(--text-secondary);
     }
     .lith-legend-dot {
-      width: 10px; height: 10px; border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
     }
-    .lith-legend-dot.ultra { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.6); }
-    .lith-legend-dot.mafic { background: #E2A356; }
-    .lith-legend-dot.other { background: rgba(255,255,255,0.15); }
-    .lith-legend-pct { color: var(--text-secondary); font-weight: 600; font-variant-numeric: tabular-nums; }
+    .lith-legend-dot.ultra { background: #10b981; }
+    .lith-legend-dot.mafic { background: #0ea5e9; }
+    .lith-legend-dot.other { background: rgba(255, 255, 255, 0.3); }
+    .lith-legend-pct { color: #ffffff; font-weight: 600; }
 
+    /* Pros & Cons */
     .pros-cons-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: var(--sp-md);
-      margin-bottom: var(--sp-lg);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 768px) {
+      .pros-cons-grid { grid-template-columns: 1fr; }
     }
     .pros-cons-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border-subtle);
+      background: rgba(14, 21, 37, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      padding: var(--sp-md);
+      padding: 14px 16px;
     }
     .pros-cons-card h4 {
-      font-size: 13px;
-      margin: 0 0 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 10px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .pros-cons-card.pros h4 { color: #10b981; }
-    .pros-cons-card.cons h4 { color: #ef4444; }
-    .pros-cons-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .pros-cons-card.cons h4 { color: #f87171; }
+    .pros-cons-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
     .pros-cons-list li {
-      font-size: 12px;
-      color: var(--text-primary);
+      font-size: 11.5px;
+      color: var(--text-secondary);
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .pros-cons-list li::before {
-      content: '•';
-      color: var(--text-secondary);
+      content: '▸';
+      color: var(--text-muted);
       font-weight: bold;
     }
 
+    /* Target Cards List */
+    .ml-section-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      margin: 16px 0 10px;
+    }
     .target-cards-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
     .target-card {
-      background: var(--bg-glass);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border-subtle);
+      background: rgba(14, 21, 37, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-left: 3px solid #10b981;
       border-radius: var(--radius-md);
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      transition: all 0.2s;
+      gap: 14px;
+      transition: all 0.2s ease;
     }
     .target-card:hover {
-      background: rgba(255,255,255,0.04);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.16);
+      border-left-color: #10b981;
+      transform: translateX(2px);
     }
     .target-rank {
       font-family: var(--font-display);
-      font-size: 24px;
+      font-size: 16px;
       font-weight: 700;
-      color: var(--text-secondary);
-      opacity: 0.5;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
       width: 32px;
-      text-align: center;
+      height: 32px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
     }
     .target-info { flex: 1; }
     .target-id {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: #ffffff;
       margin-bottom: 2px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .target-score {
-      background: rgba(16,185,129,0.15);
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
       color: #10b981;
-      padding: 2px 8px;
+      padding: 1px 8px;
       border-radius: 4px;
       font-size: 11px;
+      font-weight: 600;
     }
     .target-desc {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
       line-height: 1.4;
     }
@@ -856,26 +1008,38 @@
                   <span class="assess-hero-action" id="bannerDesc">DEPLOY DRONE TEAM</span>
                 </div>
 
-                <!-- Score Cards -->
+                <!-- Score Cards (Dimension Breakdown) -->
                 <div class="assess-grid">
                   <div class="assess-card-shell">
                     <div class="assess-card">
-                      <div class="assess-card-label"><span class="label-dot"></span> Keselamatan (SAFE)</div>
-                      <div class="score-big green" id="scoreSafety">-</div>
+                      <div class="assess-card-label"><span class="label-dot"></span> Keselamatan Operasi (SAFE)</div>
+                      <div class="score-display">
+                        <span class="score-big" id="scoreSafety">-</span>
+                        <span class="score-unit">/100</span>
+                      </div>
+                      <div class="assess-mini-bar"><div id="barSafety" class="assess-mini-bar-fill" style="width: 0%;"></div></div>
                       <div class="assess-detail" id="detailSafety">-</div>
                     </div>
                   </div>
                   <div class="assess-card-shell">
                     <div class="assess-card">
                       <div class="assess-card-label"><span class="label-dot"></span> Probabilitas Geologis</div>
-                      <div class="score-big green" id="scoreProb">-</div>
+                      <div class="score-display">
+                        <span class="score-big" id="scoreProb">-</span>
+                        <span class="score-unit">/100</span>
+                      </div>
+                      <div class="assess-mini-bar"><div id="barProb" class="assess-mini-bar-fill" style="width: 0%;"></div></div>
                       <div class="assess-detail" id="detailProb">-</div>
                     </div>
                   </div>
                   <div class="assess-card-shell">
                     <div class="assess-card">
                       <div class="assess-card-label"><span class="label-dot"></span> Kelayakan Ekonomi</div>
-                      <div class="score-big green" id="scoreWorth">-</div>
+                      <div class="score-display">
+                        <span class="score-big" id="scoreWorth">-</span>
+                        <span class="score-unit">/100</span>
+                      </div>
+                      <div class="assess-mini-bar"><div id="barWorth" class="assess-mini-bar-fill" style="width: 0%;"></div></div>
                       <div class="assess-detail" id="detailWorth">-</div>
                     </div>
                   </div>
@@ -917,26 +1081,31 @@
 
         <!-- Grid Prospectivity tab -->
         <div class="tab-content" id="tabMlpred">
-          <div class="ml-stats" id="mlStats" style="display:flex;gap:var(--sp-md);margin-bottom:var(--sp-md);flex-wrap:wrap;">
-            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(255,255,255,0.03);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
-              <span style="font-size:11px;color:var(--text-secondary);display:block;">Total Cells</span>
-              <b id="mlTotalCells" style="font-size:24px;color:var(--text-primary);">-</b>
+          <div class="ml-kpi-grid">
+            <div class="ml-kpi-card">
+              <span class="ml-kpi-label">Total Grid Cells</span>
+              <div class="ml-kpi-val-row">
+                <b id="mlTotalCells" class="ml-kpi-val">-</b>
+                <span class="ml-kpi-sub">cells</span>
+              </div>
             </div>
-            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
-              <span style="font-size:11px;color:var(--text-secondary);display:block;">High (>= 6.5)</span>
-              <b id="mlHighCount" style="font-size:24px;color:#10b981;">-</b>
+            <div class="ml-kpi-card">
+              <span class="ml-kpi-label">Target Tinggi (&ge; 6.5)</span>
+              <div class="ml-kpi-val-row">
+                <b id="mlHighCount" class="ml-kpi-val text-emerald">-</b>
+              </div>
             </div>
-            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(226,163,86,0.08);border:1px solid rgba(226,163,86,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
-              <span style="font-size:11px;color:var(--text-secondary);display:block;">Medium (3.5&ndash;6.4)</span>
-              <b id="mlMedCount" style="font-size:24px;color:#E2A356;">-</b>
+            <div class="ml-kpi-card">
+              <span class="ml-kpi-label">Target Sedang (3.5&ndash;6.4)</span>
+              <div class="ml-kpi-val-row">
+                <b id="mlMedCount" class="ml-kpi-val text-amber">-</b>
+              </div>
             </div>
-            <div class="metric-card" style="flex:1;min-width:80px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
-              <span style="font-size:11px;color:var(--text-secondary);display:block;">Low (< 3.5)</span>
-              <b id="mlLowCount" style="font-size:24px;color:#ef4444;">-</b>
-            </div>
-            <div class="metric-card" style="flex:2;min-width:140px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:var(--radius-sm);padding:var(--sp-sm);text-align:center;">
-              <span style="font-size:11px;color:var(--text-secondary);display:block;">Top Target</span>
-              <b id="mlTopTarget" style="font-size:18px;color:#818cf8;">-</b>
+            <div class="ml-kpi-card">
+              <span class="ml-kpi-label">Top Target Prospek</span>
+              <div class="ml-kpi-val-row">
+                <b id="mlTopTarget" class="ml-kpi-val text-indigo">-</b>
+              </div>
             </div>
           </div>
           <div id="mlExplanation"></div>
