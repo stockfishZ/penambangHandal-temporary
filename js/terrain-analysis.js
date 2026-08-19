@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div style="font-size:11px;color:#34d399;"><b>Kapasitas:</b> ${s.capacity}</div>
         </div>
       `);
-      const tooltipLabel = isAntam ? `🏭 ${s.shortName} [ANTAM]` : `🏭 ${s.shortName}`;
+      const tooltipLabel = `🏭 ${s.shortName}`;
       marker.bindTooltip(tooltipLabel, {
         direction: 'top',
         offset: [0, -14],
