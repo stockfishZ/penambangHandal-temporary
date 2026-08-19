@@ -1174,6 +1174,8 @@ let _3dRenderer = null;
 let _3dScene = null;
 let _3dAnimFrame = null;
 let _3dResizeObserver = null;
+let _3dTerrainParams = null;
+let _3dSelectedOutline = null;
 
 function dispose3DViewer() {
     if (_3dAnimFrame) {
@@ -1184,6 +1186,13 @@ function dispose3DViewer() {
         _3dResizeObserver.disconnect();
         _3dResizeObserver = null;
     }
+    if (_3dSelectedOutline) {
+        if (_3dScene) _3dScene.remove(_3dSelectedOutline);
+        if (_3dSelectedOutline.geometry) _3dSelectedOutline.geometry.dispose();
+        if (_3dSelectedOutline.material) _3dSelectedOutline.material.dispose();
+        _3dSelectedOutline = null;
+    }
+    _3dTerrainParams = null;
     if (_3dRenderer) {
         try {
             _3dRenderer.dispose();
@@ -1212,6 +1221,89 @@ function dispose3DViewer() {
         _3dScene = null;
     }
     _3dSpriteMap = {};
+}
+
+function getInterpolatedElevation(lon, lat, vertexCells, minLon, maxLon, minLat, maxLat, resX, resY) {
+    if (!vertexCells || !vertexCells.length) return 0;
+    const u = Math.max(0, Math.min(1, (lon - minLon) / (maxLon - minLon || 1)));
+    const v = Math.max(0, Math.min(1, (lat - minLat) / (maxLat - minLat || 1)));
+    const gx = u * (resX - 1);
+    const gy = v * (resY - 1);
+    const ix = Math.min(resX - 2, Math.max(0, Math.floor(gx)));
+    const iy = Math.min(resY - 2, Math.max(0, Math.floor(gy)));
+    const fx = gx - ix;
+    const fy = gy - iy;
+    
+    const idx00 = iy * resX + ix;
+    const idx10 = iy * resX + (ix + 1);
+    const idx01 = (iy + 1) * resX + ix;
+    const idx11 = (iy + 1) * resX + (ix + 1);
+    
+    const e00 = vertexCells[idx00]?.elevation || 0;
+    const e10 = vertexCells[idx10]?.elevation || 0;
+    const e01 = vertexCells[idx01]?.elevation || 0;
+    const e11 = vertexCells[idx11]?.elevation || 0;
+    
+    return (1 - fx) * (1 - fy) * e00 + fx * (1 - fy) * e10 + (1 - fx) * fy * e01 + fx * fy * e11;
+}
+
+function update3DSelectedGridOutline(gridId) {
+    if (!_3dTerrainParams || !_3dScene || !rawGrid) return;
+    const { scene, vertexCells, minLon, maxLon, minLat, maxLat, minElev, heightScale, terrainWidth, terrainDepth, resX, resY } = _3dTerrainParams;
+    
+    if (_3dSelectedOutline) {
+        scene.remove(_3dSelectedOutline);
+        if (_3dSelectedOutline.geometry) _3dSelectedOutline.geometry.dispose();
+        if (_3dSelectedOutline.material) _3dSelectedOutline.material.dispose();
+        _3dSelectedOutline = null;
+    }
+    if (!gridId) return;
+
+    const feat = rawGrid.features.find(f => f.properties && f.properties.grid_id === gridId);
+    if (!feat || !feat.geometry || !feat.geometry.coordinates || !feat.geometry.coordinates[0]) return;
+
+    const ring = feat.geometry.coordinates[0];
+    const points = [];
+    const subSteps = 8;
+    
+    for (let i = 0; i < ring.length - 1; i++) {
+        const p1 = ring[i];
+        const p2 = ring[i + 1];
+        for (let s = 0; s < subSteps; s++) {
+            const frac = s / subSteps;
+            const curLon = p1[0] + (p2[0] - p1[0]) * frac;
+            const curLat = p1[1] + (p2[1] - p1[1]) * frac;
+            const u = (curLon - minLon) / (maxLon - minLon || 1);
+            const v = (curLat - minLat) / (maxLat - minLat || 1);
+            const px = (u - 0.5) * terrainWidth;
+            const pz = (v - 0.5) * terrainDepth;
+            const elev = getInterpolatedElevation(curLon, curLat, vertexCells, minLon, maxLon, minLat, maxLat, resX, resY);
+            const py = (elev - minElev) * heightScale + 0.08;
+            points.push(new THREE.Vector3(px, py, pz));
+        }
+    }
+    // Close the loop
+    const firstP = ring[0];
+    const u0 = (firstP[0] - minLon) / (maxLon - minLon || 1);
+    const v0 = (firstP[1] - minLat) / (maxLat - minLat || 1);
+    const px0 = (u0 - 0.5) * terrainWidth;
+    const pz0 = (v0 - 0.5) * terrainDepth;
+    const elev0 = getInterpolatedElevation(firstP[0], firstP[1], vertexCells, minLon, maxLon, minLat, maxLat, resX, resY);
+    points.push(new THREE.Vector3(px0, (elev0 - minElev) * heightScale + 0.08, pz0));
+
+    const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+    const lineMat = new THREE.LineDashedMaterial({
+        color: 0xffffff,
+        dashSize: 0.28,
+        gapSize: 0.16,
+        linewidth: 1,
+        transparent: true,
+        opacity: 0.95
+    });
+
+    _3dSelectedOutline = new THREE.Line(lineGeo, lineMat);
+    _3dSelectedOutline.computeLineDistances();
+    scene.add(_3dSelectedOutline);
 }
 
 function createGridTextSprite(text, opacity = 0.70, isSelected = false) {
@@ -1277,6 +1369,7 @@ function highlight3DGridLabel(gridId) {
         sprite.material.opacity = isSel ? 1.0 : 0.70;
         sprite.scale.set(isSel ? 2.5 : 1.8, isSel ? 1.25 : 0.9, 1);
     });
+    update3DSelectedGridOutline(gridId);
 }
 
 function show3DGridDetail(gridId) {
@@ -1496,6 +1589,11 @@ function renderPlotly3D() {
       const wireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1 });
       const wireMesh = new THREE.Mesh(geo, wireMat);
       scene.add(wireMesh);
+
+      // Set terrain context parameters for 3D outline calculation
+      _3dTerrainParams = {
+          scene, vertexCells, minLon, maxLon, minLat, maxLat, minElev, heightScale, terrainWidth, terrainDepth, resX, resY
+      };
 
       // Add low-opacity grid ID text labels floating over each 3D grid cell
       _3dSpriteMap = {};
