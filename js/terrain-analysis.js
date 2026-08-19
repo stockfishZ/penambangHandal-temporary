@@ -229,15 +229,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const marker = L.marker([s.lat, s.lon], { icon: icon }).addTo(map);
       marker.bindPopup(`
-        <div style="font-family:var(--font-ui);min-width:220px;line-height:1.45;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px;">
-            <div style="font-weight:700;font-size:13px;color:${isAntam ? '#fbbf24' : '#38bdf8'};">🏭 ${s.name}</div>
-            ${isAntam ? '<span style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid #fbbf24;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;">ANTAM</span>' : ''}
+        <div style="font-family:var(--font-ui);min-width:220px;line-height:1.5;color:#000000;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">
+            <div style="font-weight:700;font-size:13px;color:${isAntam ? '#b45309' : '#0369a1'};">🏭 ${s.name}</div>
+            ${isAntam ? '<span style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;">ANTAM</span>' : ''}
           </div>
-          <div style="font-size:11px;color:#e2e8f0;margin-bottom:3px;"><b>Operator:</b> ${s.company}</div>
-          <div style="font-size:11px;color:#94a3b8;margin-bottom:2px;"><b>Lokasi:</b> ${s.location}</div>
-          <div style="font-size:11px;color:#94a3b8;margin-bottom:2px;"><b>Teknologi:</b> ${s.type}</div>
-          <div style="font-size:11px;color:#34d399;"><b>Kapasitas:</b> ${s.capacity}</div>
+          <div style="font-size:11px;color:#000000;margin-bottom:3px;"><b>Operator:</b> ${s.company}</div>
+          <div style="font-size:11px;color:#000000;margin-bottom:3px;"><b>Lokasi:</b> ${s.location}</div>
+          <div style="font-size:11px;color:#000000;margin-bottom:3px;"><b>Teknologi:</b> ${s.type}</div>
+          <div style="font-size:11px;color:#047857;font-weight:600;"><b>Kapasitas:</b> ${s.capacity}</div>
         </div>
       `);
       const tooltipLabel = `🏭 ${s.shortName}`;
