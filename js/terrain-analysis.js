@@ -967,7 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const maficPct = total ? Math.round((maficCount / total) * 100) : 0;
     const otherPct = total ? Math.max(0, 100 - ultraPct - maficPct) : 0;
 
-    const r = 32;
+    const r = 36;
     const c = 2 * Math.PI * r;
     const uLen = (ultraPct / 100) * c;
     const mLen = (maficPct / 100) * c;
@@ -997,12 +997,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="lith-donut-body">
             <div class="lith-donut-chart-wrap">
               <svg viewBox="0 0 100 100" class="lith-donut-svg">
-                <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12" />
-                ${otherPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="12" stroke-dasharray="${oLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${oOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
-                ${maficPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#0ea5e9" stroke-width="12" stroke-dasharray="${mLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${mOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
-                ${ultraPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#10b981" stroke-width="12" stroke-dasharray="${uLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${uOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
-                <text x="50" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">${ultraPct}%</text>
-                <text x="50" y="59" text-anchor="middle" font-size="7" font-weight="600" fill="#10b981" letter-spacing="0.04em">ULTRAMAFIK</text>
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="13" />
+                ${otherPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="13" stroke-dasharray="${oLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${oOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
+                ${maficPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#0ea5e9" stroke-width="13" stroke-dasharray="${mLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${mOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
+                ${ultraPct > 0 ? `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#10b981" stroke-width="13" stroke-dasharray="${uLen.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${uOffset.toFixed(2)}" transform="rotate(-90 50 50)" />` : ''}
+                <text x="50" y="47" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">${ultraPct}%</text>
+                <text x="50" y="59" text-anchor="middle" font-size="7.5" font-weight="600" fill="#10b981" letter-spacing="0.04em">ULTRAMAFIK</text>
               </svg>
             </div>
             <div class="lith-donut-legend">
