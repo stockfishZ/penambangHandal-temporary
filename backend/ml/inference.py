@@ -74,7 +74,12 @@ class ProspectivityModel:
 
     def predict_masked(self, features: dict) -> dict:
         dist_road = features.get("distance_to_road_m", 9999)
-        legal_status = features.get("legal_status", "unknown")
+        legal_status = str(features.get("legal_status", "unknown")).lower()
+        lithology = str(features.get("lithology", "unknown")).lower()
+        is_water = features.get("is_water", False) or lithology in ("air_laut", "water", "marine_water") or legal_status == "marine_water"
+
+        if is_water:
+            return {"ml_score": 0.0, "masked": True, "block_reason": "Area Perairan / Laut Terbuka (Marine Water Zone)"}
 
         # Block target if area is a legal no-go zone or inside road buffer
         if legal_status in ("no-go", "no_go"):

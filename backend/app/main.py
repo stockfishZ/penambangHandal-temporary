@@ -122,11 +122,15 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
     kill_zone = spatial_features.get("kill_zone_exclusion", False)
     is_kill_zone = spatial_features.get("is_kill_zone", False)
     is_grandfathered = spatial_features.get("is_grandfathered", False)
+    
+    is_marine_water = (request.lithology or "").lower() in ("air_laut", "water", "marine_water") or (request.legal_status or "").lower() == "marine_water"
+    if is_marine_water:
+        is_kill_zone = True
 
     viability_score = 1.0
 
     # Calculate legal and ESG viability score
-    if kill_zone or is_kill_zone:
+    if is_marine_water or kill_zone or is_kill_zone:
         viability_score = 0.0
     elif is_grandfathered:
         viability_score = 0.0

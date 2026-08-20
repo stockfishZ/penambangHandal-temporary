@@ -15,6 +15,9 @@ const NiTerraML = (() => {
     gabbro_simulated:         1.5,
     basalt_simulated:         1.2,
     alluvium:                 0.0,
+    air_laut:                 0.0,
+    water:                    0.0,
+    marine_water:             0.0,
     andesite:                 0.5,
     lahar_deposit:            0.3,
     tuff:                     0.2,
@@ -22,23 +25,29 @@ const NiTerraML = (() => {
   };
 
   const LEGAL_SCORE = {
-    'allowed':     5.0,
-    'conditional': 4.5,
-    'no-go':       0.0,
-    'no_go':       0.0,
-    'unknown':     2.0,
+    'allowed':        5.0,
+    'conditional':    4.5,
+    'no-go':          0.0,
+    'no_go':          0.0,
+    'marine_water':   0.0,
+    'unknown':        2.0,
   };
 
   function predictCell(f) {
     const gridId   = f.grid_id || '';
     const legal    = String(f.legal_status || 'unknown');
+    const lith     = String(f.lithology || '');
+    const isWater  = Boolean(f.is_water || lith === 'air_laut' || lith === 'water' || legal === 'marine_water');
     const distRoad = Number(f.distance_to_road_m || 9999);
+
+    if (isWater) {
+      return _masked(gridId, 0.0, 'Area Perairan / Laut Terbuka (Marine Water Zone)');
+    }
 
     if (legal === 'no-go' || legal === 'no_go') {
       return _masked(gridId, 0.0, 'Legal status: no-go zone');
     }
 
-    const lith     = String(f.lithology || '');
     const slope    = Number(f.slope_deg || 0);
     const distRoadKm = distRoad / 1000.0;
     const smelter  = Number(f.distance_to_smelter_km || 999);
@@ -104,3 +113,7 @@ const NiTerraML = (() => {
 
   return { predictCell, analyzeBatch };
 })();
+
+if (typeof window !== 'undefined') window.NiTerraML = NiTerraML;
+if (typeof global !== 'undefined') global.NiTerraML = NiTerraML;
+if (typeof module !== 'undefined' && module.exports) module.exports = NiTerraML;

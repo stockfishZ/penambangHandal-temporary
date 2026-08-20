@@ -39,7 +39,7 @@ function weightedRandom(rng, items, weights) {
   return items[items.length - 1];
 }
 
-function pointInPolygon(lon, lat, ring) {
+function pointInPolygonRing(lon, lat, ring) {
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const xi = ring[i][0], yi = ring[i][1];
@@ -49,13 +49,56 @@ function pointInPolygon(lon, lat, ring) {
   return inside;
 }
 
+function pointInGeometry(lon, lat, geometry) {
+  if (!geometry) return false;
+  if (geometry.type === 'Polygon') {
+    const coords = geometry.coordinates;
+    if (!coords || !coords.length) return false;
+    if (!pointInPolygonRing(lon, lat, coords[0])) return false;
+    for (let h = 1; h < coords.length; h++) {
+      if (pointInPolygonRing(lon, lat, coords[h])) return false;
+    }
+    return true;
+  } else if (geometry.type === 'MultiPolygon') {
+    const polys = geometry.coordinates;
+    if (!polys || !polys.length) return false;
+    for (let p = 0; p < polys.length; p++) {
+      const coords = polys[p];
+      if (pointInPolygonRing(lon, lat, coords[0])) {
+        let inHole = false;
+        for (let h = 1; h < coords.length; h++) {
+          if (pointInPolygonRing(lon, lat, coords[h])) { inHole = true; break; }
+        }
+        if (!inHole) return true;
+      }
+    }
+    return false;
+  }
+  return false;
+}
+
+function pointInPolygon(lon, lat, ring) {
+  return pointInPolygonRing(lon, lat, ring);
+}
+
 function cellInAnyPolygon(lonC, latC, coordArrays) {
   if (!coordArrays || coordArrays.length === 0) return false;
-  if (!pointInPolygon(lonC, latC, coordArrays[0])) return false;
+  if (!pointInPolygonRing(lonC, latC, coordArrays[0])) return false;
   for (let i = 1; i < coordArrays.length; i++) {
-    if (pointInPolygon(lonC, latC, coordArrays[i])) return false;
+    if (pointInPolygonRing(lonC, latC, coordArrays[i])) return false;
   }
   return true;
+}
+
+function isPointOnLand(lon, lat, landmassData) {
+  if (!landmassData || !landmassData.features || !landmassData.features.length) {
+    return true; // If dataset is not loaded, allow
+  }
+  for (let f = 0; f < landmassData.features.length; f++) {
+    const geom = landmassData.features[f].geometry;
+    if (pointInGeometry(lon, lat, geom)) return true;
+  }
+  return false;
 }
 
 function cellLegalStatus(lonC, latC, forestryData) {
@@ -111,7 +154,7 @@ function getDistanceToNearestSmelter(lat, lon) {
   return minD;
 }
 
-function generateGrid(bbox, params, forestryData) {
+function generateGrid(bbox, params, forestryData, landmassData) {
   // Derive a unique deterministic seed from bounding box coordinates
   const seedString = `${bbox[0].toFixed(4)}_${bbox[1].toFixed(4)}_${bbox[2].toFixed(4)}_${bbox[3].toFixed(4)}`;
   let hash = 0;
@@ -141,6 +184,8 @@ function generateGrid(bbox, params, forestryData) {
   const cellAreaHa = Math.max(0.01, Math.round(((widthKm / NX) * (heightKm / NY) * 100) * 100) / 100);
 
   const cells = [];
+  let waterCount = 0;
+
   for (let row = 0; row < NY; row++) {
     for (let col = 0; col < NX; col++) {
       const idx = row * NX + col;
@@ -150,16 +195,29 @@ function generateGrid(bbox, params, forestryData) {
       const lonC = lon0 + cellW / 2;
       const latC = lat0 + cellH / 2;
 
-      const lith = weightedRandom(rng, LITHOLOGIES, lithWeights);
-      const legal = cellLegalStatus(lonC, latC, forestryData);
-      const slope = Math.round((rng() * (slopeMean + 8 - Math.max(1, slopeMean - 5)) + Math.max(1, slopeMean - 5)) * 10) / 10;
-      const river = Math.round(rng() * (1200 - 80) + 80);
-      const road = Math.round(rng() * (3500 - 300) + 300);
+      const onLand = isPointOnLand(lonC, latC, landmassData);
+      let lith, legal, slope, river, road, smelterKm, areaHa;
 
-      // Real distance to nearest smelter + local perturbation
-      const baseSmelterKm = getDistanceToNearestSmelter(latC, lonC);
-      const localSmelterVar = (rng() - 0.5) * 4;
-      const smelterKm = Math.max(1, Math.round((baseSmelterKm + localSmelterVar) * 10) / 10);
+      if (!onLand) {
+        waterCount++;
+        lith = 'air_laut';
+        legal = 'marine_water';
+        slope = 0.0;
+        river = 0;
+        road = 99999;
+        smelterKm = 999;
+        areaHa = cellAreaHa;
+      } else {
+        lith = weightedRandom(rng, LITHOLOGIES, lithWeights);
+        legal = cellLegalStatus(lonC, latC, forestryData);
+        slope = Math.round((rng() * (slopeMean + 8 - Math.max(1, slopeMean - 5)) + Math.max(1, slopeMean - 5)) * 10) / 10;
+        river = Math.round(rng() * (1200 - 80) + 80);
+        road = Math.round(rng() * (3500 - 300) + 300);
+        const baseSmelterKm = getDistanceToNearestSmelter(latC, lonC);
+        const localSmelterVar = (rng() - 0.5) * 4;
+        smelterKm = Math.max(1, Math.round((baseSmelterKm + localSmelterVar) * 10) / 10);
+        areaHa = cellAreaHa;
+      }
 
       const regionId = `${latC >= clat ? 'N' : 'S'}${lonC >= clon ? 'E' : 'W'}`;
 
@@ -170,10 +228,15 @@ function generateGrid(bbox, params, forestryData) {
         lat0: Math.round(lat0 * 100000) / 100000,
         cellW, cellH,
         lith, legal, slope, river, road,
-        smelter: smelterKm, area: cellAreaHa, regionId,
+        smelter: smelterKm, area: areaHa, regionId,
+        isWater: !onLand,
+        row, col
       });
     }
   }
+
+  const waterPct = Math.round((waterCount / cells.length) * 100);
+  const isOcean = waterPct >= 50 || Boolean(params.isOcean);
 
   // Build GeoJSON
   const features = cells.map(c => ({
@@ -181,7 +244,7 @@ function generateGrid(bbox, params, forestryData) {
     properties: {
       grid_id: c.gid,
       site: params.id || 'custom',
-      location_label: `${params.name || 'Custom Area'} nickel laterite`,
+      location_label: c.isWater ? 'Wilayah Perairan / Laut' : `${params.name || 'Custom Area'} nickel laterite`,
       lithology: c.lith,
       slope_deg: c.slope,
       distance_to_river_m: c.river,
@@ -189,7 +252,8 @@ function generateGrid(bbox, params, forestryData) {
       legal_status: c.legal,
       distance_to_smelter_km: c.smelter,
       area_ha: c.area,
-      region_id: c.regionId
+      region_id: c.regionId,
+      is_water: c.isWater
     },
     geometry: {
       type: 'Polygon',
@@ -206,6 +270,9 @@ function generateGrid(bbox, params, forestryData) {
   return {
     type: 'FeatureCollection',
     features,
-    cells
+    cells,
+    waterCount,
+    waterPct,
+    isOcean
   };
 }

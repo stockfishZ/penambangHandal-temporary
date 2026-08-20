@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentBbox = null, currentGrid = null, currentParams = null;
   let gridLayer = null, gridMlLayer = null;
   let beltLayer = null, beltPolygons = null, forestryLayer = null, forestryData = null;
+  let landmassData = null;
   let smelterMarkers = [], smelterLineLayer = null, currentNearestSmelter = null;
   let _3dRendered = false, _3dRenderedWithMl = false, _elevationLoading = false, _drawingActive = false, _3dMesh = null;
   let mlResults = null, mlLoading = false, mlError = null;
@@ -189,8 +190,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadNickelBelts();
     loadForestryBoundaries();
+    loadLandmassData();
     loadSmelterMarkers();
     setupDrawControl();
+  }
+
+  function loadLandmassData() {
+    fetch('data/indonesia_landmass.geojson')
+      .then(r => r.json())
+      .then(data => {
+        landmassData = data;
+        console.info('Indonesia landmass geometry loaded for ocean exclusion');
+      })
+      .catch(err => console.warn('Could not load landmass geojson:', err));
   }
 
   function loadNickelBelts() {
@@ -415,7 +427,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const params = findNearestSite(center);
       currentBbox = bbox;
       currentParams = params;
-      currentGrid = generateGrid(bbox, params, forestryData);
+      currentGrid = generateGrid(bbox, params, forestryData, landmassData);
+      if (currentGrid.isOcean) {
+        params.isOcean = true;
+        params.terrain_class = 'OCEAN';
+      }
       pinpointNearestSmelter(center);
       _drawingActive = false;
       activeDrawHandler = null;
@@ -427,20 +443,31 @@ document.addEventListener('DOMContentLoaded', () => {
     $('btnClear').addEventListener('click', resetToBrowse);
   }
 
-  function pointInPolygon(lon, lat, poly) {
-    const ring = poly[0];
-    let inside = false;
-    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-      const xi = ring[i][0], yi = ring[i][1];
-      const xj = ring[j][0], yj = ring[j][1];
-      if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
-    }
-    return inside;
-  }
-
   function findNearestSite(center) {
+    const centerOnLand = typeof isPointOnLand === 'function' ? isPointOnLand(center[0], center[1], landmassData) : true;
+
+    // Direct ocean / maritime zone detection
+    if (!centerOnLand) {
+      return {
+        id: 'ocean_' + Math.abs(Math.floor(center[0] * 10 + center[1] * 100)),
+        name: 'Wilayah Perairan / Laut Lepas',
+        province: 'Zona Maritim / Laut Terbuka',
+        terrain_class: 'OCEAN',
+        tier: 'LOW',
+        elevation_mean: 0,
+        elevation_max: 0,
+        elevation_min: 0,
+        slope_mean: 0,
+        inBelt: false,
+        isOcean: true,
+        prefix: 'SEA'
+      };
+    }
+
     const inBelt = beltPolygons && beltPolygons.features.some(f =>
-      pointInPolygon(center[0], center[1], f.geometry.coordinates)
+      typeof pointInGeometry === 'function'
+        ? pointInGeometry(center[0], center[1], f.geometry)
+        : pointInPolygon(center[0], center[1], f.geometry.coordinates)
     );
     let nearest = null, minDist = Infinity;
     sites.forEach(s => {
@@ -458,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
           terrain_class: p.terrain_class, tier: p.tier,
           elevation_mean: p.elevation_mean, elevation_max: p.elevation_max,
           elevation_min: p.elevation_min, slope_mean: p.slope_mean,
-          inBelt: true, prefix: p.id.slice(0, 3).toUpperCase()
+          inBelt: true, isOcean: false, prefix: p.id.slice(0, 3).toUpperCase()
         };
       }
       // Greenfield area inside Indonesian nickel belt
@@ -475,6 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elevation_min: p.elevation_min || 80,
         slope_mean: p.slope_mean || 12,
         inBelt: true,
+        isOcean: false,
         prefix: 'EXP'
       };
     }
@@ -483,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'custom', name: 'Non-Belt Greenfield', province: 'Indonesia',
       terrain_class: 'ROLLING', tier: 'LOW',
       elevation_mean: 150, elevation_max: 300, elevation_min: 30,
-      slope_mean: 8, inBelt: false, prefix: 'GEN'
+      slope_mean: 8, inBelt: false, isOcean: false, prefix: 'GEN'
     };
   }
 
@@ -635,8 +663,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showGrid() {
     if (gridLayer) { map.removeLayer(gridLayer); gridLayer = null; }
-    const legalColor = s => s === 'no-go' ? '#ef4444' : s === 'conditional' ? '#E2A356' : '#10b981';
-    const legalOpacity = s => s === 'no-go' ? 0.25 : s === 'conditional' ? 0.18 : 0.10;
+    const legalColor = s => s === 'marine_water' ? '#38bdf8' : s === 'no-go' ? '#ef4444' : s === 'conditional' ? '#E2A356' : '#10b981';
+    const legalOpacity = s => s === 'marine_water' ? 0.35 : s === 'no-go' ? 0.25 : s === 'conditional' ? 0.18 : 0.10;
     gridLayer = L.geoJSON(currentGrid, {
       style: f => ({
         color: legalColor(f.properties.legal_status),
@@ -645,27 +673,61 @@ document.addEventListener('DOMContentLoaded', () => {
         weight: 0.8
       })
     }).addTo(map);
-    gridLayer.bindTooltip(f => `<b>${f.feature.properties.grid_id}</b><br>Legal: ${f.feature.properties.legal_status}<br>Lith: ${f.feature.properties.lithology}`, {sticky:true});
+    gridLayer.bindTooltip(f => {
+      const p = f.feature.properties;
+      if (p.legal_status === 'marine_water' || p.is_water) {
+        return `<b>${p.grid_id}</b><br><span style="color:#38bdf8;">🌊 Perairan Laut (No-Go)</span>`;
+      }
+      return `<b>${p.grid_id}</b><br>Legal: ${p.legal_status}<br>Lith: ${p.lithology}`;
+    }, {sticky:true});
     map.fitBounds(gridLayer.getBounds().pad(0.05));
   }
 
   // ----- Assessment (Continuous Dynamic Scoring) -----
   function computeAssessment(cells, params) {
     if (!cells || !cells.length) {
-      return { safety: 0, probable: 0, worth: 0, overall: 0, recommendation: 'NO-GO', avgSlope: 0, avgRoad: 0, ultraPct: 0, totalArea: 0, avgSmelter: 0 };
+      return { safety: 0, probable: 0, worth: 0, overall: 0, recommendation: 'NO-GO', avgSlope: 0, avgRoad: 0, ultraPct: 0, totalArea: 0, avgSmelter: 0, isOcean: false, waterPct: 0 };
     }
+
+    const waterCells = cells.filter(c => c.isWater || c.lith === 'air_laut' || c.legal === 'marine_water');
+    const waterPct = Math.round((waterCells.length / cells.length) * 100);
+    const isOcean = Boolean(params.isOcean || waterPct >= 50);
+
+    // ── COMPLETE OCEAN / WATER BLOCK ──
+    if (isOcean) {
+      return {
+        safety: 0,
+        probable: 0,
+        worth: 0,
+        overall: 0,
+        recommendation: 'NO-GO',
+        isOcean: true,
+        waterPct: waterPct,
+        avgSlope: 0,
+        avgRoad: 99999,
+        ultraPct: 0,
+        totalArea: cells.reduce((s, c) => s + (c.area || 0), 0),
+        avgSmelter: 999,
+        nearestSmelter: null,
+        minSmelterDist: Infinity
+      };
+    }
+
+    const landCells = cells.filter(c => !c.isWater && c.lith !== 'air_laut');
+    const targetCells = landCells.length ? landCells : cells;
+
     const avg = (arr, fn) => { const v = arr.map(fn); return v.reduce((a, b) => a + b, 0) / v.length; };
-    const avgSlope = avg(cells, c => c.slope);
-    const avgRoad = avg(cells, c => c.road);
+    const avgSlope = avg(targetCells, c => c.slope);
+    const avgRoad = avg(targetCells, c => c.road);
     
     // Count all ultramafic rock families
     const ULTRA_FAMILIES = ['serpentinite', 'peridotite', 'ultramafic', 'dunite', 'harzburgite', 'lherzolite', 'pyroxenite'];
     const isUltra = lith => ULTRA_FAMILIES.some(u => (lith || '').toLowerCase().includes(u));
-    const ultraCount = cells.filter(c => isUltra(c.lith)).length;
-    const ultraPct = (ultraCount / cells.length) * 100;
+    const ultraCount = targetCells.filter(c => isUltra(c.lith)).length;
+    const ultraPct = (ultraCount / targetCells.length) * 100;
     
-    const totalArea = cells.reduce((s, c) => s + (c.area || 0), 0);
-    const avgSmelter = avg(cells, c => c.smelter);
+    const totalArea = targetCells.reduce((s, c) => s + (c.area || 0), 0);
+    const avgSmelter = avg(targetCells, c => c.smelter);
 
     // 1. Keselamatan Operasi (Continuous Safety Index: 0-100)
     // - Flatter slopes = higher safety score
@@ -673,13 +735,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // - Proximity to existing access roads
     const roadScore = Math.max(30, Math.min(100, 100 - ((avgRoad / 3500) * 55)));
     // - Legal safety (Penalize overlaps with Hutan Lindung/Hutan Produksi)
-    const noGoCount = cells.filter(c => c.legal === 'no-go').length;
-    const condCount = cells.filter(c => c.legal === 'conditional').length;
-    const legalSafetyScore = Math.max(10, 100 - ((noGoCount / cells.length) * 70) - ((condCount / cells.length) * 25));
+    const noGoCount = targetCells.filter(c => c.legal === 'no-go' || c.legal === 'marine_water').length;
+    const condCount = targetCells.filter(c => c.legal === 'conditional').length;
+    const legalSafetyScore = Math.max(10, 100 - ((noGoCount / targetCells.length) * 70) - ((condCount / targetCells.length) * 25));
     // - Terrain roughness baseline
     const terrainBase = { FLAT: 95, ROLLING: 85, HILLY: 65, MOUNTAINOUS: 45 }[params.terrain_class] || 70;
 
-    const safety = Math.max(10, Math.min(99, Math.round(
+    let safety = Math.max(10, Math.min(99, Math.round(
       slopeScore * 0.35 + roadScore * 0.25 + legalSafetyScore * 0.25 + terrainBase * 0.15
     )));
 
@@ -691,14 +753,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // - Regional Nickel Belt membership
     const beltScore = params.inBelt ? 100 : 15;
 
-    const probable = Math.max(5, Math.min(99, Math.round(
+    let probable = Math.max(5, Math.min(99, Math.round(
       ultraScore * 0.50 + beltScore * 0.30 + tierScore * 0.20
     )));
 
     // 3. Kelayakan Ekonomi (Continuous Economics Index: 0-100)
     // - Real distance to nearest operational smelter
-    const clon = avg(cells, c => c.lonC);
-    const clat = avg(cells, c => c.latC);
+    const clon = avg(targetCells, c => c.lonC);
+    const clat = avg(targetCells, c => c.latC);
     let nearestSmelter = null, minSmelterDist = Infinity;
     INDONESIA_SMELTERS.forEach(s => {
       const d = haversineKm(clat, clon, s.lat, s.lon);
@@ -711,9 +773,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // - Operability & market tier
     const econTierScore = { HIGH: 95, MEDIUM: 65, LOW: 35 }[params.tier] || 40;
 
-    const worth = Math.max(10, Math.min(99, Math.round(
+    let worth = Math.max(10, Math.min(99, Math.round(
       smelterScore * 0.45 + areaScore * 0.30 + econTierScore * 0.25
     )));
+
+    if (waterPct > 0) {
+      safety = Math.max(5, Math.round(safety * (1 - (waterPct / 100) * 0.5)));
+      probable = Math.max(5, Math.round(probable * (1 - (waterPct / 100) * 0.7)));
+      worth = Math.max(5, Math.round(worth * (1 - (waterPct / 100) * 0.6)));
+    }
 
     let overall = Math.round(safety * 0.30 + probable * 0.45 + worth * 0.25);
     let recommendation = overall >= 75 ? 'GO' : overall >= 50 ? 'CONDITIONAL' : 'NO-GO';
@@ -722,7 +790,7 @@ document.addEventListener('DOMContentLoaded', () => {
       recommendation = 'NO-GO';
     }
 
-    return { safety, probable, worth, overall, recommendation, avgSlope, avgRoad, ultraPct, totalArea, avgSmelter, nearestSmelter, minSmelterDist };
+    return { safety, probable, worth, overall, recommendation, isOcean: false, waterPct, avgSlope, avgRoad, ultraPct, totalArea, avgSmelter, nearestSmelter, minSmelterDist };
   }
 
   function showAssessment(a, params) {
@@ -730,21 +798,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const nNoGo = cells.filter(c => c.legal === 'no-go').length;
     const nCond = cells.filter(c => c.legal === 'conditional').length;
     const nAllowed = cells.filter(c => c.legal === 'allowed').length;
+    const nWater = cells.filter(c => c.isWater || c.legal === 'marine_water').length;
+
     $('compNoGo').textContent = nNoGo;
     $('compConditional').textContent = nCond;
     $('compAllowed').textContent = nAllowed;
-    if (nNoGo > 0) {
-      $('complianceRow').querySelectorAll('.assess-badge.nogo')[0].style.background = 'rgba(239,68,68,0.2)';
+
+    const complianceRow = $('complianceRow');
+    if (a.isOcean || nWater > 0) {
+      let marineBadge = complianceRow.querySelector('.marine-badge');
+      if (!marineBadge) {
+        marineBadge = document.createElement('span');
+        marineBadge.className = 'assess-badge nogo marine-badge';
+        complianceRow.appendChild(marineBadge);
+      }
+      marineBadge.innerHTML = `<span class="badge-icon">🌊</span> Perairan Laut: <b>${a.waterPct || Math.round(nWater / cells.length * 100)}% (No-Go)</b>`;
+    } else {
+      const mb = complianceRow.querySelector('.marine-badge');
+      if (mb) mb.remove();
     }
 
     const banner = $('overallBanner');
-    const verdicts = {GO: 'GO', CONDITIONAL: 'BERSYARAT', 'NO-GO': 'BATALKAN'};
-    const descs = {GO: 'DEPLOY DRONE TEAM', CONDITIONAL: 'Evaluasi lanjutan diperlukan', 'NO-GO': 'Area tidak prospektif'};
+    const verdicts = { GO: 'GO', CONDITIONAL: 'BERSYARAT', 'NO-GO': 'BATALKAN' };
+    const descs = {
+      GO: 'DEPLOY DRONE TEAM',
+      CONDITIONAL: 'Evaluasi lanjutan diperlukan',
+      'NO-GO': a.isOcean ? 'WILAYAH PERAIRAN / LAUT TERBUKA' : 'Area tidak prospektif'
+    };
+
     const v = verdicts[a.recommendation] || '—';
     const d = descs[a.recommendation] || '—';
     $('bannerVerdict').textContent = v;
     $('bannerDesc').textContent = d;
     banner.className = `assess-hero-banner banner-${a.recommendation.toLowerCase()}`;
+    
     // Update SVG icon based on recommendation
     const iconSvgs = {
       GO: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
@@ -752,7 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'NO-GO': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
     };
     const iconEl = banner.querySelector('.banner-status-icon');
-    if (iconEl) iconEl.innerHTML = iconSvgs[a.recommendation] || iconSvgs['GO'];
+    if (iconEl) iconEl.innerHTML = iconSvgs[a.recommendation] || iconSvgs['NO-GO'];
 
     const setScore = (id, barId, val) => {
       const el = $(id);
@@ -767,19 +854,31 @@ document.addEventListener('DOMContentLoaded', () => {
     setScore('scoreProb', 'barProb', a.probable);
     setScore('scoreWorth', 'barWorth', a.worth);
 
-    $('detailSafety').textContent =
-      `Slope avg ${a.avgSlope.toFixed(1)}° (${a.avgSlope < 8 ? 'gentle' : a.avgSlope < 15 ? 'moderate' : 'steep'}) ` +
-      `Road avg ${Math.round(a.avgRoad)}m Terrain: ${params.terrain_class}`;
-    $('detailProb').textContent =
-      `Ultramafic ${a.ultraPct.toFixed(0)}% Tier: ${params.tier} ${params.inBelt ? 'Inside nickel belt' : 'Outside known belt'}`;
-    
-    const smelterTitle = a.nearestSmelter ? `${a.nearestSmelter.shortName} (~${a.avgSmelter.toFixed(1)} km)` : `~${a.avgSmelter.toFixed(0)} km`;
-    $('detailWorth').textContent =
-      `Smelter: ${smelterTitle} • Area: ${a.totalArea.toFixed(0)} ha • Tier: ${params.tier}`;
+    if (a.isOcean) {
+      $('detailSafety').textContent = 'Wilayah Perairan/Laut — Tidak layak untuk survei drone & pemboran darat';
+      $('detailProb').textContent = '0% Ultramafik — Endapan laterit hanya terbentuk melalui pelapukan di daratan';
+      $('detailWorth').textContent = 'Tidak ada cadangan nikel laterit di dasar perairan laut';
+    } else {
+      $('detailSafety').textContent =
+        `Slope avg ${a.avgSlope.toFixed(1)}° (${a.avgSlope < 8 ? 'gentle' : a.avgSlope < 15 ? 'moderate' : 'steep'}) ` +
+        `Road avg ${Math.round(a.avgRoad)}m Terrain: ${params.terrain_class}`;
+      $('detailProb').textContent =
+        `Ultramafic ${a.ultraPct.toFixed(0)}% Tier: ${params.tier} ${params.inBelt ? 'Inside nickel belt' : 'Outside known belt'}`;
+      
+      const smelterTitle = a.nearestSmelter ? `${a.nearestSmelter.shortName} (~${a.avgSmelter.toFixed(1)} km)` : `~${a.avgSmelter.toFixed(0)} km`;
+      $('detailWorth').textContent =
+        `Smelter: ${smelterTitle} • Area: ${a.totalArea.toFixed(0)} ha • Tier: ${params.tier}`;
+    }
+
     const siteInfoEl = $('siteInfo');
-    const siteText = params.inBelt
-      ? `${params.name}, ${params.province} — ${params.terrain_class} terrain — ${currentGrid.features.length} grid cells`
-      : `Area tidak berada di sabuk nikel — tidak ada potensi laterit.`;
+    let siteText = '';
+    if (a.isOcean || params.isOcean) {
+      siteText = '🌊 Wilayah Perairan Laut Lepas — Tidak terdapat endapan laterit di area perairan terbuka.';
+    } else if (params.inBelt) {
+      siteText = `${params.name}, ${params.province} — ${params.terrain_class} terrain — ${currentGrid.features.length} grid cells`;
+    } else {
+      siteText = 'Area tidak berada di sabuk nikel — tidak ada potensi laterit.';
+    }
     // siteInfo now has a child span structure; update the text span
     const siteTextSpan = siteInfoEl.querySelector('span:last-child');
     if (siteTextSpan) siteTextSpan.textContent = siteText;
@@ -859,13 +958,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const aspect = lonSpan / latSpan;
 
       // Build elevation and color matrices
+      var isOceanArea = Boolean(currentParams && currentParams.isOcean);
       var elevGrid = [], colorGrid = [];
       for (var row = 0; row < NY; row++) {
         elevGrid[row] = [];
         colorGrid[row] = [];
         for (var col = 0; col < NX; col++) {
           var c = cells[row * NX + col];
-          var elev = c && c.elevation != null ? c.elevation : 20;
+          var elev = (isOceanArea || (c && c.isWater)) ? 0 : (c && c.elevation != null ? c.elevation : 20);
           elevGrid[row][col] = elev;
 
           var score = (function(id) {
@@ -875,7 +975,9 @@ document.addEventListener('DOMContentLoaded', () => {
           })(c && c.gid);
 
           var color = new THREE.Color();
-          if (score != null) {
+          if (isOceanArea || (c && c.isWater)) {
+            color.setHex(0x0284c7); // Marine ocean blue
+          } else if (score != null) {
             color.setHex(score >= 6.5 ? 0x10b981 : score >= 3.5 ? 0xE2A356 : 0xef4444);
           } else if (c) {
             color.setHex(c.legal === "no-go" ? 0xef4444 : c.legal === "conditional" ? 0xE2A356 : 0x10b981);
@@ -897,8 +999,12 @@ document.addEventListener('DOMContentLoaded', () => {
           if (v > elevMax) elevMax = v;
         }
       }
-      var elevRange = elevMax - elevMin || 1;
-      var heightScale = 3.0 / elevRange; // auto-scale
+      if (isOceanArea || elevMax <= 1.0) {
+        elevMin = 0;
+        elevMax = 0;
+      }
+      var elevRange = isOceanArea ? 1 : (elevMax - elevMin || 1);
+      var heightScale = isOceanArea ? 0.0 : (3.0 / elevRange); // Flat if ocean
 
       // Create PlaneGeometry
       var geo = new THREE.PlaneGeometry(terrainWidth, terrainDepth, NX - 1, NY - 1);
@@ -932,8 +1038,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       var mat = new THREE.MeshStandardMaterial({
         vertexColors: true,
-        roughness: 0.85,
-        metalness: 0.1,
+        roughness: isOceanArea ? 0.3 : 0.85,
+        metalness: isOceanArea ? 0.4 : 0.1,
         flatShading: false,
         side: THREE.DoubleSide
       });
@@ -955,14 +1061,14 @@ document.addEventListener('DOMContentLoaded', () => {
           lCanvas.width = 128; lCanvas.height = 64;
           var lCtx = lCanvas.getContext('2d');
           lCtx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-          lCtx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+          lCtx.strokeStyle = isOceanArea ? 'rgba(56, 189, 248, 0.65)' : 'rgba(255, 255, 255, 0.65)';
           lCtx.lineWidth = 2;
           lCtx.beginPath();
           lCtx.rect(12, 8, 104, 48);
           lCtx.fill(); lCtx.stroke();
           
           lCtx.font = 'Bold 24px "Space Grotesk", sans-serif';
-          lCtx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+          lCtx.fillStyle = isOceanArea ? '#38bdf8' : 'rgba(255, 255, 255, 0.95)';
           lCtx.textAlign = 'center';
           lCtx.textBaseline = 'middle';
           lCtx.fillText(c.gid, 64, 33);
@@ -982,10 +1088,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cells && cells.length) {
         var eMin = Math.min.apply(null, cells.map(function(c) { return c.elevation != null ? c.elevation : 0; }));
         var eMax = Math.max.apply(null, cells.map(function(c) { return c.elevation != null ? c.elevation : 0; }));
-        document.getElementById('tmElevRange').textContent = eMin.toFixed(0) + ' - ' + eMax.toFixed(0) + ' m';
+        document.getElementById('tmElevRange').textContent = isOceanArea ? '0 m (Permukaan Laut)' : (eMin.toFixed(0) + ' - ' + eMax.toFixed(0) + ' m');
         document.getElementById('tmGridCount').textContent = cells.length;
         var mlScores = cells.map(function(c) { return mlResults && mlResults[c.gid] && mlResults[c.gid].ml_score != null ? mlResults[c.gid].ml_score : null; }).filter(function(s) { return s != null; });
-        document.getElementById('tmMlAvg').textContent = mlScores.length ? (mlScores.reduce(function(a, b) { return a + b; }, 0) / mlScores.length).toFixed(2) : '-';
+        document.getElementById('tmMlAvg').textContent = isOceanArea ? '0.00 (Perairan)' : (mlScores.length ? (mlScores.reduce(function(a, b) { return a + b; }, 0) / mlScores.length).toFixed(2) : '-');
       }
       // ponytail: height ruler with sprite label at the line top
       var _hRuler = elevRange * heightScale;
@@ -1020,7 +1126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       _ctx.font = 'bold 24px monospace';
       _ctx.textAlign = 'center';
       _ctx.textBaseline = 'middle';
-      _ctx.fillText(elevMax.toFixed(0) + ' m', 64, 20);
+      _ctx.fillText(isOceanArea ? '0 m (Laut)' : (elevMax.toFixed(0) + ' m'), 64, 20);
       var _labelTex = new THREE.CanvasTexture(_labelCanvas);
       _labelTex.minFilter = THREE.LinearFilter;
       var _labelMat = new THREE.SpriteMaterial({ map: _labelTex, transparent: true, depthWrite: false });
@@ -1185,11 +1291,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function finish() {
+      let elevSum = 0;
+      let zeroOrNegCount = 0;
       cells.forEach(function(c) {
         if (c.elevation == null || isNaN(c.elevation)) c.elevation = 0;
+        elevSum += c.elevation;
+        if (c.elevation <= 0.1) zeroOrNegCount++;
       });
       _elevationLoading = false;
       if (spinner) spinner.style.display = 'none';
+
+      // If all or vast majority of cells are at sea level <= 0m, confirm ocean status
+      const avgElev = elevSum / (cells.length || 1);
+      const isElevOcean = zeroOrNegCount >= cells.length * 0.8 && avgElev <= 1.0;
+      if (isElevOcean && !currentParams.isOcean) {
+        console.info('DEM elevation confirmed sea level/ocean surface (avg ' + avgElev.toFixed(1) + 'm)');
+        currentParams.isOcean = true;
+        currentParams.terrain_class = 'OCEAN';
+        cells.forEach(c => {
+          if (c.elevation <= 0.5) {
+            c.isWater = true;
+            c.lith = 'air_laut';
+            c.legal = 'marine_water';
+          }
+        });
+        const assessment = computeAssessment(cells, currentParams);
+        showAssessment(assessment, currentParams);
+        if (mlResults) showMlMap();
+      }
+
       if (_3dRendered) showTerrain3D();
     }
 
@@ -1233,10 +1363,102 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
 
     const scored = cells.filter(c => c.score != null);
+    const total = scored.length;
+
+    const isOcean = Boolean(currentParams && currentParams.isOcean);
+    const waterCellsCount = cells.filter(c => c.isWater || c.lith === 'air_laut' || c.legal === 'marine_water').length;
+    const isPredominantlyWater = isOcean || (waterCellsCount >= cells.length * 0.5);
+
+    if (isPredominantlyWater) {
+      safeSet('mlTotalCells', total);
+      safeSet('mlHighCount', '0 (0%)');
+      safeSet('mlMedCount', '0 (0%)');
+      safeSet('mlLowCount', total + ' (100%)');
+      safeSet('mlTopTarget', 'None (Area Laut)');
+
+      if (gridMlLayer) { map.removeLayer(gridMlLayer); gridMlLayer = null; }
+      const feats = currentGrid.features.map(f => ({
+        type: 'Feature',
+        properties: { grid_id: f.properties.grid_id, score: 0 },
+        geometry: f.geometry
+      }));
+      gridMlLayer = L.geoJSON({ type: 'FeatureCollection', features: feats }, {
+        style: { color: '#0284c7', fillColor: '#0369a1', fillOpacity: 0.35, weight: 0.5 }
+      }).addTo(map);
+      gridMlLayer.bindTooltip(f => `<b>${f.properties.grid_id}</b><br><span style="color:#38bdf8;">🌊 Perairan Laut (Score: 0.00)</span>`, { sticky: true });
+
+      let html = `
+        <div class="ml-insights-row">
+          <div class="ml-verdict low">
+            <span class="verdict-icon">🌊</span>
+            <div class="verdict-text">
+              <h3>Wilayah Perairan / Laut Terbuka</h3>
+              <p>Seluruh sel berada di zona perairan/laut terbuka (${waterCellsCount ? Math.round(waterCellsCount / total * 100) : 100}% perairan). Pembentukan endapan nikel laterit membutuhkan proses pelapukan subaerial batuan ultramafik di daratan sehingga perairan laut ini bernilai prospektivitas nol.</p>
+            </div>
+          </div>
+
+          <div class="lith-donut-card">
+            <div class="lith-donut-header">
+              <span class="lith-donut-title">Komposisi Litologi</span>
+              <span class="lith-donut-badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border-color:rgba(56,189,248,0.3);">100% Perairan</span>
+            </div>
+            <div class="lith-donut-body">
+              <div class="lith-donut-chart-wrap">
+                <svg viewBox="0 0 100 100" class="lith-donut-svg">
+                  <circle cx="50" cy="50" r="36" fill="none" stroke="#0284c7" stroke-width="13" />
+                  <text x="50" y="47" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">0%</text>
+                  <text x="50" y="59" text-anchor="middle" font-size="7.5" font-weight="600" fill="#38bdf8" letter-spacing="0.04em">PERAIRAN</text>
+                </svg>
+              </div>
+              <div class="lith-donut-legend">
+                <div class="lith-donut-legend-item">
+                  <span class="lith-legend-dot other" style="background:#0284c7;"></span>
+                  <div class="lith-legend-text">
+                    <span class="lith-legend-name">Perairan Laut / Air</span>
+                    <b class="lith-legend-pct text-sky">100%</b>
+                  </div>
+                </div>
+                <div class="lith-donut-legend-item">
+                  <span class="lith-legend-dot ultra"></span>
+                  <div class="lith-legend-text">
+                    <span class="lith-legend-name">Serpentinite / Ultramafik</span>
+                    <b class="lith-legend-pct text-emerald">0%</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pros-cons-grid">
+          <div class="pros-cons-card pros">
+            <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Faktor Pendukung</h4>
+            <ul class="pros-cons-list">
+              <li>Tidak ada faktor pendukung untuk eksplorasi nikel laterit di area perairan laut ini.</li>
+            </ul>
+          </div>
+          <div class="pros-cons-card cons">
+            <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> Faktor Pembatas</h4>
+            <ul class="pros-cons-list">
+              <li>100% area merupakan perairan laut lepas (Offshore Marine Water).</li>
+              <li>Tidak terdapat singkapan batuan ultramafik terlapuk di daratan.</li>
+              <li>Infrastruktur, akses jalan darat, dan logistik pengeboran tidak dapat diterapkan di laut.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ml-section-title">Rekomendasi Titik Survei Utama (Top Targets)</div>
+        <div style="text-align:center;padding:28px;border:1px dashed var(--border-subtle);border-radius:var(--radius-md);color:var(--text-secondary);font-size:12px;">
+          🌊 Tidak ada titik survei darat yang valid di area perairan laut terbuka.
+        </div>
+      `;
+      container.innerHTML = html;
+      return;
+    }
+
     const high = scored.filter(c => c.score >= 6.5);
     const med = scored.filter(c => c.score >= 3.5 && c.score < 6.5);
     const low = scored.filter(c => c.score < 3.5);
-    const total = scored.length;
     const sorted = [...scored].sort((a, b) => b.score - a.score);
     const top = sorted[0];
 
@@ -1444,13 +1666,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ----- Export -----
   function showExportTable() {
+    const isOcean = Boolean(currentParams && currentParams.isOcean);
+    const validLandCells = currentGrid.cells.filter(c => !c.isWater && c.lith !== 'air_laut');
+
+    if (isOcean || validLandCells.length === 0) {
+      const tbody = $('exportBody');
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center;padding:32px;color:var(--text-secondary);font-size:13px;">
+            🌊 <b>Wilayah Perairan / Laut Terbuka:</b> Tidak ada koordinat target darat yang dapat diekspor untuk tim drone eksplorasi.
+          </td>
+        </tr>
+      `;
+      $('btnExportCsv').onclick = () => {
+        alert('Area perairan/laut terbuka tidak memiliki target eksplorasi darat untuk diekspor.');
+      };
+      return;
+    }
+
     const getScore = (id) => {
       const r = mlResults ? mlResults[id] : null;
       if (!r || r.ml_score == null) return 0;
       return r.ml_masked ? 0 : r.ml_score;
     };
 
-    const cells = currentGrid.cells.map(c => {
+    const cells = validLandCells.map(c => {
       const ultra = c.lith && c.lith.includes('ultra');
       const slopeScore = c.slope > 5 && c.slope < 15 ? 100 : c.slope <= 5 ? 50 : 20;
       const lithScore = ultra ? 100 : c.lith.includes('mafic') ? 50 : 10;
