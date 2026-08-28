@@ -29,7 +29,7 @@
   </header>
 
   <main>
-    <section id="home" class="hero section-full">
+    <section id="home" class="hero section section-full">
       <div class="hero-content">
         <div class="hero-main">
           <h1>Targeted exploration.<br>From a single grid.<br><span class="text-highlight">To regional scale.</span></h1>
@@ -82,7 +82,7 @@
             </label>
 
             <label class="file-card">
-              <input id="gridFile" type="file" accept=".geojson,.json" />
+              <input id="gridFile" type="file" accept=".geojson,application/json" />
               <span class="file-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               </span>
@@ -92,20 +92,14 @@
               </span>
             </label>
 
-            <div class="button-row">
-              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Load Dummy Data</button>
-              <button id="runBtn" class="btn btn-primary" type="button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Run Analysis
-              </button>
-            </div>
-            <div class="button-row" style="margin-top: 10px;">
-              <button id="retrainBtn" class="btn btn-secondary" type="button" style="width: 100%;">Upload New Drill Data & Retrain</button>
+            <div class="actions">
+              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Load Sample Data</button>
+              <button id="runBtn" class="btn btn-primary" type="button">Run Analysis</button>
+              <button id="retrainBtn" class="btn btn-ghost" type="button" style="border: 1px dashed var(--border-default); font-size: 11px; padding: 6px 12px; margin-top: 6px; width: 100%;">Upload New Drill Data &amp; Retrain</button>
             </div>
 
-            <div id="statusBox" class="status-box">
-              <b>Status</b>
-              <span>No data processed yet. Click Load Dummy Data first.</span>
+            <div class="status-box">
+              <div id="statusBox" class="muted">Status: Ready. Upload files or load sample data.</div>
             </div>
           </aside>
         </div>
@@ -113,95 +107,75 @@
         <div class="panel-shell">
           <section class="panel map-panel">
             <div class="map-topline">
+              <div>
+                <span class="pill">Visual Map</span>
+                <h3>Target Priority Layer</h3>
+              </div>
               <div class="map-tabs" role="tablist">
                 <button class="tab-btn active" data-layer="priority" type="button">Priority</button>
-                <button class="tab-btn" data-layer="magnet" type="button">Magnet</button>
+                <button class="tab-btn" data-layer="magnetic" type="button">Magnetic</button>
                 <button class="tab-btn" data-layer="samples" type="button">Samples</button>
-                <button class="tab-btn" data-layer="risk" type="button" style="color: #fca5a5;">Risk Map</button>
-                <button id="toggle3dBtn" class="tab-btn" type="button" style="border-left: 1px solid rgba(255,255,255,0.2); margin-left: 8px;">3D View</button>
+                <button id="toggle3dBtn" class="btn btn-primary small" type="button" style="margin-left: 8px; background: #6366f1; border-color: #4f46e5;">3D View</button>
               </div>
             </div>
             <div class="map-holder">
-              <div id="map" aria-label="Interactive map"></div>
-              <div id="mapHint" class="map-hint">Click Load Dummy Data → Run Analysis. Priority grid will appear on top of the basemap.</div>
+              <div id="map"></div>
             </div>
             <div class="legend">
-              <span><i class="c p1"></i> Priority 1</span>
-              <span><i class="c p2"></i> Priority 2</span>
-              <span><i class="c p3"></i> Priority 3</span>
-              <span><i class="c p4"></i> Non Priority</span>
-              <span><i class="c magnet"></i> Magnetometer</span>
-              <span><i class="c sample"></i> Geochemistry</span>
+              <span class="legend-item"><span class="swatch p1"></span> P1 (&ge; 80)</span>
+              <span class="legend-item"><span class="swatch p2"></span> P2 (62–79)</span>
+              <span class="legend-item"><span class="swatch p3"></span> P3 (45–61)</span>
+              <span class="legend-item"><span class="swatch p4"></span> Non-target (&lt; 45)</span>
             </div>
           </section>
         </div>
       </div>
     </section>
 
-    <section id="output" class="section output-section">
+    <section id="results" class="section results-section">
       <div class="section-heading">
-        <h2>Results summary and target ranking.</h2>
-        <p>After the analysis is run, the system displays final scores, priority classes, and recommendation reasons per grid.</p>
+        <h2>Analysis results &amp; priority ranking.</h2>
+        <p>Sorted by overall score. Select a row to inspect full target parameters.</p>
       </div>
 
       <div class="summary-cards">
-        <article class="metric-card">
-          <span>Grid Count</span>
-          <b id="gridCount">0</b>
-        </article>
-        <article class="metric-card">
-          <span>Priority 1</span>
-          <b id="priorityOneCount">0</b>
-        </article>
-        <article class="metric-card">
-          <span>Average Score</span>
-          <b id="avgScore">—</b>
-        </article>
-        <article class="metric-card">
-          <span>Best Target</span>
-          <b id="bestTarget">—</b>
-        </article>
-        <article class="metric-card">
-          <span>⛔ Restricted Zone</span>
-          <b id="killZoneCount" style="color:#ef4444;">0</b>
-        </article>
-        <article class="metric-card">
-          <span>⚠️ Grandfathered</span>
-          <b id="grandfatheredCount" style="color:#f59e0b;">0</b>
-        </article>
-        <article class="metric-card" style="background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(5,150,105,0.4) 100%); border-color: #10b981;">
-          <span style="color: #e0f2fe;">Cost Savings (ROI)</span>
-          <b id="roiSavings" style="color: #34d399;">Rp 0</b>
-        </article>
+        <div class="panel-shell"><div class="metric-card"><span class="metric-label">Total Grids</span><strong id="gridCount">0</strong></div></div>
+        <div class="panel-shell"><div class="metric-card"><span class="metric-label">Priority 1 Targets</span><strong id="priorityOneCount" class="accent-p1">0</strong></div></div>
+        <div class="panel-shell"><div class="metric-card"><span class="metric-label">Average Score</span><strong id="avgScore">0</strong></div></div>
+        <div class="panel-shell"><div class="metric-card"><span class="metric-label">Best Target</span><strong id="bestTarget">—</strong></div></div>
+        <div class="panel-shell"><div class="metric-card"><span class="metric-label">Kill Zone Exclusions</span><strong id="killZoneCount" class="accent-danger">0</strong></div></div>
+        <div class="panel-shell"><div class="metric-card"><span class="metric-label">Grandfathered</span><strong id="grandfatheredCount" class="accent-warning">0</strong></div></div>
+        <div class="panel-shell"><div class="metric-card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.25);"><span class="metric-label" style="color: #10b981; font-weight: 700;">Capex ROI Savings</span><strong id="roiSavings" style="color: #10b981;">Rp 0</strong></div></div>
       </div>
 
       <div class="output-grid">
         <div class="panel-shell">
           <section class="panel ranking-panel">
-            <div class="panel-head">
-              <h3>Target Ranking</h3>
-              <button id="downloadBtn" class="btn btn-secondary small" type="button">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download CSV
-              </button>
+            <div class="panel-header-inline">
+              <div>
+                <span class="pill">Leaderboard</span>
+                <h3>Target Ranking</h3>
+              </div>
+              <button id="downloadBtn" class="btn btn-secondary small" type="button">Download CSV</button>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th>Rank</th>
-                    <th>Grid</th>
+                    <th>Grid ID</th>
                     <th>Priority</th>
                     <th>Score</th>
-                    <th>Avg Ni</th>
-                    <th>Skor Mag</th>
-                    <th>Slope</th>
-                    <th>Legal Zone</th>
+                    <th>Ni Avg (%)</th>
+                    <th>Fe Avg (%)</th>
+                    <th>Co Avg (%)</th>
+                    <th>Mag Score</th>
+                    <th>Risk</th>
                     <th>Reason</th>
                   </tr>
                 </thead>
                 <tbody id="rankingBody">
-                  <tr><td colspan="9" class="empty">No results yet. Run analysis first.</td></tr>
+                  <tr><td colspan="10" class="empty">No results yet. Run analysis first.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -210,10 +184,9 @@
 
         <div class="panel-shell">
           <aside class="panel detail-panel">
-            <span class="pill">Selected Target</span>
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <h3 id="targetDetailTitle" style="margin:0;">—</h3>
-              <button id="zoomDetailBtn" class="btn btn-ghost small" type="button" title="Expand screen">⛶</button>
+            <div class="detail-panel-head">
+              <span class="pill">Selected Target</span>
+              <h3 id="targetDetailTitle">—</h3>
             </div>
             <div id="targetDetail" class="target-detail">
               <p class="muted" style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">Click a grid on the map or a ranking row to view target details.</p>
@@ -223,27 +196,20 @@
       </div>
     </section>
 
-    <section id="insights" class="section insights-section">
-      <div class="section-heading">
-        <h2>Feature contribution scoring.</h2>
-        <p>Parameter weights used in the scoring prototype. Can be replaced with Random Forest feature importance when the ML backend is integrated.</p>
-      </div>
-      <div class="panel-shell">
-        <div class="panel insight-panel">
-          <div id="featureBars" class="bars"></div>
-        </div>
-      </div>
-    </section>
+    <!-- SEAMLESS AMBIENT BACKGROUND STRATA WAVE -->
+    <div id="strata-wave-wrap" class="ambient-strata-bg">
+      <canvas id="neuralCanvas"></canvas>
+    </div>
   </main>
 
-  <div id="plotly3dContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; backdrop-filter: blur(8px);">
-    <div style="position: relative; width: 96%; height: 94%; background: #0f172a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); display: flex; overflow: hidden;">
+  <div id="plotly3dContainer" class="modal-3d-backdrop" style="display: none;">
+    <div class="modal-3d-card">
       
       <!-- 3D Canvas Area -->
-      <div id="plotlyDiv" style="flex: 1; width: 100%; height: 100%; position: relative; border-radius: 16px 0 0 16px; overflow: hidden;"></div>
+      <div id="plotlyDiv" class="modal-3d-canvas"></div>
 
       <!-- Right Side Scoring & Target Detail Panel (Default visible on right side) -->
-      <div id="info3dSelectedCard" style="width: 340px; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px); border-left: 1px solid rgba(255,255,255,0.12); padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; box-shadow: -8px 0 32px rgba(0,0,0,0.4); flex-shrink: 0;">
+      <div id="info3dSelectedCard" class="modal-3d-sidebar">
         
         <!-- Header with Integrated Close Button -->
         <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; flex-shrink: 0;">
@@ -291,6 +257,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
   <!-- <script src="new_effect.js"></script> -->
+  <script src="js/neural-mesh.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

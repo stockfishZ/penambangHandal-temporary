@@ -14,6 +14,7 @@ FEATURES_CSV = os.path.join(DATA_DIR, "training_features.csv")
 LABELS_CSV = os.path.join(DATA_DIR, "expert_labels.csv")
 HIDDEN_CSV = os.path.join(DATA_DIR, "hidden_truth.csv")
 MODEL_PATH = os.path.join(MODEL_DIR, "model.pkl")
+MODEL_JSON_PATH = os.path.join(MODEL_DIR, "model.json")
 META_PATH = os.path.join(MODEL_DIR, "model_metadata.json")
 
 FEATURE_COLS = [
@@ -116,6 +117,12 @@ def train_model(X, y, region_ids):
 
     model.fit(X, y)
     
+    # Save native XGBoost JSON model
+    tmp_json_path = MODEL_JSON_PATH + ".tmp"
+    model.save_model(tmp_json_path)
+    os.replace(tmp_json_path, MODEL_JSON_PATH)
+
+    # Save pickle model for legacy support
     tmp_model_path = MODEL_PATH + ".tmp"
     joblib.dump(model, tmp_model_path)
     os.replace(tmp_model_path, MODEL_PATH)

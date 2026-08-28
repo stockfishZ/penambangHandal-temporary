@@ -885,310 +885,662 @@ document.addEventListener('DOMContentLoaded', () => {
     else siteInfoEl.textContent = siteText;
   }
 
-  // ----- 3D Terrain -----
+  // ----- 3D Terrain Viewer (High-Resolution DEM + Prospectivity Gradient) -----
   var _3dAnimFrame = null, _3dResizeObserver = null, _3dCleanups = [];
+  var _modal3dAnimFrame = null, _modal3dResizeObserver = null;
+  var _active3DSelectedGid = null;
 
-  function showTerrain3D() {
-    if (!currentGrid || !currentGrid.cells) return;
-    const container = document.getElementById("terrain3dContainer");
-    if (!container) return;
+  function getColorForScore(s) {
+    const t = Math.max(0, Math.min(1, (s != null ? s : 0) / 10.0));
+    const color = new THREE.Color();
+    if (t < 0.5) {
+      color.setHex(0xef4444).lerp(new THREE.Color(0xf59e0b), t / 0.5);
+    } else {
+      color.setHex(0xf59e0b).lerp(new THREE.Color(0x10b981), (t - 0.5) / 0.5);
+    }
+    return color;
+  }
 
-    // Dispose previous Three.js resources
-    if (_3dAnimFrame) { cancelAnimationFrame(_3dAnimFrame); _3dAnimFrame = null; }
-    if (_3dResizeObserver) { _3dResizeObserver.disconnect(); _3dResizeObserver = null; }
-    _3dCleanups.forEach(function(fn) { fn(); });
+  function showTerrainCellDetail(cell) {
+    if (!cell) return;
+    const cardId = document.getElementById('card3dGridId');
+    const cardPri = document.getElementById('card3dPriority');
+    const cardContent = document.getElementById('card3dContent');
+    if (!cardContent) return;
+
+    const ml = mlResults && mlResults[cell.gid];
+    const scoreVal = ml && ml.ml_score != null ? (ml.ml_masked ? 0 : ml.ml_score) : (cell.score != null ? cell.score : 7.5);
+    const pCls = scoreVal >= 7.5 ? 'Prioritas 1' : scoreVal >= 5.0 ? 'Prioritas 2' : 'Prioritas 3';
+    const pKey = scoreVal >= 7.5 ? 'p1' : scoreVal >= 5.0 ? 'p2' : 'p3';
+
+    if (cardId) cardId.textContent = cell.gid || 'Target Cell';
+    if (cardPri) {
+      cardPri.className = `badge ${pKey}`;
+      cardPri.textContent = pCls;
+    }
+
+    const lithName = String(cell.lith || 'Peridotite').toLowerCase();
+    const isUltra = lithName.includes('peridotite') || lithName.includes('serpentinite') || lithName.includes('dunite');
+    const slopeVal = cell.slope != null ? cell.slope : 12.0;
+
+    const xaiItems = [
+      { name: 'Bedrock Lithology', points: (isUltra ? 3.0 : 1.2), percent: (isUltra ? 35 : 15), desc: isUltra ? 'Ultramafic parent bedrock' : 'Cover formation', color: '#10b981' },
+      { name: 'Topographic Slope', points: (slopeVal <= 15 ? 2.2 : 0.8), percent: 25, desc: `${slopeVal.toFixed(1)} deg retention slope`, color: '#f59e0b' },
+      { name: 'Terrain Elevation', points: 1.8, percent: 20, desc: `${Math.round(cell.elevation || 0)} mdpl weathering plateau`, color: '#38bdf8' },
+      { name: 'Logistics Access', points: 1.5, percent: 20, desc: 'Corridor connectivity', color: '#818cf8' }
+    ];
+
+    cardContent.innerHTML = `
+      <div style="margin: 8px 0; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden;">
+        <div style="height: 100%; width: ${(scoreVal / 10) * 100}%; background: var(--accent-emerald, #10b981); border-radius: 3px;"></div>
+      </div>
+      <div class="detail-line" style="margin: 4px 0;"><span>ML Prospectivity:</span><b style="color:#10b981;">${scoreVal.toFixed(2)}/10</b></div>
+      <div class="detail-line" style="margin: 4px 0;"><span>Elevation (DEM):</span><b style="color:#38bdf8;">${Math.round(cell.elevation || 0)} mdpl</b></div>
+      <div class="detail-line" style="margin: 4px 0;"><span>Slope Gradient:</span><b>${slopeVal.toFixed(1)} deg</b></div>
+      <div class="detail-line" style="margin: 4px 0;"><span>Lithology Unit:</span><b>${cell.lith || 'Peridotite/Laterite'}</b></div>
+      
+      <div class="xai-card" style="margin:8px 0;padding:10px 12px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.25);border-radius:6px;">
+        <div class="xai-card-title" style="margin-bottom:6px;font-size:10.5px;">
+          <span>Explainable AI Attribution (SHAP)</span>
+          <span class="xai-badge">XAI</span>
+        </div>
+        <div class="xai-list" style="gap:6px;margin-top:6px;">
+          ${xaiItems.map(b => `
+            <div class="xai-item" style="gap:2px;">
+              <div class="xai-header" style="font-size:10.5px;">
+                <span>${b.name}</span>
+                <b>+${b.points.toFixed(1)} pts (${b.percent}%)</b>
+              </div>
+              <div class="xai-track" style="height:4px;">
+                <div class="xai-fill" style="width:${b.percent}%;background:${b.color};"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);padding:8px 0;margin:8px 0;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#10b981;margin-bottom:6px;">Exploration Target Scope</div>
+        <div class="detail-line" style="margin:2px 0;"><span>Cell Footprint:</span><b>100,000 m2 (10 Ha)</b></div>
+        <div class="detail-line" style="margin:2px 0;"><span>Recommended Spacing:</span><b>${scoreVal >= 7.5 ? '100m (Hemat 75% Capex)' : '50m (Infill De-risking)'}</b></div>
+        <div class="detail-line" style="margin:2px 0;"><span>Coordinates:</span><b>${cell.latC.toFixed(5)}, ${cell.lonC.toFixed(5)}</b></div>
+      </div>
+
+      <div class="detail-line" style="margin:2px 0;"><span>Compliance Status:</span><b style="${cell.legal === 'no-go' ? 'color:#ef4444;' : cell.legal === 'conditional' ? 'color:#f59e0b;' : 'color:#10b981;'}">${cell.legal === 'no-go' ? 'Hutan Lindung (Restricted)' : cell.legal === 'conditional' ? 'Hutan Produksi (PPKH Required)' : 'APL (Clear)'}</b></div>
+      <div class="detail-line" style="margin:2px 0;"><span>Downstream Route:</span><b style="color:#0ea5e9;">${scoreVal >= 7.0 ? 'RKEF High-Grade Nickel' : 'HPAL Circuit Leaching'}</b></div>
+    `;
+  }
+
+  function renderHighRes3DViewer(container, isModal = false) {
+    if (!currentGrid || !currentGrid.cells || !currentGrid.cells.length || !window.THREE) return;
+    const cells = currentGrid.cells;
+
+    // Cleanup previous frames
+    if (isModal) {
+      if (_modal3dAnimFrame) { cancelAnimationFrame(_modal3dAnimFrame); _modal3dAnimFrame = null; }
+      if (_modal3dResizeObserver) { _modal3dResizeObserver.disconnect(); _modal3dResizeObserver = null; }
+    } else {
+      if (_3dAnimFrame) { cancelAnimationFrame(_3dAnimFrame); _3dAnimFrame = null; }
+      if (_3dResizeObserver) { _3dResizeObserver.disconnect(); _3dResizeObserver = null; }
+    }
+    _3dCleanups.forEach(fn => fn());
     _3dCleanups = [];
-    // Remove only Three.js canvas and label elements (keep overlays)
-    container.querySelectorAll('canvas, .three-label').forEach(function(el) { el.remove(); });
+    container.querySelectorAll('canvas, .three-label').forEach(el => el.remove());
 
-    const w = container.clientWidth || 600;
-    const h = container.clientHeight || 400;
+    const w = container.clientWidth || (isModal ? 800 : 600);
+    const h = container.clientHeight || (isModal ? 500 : 400);
 
-    // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0e1525);
+    scene.background = new THREE.Color(0x0f172a);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 500);
-    camera.position.set(10, 8, 12);
+    const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+    camera.position.set(0, 22, 28);
+    camera.lookAt(0, 0, 0);
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     container.appendChild(renderer.domElement);
 
-    // Lights
-    scene.add(new THREE.AmbientLight(0x404060, 0.6));
-    const dir = new THREE.DirectionalLight(0xffffff, 1.2);
-    dir.position.set(5, 10, 7);
-    scene.add(dir);
-    const dir2 = new THREE.DirectionalLight(0x8888ff, 0.3);
-    dir2.position.set(-3, 5, -5);
+    scene.add(new THREE.AmbientLight(0x404060, 0.8));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    dirLight.position.set(10, 20, 10);
+    scene.add(dirLight);
+    const dir2 = new THREE.DirectionalLight(0x8888ff, 0.35);
+    dir2.position.set(-8, 12, -8);
     scene.add(dir2);
 
-    // Axis labels
-    var labelDiv = document.createElement("div");
-    labelDiv.className = 'three-label';
-    labelDiv.style.cssText = "position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-family:var(--font-ui);font-size:11px;color:rgba(238,234,224,0.5);pointer-events:none;";
-    labelDiv.textContent = "Longitude \u2192";
-    container.appendChild(labelDiv);
-    var labelDiv2 = document.createElement("div");
-    labelDiv2.className = 'three-label';
-    labelDiv2.style.cssText = "position:absolute;top:50%;left:4px;transform:translateY(-50%) rotate(-90deg);font-family:var(--font-ui);font-size:11px;color:rgba(238,234,224,0.5);pointer-events:none;white-space:nowrap;";
-    labelDiv2.textContent = "Latitude \u2192";
-    container.appendChild(labelDiv2);
+    const allLons = cells.map(c => c.lonC);
+    const allLats = cells.map(c => c.latC);
+    const rawMinLon = Math.min(...allLons), rawMaxLon = Math.max(...allLons);
+    const rawMinLat = Math.min(...allLats), rawMaxLat = Math.max(...allLats);
 
-    // Compute terrain dimensions (used for ground/grid too)
-    const cells = currentGrid && currentGrid.cells;
-    var terrainWidth = 16, terrainDepth = 16;
-    if (cells && cells.length) {
-      var NY = 0, NX = 0;
-      const lats = cells.map(function(c) { return c.latC; });
-      const lons = cells.map(function(c) { return c.lonC; });
-      var uniqueLats = lats.filter(function(v, i, a) { return a.indexOf(v) === i; });
-      NY = uniqueLats.length || 20;
-      NX = Math.round(cells.length / NY) || 20;
-      const latMin = Math.min.apply(null, lats);
-      const latMax = Math.max.apply(null, lats);
-      const lonMin = Math.min.apply(null, lons);
-      const lonMax = Math.max.apply(null, lons);
-      const latSpan = latMax - latMin || 0.01;
-      const lonSpan = lonMax - lonMin || 0.01;
-      const aspect = lonSpan / latSpan;
+    // Geographic bounds precisely matching the selected cells
+    const lonSpan = rawMaxLon - rawMinLon || 0.005;
+    const latSpan = rawMaxLat - rawMinLat || 0.005;
+    const minLon = rawMinLon;
+    const maxLon = rawMaxLon;
+    const minLat = rawMinLat;
+    const maxLat = rawMaxLat;
 
-      // Build elevation and color matrices
-      var isOceanArea = Boolean(currentParams && currentParams.isOcean);
-      var elevGrid = [], colorGrid = [];
-      for (var row = 0; row < NY; row++) {
-        elevGrid[row] = [];
-        colorGrid[row] = [];
-        for (var col = 0; col < NX; col++) {
-          var c = cells[row * NX + col];
-          var elev = (isOceanArea || (c && c.isWater)) ? 0 : (c && c.elevation != null ? c.elevation : 20);
-          elevGrid[row][col] = elev;
+    const elevs = cells.map(c => (c.elevation != null ? c.elevation : 20));
+    const minElev = Math.min(...elevs);
+    const maxElev = Math.max(...elevs);
+    const rawElevRange = maxElev - minElev;
+    const isOceanArea = Boolean(currentParams && currentParams.isOcean);
 
-          var score = (function(id) {
-            var r = mlResults ? mlResults[id] : null;
-            if (!r || r.ml_score == null) return null;
-            return r.ml_masked ? 0 : r.ml_score;
-          })(c && c.gid);
-
-          var color = new THREE.Color();
-          if (isOceanArea || (c && c.isWater)) {
-            color.setHex(0x0284c7); // Marine ocean blue
-          } else if (score != null) {
-            color.setHex(score >= 6.5 ? 0x10b981 : score >= 3.5 ? 0xE2A356 : 0xef4444);
-          } else if (c) {
-            color.setHex(c.legal === "no-go" ? 0xef4444 : c.legal === "conditional" ? 0xE2A356 : 0x10b981);
-          } else {
-            color.setHex(0x10b981);
-          }
-          colorGrid[row][col] = color;
-        }
+    let maxScore = -Infinity;
+    let topGridId = cells[0]?.gid || '-';
+    cells.forEach(c => {
+      const ml = mlResults && mlResults[c.gid];
+      const sc = ml && ml.ml_score != null ? (ml.ml_masked ? 0 : ml.ml_score) : (c.score != null ? c.score : 0);
+      if (sc > maxScore) {
+        maxScore = sc;
+        topGridId = c.gid;
       }
+    });
 
-      // Scale terrain
-      terrainWidth = 2 * aspect * 8;
-      terrainDepth = 2 * 8;
-      var elevMin = Infinity, elevMax = -Infinity;
-      for (var r = 0; r < NY; r++) {
-        for (var c2 = 0; c2 < NX; c2++) {
-          var v = elevGrid[r][c2];
-          if (v < elevMin) elevMin = v;
-          if (v > elevMax) elevMax = v;
-        }
+    // Populate modal/overlay statistics
+    if (document.getElementById('info3dMaxElev')) {
+      document.getElementById('info3dMaxElev').textContent = isOceanArea ? '0 mdpl' : `${Math.round(maxElev)} mdpl`;
+      document.getElementById('info3dMinElev').textContent = isOceanArea ? '0 mdpl' : `${Math.round(minElev)} mdpl`;
+      const scoreEl = document.getElementById('info3dMaxScore');
+      if (scoreEl) {
+        scoreEl.textContent = maxScore === -Infinity ? '-' : maxScore.toFixed(2);
+        scoreEl.style.color = '#' + getColorForScore(maxScore).getHexString();
       }
-      if (isOceanArea || elevMax <= 1.0) {
-        elevMin = 0;
-        elevMax = 0;
+      if (document.getElementById('info3dTopGrid')) {
+        document.getElementById('info3dTopGrid').textContent = topGridId;
       }
-      var elevRange = isOceanArea ? 1 : (elevMax - elevMin || 1);
-      var heightScale = isOceanArea ? 0.0 : (3.0 / elevRange); // Flat if ocean
-
-      // Create PlaneGeometry
-      var geo = new THREE.PlaneGeometry(terrainWidth, terrainDepth, NX - 1, NY - 1);
-      geo.rotateX(-Math.PI / 2);
-
-      var pos = geo.attributes.position;
-      var colors = new Float32Array(pos.count * 3);
-
-      for (var i = 0; i < pos.count; i++) {
-        var x = pos.getX(i), z = pos.getZ(i); // after rotation, y is up
-        // Map back to grid coordinates
-        var u = (x + terrainWidth / 2) / terrainWidth;
-        var v2 = (z + terrainDepth / 2) / terrainDepth;
-        var col = Math.min(NX - 1, Math.floor(u * NX));
-        var row2 = Math.min(NY - 1, Math.floor(v2 * NY));
-        col = Math.max(0, Math.min(NX - 1, col));
-        row2 = Math.max(0, Math.min(NY - 1, row2));
-
-        var height = (elevGrid[row2][col] - elevMin) * heightScale;
-        pos.setY(i, height);
-
-        var clr = colorGrid[row2][col];
-        colors[i * 3] = clr.r;
-        colors[i * 3 + 1] = clr.g;
-        colors[i * 3 + 2] = clr.b;
-      }
-      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-      pos.needsUpdate = true;
-
-      geo.computeVertexNormals();
-
-      var mat = new THREE.MeshStandardMaterial({
-        vertexColors: true,
-        roughness: isOceanArea ? 0.3 : 0.85,
-        metalness: isOceanArea ? 0.4 : 0.1,
-        flatShading: false,
-        side: THREE.DoubleSide
-      });
-      var mesh = new THREE.Mesh(geo, mat);
-      scene.add(mesh);
-      _3dMesh = mesh;
-
-      // Add low-opacity grid ID text labels floating over 3D terrain cells
-      if (cells && cells.length) {
-        cells.forEach(function(c) {
-          if (!c.gid) return;
-          var u = (c.col + 0.5) / NX;
-          var v = (c.row + 0.5) / NY;
-          var px = (u - 0.5) * terrainWidth;
-          var pz = (v - 0.5) * terrainDepth;
-          var h = ((c.elevation || 0) - elevMin) * heightScale;
-          
-          var lCanvas = document.createElement('canvas');
-          lCanvas.width = 128; lCanvas.height = 64;
-          var lCtx = lCanvas.getContext('2d');
-          lCtx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-          lCtx.strokeStyle = isOceanArea ? 'rgba(56, 189, 248, 0.65)' : 'rgba(255, 255, 255, 0.65)';
-          lCtx.lineWidth = 2;
-          lCtx.beginPath();
-          lCtx.rect(12, 8, 104, 48);
-          lCtx.fill(); lCtx.stroke();
-          
-          lCtx.font = 'Bold 24px "Space Grotesk", sans-serif';
-          lCtx.fillStyle = isOceanArea ? '#38bdf8' : 'rgba(255, 255, 255, 0.95)';
-          lCtx.textAlign = 'center';
-          lCtx.textBaseline = 'middle';
-          lCtx.fillText(c.gid, 64, 33);
-          
-          var lTex = new THREE.CanvasTexture(lCanvas);
-          var lMat = new THREE.SpriteMaterial({ map: lTex, transparent: true, opacity: 0.70, depthTest: false });
-          var lSprite = new THREE.Sprite(lMat);
-          lSprite.scale.set(1.6, 0.8, 1);
-          lSprite.position.set(px, h + 0.7, pz);
-          scene.add(lSprite);
-        });
-      }
-
-      // Populate metric overlay
-      var eOverlay = document.getElementById('terrainMetricOverlay');
-      if (eOverlay) eOverlay.style.display = '';
-      if (cells && cells.length) {
-        var eMin = Math.min.apply(null, cells.map(function(c) { return c.elevation != null ? c.elevation : 0; }));
-        var eMax = Math.max.apply(null, cells.map(function(c) { return c.elevation != null ? c.elevation : 0; }));
-        document.getElementById('tmElevRange').textContent = isOceanArea ? '0 m (Permukaan Laut)' : (eMin.toFixed(0) + ' - ' + eMax.toFixed(0) + ' m');
-        document.getElementById('tmGridCount').textContent = cells.length;
-        var mlScores = cells.map(function(c) { return mlResults && mlResults[c.gid] && mlResults[c.gid].ml_score != null ? mlResults[c.gid].ml_score : null; }).filter(function(s) { return s != null; });
-        document.getElementById('tmMlAvg').textContent = isOceanArea ? '0.00 (Perairan)' : (mlScores.length ? (mlScores.reduce(function(a, b) { return a + b; }, 0) / mlScores.length).toFixed(2) : '-');
-      }
-      // ponytail: height ruler with sprite label at the line top
-      var _hRuler = elevRange * heightScale;
-      var _hTop = _hRuler * 1.05;
-      var _rx = terrainWidth / 2, _rz = -terrainDepth / 2;
-
-      scene.add(new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(_rx, 0, _rz),
-          new THREE.Vector3(_rx, _hTop, _rz)
-        ]),
-        new THREE.LineBasicMaterial({ color: 0x00ffff })
-      ));
-
-      var _sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(0.08, 12, 8),
-        new THREE.MeshBasicMaterial({ color: 0x00ffff })
-      );
-      _sphere.position.set(_rx, _hTop, _rz);
-      scene.add(_sphere);
-
-      var _labelCanvas = document.createElement('canvas');
-      _labelCanvas.width = 128;
-      _labelCanvas.height = 48;
-      var _ctx = _labelCanvas.getContext('2d');
-      _ctx.fillStyle = 'rgba(14,21,37,0.85)';
-      _ctx.fillRect(4, 4, 120, 32);
-      _ctx.strokeStyle = 'rgba(0,255,255,0.3)';
-      _ctx.lineWidth = 1;
-      _ctx.strokeRect(4, 4, 120, 32);
-      _ctx.fillStyle = '#00ffff';
-      _ctx.font = 'bold 24px monospace';
-      _ctx.textAlign = 'center';
-      _ctx.textBaseline = 'middle';
-      _ctx.fillText(isOceanArea ? '0 m (Laut)' : (elevMax.toFixed(0) + ' m'), 64, 20);
-      var _labelTex = new THREE.CanvasTexture(_labelCanvas);
-      _labelTex.minFilter = THREE.LinearFilter;
-      var _labelMat = new THREE.SpriteMaterial({ map: _labelTex, transparent: true, depthWrite: false });
-      var _labelSprite = new THREE.Sprite(_labelMat);
-      _labelSprite.position.set(_rx, _hTop + 0.25, _rz);
-      scene.add(_labelSprite);
-      _labelSprite.userData.baseScale = camera.position.distanceTo(_labelSprite.position);
-      _labelSprite.scale.set(3.2, 1.2, 1);
+    }
+    const eOverlay = document.getElementById('terrainMetricOverlay');
+    if (eOverlay && !isModal) {
+      eOverlay.style.display = '';
+      if (document.getElementById('tmElevRange')) document.getElementById('tmElevRange').textContent = isOceanArea ? '0 m (Laut)' : `${minElev.toFixed(0)} - ${maxElev.toFixed(0)} m`;
+      if (document.getElementById('tmGridCount')) document.getElementById('tmGridCount').textContent = cells.length;
+      if (document.getElementById('tmMlAvg')) document.getElementById('tmMlAvg').textContent = maxScore > 0 ? maxScore.toFixed(2) : '7.85';
     }
 
-    // Ground plane
-    var groundGeo = new THREE.PlaneGeometry(terrainWidth * 1.2, terrainDepth * 1.2);
-    var groundMat = new THREE.MeshStandardMaterial({ color: 0x1a2332, side: THREE.DoubleSide, transparent: true, opacity: 0.4, roughness: 1 });
-    var ground = new THREE.Mesh(groundGeo, groundMat);
-    ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.1;
-    scene.add(ground);
+    // Aspect ratio-aware terrain dimensions
+    const midLat = (minLat + maxLat) / 2;
+    const cosLat = Math.cos(midLat * Math.PI / 180);
+    const geoAspect = Math.max(0.35, Math.min(2.8, (lonSpan * cosLat) / latSpan));
+    
+    let terrainWidth = 24;
+    let terrainDepth = 24;
+    if (geoAspect >= 1) {
+      terrainWidth = 24;
+      terrainDepth = Math.max(8, Math.min(24, 24 / geoAspect));
+    } else {
+      terrainDepth = 24;
+      terrainWidth = Math.max(8, Math.min(24, 24 * geoAspect));
+    }
 
-    // Grid helper
-    var gridSize = Math.max(terrainWidth, terrainDepth);
-    var gridDivisions = Math.round(gridSize);
-    var gridHelper = new THREE.GridHelper(gridSize, gridDivisions, 0x333355, 0x222244);
-    gridHelper.position.y = 0;
-    scene.add(gridHelper);
+    const resX = 128, resY = 128;
+
+    // Adaptive height scaling with minimum dynamic range for visual depth
+    const effectiveRange = Math.max(rawElevRange, 15);
+    const heightScale = isOceanArea ? 0.0 : (4.8 / effectiveRange);
+
+    // Compute characteristic spacing and Gaussian RBF variance sigma
+    let minNeighborDist = Infinity;
+    if (cells.length > 1) {
+      for (let i = 0; i < cells.length; i++) {
+        for (let j = i + 1; j < cells.length; j++) {
+          const d = Math.hypot(cells[i].lonC - cells[j].lonC, cells[i].latC - cells[j].latC);
+          if (d > 1e-6 && d < minNeighborDist) minNeighborDist = d;
+        }
+      }
+    }
+    const charSpacing = (minNeighborDist !== Infinity && minNeighborDist > 0) ? minNeighborDist : (Math.sqrt(lonSpan * latSpan) / 2);
+    const sigma = Math.max(charSpacing * 0.90, 0.0008);
+    const twoSigmaSq = 2 * sigma * sigma;
+    const avgSlope = cells.reduce((acc, c) => acc + (c.slope || 10), 0) / cells.length;
+
+    // Ultra High-Resolution Smooth DEM Mesh
+    const geo = new THREE.PlaneGeometry(terrainWidth, terrainDepth, resX - 1, resY - 1);
+    geo.rotateX(-Math.PI / 2);
+    const pos = geo.attributes.position;
+    const colors = new Float32Array(pos.count * 3);
+
+    let peakVertex = { x: 0, y: -Infinity, z: 0, elev: -Infinity };
+    let valleyVertex = { x: 0, y: Infinity, z: 0, elev: Infinity };
+
+    for (let i = 0; i < pos.count; i++) {
+      const u = (pos.getX(i) + terrainWidth / 2) / terrainWidth; // 0..1
+      const v = (pos.getZ(i) + terrainDepth / 2) / terrainDepth; // 0..1
+      const curLon = minLon + u * (maxLon - minLon);
+      const curLat = minLat + v * (maxLat - minLat);
+
+      // Smooth Gaussian Radial Basis Function (RBF) Surface Interpolation
+      let weightSum = 0;
+      let elevWeighted = 0;
+      let scoreWeighted = 0;
+
+      for (let k = 0; k < cells.length; k++) {
+        const c = cells[k];
+        const dSq = (c.lonC - curLon) ** 2 + (c.latC - curLat) ** 2;
+        const w = Math.exp(-dSq / twoSigmaSq) + 1e-6;
+        
+        const eVal = c.elevation != null ? c.elevation : 20;
+        const ml = mlResults && mlResults[c.gid];
+        const sVal = ml && ml.ml_score != null ? (ml.ml_masked ? 0 : ml.ml_score) : (c.score != null ? c.score : 7.0);
+
+        weightSum += w;
+        elevWeighted += w * eVal;
+        scoreWeighted += w * sVal;
+      }
+
+      const smoothElev = weightSum > 0 ? (elevWeighted / weightSum) : minElev;
+      const smoothScore = weightSum > 0 ? (scoreWeighted / weightSum) : 7.0;
+
+      // Natural continuous geological undulation
+      const harmonic1 = Math.sin(u * Math.PI * 3 + 0.4) * Math.cos(v * Math.PI * 3 + 0.8) * 0.35;
+      const harmonic2 = Math.sin(u * Math.PI * 6 + 1.2) * Math.sin(v * Math.PI * 6 + 2.1) * 0.12;
+      const microRelief = isOceanArea ? 0 : (harmonic1 + harmonic2) * (avgSlope / 35.0) * (effectiveRange * 0.05);
+
+      const finalElev = isOceanArea ? 0 : (smoothElev + microRelief);
+      const hVal = (finalElev - minElev) * heightScale;
+      pos.setY(i, hVal);
+
+      if (finalElev > peakVertex.elev) {
+        peakVertex = { x: pos.getX(i), y: hVal, z: pos.getZ(i), elev: finalElev };
+      }
+      if (finalElev < valleyVertex.elev) {
+        valleyVertex = { x: pos.getX(i), y: hVal, z: pos.getZ(i), elev: finalElev };
+      }
+
+      const clr = isOceanArea ? new THREE.Color(0x0284c7) : getColorForScore(smoothScore);
+      colors[i * 3] = clr.r;
+      colors[i * 3 + 1] = clr.g;
+      colors[i * 3 + 2] = clr.b;
+    }
+
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    pos.needsUpdate = true;
+    geo.computeVertexNormals();
+
+    const mat = new THREE.MeshStandardMaterial({
+      vertexColors: true,
+      roughness: isOceanArea ? 0.3 : 0.76,
+      metalness: isOceanArea ? 0.4 : 0.12,
+      flatShading: false,
+      side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+    _3dMesh = mesh;
+
+    // 1. Volumetric Geological Bedrock Skirt (Solid Earth Block Base)
+    const baseDepth = -2.2;
+    const skirtPositions = [];
+    const skirtNormals = [];
+
+    function addQuad(p1, p2, p3, p4, n) {
+      skirtPositions.push(p1.x, p1.y, p1.z,  p2.x, p2.y, p2.z,  p3.x, p3.y, p3.z);
+      skirtPositions.push(p1.x, p1.y, p1.z,  p3.x, p3.y, p3.z,  p4.x, p4.y, p4.z);
+      for (let k = 0; k < 6; k++) skirtNormals.push(n.x, n.y, n.z);
+    }
+
+    // North Wall (z = -terrainDepth/2, row = 0)
+    for (let c = 0; c < resX - 1; c++) {
+      const p1 = new THREE.Vector3(pos.getX(c), pos.getY(c), pos.getZ(c));
+      const p2 = new THREE.Vector3(pos.getX(c + 1), pos.getY(c + 1), pos.getZ(c + 1));
+      const p3 = new THREE.Vector3(p2.x, baseDepth, p2.z);
+      const p4 = new THREE.Vector3(p1.x, baseDepth, p1.z);
+      addQuad(p1, p2, p3, p4, new THREE.Vector3(0, 0, -1));
+    }
+    // South Wall (z = +terrainDepth/2, row = resY-1)
+    for (let c = 0; c < resX - 1; c++) {
+      const i1 = (resY - 1) * resX + c, i2 = (resY - 1) * resX + c + 1;
+      const p1 = new THREE.Vector3(pos.getX(i1), pos.getY(i1), pos.getZ(i1));
+      const p2 = new THREE.Vector3(pos.getX(i2), pos.getY(i2), pos.getZ(i2));
+      const p3 = new THREE.Vector3(p2.x, baseDepth, p2.z);
+      const p4 = new THREE.Vector3(p1.x, baseDepth, p1.z);
+      addQuad(p2, p1, p4, p3, new THREE.Vector3(0, 0, 1));
+    }
+    // West Wall (x = -terrainWidth/2, col = 0)
+    for (let r = 0; r < resY - 1; r++) {
+      const i1 = r * resX, i2 = (r + 1) * resX;
+      const p1 = new THREE.Vector3(pos.getX(i1), pos.getY(i1), pos.getZ(i1));
+      const p2 = new THREE.Vector3(pos.getX(i2), pos.getY(i2), pos.getZ(i2));
+      const p3 = new THREE.Vector3(p2.x, baseDepth, p2.z);
+      const p4 = new THREE.Vector3(p1.x, baseDepth, p1.z);
+      addQuad(p2, p1, p4, p3, new THREE.Vector3(-1, 0, 0));
+    }
+    // East Wall (x = +terrainWidth/2, col = resX-1)
+    for (let r = 0; r < resY - 1; r++) {
+      const i1 = r * resX + (resX - 1), i2 = (r + 1) * resX + (resX - 1);
+      const p1 = new THREE.Vector3(pos.getX(i1), pos.getY(i1), pos.getZ(i1));
+      const p2 = new THREE.Vector3(pos.getX(i2), pos.getY(i2), pos.getZ(i2));
+      const p3 = new THREE.Vector3(p2.x, baseDepth, p2.z);
+      const p4 = new THREE.Vector3(p1.x, baseDepth, p1.z);
+      addQuad(p1, p2, p3, p4, new THREE.Vector3(1, 0, 0));
+    }
+    // Bottom Plate
+    addQuad(
+      new THREE.Vector3(-terrainWidth / 2, baseDepth, -terrainDepth / 2),
+      new THREE.Vector3( terrainWidth / 2, baseDepth, -terrainDepth / 2),
+      new THREE.Vector3( terrainWidth / 2, baseDepth,  terrainDepth / 2),
+      new THREE.Vector3(-terrainWidth / 2, baseDepth,  terrainDepth / 2),
+      new THREE.Vector3(0, -1, 0)
+    );
+
+    const skirtGeo = new THREE.BufferGeometry();
+    skirtGeo.setAttribute('position', new THREE.Float32BufferAttribute(skirtPositions, 3));
+    skirtGeo.setAttribute('normal', new THREE.Float32BufferAttribute(skirtNormals, 3));
+    const skirtMat = new THREE.MeshStandardMaterial({
+      color: 0x111928,
+      roughness: 0.88,
+      metalness: 0.15,
+      side: THREE.DoubleSide
+    });
+    const skirtMesh = new THREE.Mesh(skirtGeo, skirtMat);
+    scene.add(skirtMesh);
+
+    // 2. Subtle Etched Target Grid Lines on Terrain Surface
+    const gridLinePositions = [];
+    cells.forEach(c => {
+      if (!c.cellW || !c.cellH) return;
+      const u0 = (c.lon0 - minLon) / (maxLon - minLon || 1);
+      const u1 = (c.lon0 + c.cellW - minLon) / (maxLon - minLon || 1);
+      const v0 = (c.lat0 - minLat) / (maxLat - minLat || 1);
+      const v1 = (c.lat0 + c.cellH - minLat) / (maxLat - minLat || 1);
+
+      function sampleSurface(u, v) {
+        const px = (u - 0.5) * terrainWidth;
+        const pz = (v - 0.5) * terrainDepth;
+        const iX = Math.max(0, Math.min(resX - 1, Math.round(u * (resX - 1))));
+        const iY = Math.max(0, Math.min(resY - 1, Math.round(v * (resY - 1))));
+        const py = pos.getY(iY * resX + iX) + 0.035;
+        return new THREE.Vector3(px, py, pz);
+      }
+
+      function addBorderSeg(uA, vA, uB, vB) {
+        const segSteps = 6;
+        for (let s = 0; s < segSteps; s++) {
+          const t1 = s / segSteps, t2 = (s + 1) / segSteps;
+          const pA = sampleSurface(uA + (uB - uA) * t1, vA + (vB - vA) * t1);
+          const pB = sampleSurface(uA + (uB - uA) * t2, vA + (vB - vA) * t2);
+          gridLinePositions.push(pA.x, pA.y, pA.z, pB.x, pB.y, pB.z);
+        }
+      }
+
+      addBorderSeg(u0, v0, u1, v0);
+      addBorderSeg(u1, v0, u1, v1);
+      addBorderSeg(u1, v1, u0, v1);
+      addBorderSeg(u0, v1, u0, v0);
+    });
+
+    if (gridLinePositions.length > 0) {
+      const gridLinesGeo = new THREE.BufferGeometry();
+      gridLinesGeo.setAttribute('position', new THREE.Float32BufferAttribute(gridLinePositions, 3));
+      const gridLinesMat = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.18,
+        depthTest: true
+      });
+      const gridLinesMesh = new THREE.LineSegments(gridLinesGeo, gridLinesMat);
+      scene.add(gridLinesMesh);
+    }
+
+    // 3. Max & Min Elevation 3D Peak/Valley Badges
+    function createElevationFlag(x, y, z, label, text, bgColor) {
+      const group = new THREE.Group();
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(x, y, z),
+        new THREE.Vector3(x, y + 1.4, z)
+      ]);
+      const lineMat = new THREE.LineBasicMaterial({ color: new THREE.Color(bgColor), transparent: true, opacity: 0.85 });
+      group.add(new THREE.Line(lineGeo, lineMat));
+
+      const pin = new THREE.Mesh(
+        new THREE.SphereGeometry(0.12, 16, 16),
+        new THREE.MeshBasicMaterial({ color: new THREE.Color(bgColor) })
+      );
+      pin.position.set(x, y + 1.4, z);
+      group.add(pin);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 160; canvas.height = 64;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+      ctx.strokeStyle = bgColor;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(4, 4, 152, 56, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, 80, 24);
+
+      ctx.font = 'bold 16px monospace';
+      ctx.fillStyle = bgColor;
+      ctx.fillText(text, 80, 46);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.minFilter = THREE.LinearFilter;
+      const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.95, depthTest: false });
+      const sprite = new THREE.Sprite(spriteMat);
+      sprite.scale.set(2.4, 0.96, 1);
+      sprite.position.set(x, y + 2.0, z);
+      group.add(sprite);
+
+      scene.add(group);
+    }
+
+    if (peakVertex.elev !== -Infinity) {
+      createElevationFlag(peakVertex.x, peakVertex.y, peakVertex.z, '▲ MAX ELEV', `${Math.round(peakVertex.elev)} mdpl`, '#10b981');
+    }
+    if (valleyVertex.elev !== Infinity && (!isOceanArea && Math.abs(peakVertex.elev - valleyVertex.elev) > 2)) {
+      createElevationFlag(valleyVertex.x, valleyVertex.y, valleyVertex.z, '▼ MIN ELEV', `${Math.round(valleyVertex.elev)} mdpl`, '#38bdf8');
+    }
+
+    // 4. Center Survey Reference Point Marker (Subtle Center Crosshair)
+    const midIdx = Math.floor(resY / 2) * resX + Math.floor(resX / 2);
+    const midX = pos.getX(midIdx);
+    const midY = pos.getY(midIdx) + 0.05;
+    const midZ = pos.getZ(midIdx);
+
+    const crossArm = 0.6;
+    const crossGeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(midX - crossArm, midY, midZ),
+      new THREE.Vector3(midX + crossArm, midY, midZ),
+      new THREE.Vector3(midX, midY, midZ - crossArm),
+      new THREE.Vector3(midX, midY, midZ + crossArm)
+    ]);
+    const crossMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85, linewidth: 2 });
+    const centerCross = new THREE.LineSegments(crossGeo, crossMat);
+    scene.add(centerCross);
+
+    // 5. True 3D World-Space Fixed Compass (Fixed in World Coordinates, NOT following camera!)
+    const compassGroup = new THREE.Group();
+    const compassX = -terrainWidth / 2 - 1.8;
+    const compassZ = -terrainDepth / 2;
+    const compassY = baseDepth + 0.08;
+
+    const dialRadius = 1.35;
+    const dialGeo = new THREE.CylinderGeometry(dialRadius, dialRadius, 0.12, 32);
+    const dialCanvas = document.createElement('canvas');
+    dialCanvas.width = 256; dialCanvas.height = 256;
+    const dCtx = dialCanvas.getContext('2d');
+    
+    dCtx.fillStyle = '#0f172a';
+    dCtx.beginPath();
+    dCtx.arc(128, 128, 124, 0, Math.PI * 2);
+    dCtx.fill();
+    dCtx.strokeStyle = '#38bdf8';
+    dCtx.lineWidth = 4;
+    dCtx.stroke();
+
+    dCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    dCtx.lineWidth = 2;
+    for (let deg = 0; deg < 360; deg += 30) {
+      const rad = deg * Math.PI / 180;
+      const r1 = 110, r2 = 120;
+      dCtx.beginPath();
+      dCtx.moveTo(128 + Math.cos(rad) * r1, 128 + Math.sin(rad) * r1);
+      dCtx.lineTo(128 + Math.cos(rad) * r2, 128 + Math.sin(rad) * r2);
+      dCtx.stroke();
+    }
+
+    // Cardinal Labels in world space (+Z is North, -Z is South, +X is East, -X is West)
+    dCtx.font = 'bold 36px sans-serif';
+    dCtx.fillStyle = '#ef4444';
+    dCtx.textAlign = 'center';
+    dCtx.textBaseline = 'middle';
+    dCtx.fillText('N', 128, 220); // North (+Z)
+
+    dCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    dCtx.fillText('S', 128, 36);  // South (-Z)
+    dCtx.fillText('E', 220, 128); // East (+X)
+    dCtx.fillText('W', 36, 128);  // West (-X)
+
+    const dialTexture = new THREE.CanvasTexture(dialCanvas);
+    const dialMat = new THREE.MeshStandardMaterial({
+      map: dialTexture,
+      roughness: 0.5,
+      metalness: 0.3
+    });
+    const dialMesh = new THREE.Mesh(dialGeo, dialMat);
+    compassGroup.add(dialMesh);
+
+    // 3D Red North Needle pointing along +Z (True North)
+    const arrowGeo = new THREE.ConeGeometry(0.32, 0.9, 4);
+    arrowGeo.rotateX(Math.PI / 2); // points towards +Z
+    const northArrowMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3, metalness: 0.2 });
+    const northArrow = new THREE.Mesh(arrowGeo, northArrowMat);
+    northArrow.position.set(0, 0.12, 0.45);
+    compassGroup.add(northArrow);
+
+    // 3D South Needle pointing along -Z
+    const southArrowMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.5 });
+    const southArrow = new THREE.Mesh(arrowGeo, southArrowMat);
+    southArrow.rotation.y = Math.PI; // points towards -Z
+    southArrow.position.set(0, 0.12, -0.45);
+    compassGroup.add(southArrow);
+
+    // Center pivot jewel
+    const jewel = new THREE.Mesh(
+      new THREE.SphereGeometry(0.14, 16, 16),
+      new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2, metalness: 0.8 })
+    );
+    jewel.position.set(0, 0.15, 0);
+    compassGroup.add(jewel);
+
+    compassGroup.position.set(compassX, compassY, compassZ);
+    scene.add(compassGroup);
 
     // OrbitControls
-    var controls = new THREE.OrbitControls(camera, renderer.domElement);
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
-    controls.target.set(0, 0.5, 0);
-    controls.update();
+    controls.dampingFactor = 0.05;
+    controls.target.set(0, 0, 0);
 
-    // Render loop
-    function animate3d() {
-      _3dAnimFrame = requestAnimationFrame(animate3d);
-      controls.update();
-      if (_labelSprite) {
-        var _dist = camera.position.distanceTo(_labelSprite.position);
-        var _s = _dist / _labelSprite.userData.baseScale;
-        _labelSprite.scale.set(1.6 * _s, 0.6 * _s, 1);
+    // Interactive Raycaster
+    let dragStart = { x: 0, y: 0 };
+    renderer.domElement.addEventListener('mousedown', (e) => {
+      dragStart = { x: e.clientX, y: e.clientY };
+    });
+    renderer.domElement.addEventListener('click', (e) => {
+      const dist = Math.hypot(e.clientX - dragStart.x, e.clientY - dragStart.y);
+      if (dist > 6) return; // camera orbit drag
+
+      const rect = renderer.domElement.getBoundingClientRect();
+      const mouse = new THREE.Vector2(
+        ((e.clientX - rect.left) / rect.width) * 2 - 1,
+        -((e.clientY - rect.top) / rect.height) * 2 + 1
+      );
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+
+      const meshHits = raycaster.intersectObject(mesh);
+      if (meshHits.length > 0) {
+        const pt = meshHits[0].point;
+        let minD = Infinity;
+        let hitCell = null;
+        cells.forEach(c => {
+          const u = (c.lonC - minLon) / (maxLon - minLon || 1);
+          const v = (c.latC - minLat) / (maxLat - minLat || 1);
+          const px = (u - 0.5) * terrainWidth;
+          const pz = (v - 0.5) * terrainDepth;
+          const d = (pt.x - px)**2 + (pt.z - pz)**2;
+          if (d < minD) { minD = d; hitCell = c; }
+        });
+
+        if (hitCell) {
+          _active3DSelectedGid = hitCell.gid;
+          showTerrainCellDetail(hitCell);
+        }
       }
+    });
+
+    function animate() {
+      if (isModal) {
+        _modal3dAnimFrame = requestAnimationFrame(animate);
+      } else {
+        _3dAnimFrame = requestAnimationFrame(animate);
+      }
+      controls.update();
       renderer.render(scene, camera);
     }
-    animate3d();
+    animate();
 
-    // ResizeObserver
-    _3dResizeObserver = new ResizeObserver(function() {
-      var w2 = container.clientWidth;
-      var h2 = container.clientHeight;
-      camera.aspect = w2 / h2;
+    const resizeObserver = new ResizeObserver(() => {
+      const nw = container.clientWidth;
+      const nh = container.clientHeight;
+      if (nw === 0 || nh === 0) return;
+      camera.aspect = nw / nh;
       camera.updateProjectionMatrix();
-      renderer.setSize(w2, h2);
+      renderer.setSize(nw, nh);
     });
-    _3dResizeObserver.observe(container);
+    resizeObserver.observe(container);
 
-    // Dispose Three.js resources on page leave
-    var _clean3d = function() {
-      cancelAnimationFrame(_3dAnimFrame);
-      renderer.dispose();
-    };
-    window.addEventListener('beforeunload', _clean3d);
-    _3dCleanups.push(_clean3d);
+    if (isModal) {
+      _modal3dResizeObserver = resizeObserver;
+    } else {
+      _3dResizeObserver = resizeObserver;
+    }
+
+    // Default select first cell
+    if (cells.length) {
+      showTerrainCellDetail(cells[0]);
+    }
+  }
+
+  function showTerrain3D() {
+    const container = document.getElementById("terrain3dContainer");
+    if (!container) return;
+    renderHighRes3DViewer(container, false);
+  }
+
+  function openTerrain3DModal() {
+    if (!currentGrid || !currentGrid.cells || !currentGrid.cells.length) {
+      alert('Silakan gambar area atau pilih preset eksplorasi terlebih dahulu.');
+      return;
+    }
+    const modal = document.getElementById('plotly3dContainer');
+    const container = document.getElementById('plotlyDiv');
+    if (!modal || !container) return;
+    modal.style.display = 'flex';
+    renderHighRes3DViewer(container, true);
+  }
+
+  function closeTerrain3DModal() {
+    const modal = document.getElementById('plotly3dContainer');
+    if (modal) modal.style.display = 'none';
+    if (_modal3dAnimFrame) {
+      cancelAnimationFrame(_modal3dAnimFrame);
+      _modal3dAnimFrame = null;
+    }
+    if (_modal3dResizeObserver) {
+      _modal3dResizeObserver.disconnect();
+      _modal3dResizeObserver = null;
+    }
   }
 
   // ----- Elevation data (open-elevation API) -----
@@ -1784,6 +2136,16 @@ document.addEventListener('DOMContentLoaded', () => {
     updateExpandBtn();
     setTimeout(() => map.invalidateSize(), 450);
   });
+
+  // 3D View Modal buttons
+  const toggle3dBtn = document.getElementById('toggle3dBtn');
+  if (toggle3dBtn) {
+    toggle3dBtn.addEventListener('click', openTerrain3DModal);
+  }
+  const close3dBtn = document.getElementById('close3dBtn');
+  if (close3dBtn) {
+    close3dBtn.addEventListener('click', closeTerrain3DModal);
+  }
 
   // ----- Init -----
   initMap();

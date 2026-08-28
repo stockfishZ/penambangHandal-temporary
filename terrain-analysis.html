@@ -1283,6 +1283,51 @@
     </div>
   </div>
 
+  <div id="plotly3dContainer" class="modal-3d-backdrop" style="display: none;">
+    <div class="modal-3d-card">
+      
+      <!-- 3D Canvas Area -->
+      <div id="plotlyDiv" class="modal-3d-canvas"></div>
+
+      <!-- Right Side Scoring & Target Detail Panel -->
+      <div id="info3dSelectedCard" class="modal-3d-sidebar">
+        
+        <!-- Header with Integrated Close Button -->
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; flex-shrink: 0;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span id="card3dGridId" style="font-size: 16px; font-weight: 700; color: #fff;">Grid -</span>
+            <span id="card3dPriority" class="badge" style="font-size: 10px;">-</span>
+          </div>
+          <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); font-weight: 600; padding: 6px 12px; cursor: pointer; border-radius: 6px;">✕ Close 3D</button>
+        </div>
+
+        <!-- Selected Target Detail Section -->
+        <div id="card3dContent" style="font-size: 12px; color: var(--text-secondary); flex-grow: 1;">
+          <p style="text-align: center; color: var(--text-muted); margin: 12px 0;">Tap any 3D grid cell to view detailed stats.</p>
+        </div>
+
+        <!-- DEM Elevation & ML Prospectivity Summary -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px; margin-top: auto; flex-shrink: 0;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Elevation & ML Summary</span>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; margin-bottom: 10px;">
+            <div><span style="color:var(--text-muted);">Max Elev:</span> <b id="info3dMaxElev" style="color:#fff;">-</b></div>
+            <div><span style="color:var(--text-muted);">Min Elev:</span> <b id="info3dMinElev" style="color:#fff;">-</b></div>
+            <div><span style="color:var(--text-muted);">Max Score:</span> <b id="info3dMaxScore" style="color:#10b981;">-</b></div>
+            <div><span style="color:var(--text-muted);">Top Grid:</span> <b id="info3dTopGrid" style="color:#fff;">-</b></div>
+          </div>
+
+          <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 4px;">ML Prospectivity Gradient</span>
+          <div style="height: 10px; width: 100%; border-radius: 5px; background: linear-gradient(to right, #ef4444, #f59e0b, #10b981); margin-bottom: 4px;"></div>
+          <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted);">
+            <span>Low (0)</span>
+            <span>High (10)</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

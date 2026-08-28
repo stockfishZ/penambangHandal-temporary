@@ -51,33 +51,11 @@ print(f"  Test Spearman:    {tm.get('spearman', 0):.3f}")
 
 test_mask = np.array([r in ("SE",) for r in region_ids])
 X_test, y_test, gids_test = X[test_mask], y[test_mask], grid_ids[test_mask]
-y_pred = []
-for i in range(len(X_test)):
-    row = X_test.iloc[i]
-    feats = {
-        "slope_deg": row["slope_deg"], "distance_to_river_m": row["distance_to_river_m"],
-        "distance_to_road_m": row["distance_to_road_m"], "distance_to_smelter_km": row["distance_to_smelter_km"],
-        "area_ha": row["area_ha"],
-        "Ni_pct_mean": row["Ni_pct_mean"], "Fe_pct_mean": row["Fe_pct_mean"],
-        "Co_pct_mean": row["Co_pct_mean"], "MgO_pct_mean": row["MgO_pct_mean"],
-        "SiO2_pct_mean": row["SiO2_pct_mean"],
-        "mag_mean_nT": row["mag_mean_nT"], "mag_std_nT": row["mag_std_nT"],
-        "lithology": "", "legal_status": "",
-    }
-    for col in LITH_COLS:
-        if row[col] == 1:
-            lith_key = col.replace("lith_", "")
-            feats["lithology"] = lith_key
-            break
-    for col in LEGAL_COLS:
-        if row[col] == 1:
-            legal_key = col.replace("legal_", "")
-            feats["legal_status"] = legal_key
-            break
-    result = model.predict_masked(feats)
-    y_pred.append(result.get("ml_score", 0))
 
-y_pred = np.array(y_pred)
+# Vectorized prediction on holdout dataset
+y_pred = model.model.predict(X_test.values)
+y_pred = np.clip(y_pred, 0.0, 10.0)
+y_pred = np.round(y_pred, 2)
 y_test = np.array(y_test)
 
 print(f"\n  --- Per-cell comparison (top 20 test cells) ---")

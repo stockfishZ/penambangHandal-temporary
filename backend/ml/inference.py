@@ -10,6 +10,7 @@ except ImportError:
     XGBRegressor = None
 
 MODEL_DIR = os.path.dirname(__file__)
+MODEL_JSON_PATH = os.path.join(MODEL_DIR, "model.json")
 MODEL_PATH = os.path.join(MODEL_DIR, "model.pkl")
 META_PATH = os.path.join(MODEL_DIR, "model_metadata.json")
 
@@ -30,13 +31,36 @@ LEGAL_COLS = ["legal_allowed", "legal_conditional", "legal_no_go"]
 ALL_FEATURES = FEATURE_COLS + LITH_COLS + LEGAL_COLS
 
 LITH_MAP = {
-    "alluvium": "lith_alluvium", "andesite": "lith_andesite",
+    # Alluvium & sed
+    "alluvium": "lith_alluvium",
+    # Volcanics & Andesites
+    "andesite": "lith_andesite",
     "lahar_deposit": "lith_lahar_deposit",
-    "mafic_volcanic_simulated": "lith_mafic_volcanic_simulated",
-    "peridotite_simulated": "lith_peridotite_simulated",
-    "serpentinite_simulated": "lith_serpentinite_simulated",
-    "tuff": "lith_tuff", "ultramafic_simulated": "lith_ultramafic_simulated",
+    "tuff": "lith_tuff",
     "volcanic_breccia": "lith_volcanic_breccia",
+    # Mafic volcanics & intrusive
+    "mafic_volcanic_simulated": "lith_mafic_volcanic_simulated",
+    "mafic": "lith_mafic_volcanic_simulated",
+    "gabbro_simulated": "lith_mafic_volcanic_simulated",
+    "gabbro": "lith_mafic_volcanic_simulated",
+    "basalt_simulated": "lith_mafic_volcanic_simulated",
+    "basalt": "lith_mafic_volcanic_simulated",
+    # Peridotite & ultramafic varieties
+    "peridotite_simulated": "lith_peridotite_simulated",
+    "peridotite": "lith_peridotite_simulated",
+    "harzburgite_simulated": "lith_peridotite_simulated",
+    "harzburgite": "lith_peridotite_simulated",
+    "dunite_simulated": "lith_peridotite_simulated",
+    "dunite": "lith_peridotite_simulated",
+    "lherzolite_simulated": "lith_peridotite_simulated",
+    "lherzolite": "lith_peridotite_simulated",
+    "pyroxenite_simulated": "lith_peridotite_simulated",
+    "pyroxenite": "lith_peridotite_simulated",
+    # Serpentinite & General Ultramafic
+    "serpentinite_simulated": "lith_serpentinite_simulated",
+    "serpentinite": "lith_serpentinite_simulated",
+    "ultramafic_simulated": "lith_ultramafic_simulated",
+    "ultramafic": "lith_ultramafic_simulated",
 }
 
 LEGAL_MAP = {
@@ -44,6 +68,7 @@ LEGAL_MAP = {
     "conditional": "legal_conditional",
     "no-go": "legal_no_go",
     "no_go": "legal_no_go",
+    "dilarang": "legal_no_go",
 }
 
 class ProspectivityModel:
@@ -51,26 +76,51 @@ class ProspectivityModel:
         self.model = None
         self.loaded = False
         self.metadata = {}
-        if XGB_AVAILABLE and os.path.exists(model_path):
+        self._load_model(model_path)
+        if os.path.exists(META_PATH):
+            try:
+                with open(META_PATH, encoding="utf-8") as f:
+                    self.metadata = json.load(f)
+            except Exception:
+                pass
+
+    def _load_model(self, model_path: str = MODEL_PATH):
+        if not XGB_AVAILABLE:
+            return
+        
+        # Try fast native JSON model first (zero pickle warnings, cross-version safe)
+        if os.path.exists(MODEL_JSON_PATH):
+            try:
+                self.model = XGBRegressor()
+                self.model.load_model(MODEL_JSON_PATH)
+                self.loaded = True
+                return
+            except Exception:
+                self.model = None
+                self.loaded = False
+
+        # Fallback to pickle model
+        if os.path.exists(model_path):
             try:
                 self.model = joblib.load(model_path)
                 self.loaded = True
+                # Automatically save JSON model for future clean loading
+                try:
+                    self.model.save_model(MODEL_JSON_PATH)
+                except Exception:
+                    pass
             except Exception:
+                self.model = None
                 self.loaded = False
-        if os.path.exists(META_PATH):
-            with open(META_PATH) as f:
-                self.metadata = json.load(f)
 
     def reload(self):
-        if XGB_AVAILABLE and os.path.exists(MODEL_PATH):
-            try:
-                self.model = joblib.load(MODEL_PATH)
-                self.loaded = True
-            except Exception:
-                self.loaded = False
+        self._load_model(MODEL_PATH)
         if os.path.exists(META_PATH):
-            with open(META_PATH) as f:
-                self.metadata = json.load(f)
+            try:
+                with open(META_PATH, encoding="utf-8") as f:
+                    self.metadata = json.load(f)
+            except Exception:
+                pass
 
     def predict_masked(self, features: dict) -> dict:
         dist_road = features.get("distance_to_road_m", 9999)
@@ -82,7 +132,7 @@ class ProspectivityModel:
             return {"ml_score": 0.0, "masked": True, "block_reason": "Area Perairan / Laut Terbuka (Marine Water Zone)"}
 
         # Block target if area is a legal no-go zone or inside road buffer
-        if legal_status in ("no-go", "no_go"):
+        if legal_status in ("no-go", "no_go", "dilarang"):
             return {"ml_score": 0.0, "masked": True, "block_reason": "Legal status: no-go zone"}
         if dist_road < 500:
             return {"ml_score": 0.0, "masked": True, "block_reason": "Distance to road < 500m (Permen LH 4/2012 penalty zone)"}
@@ -92,9 +142,9 @@ class ProspectivityModel:
             legal = str(features.get("legal_status", ""))
             legal_score = 5.0 if legal == "allowed" else (3.0 if legal == "conditional" else 0.0)
 
-            lith = str(features.get("lithology", ""))
-            is_ultra = any(x in lith for x in ["serpentinite", "peridotite", "ultramafic"])
-            lith_score = 3.0 if is_ultra else (1.5 if "mafic" in lith else 0.0)
+            lith = str(features.get("lithology", "")).lower()
+            is_ultra = any(x in lith for x in ["serpentinite", "peridotite", "ultramafic", "harzburgite", "dunite"])
+            lith_score = 3.0 if is_ultra else (1.5 if "mafic" in lith or "gabbro" in lith or "basalt" in lith else 0.0)
 
             slope = float(features.get("slope_deg", 0.0))
             slope_norm = max(0.0, (15.0 - abs(slope - 8.0)) / 15.0)
@@ -126,8 +176,10 @@ class ProspectivityModel:
 
         # Predict target prospectivity using trained XGBoost model
         vector = self._to_vector(features)
-        score = float(self.model.predict(vector.reshape(1, -1))[0])
-        score = max(0.0, min(10.0, score))
+        raw_score = float(self.model.predict(vector.reshape(1, -1))[0])
+        # Rescale from 0-100 raw training label range to standard 0.0-10.0 index
+        scaled_score = raw_score / 10.0 if raw_score > 10.0 else raw_score
+        score = max(0.0, min(10.0, scaled_score))
 
         importance = self._feature_importance(vector)
 
@@ -136,7 +188,7 @@ class ProspectivityModel:
             "ml_score": round(score, 2),
             "masked": False,
             "top_features": importance[:5],
-            "ml_confidence": round(1.0 - test_metrics.get("rmse", 0.5) / 10.0, 3),
+            "ml_confidence": round(1.0 - test_metrics.get("rmse", 0.5) / 100.0, 3) if test_metrics.get("rmse", 0) > 1 else round(1.0 - test_metrics.get("rmse", 0.5) / 10.0, 3),
             "ml_cv_score": test_metrics.get("r2", 0),
         }
 
@@ -157,10 +209,10 @@ class ProspectivityModel:
             if col in FEATURE_COLS:
                 vec.append(float(features.get(col, 0.0)))
             elif col in LITH_COLS:
-                lith = str(features.get("lithology", ""))
+                lith = str(features.get("lithology", "")).lower()
                 vec.append(1.0 if LITH_MAP.get(lith) == col else 0.0)
             elif col in LEGAL_COLS:
-                legal = str(features.get("legal_status", ""))
+                legal = str(features.get("legal_status", "")).lower()
                 vec.append(1.0 if LEGAL_MAP.get(legal) == col else 0.0)
             else:
                 vec.append(0.0)
@@ -176,9 +228,18 @@ class ProspectivityModel:
             imp = float(self.model.feature_importances_[i])
             if imp > 0.01:
                 perturbed = vector.copy()
-                perturbed[i] = 1.0 - perturbed[i]
-                diff = abs(base - float(self.model.predict(perturbed.reshape(1, -1))[0]))
-                result.append({"feature": col, "importance": round(imp, 4), "impact": round(diff, 3)})
+                if col in FEATURE_COLS:
+                    # 10% reduction sensitivity perturbation for continuous geospatial variables
+                    perturbed[i] = perturbed[i] * 0.9
+                else:
+                    # Binary toggle for one-hot encoded geological and legal classes
+                    perturbed[i] = 1.0 - perturbed[i]
+                
+                perturbed_val = float(self.model.predict(perturbed.reshape(1, -1))[0])
+                diff = abs(base - perturbed_val)
+                # Rescale impact to 0-10 scale if base is on 0-100 scale
+                scaled_diff = diff / 10.0 if base > 10.0 else diff
+                result.append({"feature": col, "importance": round(imp, 4), "impact": round(scaled_diff, 3)})
         result.sort(key=lambda x: x["importance"], reverse=True)
         return result
 

@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import logging
 import asyncio
 import os
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
 is_training = False
@@ -20,7 +21,19 @@ logger = logging.getLogger(__name__)
 
 ml_model = ProspectivityModel(settings.ML_MODEL_PATH)
 
-app = FastAPI(title="NiTERRA Analysis API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    try:
+        await db_manager.connect()
+    except Exception as e:
+        logger.warning(f"Database unavailable, running in API-only mode: {e}")
+    yield
+    try:
+        await db_manager.disconnect()
+    except Exception:
+        pass
+
+app = FastAPI(title="NiTERRA Analysis API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,20 +42,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.on_event("startup")
-async def startup():
-    try:
-        await db_manager.connect()
-    except Exception as e:
-        logger.warning(f"Database unavailable, running in API-only mode: {e}")
-
-@app.on_event("shutdown")
-async def shutdown():
-    try:
-        await db_manager.disconnect()
-    except Exception:
-        pass
 
 class GridAnalysisRequest(BaseModel):
     grid_id: str = ""
@@ -114,11 +113,12 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
         except Exception:
             logger.warning("BIG API fallback unavailable, using local data only")
 
-    dist_to_settlement = spatial_features.get("dist_to_settlement_meters", 0.0)
-    dist_to_road = spatial_features.get("dist_to_road_meters", 0.0)
-    dist_to_public_facility = spatial_features.get("dist_to_public_facility_meters", 0.0)
-    within_hydro_buffer = spatial_features.get("within_hydro_buffer", False)
-    within_apl_hydro_buffer = spatial_features.get("within_apl_hydro_buffer", False)
+    dist_to_settlement = spatial_features.get("dist_to_settlement_meters") if spatial_features.get("dist_to_settlement_meters") is not None else 9999.0
+    dist_to_road = spatial_features.get("dist_to_road_meters") if spatial_features.get("dist_to_road_meters") is not None else (request.distance_to_road_m if request.distance_to_road_m is not None else 9999.0)
+    dist_to_public_facility = spatial_features.get("dist_to_public_facility_meters") if spatial_features.get("dist_to_public_facility_meters") is not None else 9999.0
+    dist_to_water = spatial_features.get("dist_to_water_meters") if spatial_features.get("dist_to_water_meters") is not None else (request.distance_to_river_m if request.distance_to_river_m is not None else 9999.0)
+    within_hydro_buffer = spatial_features.get("within_hydro_buffer", False) or (dist_to_water < 50.0)
+    within_apl_hydro_buffer = spatial_features.get("within_apl_hydro_buffer", False) or (dist_to_water < 50.0)
     kill_zone = spatial_features.get("kill_zone_exclusion", False)
     is_kill_zone = spatial_features.get("is_kill_zone", False)
     is_grandfathered = spatial_features.get("is_grandfathered", False)
@@ -126,6 +126,26 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
     is_marine_water = (request.lithology or "").lower() in ("air_laut", "water", "marine_water") or (request.legal_status or "").lower() == "marine_water"
     if is_marine_water:
         is_kill_zone = True
+
+    permit_required = spatial_features.get("permit_required", "unknown")
+    legal_zone = spatial_features.get("legal_zone", "unknown")
+    compliance_status = spatial_features.get("compliance_status", "Verify permits")
+
+    # Map request legal_status if DB spatial table entry wasn't available
+    req_legal = (request.legal_status or "").lower()
+    if "no-go" in req_legal or "no_go" in req_legal or "lindung" in req_legal or "konservasi" in req_legal:
+        is_kill_zone = True
+        permit_required = "EXCLUDED"
+        legal_zone = "Hutan Lindung / Konservasi"
+        compliance_status = "ZONA TERLARANG: Hutan Lindung. Dilarang menambang."
+    elif "conditional" in req_legal or "produksi" in req_legal:
+        permit_required = "PPKH (Persetujuan Penggunaan Kawasan Hutan)"
+        legal_zone = "Hutan Produksi"
+        compliance_status = "Kawasan Hutan: Wajib izin PPKH dan Rehabilitasi DAS."
+    elif "allowed" in req_legal or "apl" in req_legal:
+        permit_required = "IUP (AMDAL/UKL-UPL)"
+        legal_zone = "Areal Penggunaan Lain"
+        compliance_status = "APL: Wajib izin IUP. Proses AMDAL standar berlaku."
 
     viability_score = 1.0
 
@@ -153,19 +173,13 @@ async def _compute_analysis(request: GridAnalysisRequest, db=None, precomputed_s
     elif dist_to_road > 5000:
         viability_score *= 0.7
 
-    if within_apl_hydro_buffer:
-        viability_score *= 0.6
-    elif within_hydro_buffer:
+    if within_apl_hydro_buffer or within_hydro_buffer:
         viability_score *= 0.6
 
-    permit_required = spatial_features.get("permit_required", "unknown")
     if permit_required == "EXCLUDED":
         viability_score = 0.0
     elif permit_required != "unknown":
         viability_score *= 0.85
-
-    legal_zone = spatial_features.get("legal_zone", "unknown")
-    compliance_status = spatial_features.get("compliance_status", "Verify permits")
 
     # ML inference
     ml_result = None
@@ -273,15 +287,24 @@ async def health_check():
 async def analyze_preflight():
     return Response(status_code=200)
 
+def _run_training_pipeline():
+    try:
+        from ml.train import load_data, train_model
+        X, y, region_ids, _ = load_data()
+        train_model(X.values, y.values, region_ids)
+    except Exception as err:
+        logger.error(f"Error in training pipeline execution: {err}")
+        raise err
+
 async def perform_retraining():
     global is_training
     try:
-        await asyncio.sleep(2)
+        await asyncio.to_thread(_run_training_pipeline)
         ml_model.reload()
         last = os.path.join(os.path.dirname(settings.ML_MODEL_PATH), ".last_retrain")
-        with open(last, "w") as f:
+        with open(last, "w", encoding="utf-8") as f:
             f.write(datetime.now(timezone.utc).isoformat())
-        logger.info("Retrain complete — model reloaded")
+        logger.info("Retrain complete — model reloaded successfully")
     except Exception as e:
         logger.error(f"Retrain failed: {e}")
     finally:
@@ -327,47 +350,47 @@ async def generate_esg_draft(req: ESGDraftRequest):
     paras = []
     
     # 1. Pendahuluan
-    paras.append(f"DOKUMEN PRA-KAJIAN LINGKUNGAN & K3\\nGrid Target: {req.grid_id}\\n\\n"
-                 f"1. RINGKASAN EKSEKUTIF\\nTarget area didominasi oleh litologi {req.lithology or 'Ultramafik'} "
+    paras.append(f"DOKUMEN PRA-KAJIAN LINGKUNGAN & K3\nGrid Target: {req.grid_id}\n\n"
+                 f"1. RINGKASAN EKSEKUTIF\nTarget area didominasi oleh litologi {req.lithology or 'Ultramafik'} "
                  f"dengan estimasi kadar Ni {req.ni_avg}%. Berdasarkan analisis spasial terintegrasi, "
                  "berikut adalah mitigasi risiko dan strategi perizinan yang diwajibkan.")
                  
     # 2. PPKH & Kehutanan
     if "Lindung" in req.legal_status or "Produksi" in req.legal_status:
-        paras.append(f"2. STATUS KEHUTANAN (PPKH)\\nSesuai dengan Permen LHK 7/2021, area berada di kawasan {req.legal_status}. "
+        paras.append(f"2. STATUS KEHUTANAN (PPKH)\nSesuai dengan Permen LHK 7/2021, area berada di kawasan {req.legal_status}. "
                      "Wajib mengajukan Persetujuan Penggunaan Kawasan Hutan (PPKH) untuk kegiatan Eksplorasi. "
                      "Perusahaan diwajibkan membayarkan PNBP Penggunaan Kawasan Hutan dan menyiapkan Rencana Kerja "
                      "Rehabilitasi Daerah Aliran Sungai (DAS) dengan rasio 1:1.")
     else:
-        paras.append("2. STATUS KEHUTANAN\\nArea berada di Areal Penggunaan Lain (APL). Tidak memerlukan PPKH dari Kementerian LHK.")
+        paras.append("2. STATUS KEHUTANAN\nArea berada di Areal Penggunaan Lain (APL). Tidak memerlukan PPKH dari Kementerian LHK.")
         
     # 3. AMDAL vs UKL-UPL (Permen LHK 4/2021)
     if req.distance_to_river_m < 500:
-        paras.append(f"3. DOKUMEN LINGKUNGAN HIDUP\\nArea berjarak {req.distance_to_river_m}m dari badan sungai terdekat. "
+        paras.append(f"3. DOKUMEN LINGKUNGAN HIDUP\nArea berjarak {req.distance_to_river_m}m dari badan sungai terdekat. "
                      "Menurut Permen LHK 4/2021, kegiatan pengeboran di dekat sempadan sungai berisiko tinggi terhadap limpasan sedimen (TSS). "
                      "Penyusunan AMDAL disarankan dengan mitigasi spesifik pembuatan settling pond sebelum air larian masuk ke sungai.")
     else:
-        paras.append(f"3. DOKUMEN LINGKUNGAN HIDUP\\nJarak aman dari badan sungai terdekat ({req.distance_to_river_m}m). "
+        paras.append(f"3. DOKUMEN LINGKUNGAN HIDUP\nJarak aman dari badan sungai terdekat ({req.distance_to_river_m}m). "
                      "Sesuai Permen LHK 4/2021, kegiatan eksplorasi ini hanya mewajibkan penyusunan dokumen UKL-UPL. "
                      "Fokus mitigasi pada manajemen top soil dan revegetasi pasca pengeboran.")
                      
     # 4. K3 & Geoteknik
     if req.slope_deg > 25:
-        paras.append(f"4. KESELAMATAN EKSPLORASI (K3) & GEOTEKNIK\\nKelerengan ekstrem tercatat pada {req.slope_deg}°. "
+        paras.append(f"4. KESELAMATAN EKSPLORASI (K3) & GEOTEKNIK\nKelerengan ekstrem tercatat pada {req.slope_deg}°. "
                      "Merujuk pada Kepmen ESDM 1827 K/30/MEM/2018 tentang Kaidah Teknik Pertambangan yang Baik, "
                      "area ini memiliki risiko longsor (landslide) tinggi. "
                      "Wajib menggunakan man-portable drill rigs (Rig Jacro/Spindle) untuk meminimalisir land clearing. "
                      "Pekerja diwajibkan menggunakan full-body harness di area tebing, dan jalur evakuasi medevac via helipad darurat "
                      "harus disiapkan.")
     else:
-        paras.append(f"4. KESELAMATAN EKSPLORASI (K3)\\nKelerengan aman ({req.slope_deg}°). "
+        paras.append(f"4. KESELAMATAN EKSPLORASI (K3)\nKelerengan aman ({req.slope_deg}°). "
                      "Sesuai Kepmen ESDM 1827 K/30/MEM/2018, prosedur K3 standar pertambangan berlaku. "
                      "Akses kendaraan 4x4 untuk rig mobilisasi dimungkinkan.")
 
     if req.roi_savings_miliar > 0:
-        paras.append(f"5. DAMPAK EKONOMI & ROI\\nPenggunaan model AI untuk optimasi spasi pengeboran berhasil menghemat capex sebesar Rp {req.roi_savings_miliar} Miliar. Efisiensi ini didapat dengan melebarkan spasi bor menjadi 100m pada area dengan konfidensi ML tinggi, mengurangi land clearing dan jejak karbon operasional.")
+        paras.append(f"5. DAMPAK EKONOMI & ROI\nPenggunaan model AI untuk optimasi spasi pengeboran berhasil menghemat capex sebesar Rp {req.roi_savings_miliar} Miliar. Efisiensi ini didapat dengan melebarkan spasi bor menjadi 100m pada area dengan konfidensi ML tinggi, mengurangi land clearing dan jejak karbon operasional.")
 
-    draft = "\\n\\n".join(paras)
+    draft = "\n\n".join(paras)
     return {"draft": draft}
 
 @app.post("/api/analyze-grid")
