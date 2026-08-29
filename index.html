@@ -148,15 +148,37 @@
         <div class="panel-shell"><div class="metric-card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.25);"><span class="metric-label" style="color: #10b981; font-weight: 700;">Capex ROI Savings</span><strong id="roiSavings" style="color: #10b981;">Rp 0</strong></div></div>
       </div>
 
-      <div class="output-grid">
-        <div class="panel-shell">
+      <!-- Mobile Results Viewport Tab Switcher (Visible on mobile/tablet) -->
+      <div class="results-mobile-nav" id="resultsMobileNav" role="tablist">
+        <button id="tabBtnRanking" class="results-mobile-tab active" type="button" role="tab" aria-selected="true" aria-controls="rankingPanelShell">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          <span>Leaderboard Table</span>
+          <span id="mobileTableCountBadge" class="mobile-tab-badge">0</span>
+        </button>
+        <button id="tabBtnDetail" class="results-mobile-tab" type="button" role="tab" aria-selected="false" aria-controls="detailPanelShell">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Selected Target</span>
+          <span id="mobileActiveGridBadge" class="mobile-tab-badge-target">—</span>
+        </button>
+      </div>
+
+      <div class="output-grid output-grid-view-ranking" id="outputGrid">
+        <div class="panel-shell" id="rankingPanelShell">
           <section class="panel ranking-panel">
             <div class="panel-header-inline">
               <div>
                 <span class="pill">Leaderboard</span>
                 <h3>Target Ranking</h3>
               </div>
-              <button id="downloadBtn" class="btn btn-secondary small" type="button">Download CSV</button>
+              <div class="ranking-header-actions">
+                <div class="ranking-filter-group" id="rankingFilterGroup">
+                  <button class="filter-chip active" data-filter="all" type="button">All</button>
+                  <button class="filter-chip p1-chip" data-filter="p1" type="button">P1</button>
+                  <button class="filter-chip p2-chip" data-filter="p2" type="button">P2</button>
+                  <button class="filter-chip p3-chip" data-filter="p3" type="button">P3</button>
+                </div>
+                <button id="downloadBtn" class="btn btn-secondary small" type="button">CSV</button>
+              </div>
             </div>
             <div class="table-wrap">
               <table>
@@ -172,21 +194,36 @@
                     <th>Mag Score</th>
                     <th>Risk</th>
                     <th>Reason</th>
+                    <th class="col-action">Action</th>
                   </tr>
                 </thead>
                 <tbody id="rankingBody">
-                  <tr><td colspan="10" class="empty">No results yet. Run analysis first.</td></tr>
+                  <tr><td colspan="11" class="empty">No results yet. Run analysis first.</td></tr>
                 </tbody>
               </table>
+            </div>
+            <div class="table-mobile-hint">
+              <span>💡 Tip: Tap any row or "Inspect" to view full target parameters</span>
             </div>
           </section>
         </div>
 
-        <div class="panel-shell">
+        <div class="panel-shell" id="detailPanelShell">
           <aside class="panel detail-panel">
             <div class="detail-panel-head">
-              <span class="pill">Selected Target</span>
-              <h3 id="targetDetailTitle">—</h3>
+              <div class="detail-head-left">
+                <span class="pill">Selected Target</span>
+                <h3 id="targetDetailTitle">—</h3>
+              </div>
+              <div class="detail-head-actions">
+                <div class="target-nav-arrows">
+                  <button id="btnPrevTarget" class="nav-target-btn" title="Previous Target" type="button" aria-label="Previous Target">‹</button>
+                  <button id="btnNextTarget" class="nav-target-btn" title="Next Target" type="button" aria-label="Next Target">›</button>
+                </div>
+                <button id="btnBackToTable" class="btn btn-secondary small mobile-only-btn" type="button">
+                  ← Back to Table
+                </button>
+              </div>
             </div>
             <div id="targetDetail" class="target-detail">
               <p class="muted" style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">Click a grid on the map or a ranking row to view target details.</p>

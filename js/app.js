@@ -45,11 +45,74 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function bindElements() {
-  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','retrainBtn','toggle3dBtn','close3dBtn','plotly3dContainer','plotlyDiv','roiSavings','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint','targetDetailTitle'].forEach(id => {
+  ['magFile','geoFile','gridFile','magFileName','geoFileName','gridFileName','loadDummyBtn','runBtn','retrainBtn','toggle3dBtn','close3dBtn','plotly3dContainer','plotlyDiv','roiSavings','statusBox','gridCount','priorityOneCount','avgScore','bestTarget','killZoneCount','grandfatheredCount','rankingBody','targetDetail','downloadBtn','featureBars','mapHint','targetDetailTitle','outputGrid','tabBtnRanking','tabBtnDetail','mobileTableCountBadge','mobileActiveGridBadge','btnPrevTarget','btnNextTarget','btnBackToTable','rankingFilterGroup'].forEach(id => {
     if (document.getElementById(id)) els[id] = document.getElementById(id);
   });
 }
 window.roiSavingsMiliar = 0;
+
+let currentDetailSubtab = 'overview';
+let activeRankingFilter = 'all';
+
+function switchResultsView(view) {
+  if (!els.outputGrid) return;
+  if (view === 'detail') {
+    els.outputGrid.classList.remove('output-grid-view-ranking');
+    els.outputGrid.classList.add('output-grid-view-detail');
+    if (els.tabBtnRanking) {
+      els.tabBtnRanking.classList.remove('active');
+      els.tabBtnRanking.setAttribute('aria-selected', 'false');
+    }
+    if (els.tabBtnDetail) {
+      els.tabBtnDetail.classList.add('active');
+      els.tabBtnDetail.setAttribute('aria-selected', 'true');
+    }
+    if (window.innerWidth <= 1024) {
+      const navEl = document.getElementById('resultsMobileNav') || els.outputGrid;
+      navEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } else {
+    els.outputGrid.classList.remove('output-grid-view-detail');
+    els.outputGrid.classList.add('output-grid-view-ranking');
+    if (els.tabBtnDetail) {
+      els.tabBtnDetail.classList.remove('active');
+      els.tabBtnDetail.setAttribute('aria-selected', 'false');
+    }
+    if (els.tabBtnRanking) {
+      els.tabBtnRanking.classList.add('active');
+      els.tabBtnRanking.setAttribute('aria-selected', 'true');
+    }
+    if (window.innerWidth <= 1024) {
+      const navEl = document.getElementById('resultsMobileNav') || els.outputGrid;
+      navEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
+
+function updateTargetNavButtons() {
+  if (!els.btnPrevTarget || !els.btnNextTarget || !resultRows.length) return;
+  const currentIndex = resultRows.findIndex(r => r.grid_id === selectedGridId);
+  els.btnPrevTarget.disabled = currentIndex <= 0;
+  els.btnNextTarget.disabled = currentIndex < 0 || currentIndex >= resultRows.length - 1;
+}
+
+function navigateTarget(direction) {
+  if (!resultRows.length) return;
+  const currentIndex = resultRows.findIndex(r => r.grid_id === selectedGridId);
+  if (currentIndex === -1) {
+    selectTarget(resultRows[0]?.grid_id);
+    return;
+  }
+  const nextIndex = currentIndex + direction;
+  if (nextIndex >= 0 && nextIndex < resultRows.length) {
+    selectTarget(resultRows[nextIndex].grid_id);
+    if (els.rankingBody) {
+      els.rankingBody.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
+      const tr = els.rankingBody.querySelector(`tr[data-grid="${resultRows[nextIndex].grid_id}"]`);
+      if (tr) tr.classList.add('selected');
+    }
+  }
+}
 
 function bindEvents() {
   els.magFile.addEventListener('change', () => updateFileName(els.magFile, els.magFileName));
@@ -57,6 +120,23 @@ function bindEvents() {
   els.gridFile.addEventListener('change', () => updateFileName(els.gridFile, els.gridFileName));
   els.loadDummyBtn.addEventListener('click', loadDummyData);
   els.runBtn.addEventListener('click', runAnalysis);
+
+  if (els.tabBtnRanking) els.tabBtnRanking.addEventListener('click', () => switchResultsView('ranking'));
+  if (els.tabBtnDetail) els.tabBtnDetail.addEventListener('click', () => switchResultsView('detail'));
+  if (els.btnBackToTable) els.btnBackToTable.addEventListener('click', () => switchResultsView('ranking'));
+  if (els.btnPrevTarget) els.btnPrevTarget.addEventListener('click', () => navigateTarget(-1));
+  if (els.btnNextTarget) els.btnNextTarget.addEventListener('click', () => navigateTarget(1));
+
+  if (els.rankingFilterGroup) {
+    els.rankingFilterGroup.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        els.rankingFilterGroup.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeRankingFilter = chip.dataset.filter || 'all';
+        renderRanking();
+      });
+    });
+  }
   
   if (els.retrainBtn) {
     els.retrainBtn.addEventListener('click', async () => {
@@ -2021,6 +2101,10 @@ function renderSummary() {
   els.killZoneCount.textContent = killZones;
   els.grandfatheredCount.textContent = grandfathered;
 
+  if (els.mobileTableCountBadge) {
+    els.mobileTableCountBadge.textContent = `${resultRows.length}`;
+  }
+
   let baselineTotal = 0;
   let aiTotal = 0;
   resultRows.forEach(r => {
@@ -2037,7 +2121,25 @@ function renderSummary() {
 function renderRanking() {
   if (!resultRows.length) return;
   const maxScore = Math.max(...resultRows.map(r => r.final_priority_score));
-  els.rankingBody.innerHTML = resultRows.map((r, i) => {
+
+  if (els.mobileTableCountBadge) {
+    els.mobileTableCountBadge.textContent = `${resultRows.length}`;
+  }
+
+  const filteredRows = resultRows.filter(r => {
+    if (activeRankingFilter === 'all') return true;
+    if (activeRankingFilter === 'p1') return r.priority_class === 'Prioritas 1';
+    if (activeRankingFilter === 'p2') return r.priority_class === 'Prioritas 2';
+    if (activeRankingFilter === 'p3') return r.priority_class === 'Prioritas 3';
+    return true;
+  });
+
+  if (filteredRows.length === 0) {
+    els.rankingBody.innerHTML = `<tr><td colspan="11" class="empty">No targets matching filter "${activeRankingFilter.toUpperCase()}".</td></tr>`;
+    return;
+  }
+
+  els.rankingBody.innerHTML = filteredRows.map((r, i) => {
     const barW = maxScore > 0 ? (r.final_priority_score / maxScore) * 100 : 0;
     const pKey = priorityKey(r.priority_class);
     const barColor = { p1: '#10b981', p2: '#f59e0b', p3: '#f97316', p4: '#ef4444' }[pKey] || '#10b981';
@@ -2045,8 +2147,9 @@ function renderRanking() {
       : r.ml_score !== undefined && r.ml_score !== null
         ? `<span class="badge" style="background:#6366f1;font-size:10px;">ML ${r.ml_score}</span>`
         : '';
+    const isSelected = r.grid_id === selectedGridId;
     return `
-      <tr data-grid="${r.grid_id}" class="${r.ml_masked ? 'row-masked' : ''}">
+      <tr data-grid="${r.grid_id}" class="${r.ml_masked ? 'row-masked' : ''} ${isSelected ? 'selected' : ''}">
         <td style="color:var(--text-muted);font-weight:500;">${String(i + 1).padStart(2, '0')}</td>
         <td><b style="font-weight:600;">${r.grid_id}</b> ${mlBadge}</td>
         <td><span class="badge ${pKey}">${r.priority_class.replace('Prioritas ', 'P')}</span></td>
@@ -2058,15 +2161,36 @@ function renderRanking() {
         <td style="color:var(--text-secondary)">${r.mag_score}</td>
         <td style="color:var(--text-secondary)">${r.slope_deg}°</td>
         <td><span class="badge ${r.kill_zone_exclusion ? 'p4' : r.is_grandfathered ? 'p3' : r.permit_required === 'IUP (AMDAL/UKL-UPL)' ? 'p1' : 'p2'} compliance-badge" title="${r.compliance_status || ''}">${r.kill_zone_exclusion ? '⛔ TERLARANG' : r.is_grandfathered ? '⚠️ KETERLANJURAN' : r.legal_zone === 'Areal Penggunaan Lain' ? 'APL' : r.legal_zone === 'Hutan Produksi' ? 'HP' : r.legal_status || '-'}</span></td>
-        <td style="color:var(--text-secondary);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.reason}</td>
+        <td style="color:var(--text-secondary);font-size:12px;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.reason}</td>
+        <td class="col-action">
+          <button class="btn-inspect" data-inspect="${r.grid_id}" type="button">Inspect →</button>
+        </td>
       </tr>
     `;
   }).join('');
+
   els.rankingBody.querySelectorAll('tr[data-grid]').forEach(tr => {
     tr.addEventListener('click', () => {
       els.rankingBody.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
       tr.classList.add('selected');
       selectTarget(tr.dataset.grid);
+      if (window.innerWidth <= 1024) {
+        switchResultsView('detail');
+      }
+    });
+  });
+
+  els.rankingBody.querySelectorAll('button[data-inspect]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const gid = btn.dataset.inspect;
+      els.rankingBody.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
+      const tr = els.rankingBody.querySelector(`tr[data-grid="${gid}"]`);
+      if (tr) tr.classList.add('selected');
+      selectTarget(gid);
+      if (window.innerWidth <= 1024) {
+        switchResultsView('detail');
+      }
     });
   });
 }
@@ -2084,113 +2208,148 @@ function selectTarget(gridId) {
   const pColor = pColors[pKey] || '#10b981';
   const xaiBreakdown = computeExplainabilityBreakdown(row);
 
+  if (els.mobileActiveGridBadge) {
+    els.mobileActiveGridBadge.textContent = `${gridId} (${row.final_priority_score})`;
+  }
+
+  updateTargetNavButtons();
+
+  const isOverview = currentDetailSubtab === 'overview' || currentDetailSubtab === 'all';
+  const isAssays = currentDetailSubtab === 'assays' || currentDetailSubtab === 'all';
+  const isXaiEsg = currentDetailSubtab === 'xai-esg' || currentDetailSubtab === 'all';
+
   els.targetDetail.innerHTML = `
+    <!-- Header Subtabs Filter -->
+    <div class="detail-subtabs" role="tablist">
+      <button class="detail-subtab-btn ${currentDetailSubtab === 'overview' ? 'active' : ''}" data-dtab="overview" type="button">Overview</button>
+      <button class="detail-subtab-btn ${currentDetailSubtab === 'assays' ? 'active' : ''}" data-dtab="assays" type="button">Assays & RS</button>
+      <button class="detail-subtab-btn ${currentDetailSubtab === 'xai-esg' ? 'active' : ''}" data-dtab="xai-esg" type="button">AI & ESG</button>
+      <button class="detail-subtab-btn ${currentDetailSubtab === 'all' ? 'active' : ''}" data-dtab="all" type="button">All</button>
+    </div>
+
     <!-- 1. Header Banner -->
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2px;">
       <span class="badge ${pKey}">${row.priority_class}</span>
       <span style="font-size:12px; font-weight:600; color:var(--text-secondary);">Score: <strong style="color:#fff; font-size:14px;">${row.final_priority_score}</strong>/100</span>
     </div>
-    <div style="margin: 8px 0 16px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden;">
+    <div style="margin: 6px 0 12px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden;">
       <div style="height: 100%; width: ${row.final_priority_score}%; background: ${pColor}; border-radius: 3px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);"></div>
     </div>
 
-    <!-- 2. Core Exploration Stats Card -->
-    <div class="target-detail-card">
-      <div class="target-detail-card-title">
-        Target Scope & Drilling
+    <!-- Section 1: Overview & Drilling -->
+    <div class="detail-section-block" style="${isOverview ? '' : 'display:none;'}">
+      <!-- Core Exploration Stats Card -->
+      <div class="target-detail-card">
+        <div class="target-detail-card-title">
+          Target Scope & Drilling
+        </div>
+        <div class="target-stats-grid">
+          <div class="target-stat-item"><span>Surface Area</span><b style="color:#38bdf8;">${formatAreaM2(row.area_ha)} (${row.area_ha || 10} Ha)</b></div>
+          <div class="target-stat-item"><span>Drill Spacing</span><b>${row.drill_spacing || 100}m &times; ${row.drill_spacing || 100}m</b></div>
+          <div class="target-stat-item"><span>Required Holes</span><b>${row.estimated_drill_holes ?? '-'} Holes</b></div>
+          <div class="target-stat-item"><span>Est. Drilling Cost</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
+        </div>
       </div>
-      <div class="target-stats-grid">
-        <div class="target-stat-item"><span>Surface Area</span><b style="color:#38bdf8;">${formatAreaM2(row.area_ha)} (${row.area_ha || 10} Ha)</b></div>
-        <div class="target-stat-item"><span>Drill Spacing</span><b>${row.drill_spacing || 100}m &times; ${row.drill_spacing || 100}m</b></div>
-        <div class="target-stat-item"><span>Required Holes</span><b>${row.estimated_drill_holes ?? '-'} Holes</b></div>
-        <div class="target-stat-item"><span>Est. Drilling Cost</span><b>${formatRupiah(row.estimated_cost_rp)}</b></div>
+
+      <!-- Recommendation Box -->
+      <div class="reason-box" style="margin-top: 10px;">
+        <b>Target Assessment & Next Step</b>
+        <div style="margin-top: 4px;">${row.reason}</div>
+      </div>
+
+      ${(row.qaqc_flags && row.qaqc_flags.length > 0) ? `
+        <div class="reason-box" style="border-left-color:#f59e0b; background:rgba(245,158,11,0.06); margin-top:8px;">
+          <b style="color:#f59e0b;">QA/QC Warning Flag</b>${row.qaqc_flags.join('<br>')}
+        </div>` : `
+        <div class="reason-box" style="border-left-color:#10b981; background:rgba(16,185,129,0.06); margin-top:8px;">
+          <b style="color:#10b981;">QA/QC Verification Passed</b>Data parameters within normal geological bounds.
+        </div>`}
+    </div>
+
+    <!-- Section 2: Assays & Remote Sensing -->
+    <div class="detail-section-block" style="${isAssays ? '' : 'display:none;'}">
+      <div class="target-detail-card">
+        <div class="target-detail-card-title" style="color:#10b981;">
+          Geochemistry & Assays
+        </div>
+        <div class="target-stats-grid">
+          <div class="target-stat-item"><span>Ni (Nickel)</span><b style="color:#10b981;">${row.Ni_avg != null ? row.Ni_avg + '%' : '-'}</b></div>
+          <div class="target-stat-item"><span>Fe (Iron)</span><b>${row.Fe_avg != null ? row.Fe_avg + '%' : '-'}</b></div>
+          <div class="target-stat-item"><span>Co (Cobalt)</span><b>${row.Co_avg != null ? row.Co_avg + '%' : '-'}</b></div>
+          <div class="target-stat-item"><span>MgO / SiO2</span><b>${row.MgO_avg}% / ${row.SiO2_avg}%</b></div>
+          <div class="target-stat-item"><span>SiO2/MgO Ratio</span><b>${row.MgO_avg > 0 ? (row.SiO2_avg / row.MgO_avg).toFixed(2) : '-'}</b></div>
+          <div class="target-stat-item"><span>Magnetic Score</span><b style="color:#0ea5e9;">${row.mag_score ?? '-'}</b></div>
+        </div>
+        ${row.fe_oxide_index != null ? `
+        <div style="border-top:1px solid rgba(255,255,255,0.06); margin-top:10px; padding-top:8px;">
+          <div class="target-detail-card-title" style="color:var(--text-secondary); margin-bottom:6px;">Sentinel-2 Remote Sensing</div>
+          <div class="detail-line"><span>Fe-Oxide (B4/B2):</span><b>${row.fe_oxide_index}</b></div>
+          <div class="detail-line"><span>Clay Index (B11/B12):</span><b>${row.clay_index || '-'}</b></div>
+          <div class="detail-line"><span>NDVI Stress:</span><b>${row.ndvi_stress_index || '-'}</b></div>
+        </div>` : ''}
       </div>
     </div>
 
-    <!-- 3. Explainable AI & Geological Factor Attribution (SHAP) Card -->
-    <div class="xai-card">
-      <div class="xai-card-title">
-        <span>Explainable AI Attribution (SHAP)</span>
-      </div>
-      <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">
-        Additive factor breakdown for Target Score (<b>${row.final_priority_score}/100</b>):
-      </div>
-      <div class="xai-list">
-        ${xaiBreakdown.map(b => `
-          <div class="xai-item">
-            <div class="xai-header">
-              <span>${b.name}</span>
-              <b>+${b.points} pts (${b.percent}%)</b>
+    <!-- Section 3: AI SHAP & ESG Compliance -->
+    <div class="detail-section-block" style="${isXaiEsg ? '' : 'display:none;'}">
+      <!-- Explainable AI & Geological Factor Attribution (SHAP) Card -->
+      <div class="xai-card">
+        <div class="xai-card-title">
+          <span>Explainable AI Attribution (SHAP)</span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">
+          Additive factor breakdown for Target Score (<b>${row.final_priority_score}/100</b>):
+        </div>
+        <div class="xai-list">
+          ${xaiBreakdown.map(b => `
+            <div class="xai-item">
+              <div class="xai-header">
+                <span>${b.name}</span>
+                <b>+${b.points} pts (${b.percent}%)</b>
+              </div>
+              <div class="xai-track">
+                <div class="xai-fill" style="width: ${b.percent}%; background: ${b.color || '#6366f1'};"></div>
+              </div>
+              <div class="xai-desc">${b.description}</div>
             </div>
-            <div class="xai-track">
-              <div class="xai-fill" style="width: ${b.percent}%; background: ${b.color || '#6366f1'};"></div>
-            </div>
-            <div class="xai-desc">${b.description}</div>
-          </div>
-        `).join('')}
+          `).join('')}
+        </div>
+        <div class="xai-note">
+          Additive feature sensitivity verified. Validated on Spatial Block Hold-Out benchmark (R2 = 0.842, Spearman rho = 0.885).
+        </div>
       </div>
-      <div class="xai-note">
-        Additive feature sensitivity verified. Validated on Spatial Block Hold-Out benchmark (R2 = 0.842, Spearman rho = 0.885).
+
+      <!-- Operations, ESG & Legal Card -->
+      <div class="target-detail-card" style="margin-top: 10px;">
+        <div class="target-detail-card-title" style="color:#0ea5e9;">
+          Operations & ESG Compliance
+        </div>
+        <div class="detail-line"><span>Processing Route:</span><b style="color:#0ea5e9;">${row.processing_route || '-'}</b></div>
+        <div class="detail-line"><span>Terrain Slope:</span><b>${row.slope_deg} deg</b></div>
+        <div class="detail-line"><span>Road / River Distance:</span><b>${row.distance_to_road_m}m / ${row.distance_to_river_m}m</b></div>
+        <div class="detail-line"><span>Legal Status:</span><b>${row.legal_zone || row.legal_status || '-'}</b></div>
+        <div class="detail-line"><span>Compliance Verdict:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || (row.kill_zone_exclusion ? 'RESTRICTED' : 'CLEAR')}</b></div>
       </div>
-    </div>
 
-    <!-- 4. Geochemistry & Assays Card -->
-    <div class="target-detail-card">
-      <div class="target-detail-card-title" style="color:#10b981;">
-        Geochemistry & Assays
+      <!-- ESG Report Action Button -->
+      <div style="margin-top: 10px;">
+          <button id="btn-generate-esg" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background:linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color:white; border:none; padding:12px; border-radius:8px; font-weight:600; cursor:pointer; font-size: 13px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: all 0.2s;">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              Auto-Generate ESG & Permit Draft
+          </button>
       </div>
-      <div class="target-stats-grid">
-        <div class="target-stat-item"><span>Ni (Nickel)</span><b style="color:#10b981;">${row.Ni_avg != null ? row.Ni_avg + '%' : '-'}</b></div>
-        <div class="target-stat-item"><span>Fe (Iron)</span><b>${row.Fe_avg != null ? row.Fe_avg + '%' : '-'}</b></div>
-        <div class="target-stat-item"><span>Co (Cobalt)</span><b>${row.Co_avg != null ? row.Co_avg + '%' : '-'}</b></div>
-        <div class="target-stat-item"><span>MgO / SiO2</span><b>${row.MgO_avg}% / ${row.SiO2_avg}%</b></div>
-        <div class="target-stat-item"><span>SiO2/MgO Ratio</span><b>${row.MgO_avg > 0 ? (row.SiO2_avg / row.MgO_avg).toFixed(2) : '-'}</b></div>
-        <div class="target-stat-item"><span>Magnetic Score</span><b style="color:#0ea5e9;">${row.mag_score ?? '-'}</b></div>
-      </div>
-      ${row.fe_oxide_index != null ? `
-      <div style="border-top:1px solid rgba(255,255,255,0.06); margin-top:10px; padding-top:8px;">
-        <div class="target-detail-card-title" style="color:var(--text-secondary); margin-bottom:6px;">Sentinel-2 Remote Sensing</div>
-        <div class="detail-line"><span>Fe-Oxide (B4/B2):</span><b>${row.fe_oxide_index}</b></div>
-        <div class="detail-line"><span>Clay Index (B11/B12):</span><b>${row.clay_index || '-'}</b></div>
-        <div class="detail-line"><span>NDVI Stress:</span><b>${row.ndvi_stress_index || '-'}</b></div>
-      </div>` : ''}
+      <div id="esg-draft-container" style="display: none; margin-top: 10px; padding: 14px; background: rgba(15,23,42,0.8); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.6; color: #e2e8f0; max-height: 350px; overflow-y: auto;"></div>
     </div>
-
-    <!-- 5. Operations, ESG & Legal Card -->
-    <div class="target-detail-card">
-      <div class="target-detail-card-title" style="color:#0ea5e9;">
-        Operations & ESG Compliance
-      </div>
-      <div class="detail-line"><span>Processing Route:</span><b style="color:#0ea5e9;">${row.processing_route || '-'}</b></div>
-      <div class="detail-line"><span>Terrain Slope:</span><b>${row.slope_deg} deg</b></div>
-      <div class="detail-line"><span>Road / River Distance:</span><b>${row.distance_to_road_m}m / ${row.distance_to_river_m}m</b></div>
-      <div class="detail-line"><span>Legal Status:</span><b>${row.legal_zone || row.legal_status || '-'}</b></div>
-      <div class="detail-line"><span>Compliance Verdict:</span><b style="${row.kill_zone_exclusion ? 'color:#ef4444;' : row.is_grandfathered ? 'color:#f59e0b;' : 'color:#10b981;'}">${row.compliance_status || (row.kill_zone_exclusion ? 'RESTRICTED' : 'CLEAR')}</b></div>
-    </div>
-
-    <!-- 6. Recommendation Box -->
-    <div class="reason-box">
-      <b>Target Assessment & Next Step</b>
-      <div style="margin-top: 4px;">${row.reason}</div>
-    </div>
-
-    ${(row.qaqc_flags && row.qaqc_flags.length > 0) ? `
-      <div class="reason-box" style="border-left-color:#f59e0b; background:rgba(245,158,11,0.06); margin-top:2px;">
-        <b style="color:#f59e0b;">QA/QC Warning Flag</b>${row.qaqc_flags.join('<br>')}
-      </div>` : `
-      <div class="reason-box" style="border-left-color:#10b981; background:rgba(16,185,129,0.06); margin-top:2px;">
-        <b style="color:#10b981;">QA/QC Verification Passed</b>Data parameters within normal geological bounds.
-      </div>`}
-
-    <!-- 7. ESG Report Action Button -->
-    <div style="margin-top: 6px;">
-        <button id="btn-generate-esg" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background:linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color:white; border:none; padding:12px; border-radius:8px; font-weight:600; cursor:pointer; font-size: 13px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: all 0.2s;">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            Auto-Generate ESG & Permit Draft
-        </button>
-    </div>
-    <div id="esg-draft-container" style="display: none; margin-top: 10px; padding: 14px; background: rgba(15,23,42,0.8); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.6; color: #e2e8f0; max-height: 350px; overflow-y: auto;"></div>
   `;
+
+  // Attach subtab listeners
+  els.targetDetail.querySelectorAll('.detail-subtab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentDetailSubtab = btn.dataset.dtab;
+      selectTarget(gridId);
+    });
+  });
+
   Object.entries(gridLayers).forEach(([gid, layer]) => {
     const feat = rawGrid.features.find(f => f.properties.grid_id === gid);
     layer.setStyle(gridStyle(feat || { properties: {} }));
@@ -2231,7 +2390,7 @@ function selectTarget(gridId) {
         function typeWriter() {
           if (i < text.length) {
             let char = text.charAt(i);
-            if (char === '\\n') {
+            if (char === '\n') {
                 container.innerHTML += '<br>';
             } else {
                 container.innerHTML += char;
