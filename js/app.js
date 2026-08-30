@@ -323,6 +323,85 @@ function cellLegalStatus(lonC, latC, forestryData) {
   return 'allowed';
 }
 
+/**
+ * Fetch real DEM elevation from Terrarium tiles for a list of {lon, lat} points.
+ * Returns a Promise that resolves when all points have .elevation set.
+ */
+function fetchDEMElevations(points) {
+  return new Promise((resolve) => {
+    if (!points || !points.length) return resolve();
+    const zoom = 12; // good resolution for ~900m cells
+    const tileBuckets = {};
+    points.forEach(p => {
+      const tx = Math.floor((p.lon + 180) / 360 * (1 << zoom));
+      const latRad = p.lat * Math.PI / 180;
+      const ty = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * (1 << zoom));
+      const key = `${zoom}/${tx}/${ty}`;
+      if (!tileBuckets[key]) tileBuckets[key] = [];
+      tileBuckets[key].push(p);
+    });
+    const tileKeys = Object.keys(tileBuckets);
+    let loaded = 0;
+    const total = tileKeys.length;
+    if (total === 0) return resolve();
+    tileKeys.forEach(key => {
+      const [z, x, y] = key.split('/').map(Number);
+      const url = `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png`;
+      const canvas = document.createElement('canvas');
+      canvas.width = 256; canvas.height = 256;
+      const ctx = canvas.getContext('2d');
+      fetch(url).then(r => r.ok ? r.blob() : Promise.reject()).then(blob => {
+        const img = new Image();
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0);
+          const imgData = ctx.getImageData(0, 0, 256, 256);
+          tileBuckets[key].forEach(p => {
+            const latRad2 = p.lat * Math.PI / 180;
+            const px = Math.min(255, Math.max(0, Math.floor((((p.lon + 180) / 360 * (1 << z)) % 1) * 256)));
+            const py = Math.min(255, Math.max(0, Math.floor((((1 - Math.log(Math.tan(latRad2) + 1 / Math.cos(latRad2)) / Math.PI) / 2 * (1 << z)) % 1) * 256)));
+            const idx = (py * 256 + px) * 4;
+            const r_ = imgData.data[idx], g_ = imgData.data[idx + 1], b_ = imgData.data[idx + 2];
+            p.elevation = (r_ * 256 + g_ + b_ / 256) - 32768;
+          });
+          loaded++;
+          if (loaded === total) resolve();
+        };
+        img.onerror = () => { loaded++; if (loaded === total) resolve(); };
+        img.src = URL.createObjectURL(blob);
+      }).catch(() => { loaded++; if (loaded === total) resolve(); });
+    });
+  });
+}
+
+/**
+ * Compute slope in degrees for a grid cell using DEM elevations at the center
+ * and 4 cardinal sample points (N, S, E, W offsets from center).
+ * Slope = arctan(max_gradient) where gradient = elevation_diff / horizontal_distance.
+ */
+function computeSlopeFromDEM(centerElev, northElev, southElev, eastElev, westElev, cellSizeDeg) {
+  // Approximate horizontal distance of half a cell in meters
+  // 1 degree latitude ≈ 111,320 m; use half-cell offset
+  const halfCellM = (cellSizeDeg / 2) * 111320;
+  if (halfCellM < 1) return 0;
+
+  // Gradients in each cardinal direction (rise / run)
+  const gradients = [
+    Math.abs(northElev - centerElev) / halfCellM,
+    Math.abs(southElev - centerElev) / halfCellM,
+    Math.abs(eastElev - centerElev) / halfCellM,
+    Math.abs(westElev - centerElev) / halfCellM
+  ];
+
+  // Also compute the N-S and E-W full-cell gradients (Horn's method simplified)
+  const nsGrad = Math.abs(northElev - southElev) / (2 * halfCellM);
+  const ewGrad = Math.abs(eastElev - westElev) / (2 * halfCellM);
+  const combinedGrad = Math.sqrt(nsGrad * nsGrad + ewGrad * ewGrad);
+
+  const maxGrad = Math.max(...gradients, combinedGrad);
+  const slopeDeg = Math.atan(maxGrad) * (180 / Math.PI);
+  return Math.round(slopeDeg * 10) / 10; // 1 decimal place
+}
+
 async function loadDummyData() {
   try {
     // Fetch actual forestry boundaries to map exact legal zones
@@ -356,6 +435,9 @@ async function loadDummyData() {
     rawMagnet = [];
     rawGeo = [];
 
+    // Phase 1: Build cell geometry and collect DEM sample points
+    const cellDefs = [];
+    const demPoints = []; // all DEM sample points across all cells
     let counter = 1;
     for (let ix = 0; ix < numCols; ix++) {
         for (let iy = 0; iy < numRows; iy++) {
@@ -363,13 +445,32 @@ async function loadDummyData() {
             const lat1 = startLat + iy * cellSize;
             const lon2 = lon1 + cellSize;
             const lat2 = lat1 + cellSize;
-            
             const gid = `G${String(counter++).padStart(3, '0')}`;
-            
-            // True center of this grid cell
             const centerLon = (lon1 + lon2) / 2;
             const centerLat = (lat1 + lat2) / 2;
-            
+            const halfCell = cellSize * 0.4; // sample offset slightly inside cell edges
+
+            // 5 DEM sample points: center, north, south, east, west
+            const pts = {
+                center: { lon: centerLon, lat: centerLat, elevation: 0 },
+                north:  { lon: centerLon, lat: centerLat + halfCell, elevation: 0 },
+                south:  { lon: centerLon, lat: centerLat - halfCell, elevation: 0 },
+                east:   { lon: centerLon + halfCell, lat: centerLat, elevation: 0 },
+                west:   { lon: centerLon - halfCell, lat: centerLat, elevation: 0 }
+            };
+            demPoints.push(pts.center, pts.north, pts.south, pts.east, pts.west);
+            cellDefs.push({ ix, iy, lon1, lat1, lon2, lat2, gid, centerLon, centerLat, pts });
+        }
+    }
+
+    // Phase 2: Fetch real DEM elevation for all sample points
+    setStatus('Processing', 'Fetching real terrain elevation data from DEM tiles...');
+    await fetchDEMElevations(demPoints);
+
+    // Phase 3: Generate grid features with DEM-derived slope and elevation
+    for (const cell of cellDefs) {
+            const { lon1, lat1, lon2, lat2, gid, centerLon, centerLat, pts } = cell;
+
             // Use exact geometric intersection with forestry boundary data
             const rawStatus = cellLegalStatus(centerLon, centerLat, forestryData);
             let legal = 'allowed (APL)';
@@ -378,7 +479,12 @@ async function loadDummyData() {
 
             const isUltramafic = Math.random() > 0.25;
             const lithology = isUltramafic ? (Math.random() > 0.5 ? 'serpentinite_simulated' : 'peridotite_simulated') : 'mafic_volcanic_simulated';
-            const slope = Math.floor(6 + Math.random() * 18);
+            
+            // Compute slope from real DEM elevations
+            const slope = computeSlopeFromDEM(
+                pts.center.elevation, pts.north.elevation, pts.south.elevation,
+                pts.east.elevation, pts.west.elevation, cellSize
+            );
             
             // STRICT NON-WATER BUFFER: Minimum river distance is strictly >= 180 meters (no river hitting!)
             const distRiver = Math.floor(180 + Math.random() * 1820);
@@ -391,7 +497,8 @@ async function loadDummyData() {
             const ndviStress = parseFloat((0.18 + Math.random() * 0.25).toFixed(3));
             const tmiRaw = parseFloat((45200 + Math.random() * 3200).toFixed(1));
             const tmiCorr = parseFloat((tmiRaw - 45000).toFixed(1));
-            const elevMdpl = parseFloat((250 + Math.random() * 350).toFixed(1));
+            // Use real DEM center elevation instead of random
+            const elevMdpl = parseFloat(Math.max(0, pts.center.elevation).toFixed(1));
             const geochemRatio = parseFloat((1.5 + Math.random() * 1.8).toFixed(2));
 
             rawGrid.features.push({
@@ -455,7 +562,6 @@ async function loadDummyData() {
                     qc_flag: 'valid'
                 });
             }
-        }
     }
 
     els.magFileName.textContent = 'random_generated_mag.csv';
