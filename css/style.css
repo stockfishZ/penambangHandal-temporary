@@ -522,6 +522,7 @@ h3 {
   letter-spacing: 0.05em;
   border-radius: var(--radius-full);
   text-transform: uppercase;
+  margin-bottom: var(--sp-xs);
 }
 
 .file-card {
@@ -627,6 +628,17 @@ h3 {
   padding: var(--sp-md) var(--sp-lg);
   border-bottom: 1px solid var(--border-subtle);
   background: rgba(255, 255, 255, 0.01);
+}
+
+.map-topline > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.map-topline > div:first-child .pill {
+  margin-bottom: 0;
 }
 
 .map-tabs {
@@ -815,6 +827,17 @@ h3 {
   align-items: center;
   gap: var(--sp-md);
   margin-bottom: var(--sp-lg);
+}
+
+.panel-header-inline > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.panel-header-inline > div:first-child .pill {
+  margin-bottom: 0;
 }
 
 .ranking-header-actions {
@@ -1113,7 +1136,11 @@ tr.selected td {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 8px;
+}
+
+.detail-head-left .pill {
+  margin-bottom: 0;
 }
 
 .detail-head-actions {
