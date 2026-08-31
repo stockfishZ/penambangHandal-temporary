@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindMLPresets();
   drawFeatureBars();
   initScrollReveal();
+  updateRunButtonState();
   setTimeout(forceMapResize, 250);
   setTimeout(forceMapResize, 900);
 });
@@ -51,7 +52,7 @@ function bindElements() {
 }
 window.roiSavingsMiliar = 0;
 
-let currentDetailSubtab = 'overview';
+let currentDetailSubtab = 'all';
 let activeRankingFilter = 'all';
 
 function switchResultsView(view) {
@@ -278,8 +279,33 @@ function forceMapResize() {
   });
 }
 
-function updateFileName(input, target) {
-  target.textContent = input.files?.[0]?.name || 'Belum dipilih';
+function updateRunButtonState() {
+  const hasDummyData = Boolean(rawMagnet?.length && rawGeo?.length && rawGrid?.features?.length);
+  const hasUploadedFiles = Boolean(els.magFile?.files?.[0] && els.geoFile?.files?.[0] && els.gridFile?.files?.[0]);
+  
+  if (hasDummyData || hasUploadedFiles) {
+    els.runBtn?.classList.add('ready');
+  } else {
+    els.runBtn?.classList.remove('ready');
+  }
+}
+
+async function updateFileName(input, target) {
+  const file = input.files?.[0];
+  const card = target.closest('.file-card');
+  if (file) {
+    target.textContent = `✓ ${file.name}`;
+    if (card) card.classList.add('has-file');
+  } else {
+    target.textContent = 'No file selected (or use quick demo)';
+    if (card) card.classList.remove('has-file');
+  }
+
+  if (els.magFile?.files?.[0] && els.geoFile?.files?.[0] && els.gridFile?.files?.[0]) {
+    await readUploadedFiles();
+    setStatus('Ready', '3 file berhasil diunggah. Klik <b>Run Analysis</b> untuk memproses.');
+  }
+  updateRunButtonState();
 }
 
 function setStatus(title, text) {
@@ -404,6 +430,9 @@ function computeSlopeFromDEM(centerElev, northElev, southElev, eastElev, westEle
 
 async function loadDummyData() {
   try {
+    els.loadDummyBtn.classList.add('loading');
+    setStatus('Processing', 'Mengunduh data elevasi DEM & mensintesis dataset eksplorasi...');
+    
     // Fetch actual forestry boundaries to map exact legal zones
     const forestryData = await fetch('data/forestry_boundaries.geojson').then(r => r.json()).catch(() => null);
 
@@ -564,19 +593,27 @@ async function loadDummyData() {
             }
     }
 
-    els.magFileName.textContent = 'random_generated_mag.csv';
-    els.geoFileName.textContent = 'random_generated_geo.csv';
-    els.gridFileName.textContent = 'random_generated_grid.geojson';
+    els.magFileName.textContent = '✓ random_generated_mag.csv (Demo)';
+    els.geoFileName.textContent = '✓ random_generated_geo.csv (Demo)';
+    els.gridFileName.textContent = '✓ random_generated_grid.geojson (Demo)';
+    els.magFileName.closest('.file-card')?.classList.add('has-file');
+    els.geoFileName.closest('.file-card')?.classList.add('has-file');
+    els.gridFileName.closest('.file-card')?.classList.add('has-file');
     
-    // Auto center map to newly generated grid
-    if (map) {
-        map.setView([startLat + (numRows * cellSize) / 2, startLon + (numCols * cellSize) / 2], 12);
+    // Auto center map to newly generated grid and render dotted grid preview
+    renderMapLayers();
+    const bounds = gridLayer?.getBounds();
+    if (bounds && bounds.isValid() && map) {
+        map.fitBounds(bounds.pad(0.18));
     }
+    updateRunButtonState();
     
-    setStatus('Success', `Dummy data random berhasil di-generate di lokasi darat yang aman: ${rawMagnet.length} titik mag, ${rawGeo.length} sampel, ${rawGrid.features.length} grid.`);
+    setStatus('Success', `Demo dataset berhasil dimuat: ${rawMagnet.length} titik mag, ${rawGeo.length} sampel, ${rawGrid.features.length} grid. Klik <b>Run Analysis</b> untuk memproses.`);
   } catch (err) {
     console.error(err);
     setStatus('Error', 'Dummy data gagal di-generate secara random.');
+  } finally {
+    els.loadDummyBtn.classList.remove('loading');
   }
 }
 
@@ -590,6 +627,8 @@ async function readUploadedFiles() {
   rawMagnet = parseCSV(magText);
   rawGeo = parseCSV(geoText);
   rawGrid = JSON.parse(gridText);
+  renderMapLayers();
+  updateRunButtonState();
   return true;
 }
 
@@ -598,12 +637,15 @@ async function runAnalysis() {
     if (!rawMagnet.length || !rawGeo.length || !rawGrid) {
       const hasUploaded = await readUploadedFiles();
       if (!hasUploaded) {
-        setStatus('Data belum lengkap', 'Upload 3 file wajib atau klik Load Dummy Data dulu.');
+        setStatus('Data Belum Dimuat', 'Upload 3 file eksplorasi atau klik <b>⚡ Load Demo Data</b> untuk demo instan.');
         return;
       }
     }
     els.runBtn.classList.add('loading');
-    setStatus('Processing', 'Menghitung scoring lokal dan mengirim ke backend ML...');
+    setStatus('Processing', 'Menjalankan inferensi model geospasial & scoring target...');
+
+    // Intentional realistic processing delay (1.0 - 1.5 seconds) to provide smooth visual feedback
+    await new Promise(r => setTimeout(r, Math.floor(1000 + Math.random() * 500)));
 
     // Precompute aggregations EXACTLY ONCE to fix N+1 / double aggregation CPU bottleneck
     const magByGrid = groupBy(rawMagnet, 'grid_id');
@@ -1975,6 +2017,19 @@ function renderPlotly3D() {
 
 function gridStyle(feature) {
   const p = feature.properties || {};
+  
+  // Dotted preview grid when data is loaded before running analysis
+  if (!resultRows.length || p.final_priority_score == null) {
+    return {
+      color: '#9FD8BD',
+      weight: 2,
+      dashArray: '6, 6',
+      opacity: 0.9,
+      fillColor: '#0ea5e9',
+      fillOpacity: 0.08
+    };
+  }
+
   if (p.ml_masked) {
     return { color: '#666', weight: 1, fillColor: '#888', fillOpacity: 0.15 };
   }
@@ -2137,6 +2192,21 @@ function computeExplainabilityBreakdown(row) {
 }
 
 function popupContent(p) {
+  if (!resultRows.length || p.final_priority_score == null) {
+    return `
+      <div class="popup-title">${p.grid_id} · Exploration Block</div>
+      <div class="popup-grid">
+        <span>Status:</span><b style="color:var(--accent-emerald);">Raw Data Loaded</b>
+        <span>Slope (DEM):</span><b>${p.slope_deg != null ? p.slope_deg + '°' : '-'}</b>
+        <span>Legal Status:</span><b>${p.legal_status || 'APL'}</b>
+        <span>Elevation:</span><b>${p.elevation_mdpl != null ? p.elevation_mdpl + ' mdpl' : '-'}</b>
+      </div>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--text-secondary);text-align:center;">
+        ⚡ Ready for analysis. Click <b>Run Analysis</b> to rank.
+      </div>
+    `;
+  }
+
   const label = p.kill_zone_exclusion ? '<span style="color:#ef4444;font-weight:600;">RESTRICTED</span>'
     : p.is_grandfathered ? '<span style="color:#f59e0b;font-weight:600;">CONDITIONAL</span>'
     : '<span style="color:#10b981;font-weight:600;">CLEAR</span>';
@@ -2241,7 +2311,7 @@ function renderRanking() {
   });
 
   if (filteredRows.length === 0) {
-    els.rankingBody.innerHTML = `<tr><td colspan="11" class="empty">No targets matching filter "${activeRankingFilter.toUpperCase()}".</td></tr>`;
+    els.rankingBody.innerHTML = `<tr><td colspan="12" class="empty">No targets matching filter "${activeRankingFilter.toUpperCase()}".</td></tr>`;
     return;
   }
 
@@ -2264,6 +2334,8 @@ function renderRanking() {
           <b style="font-weight:600;">${r.final_priority_score}</b>
         </td>
         <td style="color:var(--text-secondary)">${r.Ni_avg}%</td>
+        <td style="color:var(--text-secondary)">${r.Fe_avg != null ? r.Fe_avg + '%' : '-'}</td>
+        <td style="color:var(--text-secondary)">${r.Co_avg != null ? r.Co_avg + '%' : '-'}</td>
         <td style="color:var(--text-secondary)">${r.mag_score}</td>
         <td style="color:var(--text-secondary)">${r.slope_deg}°</td>
         <td><span class="badge ${r.kill_zone_exclusion ? 'p4' : r.is_grandfathered ? 'p3' : r.permit_required === 'IUP (AMDAL/UKL-UPL)' ? 'p1' : 'p2'} compliance-badge" title="${r.compliance_status || ''}">${r.kill_zone_exclusion ? '⛔ TERLARANG' : r.is_grandfathered ? '⚠️ KETERLANJURAN' : r.legal_zone === 'Areal Penggunaan Lain' ? 'APL' : r.legal_zone === 'Hutan Produksi' ? 'HP' : r.legal_status || '-'}</span></td>

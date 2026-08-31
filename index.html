@@ -57,7 +57,7 @@
           <aside class="panel input-panel">
             <span class="pill">Input Data</span>
             <h3>Upload exploration files</h3>
-            <p class="muted">Minimum 3 files: magnetometer, geochemistry, and grid/area boundaries. For a demo, click <b>Load Dummy Data</b>.</p>
+            <p class="muted">Upload your 3 exploration files, or click <b>⚡ Load Demo Data</b> for an instant simulated dataset.</p>
 
             <label class="file-card">
               <input id="magFile" type="file" accept=".csv" />
@@ -66,7 +66,7 @@
               </span>
               <span>
                 <strong>Magnetometer CSV</strong>
-                <small id="magFileName">magnetometer_dummy.csv</small>
+                <small id="magFileName">No file selected (or use quick demo)</small>
               </span>
             </label>
 
@@ -77,7 +77,7 @@
               </span>
               <span>
                 <strong>Geochemistry CSV</strong>
-                <small id="geoFileName">geochemistry_dummy.csv</small>
+                <small id="geoFileName">No file selected (or use quick demo)</small>
               </span>
             </label>
 
@@ -88,18 +88,21 @@
               </span>
               <span>
                 <strong>Study Grid GeoJSON</strong>
-                <small id="gridFileName">study_grid_dummy.geojson</small>
+                <small id="gridFileName">No file selected (or use quick demo)</small>
               </span>
             </label>
 
             <div class="actions">
-              <button id="loadDummyBtn" class="btn btn-secondary" type="button">Load Sample Data</button>
+              <button id="loadDummyBtn" class="btn btn-demo" type="button">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Load Demo Data</span>
+              </button>
               <button id="runBtn" class="btn btn-primary" type="button">Run Analysis</button>
               <button id="retrainBtn" class="btn btn-ghost" type="button" style="border: 1px dashed var(--border-default); font-size: 11px; padding: 6px 12px; margin-top: 6px; width: 100%;">Upload New Drill Data &amp; Retrain</button>
             </div>
 
             <div class="status-box">
-              <div id="statusBox" class="muted">Status: Ready. Upload files or load sample data.</div>
+              <div id="statusBox" class="muted">Upload files or load demo dataset.</div>
             </div>
           </aside>
         </div>
@@ -188,17 +191,18 @@
                     <th>Grid ID</th>
                     <th>Priority</th>
                     <th>Score</th>
-                    <th>Ni Avg (%)</th>
-                    <th>Fe Avg (%)</th>
-                    <th>Co Avg (%)</th>
-                    <th>Mag Score</th>
-                    <th>Risk</th>
+                    <th>Ni (%)</th>
+                    <th>Fe (%)</th>
+                    <th>Co (%)</th>
+                    <th>Mag</th>
+                    <th>Slope</th>
+                    <th>Compliance</th>
                     <th>Reason</th>
                     <th class="col-action">Action</th>
                   </tr>
                 </thead>
                 <tbody id="rankingBody">
-                  <tr><td colspan="11" class="empty">No results yet. Run analysis first.</td></tr>
+                  <tr><td colspan="12" class="empty">No results yet. Run analysis first.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -254,7 +258,7 @@
             <span id="card3dGridId" style="font-size: 16px; font-weight: 700; color: #fff;">Grid -</span>
             <span id="card3dPriority" class="badge" style="font-size: 10px;">-</span>
           </div>
-          <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); font-weight: 600; padding: 6px 12px; cursor: pointer; border-radius: 6px;">✕ Close 3D</button>
+          <button id="close3dBtn" class="btn btn-secondary small" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); font-weight: 600; padding: 6px 12px; cursor: pointer; border-radius: 6px;">✕ Close</button>
         </div>
 
         <!-- Selected Target Detail Section -->

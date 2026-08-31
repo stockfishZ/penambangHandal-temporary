@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
       isAntam: true,
       location: 'Pomalaa, Kolaka, Sulawesi Tenggara',
       lat: -4.180,
-      lon: 121.600,
-      type: 'Pabrik Feronikel (FeNi)',
+      lon: 121.615,
+      type: 'RKEF (Feronikel / FeNi)',
       capacity: '27.000 ton Ni/tahun'
     },
     {
@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
       company: 'PT ANTAM Tbk (MIND ID)',
       isAntam: true,
       location: 'Halmahera Timur, Maluku Utara',
-      lat: 0.880,
-      lon: 128.320,
-      type: 'Pabrik Feronikel (FeNi)',
+      lat: 0.950,
+      lon: 128.350,
+      type: 'RKEF (Feronikel / FeNi)',
       capacity: '13.500 ton Ni/tahun'
     },
     {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       location: 'Luwu Timur, Sulawesi Selatan',
       lat: -2.533,
       lon: 121.350,
-      type: 'Nickel Matte & FeNi',
+      type: 'RKEF + Converter (Nickel Matte)',
       capacity: '75.000 ton Ni/tahun'
     },
     {
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       location: 'Wolo, Kolaka, Sulawesi Tenggara',
       lat: -3.890,
       lon: 121.280,
-      type: 'Rectangular RKEF & HPAL',
+      type: 'Rectangular RKEF (FeNi) & HPAL',
       capacity: '252.000 ton FeNi/tahun'
     },
     {
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       location: 'Langgikima, Konawe Utara, Sultra',
       lat: -3.320,
       lon: 122.250,
-      type: 'RKEF (Nickel Pig Iron)',
+      type: 'RKEF (Nickel Pig Iron / NPI)',
       capacity: '150.000 ton NPI/tahun'
     },
     {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       location: 'Halmahera Tengah, Maluku Utara',
       lat: 0.485,
       lon: 127.915,
-      type: 'RKEF & HPAL (MHP)',
+      type: 'RKEF (NPI/FeNi) & HPAL (MHP)',
       capacity: '2.400.000 ton/tahun'
     },
     {
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       location: 'Bantaeng, Sulawesi Selatan',
       lat: -5.550,
       lon: 120.020,
-      type: 'RKEF (FeNi & NPI)',
+      type: 'RKEF / SAF (FeNi & NPI)',
       capacity: '250.000 ton/tahun'
     }
   ];
@@ -183,7 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function initMap() {
-    map = L.map('exploreMap').setView([-2.0, 121.5], 6);
+    map = L.map('exploreMap', { zoomControl: false }).setView([-2.0, 121.5], 6);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 17, attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
     }).addTo(map);
@@ -200,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(r => r.json())
       .then(data => {
         landmassData = data;
-        console.info('Indonesia landmass geometry loaded for ocean exclusion');
+        console.info('Indonesia landmass geometry loaded for point-in-polygon land checks');
       })
       .catch(err => console.warn('Could not load landmass geojson:', err));
   }
@@ -210,19 +211,60 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(r => r.json())
       .then(data => {
         beltPolygons = data;
+        // Dark outline for contrast
         L.geoJSON(data, {
-          style: { color: '#000000', fillOpacity: 0, weight: 6 }
+          style: { color: '#000000', fillOpacity: 0, weight: 5 }
         }).addTo(map);
+
+        // Active belt layer: Green APL base fill with Tier-colored dashed perimeter
         beltLayer = L.geoJSON(data, {
-          style: f => ({
-            color: tierColor(f.properties.tier),
-            fillOpacity: 0,
-            weight: 3,
-            dashArray: '10 6'
-          })
+          style: f => {
+            const tier = f.properties.tier || 'MEDIUM';
+            return {
+              color: tierColor(tier),
+              fillColor: '#22c55e',
+              fillOpacity: 0.18,
+              weight: tier === 'HIGH' ? 3 : tier === 'MEDIUM' ? 2.5 : 2,
+              dashArray: tier === 'HIGH' ? '10 6' : tier === 'MEDIUM' ? '8 5' : '6 4'
+            };
+          }
         }).addTo(map);
-        beltLayer.bindTooltip(f => `<b>${f.properties.name}</b><br>${tierLabel(f.properties.tier)}`, {sticky:true});
+
+        beltLayer.bindTooltip(f => {
+          const p = f.properties;
+          const tierBadge = p.tier === 'HIGH' ? '<span style="color:#9FD8BD;font-weight:700;">Tier 1 (Tinggi)</span>'
+            : p.tier === 'MEDIUM' ? '<span style="color:#E2A356;font-weight:700;">Tier 2 (Sedang)</span>'
+            : '<span style="color:#f87171;font-weight:700;">Tier 3 (Rendah / Frontier)</span>';
+          return `<div style="font-size:11px;line-height:1.45;padding:2px 4px;">
+            <b style="font-size:12px;color:#ffffff;">${p.name}</b><br>
+            <b>Potensi:</b> ${tierBadge}<br>
+            <b>Provinsi:</b> ${p.province || '-'}<br>
+            <b>Status Dasar:</b> <span style="color:#22c55e;font-weight:600;">APL (Allowed)</span><br>
+            <span style="color:#cbd5e1;font-size:10px;">${p.geology || ''}</span>
+          </div>`;
+        }, { sticky: true });
       });
+  }
+
+  function getFeatureBbox(f) {
+    if (!f || !f.geometry) return [0, 0, 0, 0];
+    const coords = f.geometry.coordinates;
+    const pts = [];
+    if (f.geometry.type === 'MultiPolygon') {
+      for (const p of coords) {
+        for (const r of p) pts.push(...r);
+      }
+    } else if (f.geometry.type === 'Polygon') {
+      for (const r of coords) pts.push(...r);
+    }
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const [x, y] of pts) {
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+    return [minX, minY, maxX, maxY];
   }
 
   function loadForestryBoundaries() {
@@ -230,46 +272,78 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(r => r.json())
       .then(data => {
         forestryData = data;
+
+        // Filter forestry boundaries to only render polygons that lie within or overlap nickel belts
+        const filteredFeatures = data.features.filter(f => {
+          if (!beltPolygons || !beltPolygons.features) return true;
+          const bbox = getFeatureBbox(f);
+          return beltPolygons.features.some(b => {
+            const bBbox = getFeatureBbox(b);
+            return !(bbox[2] < bBbox[0] || bbox[0] > bBbox[2] || bbox[3] < bBbox[1] || bbox[1] > bBbox[3]);
+          });
+        });
+
         const legalColor = { 'no-go': '#ef4444', 'conditional': '#E2A356', 'allowed': '#22c55e' };
-        const legalOpacity = { 'no-go': 0.25, 'conditional': 0.20, 'allowed': 0.15 };
-        const legalLabel = { 'no-go': 'Terlarang', 'conditional': 'Bersyarat', 'allowed': 'Diizinkan' };
-        forestryLayer = L.geoJSON(data, {
+        const legalOpacity = { 'no-go': 0.35, 'conditional': 0.28, 'allowed': 0.18 };
+        
+        forestryLayer = L.geoJSON({ type: 'FeatureCollection', features: filteredFeatures }, {
           style: f => {
             const s = f.properties.legal_status || 'allowed';
             return {
               color: legalColor[s] || '#888',
               fillColor: legalColor[s] || '#888',
-              fillOpacity: legalOpacity[s] || 0.15,
-              weight: 2
+              fillOpacity: legalOpacity[s] || 0.25,
+              weight: 1.5
             };
           }
         }).addTo(map);
+
         forestryLayer.bindTooltip(f => {
           const p = f.properties;
-          return `<b>Kawasan Hutan</b><br>Status: ${legalLabel[p.legal_status] || p.legal_status}<br>Kode: ${p.fungsitap || '-'}`;
-        }, {sticky:true});
+          const isNoGo = p.legal_status === 'no-go';
+          const title = isNoGo ? 'Hutan Lindung / Konservasi (HL/HSA)' : 'Hutan Produksi (HP/HPT)';
+          const statusText = isNoGo 
+            ? '<span style="color:#ef4444;font-weight:700;">⛔ Terlarang (No-Go Exclusion)</span>'
+            : '<span style="color:#E2A356;font-weight:700;">⚠️ Bersyarat (Wajib Izin PPKH)</span>';
+          const desc = isNoGo 
+            ? 'Dilarang keras untuk aktivitas penambangan terbuka.'
+            : 'Memerlukan Izin Pinjam Pakai Kawasan Hutan (IPPKH / PPKH) dari KLHK.';
+            
+          return `<div style="font-size:11px;line-height:1.4;padding:2px 4px;">
+            <b style="font-size:12px;color:#ffffff;">${title}</b><br>
+            <b>Status Legal:</b> ${statusText}<br>
+            <span style="color:#cbd5e1;font-size:10px;">${desc}</span>
+          </div>`;
+        }, { sticky: true });
+
         const beltColors = { HIGH: '#9FD8BD', MEDIUM: '#E2A356', LOW: '#ef4444' };
-        const beltLabels = { HIGH: 'High — Tier Tinggi', MEDIUM: 'Medium — Tier Sedang', LOW: 'Low — Tier Rendah' };
-        const legend = L.control({position: 'bottomleft'});
+        const beltLabels = { HIGH: 'Tier 1 (Tinggi)', MEDIUM: 'Tier 2 (Sedang)', LOW: 'Tier 3 (Frontier)' };
+        const legend = L.control({position: 'topleft'});
         legend.onAdd = () => {
           const div = L.DomUtil.create('div', 'map-legend');
-          div.style.cssText = 'background:rgba(14,21,37,0.9);padding:10px 14px;border-radius:6px;font-size:11px;color:#EEEAE0;border:1px solid rgba(238,234,224,0.1);';
-          let html = '<div style="font-weight:600;margin-bottom:4px;">Sabuk Nikel</div>';
+          
+          let contentHtml = '<div class="map-legend-body">';
+          contentHtml += '<div style="font-weight:600;font-size:9.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;color:#9FD8BD;">Sabuk Nikel (Potensi)</div>';
           for (const t of ['HIGH', 'MEDIUM', 'LOW']) {
-            html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;">' +
-              `<span style="position:relative;display:inline-block;width:22px;height:4px;">` +
-              `<span style="position:absolute;inset:0;border-top:4px solid #000;border-radius:1px;"></span>` +
-              `<span style="position:absolute;inset:0;border-top:2px dashed ${beltColors[t]};"></span></span>` +
+            contentHtml += '<div style="display:flex;align-items:center;gap:5px;padding:1px 0;">' +
+              `<span style="position:relative;display:inline-block;width:16px;height:3px;">` +
+              `<span style="position:absolute;inset:0;border-top:3px solid #000;border-radius:1px;"></span>` +
+              `<span style="position:absolute;inset:0;border-top:1.5px dashed ${beltColors[t]};"></span></span>` +
               `<span>${beltLabels[t]}</span></div>`;
           }
-          html += '<div style="font-weight:600;margin:8px 0 4px;">Kawasan Hutan (Satupeta)</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#ef4444;"></span> No-Go (HL/HSA)</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#E2A356;"></span> Conditional (HP/HPT/HPK)</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#22c55e;"></span> Allowed (APL/default)</div>';
-          html += '<div style="font-weight:600;margin:8px 0 4px;">Infrastruktur Hilirisasi</div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid #fbbf24;box-shadow:0 0 6px rgba(251,191,36,0.8);font-size:9px;">🏭</span> <span style="color:#fbbf24;font-weight:600;">Smelter Internal ANTAM</span></div>';
-          html += '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid #38bdf8;font-size:9px;">🏭</span> Smelter Mitra / Offtaker</div>';
-          div.innerHTML = html;
+          contentHtml += '<div style="font-weight:600;font-size:9.5px;text-transform:uppercase;letter-spacing:0.04em;margin:4px 0 2px;color:#9FD8BD;">Zonasi Kehutanan</div>';
+          contentHtml += '<div style="display:flex;align-items:center;gap:5px;padding:1px 0;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#22c55e;"></span> <span>Bebas (APL)</span></div>';
+          contentHtml += '<div style="display:flex;align-items:center;gap:5px;padding:1px 0;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#E2A356;"></span> <span>Hutan Produksi (PPKH)</span></div>';
+          contentHtml += '<div style="display:flex;align-items:center;gap:5px;padding:1px 0;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;"></span> <span>Hutan Lindung (No-Go)</span></div>';
+          contentHtml += '<div style="font-weight:600;font-size:9.5px;text-transform:uppercase;letter-spacing:0.04em;margin:4px 0 2px;color:#9FD8BD;">Infrastruktur</div>';
+          contentHtml += '<div style="display:flex;align-items:center;gap:5px;padding:1px 0;"><span style="font-size:9px;">🏭</span> <span>Smelter</span></div>';
+          contentHtml += '</div>';
+
+          div.innerHTML = contentHtml;
+
+          L.DomEvent.disableClickPropagation(div);
+          L.DomEvent.disableScrollPropagation(div);
+
           return div;
         };
         legend.addTo(map);
@@ -289,15 +363,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const marker = L.marker([s.lat, s.lon], { icon: icon }).addTo(map);
       marker.bindPopup(`
-        <div style="font-family:var(--font-ui);min-width:220px;line-height:1.5;color:#000000;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">
-            <div style="font-weight:700;font-size:13px;color:${isAntam ? '#b45309' : '#0369a1'};">🏭 ${s.name}</div>
-            ${isAntam ? '<span style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;">ANTAM</span>' : ''}
+        <div style="font-family:var(--font-ui);min-width:220px;line-height:1.5;color:#ffffff;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;border-bottom:1px solid rgba(238,234,224,0.15);padding-bottom:4px;">
+            <div style="font-weight:700;font-size:13px;color:${isAntam ? '#fbbf24' : '#38bdf8'};">🏭 ${s.name}</div>
+            ${isAntam ? '<span style="background:rgba(245,158,11,0.25);color:#fbbf24;border:1px solid #f59e0b;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;">ANTAM</span>' : ''}
           </div>
-          <div style="font-size:11px;color:#000000;margin-bottom:3px;"><b>Operator:</b> ${s.company}</div>
-          <div style="font-size:11px;color:#000000;margin-bottom:3px;"><b>Lokasi:</b> ${s.location}</div>
-          <div style="font-size:11px;color:#000000;margin-bottom:3px;"><b>Teknologi:</b> ${s.type}</div>
-          <div style="font-size:11px;color:#047857;font-weight:600;"><b>Kapasitas:</b> ${s.capacity}</div>
+          <div style="font-size:11px;color:#ffffff;margin-bottom:3px;"><b style="color:#ffffff;">Operator:</b> ${s.company}</div>
+          <div style="font-size:11px;color:#ffffff;margin-bottom:3px;"><b style="color:#ffffff;">Lokasi:</b> ${s.location}</div>
+          <div style="font-size:11px;color:#ffffff;margin-bottom:3px;"><b style="color:#ffffff;">Teknologi:</b> ${s.type}</div>
+          <div style="font-size:11px;color:#ffffff;margin-bottom:1px;"><b style="color:#ffffff;">Kapasitas:</b> <span style="color:#34d399;font-weight:600;">${s.capacity}</span></div>
         </div>
       `);
       const tooltipLabel = `🏭 ${s.shortName}`;

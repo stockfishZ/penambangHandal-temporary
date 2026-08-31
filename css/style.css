@@ -390,6 +390,46 @@ h3 {
   box-shadow: 0 6px 20px rgba(159, 216, 189, 0.25);
 }
 
+/* Run Analysis conditional hollow/ready states */
+#runBtn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-default);
+  font-weight: 500;
+  transition: all 0.35s var(--nexus-ease);
+}
+
+#runBtn:hover:not(.ready) {
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+#runBtn.ready {
+  background: var(--text-primary);
+  color: #070B09;
+  border: 1px solid var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+  animation: pulseReady 2.2s infinite ease-in-out;
+}
+
+#runBtn.ready:hover {
+  background: var(--accent-emerald);
+  border-color: var(--accent-emerald);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(159, 216, 189, 0.35);
+}
+
+@keyframes pulseReady {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(159, 216, 189, 0.35);
+  }
+}
+
 .btn-secondary {
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
@@ -400,6 +440,32 @@ h3 {
   border-color: var(--text-primary);
   background: rgba(255, 255, 255, 0.08);
   transform: translateY(-1px);
+}
+
+.btn-demo {
+  background: linear-gradient(135deg, rgba(159, 216, 189, 0.16) 0%, rgba(163, 209, 223, 0.10) 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(159, 216, 189, 0.45);
+  font-weight: 600;
+  box-shadow: 0 0 16px rgba(159, 216, 189, 0.12);
+  transition: all 0.25s var(--nexus-ease);
+}
+
+.btn-demo svg {
+  color: var(--accent-emerald);
+  transition: transform 0.25s var(--nexus-ease);
+}
+
+.btn-demo:hover {
+  background: linear-gradient(135deg, rgba(159, 216, 189, 0.28) 0%, rgba(163, 209, 223, 0.20) 100%);
+  border-color: var(--accent-emerald);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 22px rgba(159, 216, 189, 0.32);
+  color: #fff;
+}
+
+.btn-demo:hover svg {
+  transform: scale(1.15) rotate(-6deg);
 }
 
 .btn-ghost {
@@ -426,6 +492,8 @@ h3 {
 .btn.loading {
   pointer-events: none;
   background: transparent !important;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn.loading::before {
@@ -437,8 +505,9 @@ h3 {
   height: 400px;
   margin-top: -200px;
   margin-left: -200px;
-  background: conic-gradient(from 0deg, transparent 0%, transparent 80%, rgba(16, 185, 129, 0.4) 95%, var(--accent-emerald) 100%);
-  animation: spin-border 1.5s linear infinite;
+  background: conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(159, 216, 189, 0.15) 75%, rgba(16, 185, 129, 0.6) 90%, #9FD8BD 100%);
+  animation: spin-border 1.4s linear infinite;
+  will-change: transform;
   z-index: 1;
 }
 
@@ -456,9 +525,29 @@ h3 {
   font-weight: 600;
 }
 
+/* White loading line & dark surface for Demo Data button */
+.btn-demo.loading::before,
+#loadDummyBtn.loading::before {
+  background: conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(255, 255, 255, 0.15) 75%, rgba(255, 255, 255, 0.6) 90%, #ffffff 100%);
+  animation: spin-border 1.2s linear infinite;
+}
+
+.btn-demo.loading::after,
+#loadDummyBtn.loading::after {
+  content: "Loading Demo...";
+  background: #0e1525;
+  color: #ffffff;
+  border-radius: calc(var(--radius-full) - 2px);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
 @keyframes spin-border {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Section Headings ── */
@@ -578,6 +667,23 @@ h3 {
   font-size: 12px;
   word-break: break-all;
   margin-top: 2px;
+  transition: color 0.25s var(--ease-out);
+}
+
+.file-card.has-file {
+  border-color: rgba(159, 216, 189, 0.45);
+  background: rgba(159, 216, 189, 0.05);
+}
+
+.file-card.has-file .file-icon {
+  background: var(--accent-emerald);
+  color: #070B09;
+  box-shadow: 0 0 12px rgba(159, 216, 189, 0.35);
+}
+
+.file-card.has-file small {
+  color: var(--accent-emerald);
+  font-weight: 600;
 }
 
 .actions {

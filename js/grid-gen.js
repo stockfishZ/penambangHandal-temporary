@@ -120,8 +120,8 @@ function cellLegalStatus(lonC, latC, forestryData) {
 
 // Verified Indonesian Nickel Smelters & Industrial Parks
 const INDONESIA_SMELTERS = [
-  { id: 'pomalaa', name: 'PT ANTAM Pomalaa', lat: -4.180, lon: 121.600 },
-  { id: 'halmahera_timur', name: 'PT ANTAM Haltim', lat: 0.880, lon: 128.320 },
+  { id: 'pomalaa', name: 'PT ANTAM Pomalaa', lat: -4.180, lon: 121.615 },
+  { id: 'halmahera_timur', name: 'PT ANTAM Haltim', lat: 0.950, lon: 128.350 },
   { id: 'sorowako', name: 'PT Vale Sorowako', lat: -2.533, lon: 121.350 },
   { id: 'imip', name: 'IMIP Morowali', lat: -2.825, lon: 122.158 },
   { id: 'gni', name: 'PT GNI Morowali Utara', lat: -1.975, lon: 121.340 },
