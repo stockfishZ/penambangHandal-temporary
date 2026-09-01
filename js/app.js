@@ -1055,21 +1055,21 @@ function buildPrintableEsgElement(row) {
         <tr>
           <td style="border: none !important; background: transparent !important;">
             Disusun Oleh,<br><b style="color:#0f172a;">Lead Exploration Geologist</b>
-            <div style="height: 20px;"></div>
-            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 90px;">( Ir. Hendra Prasetya, ST. )</div>
-            <div style="font-size: 6.5px; color: #64748b; margin-top: 1px;">Ahli Geologi Eksplorasi (CPI / IAGI)</div>
+            <div style="height: 24px;"></div>
+            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 120px;">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</div>
+            <div style="font-size: 6.5px; color: #64748b; margin-top: 2px;">Ahli Geologi Eksplorasi (CPI / IAGI)</div>
           </td>
           <td style="border: none !important; background: transparent !important;">
             Diverifikasi Oleh,<br><b style="color:#0f172a;">ESG & Permitting Specialist</b>
-            <div style="height: 20px;"></div>
-            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 90px;">( Rian Kurniawan, M.Sc. )</div>
-            <div style="font-size: 6.5px; color: #64748b; margin-top: 1px;">Spesialis AMDAL & KLHK</div>
+            <div style="height: 24px;"></div>
+            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 120px;">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</div>
+            <div style="font-size: 6.5px; color: #64748b; margin-top: 2px;">Spesialis AMDAL & KLHK</div>
           </td>
           <td style="border: none !important; background: transparent !important;">
             Disetujui Oleh,<br><b style="color:#0f172a;">Kepala Teknik Tambang (KTT)</b>
-            <div style="height: 20px;"></div>
-            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 90px;">( Dr. Budi Santoso, MM. )</div>
-            <div style="font-size: 6.5px; color: #64748b; margin-top: 1px;">KTT Pemegang Sertifikat POU</div>
+            <div style="height: 24px;"></div>
+            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 120px;">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</div>
+            <div style="font-size: 6.5px; color: #64748b; margin-top: 2px;">KTT Pemegang Sertifikat POU</div>
           </td>
         </tr>
       </table>
