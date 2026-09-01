@@ -753,7 +753,7 @@ function avg(arr, key) {
   return vals.length ? vals.reduce((a,b) => a + b, 0) / vals.length : 0;
 }
 
-function buildPrintableEsgHtml(row) {
+function buildPrintableEsgElement(row) {
   const ni = row.Ni_avg != null ? row.Ni_avg : 0;
   const fe = row.Fe_avg != null ? row.Fe_avg : 0;
   const co = row.Co_avg != null ? row.Co_avg : 0;
@@ -773,7 +773,6 @@ function buildPrintableEsgHtml(row) {
   const cost_rp = row.estimated_cost_rp || (holes * 25 * 1000000);
   const legal_zone = row.legal_zone || (row.legal_status === 'no' ? 'Hutan Lindung' : row.legal_status === 'conditional' ? 'Hutan Produksi' : 'Areal Penggunaan Lain');
   const permit = row.permit_required || (row.kill_zone_exclusion ? 'DILARANG (ZONA TERLARANG)' : 'IUP Eksplorasi (AMDAL/UKL-UPL)');
-  const legal_ref = row.legal_reference || 'UU No. 3/2020; PP No. 96/2021; PP No. 22/2021';
   const processing = row.processing_route || (ni >= 1.5 ? 'RKEF (Stainless Steel / FeNi)' : 'HPAL (EV Battery / MHP)');
   const proc_desc = row.processing_desc || (ni >= 1.5 ? 'Saprolite ore (High Ni, Low Fe, Balanced SiO2/MgO)' : 'Limonite ore (High Fe/Co, Low MgO)');
   const grid_id = row.grid_id || 'G001';
@@ -781,41 +780,34 @@ function buildPrintableEsgHtml(row) {
   const today = new Date();
   const dateStr = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  // Risk evaluations
   const river_status = river_dist >= 500 ? 'AMAN (> 500m)' : (river_dist >= 200 ? 'WASPADA (200-500m)' : 'KRITIS (< 200m)');
   const slope_status = slope <= 15 ? 'LANDAI (< 15°)' : (slope <= 25 ? 'MODERATE (15°-25°)' : 'CURAM (> 25°)');
   const is_kill_zone = !!row.kill_zone_exclusion || row.legal_status === 'no';
   const is_grandfathered = !!row.is_grandfathered;
 
-  let verdict_title, verdict_desc, verdict_bg, verdict_border, verdict_text, status_badge;
+  let verdict_title, verdict_desc, verdict_bg, verdict_border, verdict_text;
   if (is_kill_zone) {
     verdict_title = 'DITOLAK / ZONA TERLARANG (HUTAN LINDUNG)';
-    verdict_desc = 'Wilayah eksplorasi teridentifikasi berada dalam kawasan Hutan Lindung. Sesuai Pasal 38 Ayat (4) UU No. 41/1999 Jo. UU No. 6/2023, kegiatan penambangan dengan pola terbuka dilarang keras. Target dilarang dan tidak dapat diajukan dalam RKAB.';
+    verdict_desc = 'Wilayah eksplorasi teridentifikasi berada dalam kawasan Hutan Lindung. Sesuai Pasal 38 Ayat (4) UU No. 41/1999 Jo. UU No. 6/2023, kegiatan penambangan terbuka dilarang keras. Target dilarang diajukan dalam RKAB.';
     verdict_bg = '#fef2f2'; verdict_border = '#ef4444'; verdict_text = '#991b1b';
-    status_badge = 'TIDAK LAYAK (KILL-ZONE)';
   } else if (is_grandfathered) {
     verdict_title = 'BERSYARAT: KONSESI KETERLANJURAN (HISTORICAL ANOMALY)';
-    verdict_desc = 'Wilayah memiliki catatan tumpang tindih perizinan masa lampau. Diperlukan klarifikasi hukum dan rekonsiliasi data spasial dengan Kementerian LHK dan Ditjen Minerba ESDM sebelum pengajuan perizinan dan RKAB.';
+    verdict_desc = 'Wilayah memiliki catatan tumpang tindih perizinan masa lampau. Diperlukan klarifikasi hukum dan rekonsiliasi data spasial dengan KLHK dan Ditjen Minerba ESDM sebelum pengajuan perizinan dan RKAB.';
     verdict_bg = '#fffbeb'; verdict_border = '#f59e0b'; verdict_text = '#92400e';
-    status_badge = 'VERIFIKASI KHUSUS';
   } else if (score >= 75) {
     verdict_title = 'DIREKOMENDASIKAN UNTUK RKAB & DRILLING FASE 1 (SKOR ' + score + '/100)';
     verdict_desc = 'Target ' + grid_id + ' memiliki karakteristik geologi-geokimia sangat prospektif (Kadar Ni rata-rata ' + ni + '%, tipe ' + processing + '). Kepatuhan tata ruang dan aspek lingkungan memenuhi ambang batas regulasi. Direkomendasikan untuk dialokasikan anggaran pemboran inti.';
     verdict_bg = '#f0fdf4'; verdict_border = '#10b981'; verdict_text = '#166534';
-    status_badge = 'SANGAT LAYAK (HIGH FEASIBILITY)';
   } else if (score >= 60) {
     verdict_title = 'INVESTIGASI LANJUTAN DIPERLUKAN (SKOR ' + score + '/100)';
     verdict_desc = 'Target menunjukkan prospektivitas moderat. Direkomendasikan melakukan survey geofisika rapat dan pemetaan geologi permukaan tambahan sebelum komitmen anggaran pemboran inti.';
     verdict_bg = '#eff6ff'; verdict_border = '#3b82f6'; verdict_text = '#1e40af';
-    status_badge = 'LAYAK BERSYARAT';
   } else {
     verdict_title = 'BUKAN PRIORITAS / DROP TARGET (SKOR ' + score + '/100)';
     verdict_desc = 'Skor prospektivitas rendah (' + score + '/100). Direkomendasikan untuk menangguhkan eksplorasi mandiri pada grid ini dan mengalihkan anggaran ke target berprioritas lebih tinggi.';
     verdict_bg = '#f8fafc'; verdict_border = '#94a3b8'; verdict_text = '#475569';
-    status_badge = 'DROP / LOW PRIORITY';
   }
 
-  // Budget calculations
   const mob_cost = road_dist <= 500 ? 150000000 : (road_dist <= 2000 ? 350000000 : 850000000);
   const env_cost = area_ha > 200 ? 800000000 : 250000000;
   const permit_cost = permit.includes('PPKH') ? 500000000 : 200000000;
@@ -827,7 +819,301 @@ function buildPrintableEsgHtml(row) {
 
   const fmt = (n) => 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-  return '<!DOCTYPE html>\n<html lang="id">\n<head>\n<meta charset="UTF-8">\n<title>Dokumen Kajian ESG & Usulan Perizinan - ' + grid_id + '</title>\n<style>\n  @page {\n    size: A4 portrait;\n    margin: 14mm 14mm 14mm 14mm;\n  }\n  body {\n    font-family: \'Segoe UI\', -apple-system, BlinkMacSystemFont, Arial, sans-serif;\n    color: #1e293b;\n    background: #ffffff;\n    margin: 0;\n    padding: 24px;\n    font-size: 11px;\n    line-height: 1.5;\n  }\n  .doc-header {\n    border-bottom: 2px solid #0f172a;\n    padding-bottom: 12px;\n    margin-bottom: 14px;\n  }\n  .header-table {\n    width: 100%;\n    border-collapse: collapse;\n  }\n  .header-logo {\n    font-size: 19px;\n    font-weight: 900;\n    color: #0f172a;\n    letter-spacing: -0.5px;\n  }\n  .header-logo span {\n    color: #3b82f6;\n  }\n  .header-subtitle {\n    font-size: 9.5px;\n    color: #64748b;\n    font-weight: 600;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .doc-meta {\n    text-align: right;\n    font-size: 9.5px;\n    color: #475569;\n    line-height: 1.4;\n  }\n  .doc-title-block {\n    background: #f8fafc;\n    border-left: 4px solid #3b82f6;\n    padding: 10px 14px;\n    margin-bottom: 12px;\n  }\n  .doc-title {\n    font-size: 13px;\n    font-weight: 800;\n    color: #0f172a;\n    margin: 0 0 2px 0;\n    text-transform: uppercase;\n  }\n  .doc-desc {\n    font-size: 10px;\n    color: #475569;\n    margin: 0;\n  }\n  .verdict-box {\n    background: ' + verdict_bg + ';\n    border: 1.5px solid ' + verdict_border + ';\n    border-radius: 6px;\n    padding: 11px 13px;\n    margin-bottom: 14px;\n  }\n  .verdict-header {\n    font-size: 11.5px;\n    font-weight: 800;\n    color: ' + verdict_text + ';\n    margin-bottom: 4px;\n  }\n  .verdict-text {\n    font-size: 10px;\n    color: ' + verdict_text + ';\n    line-height: 1.45;\n  }\n  .section-title {\n    font-size: 10.5px;\n    font-weight: 800;\n    color: #0f172a;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border-bottom: 1px solid #cbd5e1;\n    padding-bottom: 3px;\n    margin: 14px 0 6px 0;\n  }\n  table.data-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-bottom: 10px;\n    font-size: 9.5px;\n  }\n  table.data-table th {\n    background: #f1f5f9;\n    color: #334155;\n    font-weight: 700;\n    text-align: left;\n    padding: 5px 8px;\n    border: 1px solid #cbd5e1;\n    font-size: 9px;\n    text-transform: uppercase;\n  }\n  table.data-table td {\n    padding: 5px 8px;\n    border: 1px solid #cbd5e1;\n    color: #1e293b;\n    vertical-align: top;\n  }\n  table.data-table tr:nth-child(even) {\n    background: #f8fafc;\n  }\n  .badge {\n    display: inline-block;\n    padding: 2px 6px;\n    border-radius: 3px;\n    font-size: 8.5px;\n    font-weight: 700;\n  }\n  .badge-success { background: #dcfce7; color: #166534; }\n  .badge-warning { background: #fef3c7; color: #92400e; }\n  .badge-danger { background: #fee2e2; color: #991b1b; }\n  .badge-info { background: #dbeafe; color: #1e40af; }\n  .budget-total-row td {\n    background: #f1f5f9;\n    font-weight: 800;\n    font-size: 10.5px;\n    color: #0f172a;\n    border-top: 2px solid #0f172a;\n  }\n  .legal-ref-box {\n    background: #f8fafc;\n    border: 1px solid #e2e8f0;\n    border-radius: 4px;\n    padding: 7px 10px;\n    font-size: 9px;\n    color: #475569;\n    margin-bottom: 12px;\n  }\n  .signature-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-top: 20px;\n    page-break-inside: avoid;\n  }\n  .signature-table td {\n    width: 33.33%;\n    text-align: center;\n    padding: 8px;\n    border: none;\n    font-size: 9.5px;\n  }\n  .signature-space {\n    height: 40px;\n  }\n  .signee-name {\n    font-weight: 700;\n    color: #0f172a;\n    border-bottom: 1px solid #0f172a;\n    display: inline-block;\n    padding-bottom: 2px;\n    min-width: 130px;\n  }\n  .signee-title {\n    color: #64748b;\n    font-size: 8.5px;\n    margin-top: 2px;\n  }\n  .doc-footer {\n    margin-top: 16px;\n    padding-top: 6px;\n    border-top: 1px solid #e2e8f0;\n    font-size: 8px;\n    color: #94a3b8;\n    text-align: center;\n  }\n</style>\n</head>\n<body>\n\n  <!-- Kop Surat -->\n  <div class="doc-header">\n    <table class="header-table">\n      <tr>\n        <td style="vertical-align: middle; border:none; background:none;">\n          <div class="header-logo">Ni<span>TERRA</span> INTELLIGENT MINING</div>\n          <div class="header-subtitle">Autonomous Geochemical & ESG Permitting Evaluation Engine</div>\n        </td>\n        <td class="doc-meta" style="vertical-align: middle; border:none; background:none;">\n          <b>No. Dokumen:</b> NIT/ESG-PERMIT/' + grid_id + '/2026<br>\n          <b>Tanggal Evaluasi:</b> ' + dateStr + '<br>\n          <b>Klasifikasi:</b> Laporan Teknis Usulan RKAB\n        </td>\n      </tr>\n    </table>\n  </div>\n\n  <!-- Document Title -->\n  <div class="doc-title-block">\n    <div class="doc-title">Dokumen Telaah Kelayakan ESG & Usulan Perizinan Eksplorasi</div>\n    <div class="doc-desc">Target Grid: <b>' + grid_id + '</b> | Lokasi: <b>' + loc_label + '</b> | Luas Konsesi: <b>' + area_ha + ' Ha</b> | Skor Prioritas: <b>' + score + '/100 (' + p_class + ')</b></div>\n  </div>\n\n  <!-- Executive Verdict -->\n  <div class="verdict-box">\n    <div class="verdict-header">\n      HASIL KAJIAN EKSEKUTIF: ' + verdict_title + '\n    </div>\n    <div class="verdict-text">' + verdict_desc + '</div>\n  </div>\n\n  <!-- BAB I -->\n  <div class="section-title">BAB I. KARAKTERISTIK GEOLOGI, GEOKIMIA & RUTE BENEFISIASI</div>\n  <table class="data-table">\n    <thead>\n      <tr>\n        <th style="width:25%;">Parameter Geologi</th>\n        <th style="width:25%;">Nilai Pengukuran</th>\n        <th style="width:25%;">Parameter Geokimia</th>\n        <th style="width:25%;">Nilai Kadar Rata-rata</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td><b>Formasi Batuan (Litologi)</b></td>\n        <td>' + lith + '</td>\n        <td><b>Kadar Nikel (Ni Avg)</b></td>\n        <td><b style="color:#0f766e;">' + ni + '%</b> (' + (ni >= 1.5 ? 'High Grade Saprolite' : ni >= 0.8 ? 'Transition / Limonite' : 'Low Grade') + ')</td>\n      </tr>\n      <tr>\n        <td><b>Anomali Magnetik (Total Field)</b></td>\n        <td>' + (row.mag_mean_nT || 48500) + ' nT (Skor: ' + (row.mag_score ?? 80) + '/100)</td>\n        <td><b>Kadar Besi & Kobalt (Fe / Co)</b></td>\n        <td>Fe: ' + fe + '% | Co: ' + co + '%</td>\n      </tr>\n      <tr>\n        <td><b>Kemiringan Lereng (DEM Slope)</b></td>\n        <td>' + slope + '° (' + slope_status + ')</td>\n        <td><b>Kadar Silika & Magnesium (SiO₂ / MgO)</b></td>\n        <td>SiO₂: ' + sio2 + '% | MgO: ' + mgo + '% (Rasio: ' + sio2_mgo + ')</td>\n      </tr>\n      <tr>\n        <td><b>Rute Pengolahan Hilir (Smelter)</b></td>\n        <td><b style="color:#0284c7;">' + processing + '</b></td>\n        <td><b>Karakteristik Peleburan / Slag</b></td>\n        <td>' + proc_desc + '</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- BAB II -->\n  <div class="section-title">BAB II. MATRIKS RISIKO LINGKUNGAN (ESG) & KESESUAIAN TATA RUANG</div>\n  <table class="data-table">\n    <thead>\n      <tr>\n        <th style="width: 22%;">Aspek Lingkungan / Spasial</th>\n        <th style="width: 15%;">Parameter Target</th>\n        <th style="width: 12%;">Level Risiko</th>\n        <th style="width: 51%;">Dasar Hukum & Kewajiban Mitigasi</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td><b>Sempadan Sungai & Sumber Air</b></td>\n        <td>' + river_dist + ' meter</td>\n        <td><span class="badge ' + (river_dist >= 500 ? 'badge-success' : river_dist >= 200 ? 'badge-warning' : 'badge-danger') + '">' + river_status.split(' ')[0] + '</span></td>\n        <td>Permen LHK No. P.38/2019 & PP No. 38/2011. ' + (river_dist < 200 ? 'Melanggar buffer minimal 200m! Wajib kajian hidrologi khusus dan izin Balai Wilayah Sungai.' : 'Jarak ' + river_dist + 'm memenuhi sempadan minimal. Wajib pembuatan Kolam Pengendap Sedimen (KPS) dan monitoring TSS berkala.') + '</td>\n      </tr>\n      <tr>\n        <td><b>Stabilitas Geoteknik & Lereng</b></td>\n        <td>' + slope + '°</td>\n        <td><span class="badge ' + (slope <= 15 ? 'badge-success' : slope <= 25 ? 'badge-warning' : 'badge-danger') + '">' + slope_status.split(' ')[0] + '</span></td>\n        <td>Kepmen ESDM No. 1827 K/30/MEM/2018 Lampiran II. ' + (slope > 25 ? 'Kemiringan ekstrem (>25°), wajib kajian kestabilan lereng geoteknik, pembuatan bench bertingkat, dan instrumen pemantau retakan.' : 'Kemiringan ' + slope + '° aman terkendali dengan penerapan saluran drainase pengelak erosi standar.') + '</td>\n      </tr>\n      <tr>\n        <td><b>Status Kawasan Kehutanan</b></td>\n        <td>' + legal_zone + '</td>\n        <td><span class="badge ' + (is_kill_zone ? 'badge-danger' : legal_zone.includes('Hutan') ? 'badge-warning' : 'badge-success') + '">' + (is_kill_zone ? 'TERLARANG' : legal_zone.includes('Hutan') ? 'WAJIB PPKH' : 'CLEAR / APL') + '</span></td>\n        <td>' + legal_ref + '. Wilayah berstatus ' + legal_zone + '. ' + (is_kill_zone ? 'Dilarang keras untuk pertambangan terbuka (Hutan Lindung).' : legal_zone.includes('Hutan') ? 'Wajib memproses izin Persetujuan Penggunaan Kawasan Hutan (PPKH) ke KLHK, pembayaran PNBP, dan kompensasi DAS 1:1.' : 'Berada di Areal Penggunaan Lain (APL), tidak memerlukan PPKH. Cukup memproses IUP Eksplorasi dan dokumen lingkungan.') + '</td>\n      </tr>\n      <tr>\n        <td><b>Aksesibilitas & Koridor Logistik</b></td>\n        <td>' + road_dist + 'm jalan / ' + smelter_dist + 'km smelter</td>\n        <td><span class="badge ' + (road_dist > 2000 ? 'badge-warning' : 'badge-success') + '">' + (road_dist > 2000 ? 'TERPENCIL' : 'BAIK') + '</span></td>\n        <td>' + (road_dist > 2000 ? 'Akses terpencil, diperlukan perintisan jalan akses dan mitigasi logistik.' : 'Akses logistik sangat memadai (' + road_dist + 'm ke koridor jalan eksisting, ' + smelter_dist + 'km ke smelter pengolah terdekat), menekan emisi Scope 3.') + '</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- BAB III -->\n  <div class="section-title">BAB III. ROADMAP TAHAPAN PERIZINAN & KEPATUHAN HUKUM</div>\n  <table class="data-table">\n    <thead>\n      <tr>\n        <th style="width: 8%;">Tahap</th>\n        <th style="width: 32%;">Item Perizinan / Kepatuhan</th>\n        <th style="width: 25%;">Instansi Berwenang</th>\n        <th style="width: 35%;">Dokumen Persyaratan & Output</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td><b>1</b></td>\n        <td>Verifikasi Status Spasial & WIUP</td>\n        <td>ESDM Ditjen Minerba / BIG</td>\n        <td>Peta Lampiran Penetapan WIUP skala 1:5.000</td>\n      </tr>\n      <tr>\n        <td><b>2</b></td>\n        <td>' + (legal_zone.includes('Hutan') ? 'Permohonan PPKH Eksplorasi' : 'Pendaftaran OSS-RBA & NIB') + '</td>\n        <td>' + (legal_zone.includes('Hutan') ? 'Kementerian LHK / BKPM' : 'Kementerian Investasi / BKPM') + '</td>\n        <td>' + (legal_zone.includes('Hutan') ? 'Persetujuan Penggunaan Kawasan Hutan (PPKH) & Penetapan Batas' : 'NIB & Izin Usaha Berbasis Risiko') + '</td>\n      </tr>\n      <tr>\n        <td><b>3</b></td>\n        <td>Persetujuan Lingkungan (' + (area_ha > 200 ? 'AMDAL' : 'UKL-UPL') + ')</td>\n        <td>Dinas Lingkungan Hidup</td>\n        <td>Dokumen Formulir ' + (area_ha > 200 ? 'AMDAL & RKL-RPL' : 'UKL-UPL') + ' & Surat Keputusan Kelayakan Lingkungan (SKKL)</td>\n      </tr>\n      <tr>\n        <td><b>4</b></td>\n        <td>Penyusunan & Persetujuan Dokumen RKAB</td>\n        <td>Ditjen Minerba, Kementerian ESDM</td>\n        <td>Buku RKAB Tahunan Eksplorasi & Pengesahan Anggaran Resmi</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- BAB IV -->\n  <div class="section-title">BAB IV. RENCANA KERJA PENGEBORAN & ESTIMASI ANGGARAN BIAYA (RKAB BUDGET)</div>\n  <table class="data-table">\n    <thead>\n      <tr>\n        <th style="width: 5%;">No</th>\n        <th style="width: 45%;">Rincian Komponen Pekerjaan</th>\n        <th style="width: 25%;">Volume & Satuan</th>\n        <th style="width: 25%; text-align: right;">Estimasi Biaya (IDR)</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td>1</td>\n        <td>Mobilisasi Peralatan Bor, Logistik & Pembuatan Basecamp</td>\n        <td>1 Paket (Lump Sum)</td>\n        <td style="text-align: right;">' + fmt(mob_cost) + '</td>\n      </tr>\n      <tr>\n        <td>2</td>\n        <td>Penyusunan Dokumen Lingkungan Hidup (' + (area_ha > 200 ? 'AMDAL' : 'UKL-UPL') + ')</td>\n        <td>1 Dokumen disetujui</td>\n        <td style="text-align: right;">' + fmt(env_cost) + '</td>\n      </tr>\n      <tr>\n        <td>3</td>\n        <td>Pengurusan Perizinan, PNBP Spasial & Koordinasi Pemda</td>\n        <td>1 Paket Legalitas</td>\n        <td style="text-align: right;">' + fmt(permit_cost) + '</td>\n      </tr>\n      <tr>\n        <td>4</td>\n        <td>Pekerjaan Pemboran Inti (Core Drilling HQ/NQ @ 25m depth)</td>\n        <td>' + holes + ' Titik Bor (' + (holes * 25) + ' meter)</td>\n        <td style="text-align: right;">' + fmt(drill_cost) + '</td>\n      </tr>\n      <tr>\n        <td>5</td>\n        <td>Preparasi Sampel & Analisis Laboratorium (XRF Assay)</td>\n        <td>' + holes + ' Lubang @ Rp 15.000.000</td>\n        <td style="text-align: right;">' + fmt(lab_cost) + '</td>\n      </tr>\n      <tr>\n        <td>6</td>\n        <td>Biaya Kontingensi & Mitigasi Risiko Cuaca Lapangan (10%)</td>\n        <td>10% Subtotal Biaya</td>\n        <td style="text-align: right;">' + fmt(contingency) + '</td>\n      </tr>\n      <tr class="budget-total-row">\n        <td colspan="3"><b>TOTAL USULAN ANGGARAN EKSPLORASI (RKAB)</b></td>\n        <td style="text-align: right;"><b>' + fmt(total_budget) + '</b></td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- BAB V -->\n  <div class="section-title">BAB V. PROTOKOL K3 & LEMBAR PENGESAHAN DOKUMEN</div>\n  <div class="legal-ref-box">\n    <b>Pedoman Kaidah Pertambangan yang Baik:</b> Seluruh kegiatan eksplorasi diwajibkan menerapkan kaidah Keselamatan dan Kesehatan Kerja Pertambangan (K3P) serta Keselamatan Operasi Pertambangan (KO) sesuai Kepmen ESDM No. 1827 K/30/MEM/2018. Wajib penunjukan Pengawas Operasional Pertama (POP) dan tim tanggap darurat (Emergency Response Team).\n  </div>\n\n  <table class="signature-table">\n    <tr>\n      <td style="border:none; background:none;">\n        Disusun Oleh,<br>\n        <b>Lead Exploration Geologist</b>\n        <div class="signature-space"></div>\n        <div class="signee-name">( Ir. Hendra Prasetya, ST., MT. )</div>\n        <div class="signee-title">Ahli Geologi Eksplorasi (CPI / IAGI)</div>\n      </td>\n      <td style="border:none; background:none;">\n        Diverifikasi Oleh,<br>\n        <b>ESG & Permitting Specialist</b>\n        <div class="signature-space"></div>\n        <div class="signee-name">( Rian Kurniawan, S.Si., M.Sc. )</div>\n        <div class="signee-title">Spesialis AMDAL & Kepatuhan KLHK</div>\n      </td>\n      <td style="border:none; background:none;">\n        Disetujui Oleh,<br>\n        <b>Kepala Teknik Tambang (KTT)</b>\n        <div class="signature-space"></div>\n        <div class="signee-name">( Dr. Budi Santoso, ST., MM. )</div>\n        <div class="signee-title">Kepala Teknik Tambang Pemegang POU</div>\n      </td>\n    </tr>\n  </table>\n\n  <div class="doc-footer">\n    Dokumen ini digenerate secara otomatis oleh NiTERRA AI Intelligent Geological Engine.<br>\n    Format disesuaikan dengan Standar Pelaporan Kode KCMI & Kepmen ESDM No. 1806 K/30/MEM/2018. Dokumen Sah untuk Pengajuan RKAB.\n  </div>\n\n</body>\n</html>';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'niterra-pdf-document';
+  wrapper.style.width = '680px';
+  wrapper.style.padding = '14px 20px 14px 18px';
+  wrapper.style.background = '#ffffff';
+  wrapper.style.color = '#0f172a';
+  wrapper.style.fontFamily = 'Arial, Helvetica, sans-serif';
+  wrapper.style.fontSize = '8.5px';
+  wrapper.style.lineHeight = '1.38';
+  wrapper.style.boxSizing = 'border-box';
+  wrapper.style.margin = '0';
+
+  wrapper.innerHTML = `
+    <style>
+      .niterra-pdf-document, .niterra-pdf-document * {
+        box-sizing: border-box !important;
+        font-family: Arial, Helvetica, sans-serif !important;
+        text-shadow: none !important;
+      }
+      .niterra-pdf-document table {
+        width: 100% !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+        background-color: #ffffff !important;
+        margin-bottom: 7px !important;
+      }
+      .niterra-pdf-document th {
+        background-color: #f1f5f9 !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        border: 1px solid #cbd5e1 !important;
+        font-size: 8px !important;
+        padding: 3.5px 5px !important;
+        text-align: left !important;
+        word-wrap: break-word !important;
+      }
+      .niterra-pdf-document td {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+        border: 1px solid #cbd5e1 !important;
+        font-size: 8px !important;
+        padding: 3.5px 5px !important;
+        line-height: 1.35 !important;
+        vertical-align: middle !important;
+        word-wrap: break-word !important;
+      }
+      .niterra-pdf-document tr.pdf-row-alt td {
+        background-color: #f8fafc !important;
+      }
+      .niterra-pdf-document tr.pdf-budget-total td {
+        background-color: #f1f5f9 !important;
+        border-top: 2px solid #0f172a !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        font-size: 8.5px !important;
+      }
+      .niterra-pdf-badge {
+        display: inline-block !important;
+        padding: 1.5px 4px !important;
+        border-radius: 3px !important;
+        font-size: 7.5px !important;
+        font-weight: 700 !important;
+      }
+      .niterra-pdf-badge-green {
+        background-color: #dcfce7 !important;
+        color: #166534 !important;
+      }
+    </style>
+
+    <div style="border-bottom: 2px solid #0f172a; padding-bottom: 5px; margin-bottom: 7px;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 0 !important;">
+        <colgroup><col style="width: 58%;"><col style="width: 42%;"></colgroup>
+        <tr>
+          <td style="vertical-align: middle; border: none !important; padding: 0 !important; background: transparent !important;">
+            <div style="font-size: 16px; font-weight: bold; color: #0f172a; letter-spacing: -0.5px;">Ni<span style="color: #2563eb;">TERRA</span> INTELLIGENT MINING</div>
+            <div style="font-size: 7.5px; color: #64748b; font-weight: bold; text-transform: uppercase;">Autonomous Geochemical & ESG Permitting Evaluation Engine</div>
+          </td>
+          <td style="text-align: right; font-size: 7.5px; color: #475569; line-height: 1.3; border: none !important; padding: 0 4px 0 0 !important; background: transparent !important;">
+            <b>No. Dokumen:</b> NIT/ESG-PERMIT/${grid_id}/2026<br>
+            <b>Tanggal Evaluasi:</b> ${dateStr}<br>
+            <b>Klasifikasi:</b> Laporan Teknis Usulan RKAB
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 5px 8px; margin-bottom: 7px;">
+      <div style="font-size: 11px; font-weight: bold; color: #0f172a; text-transform: uppercase;">Dokumen Telaah Kelayakan ESG & Usulan Perizinan Eksplorasi</div>
+      <div style="font-size: 8px; color: #475569;">Target Grid: <b style="color:#0f172a;">${grid_id}</b> | Lokasi: <b style="color:#0f172a;">${loc_label}</b> | Luas: <b style="color:#0f172a;">${area_ha} Ha</b> | Skor: <b style="color:#0f172a;">${score}/100 (${p_class})</b></div>
+    </div>
+
+    <div style="background: ${verdict_bg}; border: 1.5px solid ${verdict_border}; border-radius: 4px; padding: 5px 8px; margin-bottom: 7px;">
+      <div style="font-size: 10px; font-weight: bold; color: ${verdict_text}; margin-bottom: 2px;">HASIL KAJIAN EKSEKUTIF: ${verdict_title}</div>
+      <div style="font-size: 8px; color: ${verdict_text}; line-height: 1.35;">${verdict_desc}</div>
+    </div>
+
+    <div style="font-size: 8.5px; font-weight: bold; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; margin: 7px 0 4px 0;">BAB I. KARAKTERISTIK GEOLOGI, GEOKIMIA & RUTE BENEFISIASI</div>
+    <table>
+      <colgroup><col style="width: 25%;"><col style="width: 25%;"><col style="width: 25%;"><col style="width: 25%;"></colgroup>
+      <thead>
+        <tr>
+          <th>Parameter Geologi</th>
+          <th>Nilai Pengukuran</th>
+          <th>Parameter Geokimia</th>
+          <th>Nilai Kadar Rata-rata</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Formasi Batuan (Litologi)</b></td>
+          <td>${lith}</td>
+          <td><b>Kadar Nikel (Ni Avg)</b></td>
+          <td><b style="color:#0f766e;">${ni}%</b> (${ni >= 1.5 ? 'High Saprolite' : 'Limonite'})</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td><b>Anomali Magnetik</b></td>
+          <td>${row.mag_mean_nT || 48200} nT (Skor: ${row.mag_score ?? 78}/100)</td>
+          <td><b>Kadar Besi & Kobalt (Fe / Co)</b></td>
+          <td>Fe: ${fe}% | Co: ${co}%</td>
+        </tr>
+        <tr>
+          <td><b>Kemiringan Lereng (DEM)</b></td>
+          <td>${slope}° (${slope_status})</td>
+          <td><b>Silika & Magnesium (SiO₂ / MgO)</b></td>
+          <td>SiO₂: ${sio2}% | MgO: ${mgo}% (Rasio: ${sio2_mgo})</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td><b>Rute Pengolahan Hilir</b></td>
+          <td><b style="color:#0284c7;">${processing}</b></td>
+          <td><b>Karakteristik Peleburan</b></td>
+          <td>${proc_desc}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="font-size: 8.5px; font-weight: bold; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; margin: 7px 0 4px 0;">BAB II. MATRIKS RISIKO LINGKUNGAN (ESG) & KESESUAIAN TATA RUANG</div>
+    <table>
+      <colgroup><col style="width: 22%;"><col style="width: 14%;"><col style="width: 14%;"><col style="width: 50%;"></colgroup>
+      <thead>
+        <tr>
+          <th>Aspek Spasial / ESG</th>
+          <th>Parameter</th>
+          <th>Level Risiko</th>
+          <th>Dasar Hukum & Mitigasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Sempadan Sungai</b></td>
+          <td>${river_dist} meter</td>
+          <td><span class="niterra-pdf-badge niterra-pdf-badge-green">${river_status.split(' ')[0]}</span></td>
+          <td>Permen LHK P.38/2019. ${river_dist < 200 ? 'Melanggar buffer minimal 200m! Wajib kajian hidrologi khusus.' : `Jarak ${river_dist}m aman (> 200m buffer). Wajib KPS.`}</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td><b>Geoteknik Lereng</b></td>
+          <td>${slope}°</td>
+          <td><span class="niterra-pdf-badge niterra-pdf-badge-green">${slope_status.split(' ')[0]}</span></td>
+          <td>Kepmen ESDM 1827/2018. ${slope > 25 ? 'Kemiringan curam (>25°), wajib lereng bertingkat.' : `Kemiringan ${slope}° aman terkendali dengan drainase erosi.`}</td>
+        </tr>
+        <tr>
+          <td><b>Kawasan Kehutanan</b></td>
+          <td>${legal_zone}</td>
+          <td><span class="niterra-pdf-badge niterra-pdf-badge-green">${is_kill_zone ? 'TERLARANG' : legal_zone.includes('Hutan') ? 'WAJIB PPKH' : 'APL / CLEAR'}</span></td>
+          <td>${row.legal_reference || 'UU 3/2020 & PP 22/2021'}. ${is_kill_zone ? 'Dilarang keras untuk pertambangan terbuka (Hutan Lindung).' : legal_zone.includes('Hutan') ? 'Wajib izin Persetujuan Penggunaan Kawasan Hutan (PPKH) KLHK.' : 'Berada di APL, tidak perlu PPKH. Cukup izin IUP standar.'}</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td><b>Aksesibilitas Smelter</b></td>
+          <td>${road_dist}m / ${smelter_dist}km</td>
+          <td><span class="niterra-pdf-badge niterra-pdf-badge-green">${road_dist > 2000 ? 'TERPENCIL' : 'BAIK'}</span></td>
+          <td>${road_dist > 2000 ? 'Akses terpencil, perlu rintisan jalan logistik.' : `Logistik sangat memadai (${road_dist}m ke jalan, ${smelter_dist}km ke smelter).`}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="font-size: 8.5px; font-weight: bold; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; margin: 7px 0 4px 0;">BAB III. RENCANA KERJA PENGEBORAN & ESTIMASI ANGGARAN (RKAB)</div>
+    <table>
+      <colgroup><col style="width: 5%;"><col style="width: 45%;"><col style="width: 25%;"><col style="width: 25%;"></colgroup>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Rincian Komponen Pekerjaan</th>
+          <th>Volume & Satuan</th>
+          <th>Estimasi Biaya (IDR)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mobilisasi Peralatan Bor, Logistik & Basecamp</td>
+          <td>1 Paket (Lump Sum)</td>
+          <td>${fmt(mob_cost)}</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td>2</td>
+          <td>Penyusunan Dokumen Lingkungan Hidup (${area_ha > 200 ? 'AMDAL' : 'UKL-UPL'})</td>
+          <td>1 Dokumen disetujui</td>
+          <td>${fmt(env_cost)}</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Pengurusan Perizinan & Koordinasi Pemda</td>
+          <td>1 Paket Legalitas</td>
+          <td>${fmt(permit_cost)}</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td>4</td>
+          <td>Pemboran Inti (Core Drilling HQ/NQ @ 25m)</td>
+          <td>${holes} Titik Bor (${holes * 25} meter)</td>
+          <td>${fmt(drill_cost)}</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Preparasi Sampel & Analisis Laboratorium (XRF)</td>
+          <td>${holes} Lubang @ Rp 15.000.000</td>
+          <td>${fmt(lab_cost)}</td>
+        </tr>
+        <tr class="pdf-row-alt">
+          <td>6</td>
+          <td>Kontingensi & Mitigasi Risiko Cuaca (10%)</td>
+          <td>10% Subtotal Biaya</td>
+          <td>${fmt(contingency)}</td>
+        </tr>
+        <tr class="pdf-budget-total">
+          <td colspan="3">TOTAL ESTIMASI ANGGARAN EKSPLORASI (RKAB)</td>
+          <td><b>${fmt(total_budget)}</b></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="border-top: 1px solid #e2e8f0; padding-top: 6px; margin-top: 6px;">
+      <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 7.5px; margin-bottom: 0 !important;">
+        <colgroup><col style="width: 33.33%;"><col style="width: 33.33%;"><col style="width: 33.33%;"></colgroup>
+        <tr>
+          <td style="border: none !important; background: transparent !important;">
+            Disusun Oleh,<br><b style="color:#0f172a;">Lead Exploration Geologist</b>
+            <div style="height: 20px;"></div>
+            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 90px;">( Ir. Hendra Prasetya, ST. )</div>
+            <div style="font-size: 6.5px; color: #64748b; margin-top: 1px;">Ahli Geologi Eksplorasi (CPI / IAGI)</div>
+          </td>
+          <td style="border: none !important; background: transparent !important;">
+            Diverifikasi Oleh,<br><b style="color:#0f172a;">ESG & Permitting Specialist</b>
+            <div style="height: 20px;"></div>
+            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 90px;">( Rian Kurniawan, M.Sc. )</div>
+            <div style="font-size: 6.5px; color: #64748b; margin-top: 1px;">Spesialis AMDAL & KLHK</div>
+          </td>
+          <td style="border: none !important; background: transparent !important;">
+            Disetujui Oleh,<br><b style="color:#0f172a;">Kepala Teknik Tambang (KTT)</b>
+            <div style="height: 20px;"></div>
+            <div style="font-weight: bold; color: #0f172a; border-bottom: 1px solid #0f172a; display: inline-block; padding-bottom: 1px; min-width: 90px;">( Dr. Budi Santoso, MM. )</div>
+            <div style="font-size: 6.5px; color: #64748b; margin-top: 1px;">KTT Pemegang Sertifikat POU</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="margin-top: 6px; padding-top: 3px; border-top: 1px solid #e2e8f0; font-size: 6px; color: #94a3b8; text-align: center;">
+      Dokumen ini digenerate secara otomatis oleh NiTERRA AI Intelligent Mining Engine.<br>
+      Format disesuaikan dengan Standar Pelaporan Kode KCMI & Kepmen ESDM No. 1806 K/30/MEM/2018.
+    </div>
+  `;
+
+  return wrapper;
+}
+
+function buildPrintableEsgHtml(row) {
+  const elem = buildPrintableEsgElement(row);
+  return `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Dokumen Kajian ESG & Usulan Perizinan - ${row.grid_id || 'Target'}</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+  @media print {
+    body { margin: 0; padding: 0; background: #ffffff !important; }
+    .niterra-pdf-document { width: 100% !important; padding: 0 !important; }
+  }
+  body {
+    background: #f1f5f9;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+</style>
+</head>
+<body>
+  ${elem.outerHTML}
+</body>
+</html>`;
 }
 
 function generateEsgUiHtml(row) {
@@ -2688,25 +2974,26 @@ function downloadEsgPdf(row, btn) {
     `;
   }
 
-  const printableHtml = buildPrintableEsgHtml(row);
+  const element = buildPrintableEsgElement(row);
   
-  // Create a mounted container on document.body with fixed standard A4 width (794px)
-  const mount = document.createElement('div');
-  mount.id = 'niterra-pdf-mount';
-  mount.style.position = 'fixed';
-  mount.style.left = '0';
-  mount.style.top = '0';
-  mount.style.width = '794px';
-  mount.style.backgroundColor = '#ffffff';
-  mount.style.color = '#1e293b';
-  mount.style.zIndex = '-99999';
-  mount.style.opacity = '0';
-  mount.style.pointerEvents = 'none';
-  mount.innerHTML = printableHtml;
-  document.body.appendChild(mount);
+  // Create an unclipped capture container on document.body
+  const container = document.createElement('div');
+  container.id = 'niterra-pdf-capture-container';
+  container.style.position = 'fixed';
+  container.style.top = '0';
+  container.style.left = '0';
+  container.style.width = '1000px';
+  container.style.background = '#ffffff';
+  container.style.zIndex = '999999';
+  container.style.display = 'block';
+  container.style.margin = '0';
+  container.style.padding = '0';
+
+  container.appendChild(element);
+  document.body.appendChild(container);
 
   const opt = {
-    margin: [10, 10, 10, 10],
+    margin: [6, 6, 6, 6],
     filename: 'Dokumen_Kajian_ESG_Permit_' + gridId + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: {
@@ -2715,15 +3002,26 @@ function downloadEsgPdf(row, btn) {
       letterRendering: true,
       logging: false,
       backgroundColor: '#ffffff',
-      windowWidth: 794
+      scrollX: 0,
+      scrollY: 0,
+      onclone: function(clonedDoc) {
+        clonedDoc.body.style.margin = '0px';
+        clonedDoc.body.style.padding = '0px';
+        clonedDoc.body.style.background = '#ffffff';
+      }
     },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  const cleanup = () => {
+    if (document.body.contains(container)) {
+      document.body.removeChild(container);
+    }
   };
 
   if (typeof html2pdf !== 'undefined') {
-    html2pdf().set(opt).from(mount).save().then(() => {
-      if (document.body.contains(mount)) document.body.removeChild(mount);
+    html2pdf().set(opt).from(element).save().then(() => {
+      cleanup();
       if (btn) {
         btn.disabled = false;
         btn.style.opacity = '1';
@@ -2735,7 +3033,7 @@ function downloadEsgPdf(row, btn) {
       }
     }).catch((err) => {
       console.error('html2pdf error:', err);
-      if (document.body.contains(mount)) document.body.removeChild(mount);
+      cleanup();
       if (btn) {
         btn.disabled = false;
         btn.style.opacity = '1';
@@ -2744,7 +3042,7 @@ function downloadEsgPdf(row, btn) {
       openPrintableEsgWindow(row);
     });
   } else {
-    if (document.body.contains(mount)) document.body.removeChild(mount);
+    cleanup();
     openPrintableEsgWindow(row);
   }
 }
