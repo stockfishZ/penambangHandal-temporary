@@ -763,121 +763,307 @@ function generateEsgDraftClient(row) {
   const riverDist = row.distance_to_river_m || 0;
   const roadDist = row.distance_to_road_m || 0;
   const smelterDist = row.distance_to_smelter_km || 0;
-  const lith = row.lithology || 'Unknown';
+  const lith = row.lithology || 'Ultramafik';
   const legal = row.legal_status || 'unknown';
-  const region = row.region_id || '-';
   const score = row.final_priority_score || 0;
-  const risk = row.risk_score || 0;
-  const mlScore = row.ml_score != null ? row.ml_score + '/10' : 'N/A';
+  const mlScore = row.ml_score != null ? row.ml_score : null;
   const safety = row.safety_level || 'Unknown';
   const safetyWarn = row.safety_warning || '-';
   const processing = row.processing_route || 'Unknown';
   const procDesc = row.processing_desc || '-';
-  const compliance = row.compliance_status || '-';
   const permit = row.permit_required || '-';
   const legalRef = row.legal_reference || '-';
   const mitigation = row.mitigation_requirements || '-';
-  const killZone = row.kill_zone_exclusion ? 'TERLARANG - Hutan Lindung' : 'Tidak';
-  const grandfathered = row.is_grandfathered ? 'Ya - Anomali Sejarah' : 'Tidak';
-  const viability = row.viability_score != null ? row.viability_score : 'N/A';
-  const capexTotal = row.capex_total || 0;
-  const capexMiliar = (capexTotal / 1000000000).toFixed(2);
-  const holes = row.drill_hole_count || 0;
-  const meters = row.drill_total_meter || 0;
-  const spacing = row.drill_spacing || 50;
-  const magScore = row.mag_score || 0;
-  const geochemScore = row.geochem_score || 0;
-  const lithScore = row.lithology_score || 0;
   const areaHa = row.area_ha || 0;
+  const spacing = row.drill_spacing || 50;
+  const holes = row.estimated_drill_holes || 0;
+  const costRp = row.estimated_cost_rp || 0;
+  const costMiliar = (costRp / 1e9).toFixed(2);
   const locLabel = row.location_label || ('Grid ' + row.grid_id);
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  const riverStatus = riverDist < 200 ? 'KRITIS (< 200m)' : riverDist < 500 ? 'WASPADA (200-500m)' : 'AMAN (> 500m)';
-  const slopeStatus = slope > 25 ? 'TINGGI' : slope > 15 ? 'SEDANG' : 'RENDAH';
-  const niGrade = ni >= 1.5 ? 'TINGGI' : ni >= 0.8 ? 'SEDANG' : 'RENDAH';
+  // ── Derived risk assessments ──
+  const riverRisk = riverDist < 200 ? 'KRITIS' : riverDist < 500 ? 'WASPADA' : 'AMAN';
+  const riverColor = riverDist < 200 ? '#ef4444' : riverDist < 500 ? '#f59e0b' : '#10b981';
+  const slopeRisk = slope > 25 ? 'TINGGI' : slope > 15 ? 'SEDANG' : 'RENDAH';
+  const slopeColor = slope > 25 ? '#ef4444' : slope > 15 ? '#f59e0b' : '#10b981';
+  const niGrade = ni >= 1.5 ? 'Saprolite (High Grade)' : ni >= 0.8 ? 'Transition Zone' : 'Limonite / Sub-economic';
+  const niColor = ni >= 1.5 ? '#10b981' : ni >= 0.8 ? '#f59e0b' : '#ef4444';
+  const isKillZone = !!row.kill_zone_exclusion;
+  const isGrandfathered = !!row.is_grandfathered;
+  const legalZone = row.legal_zone || 'Tidak Diketahui';
 
-  let s = '=================================================================\n' +
-          '      DOKUMEN USULAN RKAB & IUP EKSPLORASI (DRAFT NiTERRA)\n' +
-          '=================================================================\n' +
-          'Referensi: Kepmen ESDM No. 1806 K/30/MEM/2018 & No. 341.K/MB.01/MEM.B/2025\n' +
-          'Target Grid : ' + row.grid_id + '\n' +
-          'Lokasi      : ' + locLabel + '\n' +
-          'Region      : ' + region + '\n' +
-          '=================================================================\n\n' +
-          'BAB I: PENDAHULUAN\n' +
-          '-----------------------------------------------------------------\n' +
-          '1.1 Latar Belakang & Identitas Wilayah\n' +
-          '    Grid ID          : ' + row.grid_id + '\n' +
-          '    Luas Area        : ' + areaHa + ' ha\n' +
-          '    Kelas Prioritas  : ' + (row.priority_class || '-') + ' (Skor: ' + score + '/100)\n\n' +
-          '1.2 Kondisi Geografis & Infrastruktur\n' +
-          '    Kemiringan Lereng: ' + slope + ' deg (Kategori ' + slopeStatus + ')\n' +
-          '    Jarak ke Sungai  : ' + riverDist + ' m (' + riverStatus + ')\n' +
-          '    Jarak ke Jalan   : ' + roadDist + ' m\n' +
-          '    Jarak ke Smelter : ' + smelterDist + ' km\n\n' +
-          '1.3 Status Legalitas & Tata Guna Lahan\n' +
-          '    Status Hukum     : ' + legal + '\n' +
-          '    Zona Legal       : ' + (row.legal_zone || '-') + '\n' +
-          '    Keterlanjuran    : ' + grandfathered + '\n' +
-          '    Izin Dibutuhkan  : ' + permit + '\n\n' +
-          'BAB II: HASIL EVALUASI PROSPEKTIVITAS (Standar Pelaporan Eksplorasi)\n' +
-          '-----------------------------------------------------------------\n' +
-          '2.1 Geokimia & Geofisika Dasar\n' +
-          '    Litologi Dominan : ' + lith + '\n' +
-          '    Rata-rata Kadar  : Ni ' + ni + '% (' + niGrade + '), Fe ' + fe + '%, Co ' + co + '%\n' +
-          '    Asosiasi Mineral : MgO ' + mgo + '%, SiO2 ' + sio2 + '%\n' +
-          '    Rute Pengolahan  : ' + processing + ' (' + procDesc + ')\n\n' +
-          '2.2 Penilaian Algoritma (Machine Learning)\n' +
-          '    Skor ML (Prospektif)    : ' + mlScore + '\n' +
-          (row.ml_confidence != null ? '    Tingkat Kepercayaan     : ' + (row.ml_confidence * 100).toFixed(0) + '%\n' : '') +
-          (row.ml_block_reason ? '    Status / Blokir         : ' + row.ml_block_reason + '\n' : '') + '\n' +
-          'BAB III: RENCANA KERJA DAN ESG (ENVIRONMENTAL, SOCIAL, GOVERNANCE)\n' +
-          '-----------------------------------------------------------------\n' +
-          '3.1 Rencana Eksplorasi Lanjutan (Pengeboran)\n' +
-          '    Spasi Bor Rencana  : ' + spacing + ' m x ' + spacing + ' m\n' +
-          '    Estimasi Titik Bor : ' + holes + ' lubang\n' +
-          '    Total Kedalaman    : ' + meters + ' m\n' +
-          '    Estimasi Anggaran  : Rp ' + capexMiliar + ' Miliar\n' +
-          '    Estimasi ROI/Hemat : Rp ' + (window.roiSavingsMiliar || '0') + ' Miliar\n\n' +
-          '3.2 Manajemen Keselamatan Pertambangan (K3)\n' +
-          '    Level Risiko : ' + safety + '\n' +
-          '    Mitigasi     : ' + safetyWarn + '\n\n' +
-          '3.3 Aspek Lingkungan & Kehutanan\n' +
-          '    - Kemiringan (' + slopeStatus + '): ' + (slope > 25 ? 'REKOMENDASI: Desain lereng bertingkat dengan geometri <25 derajat.' : slope > 15 ? 'REKOMENDASI: Pertimbangkan cut-off bench dan terasering.' : 'REKOMENDASI: Standar penambangan konvensional dapat diterapkan.') + '\n' +
-          '    - Semapadan Sungai (' + riverStatus + '): ' + (riverDist < 200 ? 'STATUS KRITIS: Tidak memenuhi baku minimal 200m. Diperlukan kajian hidrologi.' : riverDist < 500 ? 'STATUS WASPADA: Berada dalam zona 500m.' : 'STATUS AMAN: Melebihi buffer 200m.') + '\n' +
-          '    - Kawasan Hutan: ' + (row.legal_zone === 'Hutan Lindung' ? 'TERLARANG. Sesuai UU 41/1999 dilarang tambang terbuka.' : row.legal_zone === 'Hutan Produksi' ? 'Hutan Produksi. Diizinkan dengan syarat Persetujuan Penggunaan Kawasan Hutan (PPKH).' : 'Areal Penggunaan Lain (APL). Bebas dari PPKH, wajib UKL-UPL/AMDAL.') + '\n\n' +
-          'BAB IV: KESIMPULAN DAN REKOMENDASI\n' +
-          '-----------------------------------------------------------------\n';
-
-  if (killZone.includes('TERLARANG') || row.legal_zone === 'Hutan Lindung') {
-    s += 'KESIMPULAN: WILAYAH BERADA DI ZONA TERLARANG (HUTAN LINDUNG).\nREKOMENDASI: Tidak direkomendasikan untuk eksplorasi lanjutan maupun pengajuan perizinan.\n';
-  } else if (grandfathered.includes('Ya')) {
-    s += 'KESIMPULAN: WILAYAH MERUPAKAN KONSESI KETERLANJURAN.\nREKOMENDASI: Diperlukan penyelesaian sengketa hukum dan verifikasi dengan KLHK sebelum RKAB disetujui.\n';
+  // ── Overall verdict ──
+  let verdictTitle, verdictDesc, verdictColor, verdictIcon;
+  if (isKillZone) {
+    verdictTitle = 'ZONA TERLARANG — Hutan Lindung';
+    verdictDesc = 'Wilayah ini berada dalam kawasan Hutan Lindung. Berdasarkan UU 41/1999 Pasal 38 ayat (4), pertambangan terbuka dilarang keras. Tidak direkomendasikan untuk pengajuan perizinan apapun.';
+    verdictColor = '#ef4444'; verdictIcon = '⛔';
+  } else if (isGrandfathered) {
+    verdictTitle = 'KONSESI KETERLANJURAN — Verifikasi Hukum Diperlukan';
+    verdictDesc = 'Wilayah ini teridentifikasi sebagai konsesi keterlanjuran (grandfathered). Diperlukan penyelesaian sengketa dan verifikasi status hukum dengan KLHK sebelum RKAB dapat disetujui. Proses perizinan PPKH wajib ditempuh.';
+    verdictColor = '#f59e0b'; verdictIcon = '⚠️';
   } else if (score >= 80) {
-    s += 'KESIMPULAN: PRIORITAS TINGGI (' + score + '/100).\nREKOMENDASI: Wilayah ini memiliki prospek deposit nikel yang sangat baik (Grade ' + niGrade + '). Segera ajukan perizinan ' + permit + ' dan jadwalkan anggaran Drilling Fase 1.\n';
+    verdictTitle = 'PRIORITAS TINGGI — Rekomendasikan Segera';
+    verdictDesc = `Target grid ini memiliki prospektivitas sangat baik dengan skor ${score}/100. Kadar Ni rata-rata ${ni}% tergolong ${niGrade}. Direkomendasikan untuk segera mengajukan ${permit} dan menjadwalkan program pengeboran Fase 1 (${holes} titik, spasi ${spacing}m).`;
+    verdictColor = '#10b981'; verdictIcon = '✅';
   } else if (score >= 62) {
-    s += 'KESIMPULAN: PRIORITAS MENENGAH (' + score + '/100).\nREKOMENDASI: Prospek cukup baik. Lakukan pemetaan geologi detail tambahan sebelum pengajuan RKAB Eksplorasi Lanjutan.\n';
+    verdictTitle = 'PRIORITAS MENENGAH — Investigasi Lanjutan';
+    verdictDesc = `Target menunjukkan prospek cukup baik (skor ${score}/100). Direkomendasikan untuk melakukan pemetaan geologi detail dan pengambilan sampel geokimia tambahan sebelum pengajuan RKAB Eksplorasi Lanjutan.`;
+    verdictColor = '#3b82f6'; verdictIcon = '🔍';
   } else if (score >= 45) {
-    s += 'KESIMPULAN: PRIORITAS RENDAH (' + score + '/100).\nREKOMENDASI: Data kurang meyakinkan untuk anggaran mandiri. Pertimbangkan joint-area dengan grid prospek tinggi di sekitarnya.\n';
+    verdictTitle = 'PRIORITAS RENDAH — Pending';
+    verdictDesc = `Data eksplorasi kurang meyakinkan (skor ${score}/100). Tidak direkomendasikan untuk alokasi anggaran mandiri. Pertimbangkan joint-area dengan grid prospek tinggi di sekitarnya.`;
+    verdictColor = '#f59e0b'; verdictIcon = '⏸️';
   } else {
-    s += 'KESIMPULAN: BUKAN PRIORITAS.\nREKOMENDASI: Drop target ini dari rencana anggaran (RKAB) tahun berjalan untuk efisiensi biaya.\n';
+    verdictTitle = 'DROP TARGET — Bukan Prioritas';
+    verdictDesc = `Skor prospektivitas terlalu rendah (${score}/100). Drop target ini dari RKAB tahun berjalan untuk efisiensi anggaran.`;
+    verdictColor = '#ef4444'; verdictIcon = '❌';
   }
 
-  s += '\nTINDAK LANJUT PERIZINAN:\n';
-  if (permit.includes('DILARANG')) {
-    s += '- Hentikan seluruh aktivitas eksplorasi di grid ini.\n';
+  // ── Environmental risk matrix rows ──
+  const envRisks = [];
+  envRisks.push({
+    aspect: 'Sempadan Sungai',
+    value: `${riverDist}m`,
+    risk: riverRisk,
+    color: riverColor,
+    detail: riverDist < 200
+      ? 'Melanggar baku minimal 200m (Permen LHK P.38/2019). Wajib kajian hidrologi & izin khusus dari Balai Wilayah Sungai.'
+      : riverDist < 500
+      ? 'Berada dalam zona sensitif 500m. Wajib penyusunan dokumen Rencana Pengelolaan & Pemantauan Lingkungan Hidup (RKL-RPL) komponen DAS.'
+      : 'Di luar zona sempadan. Standar pengelolaan limbah cair & monitoring kualitas air permukaan berlaku.',
+    regulation: 'Permen LHK No. P.38/MENLHK/SETJEN/KUM.1/2019'
+  });
+  envRisks.push({
+    aspect: 'Stabilitas Lereng',
+    value: `${slope}°`,
+    risk: slopeRisk,
+    color: slopeColor,
+    detail: slope > 25
+      ? 'Kemiringan melebihi 25°. Wajib desain geometri lereng bertingkat (bench), studi geoteknik, dan pemasangan instrumen pemantauan deformasi.'
+      : slope > 15
+      ? 'Kemiringan moderate. Diperlukan cut-off bench, drainase permukaan, dan monitoring visual berkala.'
+      : 'Kemiringan aman untuk penambangan konvensional. Penerapan SOP standar geoteknik berlaku.',
+    regulation: 'Kepmen ESDM No. 1827 K/30/MEM/2018 tentang K3 Pertambangan'
+  });
+  envRisks.push({
+    aspect: 'Kawasan Hutan',
+    value: legalZone,
+    risk: isKillZone ? 'TERLARANG' : legalZone === 'Hutan Produksi' ? 'BERSYARAT' : 'BEBAS',
+    color: isKillZone ? '#ef4444' : legalZone === 'Hutan Produksi' ? '#f59e0b' : '#10b981',
+    detail: isKillZone
+      ? 'Kawasan Hutan Lindung: DILARANG KERAS untuk tambang terbuka (UU 41/1999). Semua kegiatan harus dihentikan.'
+      : legalZone === 'Hutan Produksi'
+      ? 'Kawasan Hutan Produksi: Diizinkan menambang dengan syarat mendapatkan Persetujuan Penggunaan Kawasan Hutan (PPKH) dari KLHK, pembayaran PNBP, dan rencana reklamasi.'
+      : 'Areal Penggunaan Lain (APL): Tidak memerlukan PPKH. Proses perizinan IUP dan penyusunan dokumen AMDAL/UKL-UPL berlaku.',
+    regulation: isKillZone ? 'UU No. 41/1999 Pasal 38 Ayat 4' : legalZone === 'Hutan Produksi' ? 'PP No. 23/2021 & Permen LHK P.7/2021' : 'UU No. 3/2020 & PP No. 96/2021'
+  });
+  envRisks.push({
+    aspect: 'Aksesibilitas',
+    value: `${roadDist}m ke jalan`,
+    risk: roadDist > 2000 ? 'SULIT' : roadDist > 500 ? 'SEDANG' : 'BAIK',
+    color: roadDist > 2000 ? '#ef4444' : roadDist > 500 ? '#f59e0b' : '#10b981',
+    detail: roadDist > 2000
+      ? 'Lokasi sangat terpencil. Diperlukan pembangunan jalan akses, helipad darurat, dan mobilisasi menggunakan kendaraan off-road/helikopter.'
+      : roadDist > 500
+      ? 'Aksesibilitas terbatas. Diperlukan perbaikan jalan lokal dan kendaraan 4WD. Pertimbangkan logistik tambahan.'
+      : 'Aksesibilitas baik. Kendaraan standar dapat menjangkau lokasi. Logistik efisien.',
+    regulation: 'Kepmen ESDM No. 1827 K/30/MEM/2018 & PP No. 96/2021'
+  });
+
+  // ── Permit workflow steps ──
+  let permitSteps = [];
+  if (isKillZone) {
+    permitSteps = [
+      { step: 1, action: 'HENTIKAN semua kegiatan eksplorasi', status: 'BLOCKED', detail: 'Dilarang oleh UU 41/1999' }
+    ];
   } else if (permit.includes('PPKH')) {
-    s += '- Siapkan dokumen permohonan Persetujuan Penggunaan Kawasan Hutan (PPKH) Eksplorasi ke KLHK.\n- Lampirkan rancangan reklamasi hutan (RRH) dan PNBP.\n';
+    permitSteps = [
+      { step: 1, action: 'Penyusunan Proposal Teknis PPKH', status: 'TODO', detail: 'Dokumen rencana eksplorasi, peta lokasi 1:5.000, dan studi kelayakan lingkungan' },
+      { step: 2, action: 'Pengajuan PPKH ke KLHK melalui OSS-RBA', status: 'TODO', detail: 'Pendaftaran di sistem Online Single Submission Risk-Based Approach' },
+      { step: 3, action: 'Pembayaran PNBP Penggunaan Kawasan Hutan', status: 'TODO', detail: 'Kompensasi lahan hutan sesuai PP 23/2021 & tarif PNBP berlaku' },
+      { step: 4, action: 'Penyusunan Rancangan Reklamasi & Rehabilitasi DAS', status: 'TODO', detail: 'Rasio rehabilitasi minimal 1:1, dana jaminan reklamasi' },
+      { step: 5, action: 'Penyusunan Dokumen AMDAL/UKL-UPL', status: 'TODO', detail: 'Analisis dampak lingkungan hidup sesuai PP 22/2021 (AMDAL) atau formulir UKL-UPL' },
+      { step: 6, action: 'Perolehan IUP Eksplorasi dari ESDM', status: 'TODO', detail: 'Izin Usaha Pertambangan Eksplorasi dari Kementerian ESDM' },
+      { step: 7, action: 'Penyusunan RKAB (Rencana Kerja dan Anggaran Biaya)', status: 'TODO', detail: 'RKAB tahunan diajukan ke Ditjen Minerba, ESDM' }
+    ];
   } else if (permit.includes('IUP')) {
-    s += '- Proses perizinan IUP Eksplorasi ke Kementerian ESDM.\n- Lakukan penyusunan dokumen lingkungan (UKL-UPL atau AMDAL).\n';
+    permitSteps = [
+      { step: 1, action: 'Pengajuan WIUP melalui sistem lelang/permohonan', status: 'TODO', detail: 'Wilayah Izin Usaha Pertambangan melalui mekanisme kompetitif (lelang)' },
+      { step: 2, action: 'Pendaftaran Perizinan Berusaha via OSS-RBA', status: 'TODO', detail: 'Online Single Submission - Risk Based Approach (PP 5/2021)' },
+      { step: 3, action: 'Penyusunan Dokumen AMDAL atau UKL-UPL', status: 'TODO', detail: areaHa > 200 ? 'Luas > 200 Ha: Wajib AMDAL penuh (PP 22/2021)' : 'Luas ≤ 200 Ha: Cukup formulir UKL-UPL' },
+      { step: 4, action: 'Perolehan Persetujuan Lingkungan (Perkla)', status: 'TODO', detail: 'Persetujuan dari Dinas LH Provinsi/Kabupaten berdasarkan dokumen AMDAL/UKL-UPL' },
+      { step: 5, action: 'Penyusunan RKAB Eksplorasi', status: 'TODO', detail: 'RKAB diajukan ke Ditjen Minerba, Kementerian ESDM' },
+      { step: 6, action: 'Persetujuan RKAB dan Mulai Eksplorasi', status: 'TODO', detail: 'Setelah RKAB disetujui, mobilisasi tim dan peralatan pengeboran' }
+    ];
   } else {
-    s += '- Lakukan verifikasi kepatuhan terhadap perda tata ruang setempat.\n';
+    permitSteps = [
+      { step: 1, action: 'Verifikasi status tata ruang wilayah (RTRW)', status: 'TODO', detail: 'Konfirmasi dengan BIG/Pemda tentang peruntukan lahan' },
+      { step: 2, action: 'Pengajuan izin eksplorasi sesuai regulasi berlaku', status: 'TODO', detail: 'Identifikasi dan ajukan izin yang sesuai dengan kondisi lahan' }
+    ];
   }
 
-  s += '\n=================================================================\n' +
-       'Dokumen ini disusun otomatis berdasarkan Algoritma NiTERRA\n' +
-       'Format disesuaikan dengan Kepmen ESDM untuk kemudahan drafting RKAB.\n' +
-       '=================================================================';
-  return s;
+  // ── Timeline estimation (months) ──
+  let timelineMonths = 0;
+  if (!isKillZone) {
+    timelineMonths = permit.includes('PPKH') ? 18 : permit.includes('IUP') ? 12 : 6;
+    if (isGrandfathered) timelineMonths += 12;
+  }
+  const drillingDays = Math.ceil(holes * 2.5); // ~2.5 days per hole
+  const drillingWeeks = Math.ceil(drillingDays / 7);
+
+  // ── Budget breakdown ──
+  const mobilizationCost = roadDist > 2000 ? 850000000 : roadDist > 500 ? 350000000 : 150000000;
+  const envDocCost = areaHa > 200 ? 800000000 : 250000000;
+  const permitCost = permit.includes('PPKH') ? 500000000 : 200000000;
+  const drillingCost = costRp;
+  const labCost = holes * 15000000; // ~15jt/hole for assay
+  const contingency = Math.round((mobilizationCost + envDocCost + permitCost + drillingCost + labCost) * 0.10);
+  const totalBudget = mobilizationCost + envDocCost + permitCost + drillingCost + labCost + contingency;
+  const fmtRp = (n) => 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  // ── Build HTML report ──
+  return { html: `
+<div class="esg-report">
+  <!-- Header -->
+  <div style="text-align:center;margin-bottom:16px;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8b5cf6;font-weight:700;margin-bottom:4px;">NiTERRA ESG & Permit Draft Report</div>
+    <div style="font-size:18px;font-weight:800;color:#fff;">${row.grid_id}</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;">${locLabel} • ${dateStr}</div>
+  </div>
+
+  <!-- Verdict Banner -->
+  <div style="background:${verdictColor}15;border:1px solid ${verdictColor}40;border-radius:8px;padding:12px 14px;margin-bottom:14px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span style="font-size:18px;">${verdictIcon}</span>
+      <span style="font-weight:700;font-size:13px;color:${verdictColor};">${verdictTitle}</span>
+    </div>
+    <div style="font-size:11.5px;line-height:1.55;color:#e2e8f0;">${verdictDesc}</div>
+  </div>
+
+  <!-- Section 1: Site Profile -->
+  <div style="margin-bottom:14px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#8b5cf6;font-weight:700;margin-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:4px;">1. Profil Wilayah & Geologi</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Luas Area</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">${areaHa} Ha</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Litologi</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">${lith}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Ni Average</div>
+        <div style="font-size:13px;font-weight:700;color:${niColor};">${ni}% <span style="font-size:9px;font-weight:400;color:rgba(255,255,255,0.5);">${niGrade}</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Processing</div>
+        <div style="font-size:13px;font-weight:700;color:#0ea5e9;">${processing}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Fe / Co</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">${fe}% / ${co}%</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">MgO / SiO₂</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">${mgo}% / ${sio2}%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Environmental Risk Matrix -->
+  <div style="margin-bottom:14px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#8b5cf6;font-weight:700;margin-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:4px;">2. Matriks Risiko Lingkungan</div>
+    ${envRisks.map(r => `
+    <div style="background:rgba(255,255,255,0.02);border-left:3px solid ${r.color};border-radius:0 6px 6px 0;padding:8px 10px;margin-bottom:6px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:12px;font-weight:600;color:#fff;">${r.aspect}</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:11px;color:rgba(255,255,255,0.6);">${r.value}</span>
+          <span style="font-size:9px;font-weight:700;color:${r.color};background:${r.color}20;padding:2px 6px;border-radius:3px;">${r.risk}</span>
+        </div>
+      </div>
+      <div style="font-size:10.5px;line-height:1.5;color:rgba(255,255,255,0.7);">${r.detail}</div>
+      <div style="font-size:9px;color:rgba(139,92,246,0.7);margin-top:3px;">📋 ${r.regulation}</div>
+    </div>
+    `).join('')}
+  </div>
+
+  <!-- Section 3: Permit Workflow -->
+  <div style="margin-bottom:14px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#8b5cf6;font-weight:700;margin-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:4px;">3. Alur Perizinan (${permit})</div>
+    <div style="font-size:10.5px;color:rgba(255,255,255,0.5);margin-bottom:8px;">Dasar Hukum: ${legalRef}</div>
+    ${permitSteps.map(p => `
+    <div style="display:flex;gap:8px;margin-bottom:6px;">
+      <div style="flex-shrink:0;width:22px;height:22px;border-radius:50%;background:${p.status === 'BLOCKED' ? '#ef4444' : 'rgba(139,92,246,0.2)'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${p.status === 'BLOCKED' ? '#fff' : '#8b5cf6'};">${p.status === 'BLOCKED' ? '✕' : p.step}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:11.5px;font-weight:600;color:#fff;">${p.action}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.4;">${p.detail}</div>
+      </div>
+    </div>
+    `).join('')}
+    ${!isKillZone ? `<div style="background:rgba(139,92,246,0.08);border-radius:6px;padding:8px 10px;margin-top:8px;">
+      <span style="font-size:10px;color:rgba(255,255,255,0.5);">Estimasi Waktu Perizinan: </span>
+      <span style="font-size:12px;font-weight:700;color:#8b5cf6;">${timelineMonths} bulan</span>
+    </div>` : ''}
+  </div>
+
+  <!-- Section 4: Drilling & Budget -->
+  ${!isKillZone ? `
+  <div style="margin-bottom:14px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#8b5cf6;font-weight:700;margin-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:4px;">4. Rencana Pengeboran & Anggaran</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Titik Bor</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">${holes} lubang</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.4);">Spasi ${spacing}m × ${spacing}m</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Durasi Estimasi</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">${drillingWeeks} minggu</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.4);">${drillingDays} hari kerja</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:10px;font-size:11px;">
+      <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:6px;text-transform:uppercase;">Rincian Anggaran</div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.6);">Mobilisasi & Logistik</span><span style="color:#fff;font-weight:600;">${fmtRp(mobilizationCost)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.6);">Dokumen Lingkungan (${areaHa > 200 ? 'AMDAL' : 'UKL-UPL'})</span><span style="color:#fff;font-weight:600;">${fmtRp(envDocCost)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.6);">Perizinan & PNBP</span><span style="color:#fff;font-weight:600;">${fmtRp(permitCost)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.6);">Pengeboran (${holes} titik × 25m)</span><span style="color:#fff;font-weight:600;">${fmtRp(drillingCost)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.6);">Laboratorium & Assay</span><span style="color:#fff;font-weight:600;">${fmtRp(labCost)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.6);">Kontingensi (10%)</span><span style="color:#fff;font-weight:600;">${fmtRp(contingency)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0 0;margin-top:4px;border-top:1px solid rgba(139,92,246,0.3);"><span style="color:#8b5cf6;font-weight:700;">TOTAL ESTIMASI</span><span style="color:#8b5cf6;font-weight:800;font-size:13px;">${fmtRp(totalBudget)}</span></div>
+    </div>
+  </div>` : ''}
+
+  <!-- Section 5: Safety & K3 -->
+  <div style="margin-bottom:14px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#8b5cf6;font-weight:700;margin-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:4px;">${isKillZone ? '4' : '5'}. Keselamatan Pertambangan (K3)</div>
+    <div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:10px;font-size:11px;line-height:1.5;">
+      <div><span style="color:rgba(255,255,255,0.5);">Risk Level:</span> <span style="font-weight:600;color:${safety.includes('High') ? '#ef4444' : safety.includes('Moderate') ? '#f59e0b' : '#10b981'};">${safety}</span></div>
+      <div style="margin-top:4px;color:rgba(255,255,255,0.7);">${safetyWarn}</div>
+      <div style="margin-top:8px;color:rgba(255,255,255,0.5);font-size:10px;">Wajib Patuhi: Kepmen ESDM No. 1827 K/30/MEM/2018 tentang Pedoman K3 Pertambangan Mineral dan Batubara</div>
+    </div>
+  </div>
+
+  <!-- Section 6: Mitigation Requirements -->
+  <div style="margin-bottom:14px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#8b5cf6;font-weight:700;margin-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:4px;">${isKillZone ? '5' : '6'}. Persyaratan Mitigasi</div>
+    <div style="font-size:11px;line-height:1.55;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.02);border-radius:6px;padding:10px;">
+      ${mitigation}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:10px 0 4px;border-top:1px solid rgba(139,92,246,0.15);margin-top:16px;">
+    <div style="font-size:9px;color:rgba(255,255,255,0.3);">Dokumen ini disusun otomatis oleh NiTERRA berdasarkan data eksplorasi dan regulasi ESDM/KLHK Indonesia.</div>
+    <div style="font-size:9px;color:rgba(255,255,255,0.3);">Referensi: Kepmen ESDM No. 1806 K/30/MEM/2018 • UU No. 3/2020 • PP No. 96/2021 • PP No. 23/2021</div>
+  </div>
+</div>
+  `, totalBudget, timelineMonths };
 }
 
 function norm(value, min, max) {
@@ -2512,11 +2698,11 @@ function selectTarget(gridId) {
       <!-- ESG Report Action Button -->
       <div style="margin-top: 10px;">
           <button id="btn-generate-esg" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background:linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color:white; border:none; padding:12px; border-radius:8px; font-weight:600; cursor:pointer; font-size: 13px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: all 0.2s;">
-              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-              Auto-Generate ESG & Permit Draft
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Generate ESG & Permit Report
           </button>
       </div>
-      <div id="esg-draft-container" style="display: none; margin-top: 10px; padding: 14px; background: rgba(15,23,42,0.8); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.6; color: #e2e8f0; max-height: 350px; overflow-y: auto;"></div>
+      <div id="esg-draft-container" style="display: none; margin-top: 10px; padding: 14px; background: rgba(15,23,42,0.85); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; line-height: 1.6; color: #e2e8f0; max-height: 500px; overflow-y: auto;"></div>
     </div>
   `;
 
@@ -2540,88 +2726,67 @@ function selectTarget(gridId) {
     btnEsg.addEventListener('click', async () => {
       const container = document.getElementById('esg-draft-container');
       btnEsg.disabled = true;
-      btnEsg.style.opacity = '0.5';
-      btnEsg.innerHTML = 'Generating via NiTERRA AI...';
+      btnEsg.style.opacity = '0.6';
+      btnEsg.style.cursor = 'wait';
+      btnEsg.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="animation: spin 1s linear infinite;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        Generating Report...
+      `;
       container.style.display = 'block';
-      container.innerHTML = '<span style="color:#8b5cf6;">[SYSTEM] Initializing GenAI Drafting Agent...</span><br><br>';
-      
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/generate-esg-draft`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            grid_id: gridId,
-            slope_deg: row.slope_deg || 0,
-            distance_to_river_m: row.distance_to_river_m || 500,
-            legal_status: row.legal_status || 'Aman',
-            lithology: row.lithology || 'Ultramafik',
-            ni_avg: row.Ni_avg || 0,
-            roi_savings_miliar: Number(window.roiSavingsMiliar) || 0
-          })
-        });
-        if (!res.ok) throw new Error('API Error');
-        const data = await res.json();
-        
-        let i = 0;
-        const text = data.draft;
-        container.innerHTML = '';
-        function typeWriter() {
-          if (i < text.length) {
-            let char = text.charAt(i);
-            if (char === '\n') {
-                container.innerHTML += '<br>';
-            } else {
-                container.innerHTML += char;
-            }
-            i++;
-            container.scrollTop = container.scrollHeight;
-            setTimeout(typeWriter, 5);
-          } else {
-            btnEsg.innerHTML = 'Draft Complete - Downloading PDF...';
-            const opt = {
-              margin: 15,
-              filename: `ESG_Permit_Draft_${gridId}.pdf`,
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2 },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            if (typeof html2pdf !== 'undefined') {
-              const htmlContent = `
-                <div style="padding: 20px; background: #ffffff; color: #000000; font-family: Arial, sans-serif; font-size: 12px; line-height: 1.6;">
-                  ${container.innerHTML}
-                </div>
-              `;
-              html2pdf().set(opt).from(htmlContent).save().then(() => {
-                btnEsg.innerHTML = 'Draft Complete';
-              });
-            } else {
-              btnEsg.innerHTML = 'Draft Complete';
-            }
-          }
+      container.innerHTML = '<div style="text-align:center;padding:20px;"><div style="color:#8b5cf6;font-size:12px;">Analyzing site data & regulatory requirements...</div></div>';
+
+      // Small delay for UI feedback
+      await new Promise(r => setTimeout(r, 600));
+
+      const draft = generateEsgDraftClient(row);
+      container.style.opacity = '0';
+      container.innerHTML = draft.html;
+      container.style.transition = 'opacity 0.4s ease';
+      requestAnimationFrame(() => { container.style.opacity = '1'; });
+
+      btnEsg.innerHTML = `
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Download Report as PDF
+      `;
+      btnEsg.style.opacity = '1';
+      btnEsg.style.cursor = 'pointer';
+      btnEsg.disabled = false;
+      btnEsg.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+
+      // Change button to PDF download mode
+      btnEsg.onclick = () => {
+        if (typeof html2pdf !== 'undefined') {
+          btnEsg.disabled = true;
+          btnEsg.style.opacity = '0.6';
+          btnEsg.innerHTML = 'Generating PDF...';
+          const pdfContent = `
+            <div style="padding: 30px; background: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; line-height: 1.6; color: #e2e8f0;">
+              ${draft.html}
+            </div>
+          `;
+          const opt = {
+            margin: 10,
+            filename: 'ESG_Permit_Draft_' + gridId + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, backgroundColor: '#0f172a' },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+          html2pdf().set(opt).from(pdfContent).save().then(() => {
+            btnEsg.disabled = false;
+            btnEsg.style.opacity = '1';
+            btnEsg.innerHTML = `
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              PDF Downloaded — Click to Download Again
+            `;
+          });
+        } else {
+          // Fallback: copy to clipboard
+          const text = container.innerText;
+          navigator.clipboard.writeText(text).then(() => {
+            btnEsg.innerHTML = 'Report Copied to Clipboard';
+          });
         }
-        typeWriter();
-      } catch (err) {
-        btnEsg.innerHTML = 'Draft Ready (Offline Mode)';
-        const text = generateEsgDraftClient(row);
-        container.innerHTML = '';
-        let i = 0;
-        function typeWriter() {
-          if (i < text.length) {
-            let char = text.charAt(i);
-            if (char === '\n') {
-                container.innerHTML += '<br>';
-            } else {
-                container.innerHTML += char;
-            }
-            i++;
-            container.scrollTop = container.scrollHeight;
-            setTimeout(typeWriter, 5);
-          } else {
-            btnEsg.innerHTML = 'Draft Complete (Offline)';
-          }
-        }
-        typeWriter();
-      }
+      };
     });
   }
 }

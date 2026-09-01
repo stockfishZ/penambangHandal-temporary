@@ -550,6 +550,15 @@ h3 {
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* ── Section Headings ── */
 .section-heading {
   margin-bottom: var(--sp-xl);
