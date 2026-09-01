@@ -449,23 +449,33 @@ h3 {
   font-weight: 600;
   box-shadow: 0 0 16px rgba(159, 216, 189, 0.12);
   transition: all 0.25s var(--nexus-ease);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
+.btn-demo .bolt-icon,
 .btn-demo svg {
-  color: var(--accent-emerald);
-  transition: transform 0.25s var(--nexus-ease);
+  color: #fbbf24;
+  fill: #fbbf24;
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8)) drop-shadow(0 0 12px rgba(245, 158, 11, 0.4));
+  flex-shrink: 0;
+  transition: transform 0.25s var(--nexus-ease), filter 0.25s var(--nexus-ease);
 }
 
 .btn-demo:hover {
   background: linear-gradient(135deg, rgba(159, 216, 189, 0.28) 0%, rgba(163, 209, 223, 0.20) 100%);
   border-color: var(--accent-emerald);
   transform: translateY(-2px);
-  box-shadow: 0 4px 22px rgba(159, 216, 189, 0.32);
+  box-shadow: 0 4px 22px rgba(159, 216, 189, 0.32), 0 0 14px rgba(251, 191, 36, 0.3);
   color: #fff;
 }
 
+.btn-demo:hover .bolt-icon,
 .btn-demo:hover svg {
-  transform: scale(1.15) rotate(-6deg);
+  transform: scale(1.25) rotate(-8deg);
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 1)) drop-shadow(0 0 20px rgba(245, 158, 11, 0.7));
 }
 
 .btn-ghost {
